@@ -26,7 +26,11 @@ $observaciones = array(
         'value'             => set_value('observaciones'),
         'class'             => 'text span5'
 );
-
+$observaciones = array(
+        'name'             => 'observaciones',
+        'value'             => set_value('observaciones'),
+        'class'             => 'text span5'
+);
 ?>
 <script type="text/javascript">
     $(function() {
@@ -83,7 +87,7 @@ $observaciones = array(
 									
                                     <?php if(isset($empresas)) { ?>
                                     <div class="row">
-                                		<div class="span6 control-group <?php if(form_error($empresa['name']) != "") echo "error"; ?>">
+                                		<div class="span6 control-group">
 		                                    <?php echo form_label('Empresa', 'empresa_id'); ?></td>
 		                                            <?php
 		                                                echo '<select name="empresa_id" class="listas-padding span5" id="empresas_dd">';
@@ -93,20 +97,28 @@ $observaciones = array(
 		                                                }
 		                                                echo '</select>';
 		                                            ?>
-		                                    <?php } ?>
+		                                   
 		                            	</div>
 									</div>
+									 <?php } ?>
                                     <div class="row">
                                 		<div class="span6 control-group">
                                                 <?php echo form_label('Cuenta Registro Depositante', 'cuentaregistro_id'); ?></td>
                                                 <?php
-                                                    echo '<select name="cuentaregistro_id" class="listas-padding span5" id="cuentas_registro">';
-                                                    foreach($cuentasregistro as $crd)
-                                                    {
-                                                       echo '<option value="' . $crd['cuentaregistro_id'] . '">' . $crd['nombre'] . "</option>";
-                                                    }
-                                                    echo '</select>';
+                                                	if(count($cuentasregistro) > 0) {
+                                                		echo '<select name="cuentaregistro_id" class="listas-padding span5" id="cuentas_registro">';
+	                                                    foreach($cuentasregistro as $crd)
+	                                                    {
+	                                                       echo '<option value="' . $crd['cuentaregistro_id'] . '">' . $crd['nombre'] . "</option>";
+	                                                    }
+	                                                    echo '</select>';
+                                                	} else {
+                                                		echo '<select name="cuentaregistro_id" class="listas-padding span5" id="cuentas_registro">';
+															echo '<option value="">La empresa no tiene Cuentas Registro Depositante cargadas</option>'; 
+														echo '</select>';
+                                                	}
                                                 ?>
+                             
                                         </div>
                                     </div>
                                     <div class="row">
