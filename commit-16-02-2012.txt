@@ -1,0 +1,11 @@
+* Se extendio la controladora core de Codeigniter para que haga la verificacion de permisos en el constructor
+* Los controladres ahora extienden de este nuevo controlador extendido
+* Los menúes de las gestiones ahora se crean dinamicamente en base a los permisos de los usuarios
+* Se agrego un archivo config menu_permisos que especifica como se crean estos nuevos menues
+* Se modifico la tabla permisos. Ahora tiene 2 columnas nuevas: controladora y grupo. La primera hace referencia a la controladora que pertenece el permiso y la segunda al grupo que pertenece (gestion usuarios por ej)
+* En seguridad ahora los links a las gestiones (seguridad y roles) solo se muestran en caso de que el usuario tiene un permiso que pertenezca a alguna de ellas
+* FIX: Se modifico el codigo para que cuando el usuario haga la actualizacion de sus datos se cambie via jQuery el nombre de usuario (en caso de haberlo cambiado) apenas cierre el popup. Se hace actualizando los datos de la session del usuario
+* Gestiones de usuarios y roles ya funcionales con el nuevo sistema de permisos.
+* Gestion de eWarrant (anular y firmar) se hace via peticiones Ajax
+* Se adapto la funcion de anular y firmar eWarrants para que se adapten al modelo de seguridad. Ahora las operaciones se realizan por medio de un solo metodo en lugar de 3 como antes.
+* Alta de empresas hecha.

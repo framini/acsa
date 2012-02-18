@@ -1,0 +1,58 @@
+.margin-bottom-10 {
+	margin-bottom: 10px !important;
+}
+.margin-bottom-5 {
+	margin-bottom: 5px !important;
+}
+.margin-top-5 {
+	margin-top:5px !important;
+}
+.margin-top-10 {
+	margin-top:10px !important;
+}
+.small {
+	font-size:smaller;
+}
+.alert-error p, .alert-success p {
+	margin:0px 0px 0px 0px;
+}
+.alert-error.error-gral {
+	padding: 8px 0px 8px 0px;
+	margin-left: 0px;
+	text-align: center;
+}
+.centrado {
+	width: 350px;
+	float:left;
+	text-align: center;
+}
+.cont-centrado-span4 {
+	margin-left: 0px !important;
+	width: 350px !important;
+}
+.mensajes {
+	margin-bottom: 0px !important;
+    padding-left: 0px !important;
+    padding-right: 0px !important;
+    text-indent: 10px !important;
+}
+.mensajes p {
+	margin:0px !important;
+}
+.width150 {
+	width: 150px !important;
+}
+.margin-left-none {
+	margin-left: 0px !important;
+}
+.margin-bot-none {
+	margin-bottom: 0px !important;
+}
+.relativo {
+	position: relative;
+}
+.absoluto-r0-b0 {
+	position: absolute;
+	bottom: 0px;
+	right: 0px;
+}
