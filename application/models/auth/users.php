@@ -43,11 +43,17 @@ class Users extends CI_Model
 	 */
 	function get_user_by_login($login)
 	{
+		//Buscamos que el usuario este activado antes de loguearlo
+		$this->db->where('activated', 1);
 		$this->db->where('LOWER(username)=', strtolower($login));
 		$this->db->or_where('LOWER(email)=', strtolower($login));
+		
 
 		$query = $this->db->get($this->table_name);
-		if ($query->num_rows() == 1) return $query->row();
+		if ($query->num_rows() == 1) {
+			//print_r($query->row()->activated);
+			return $query->row();
+		}
 		return NULL;
 	}
                   
@@ -82,7 +88,10 @@ class Users extends CI_Model
 	 */
 	function get_user_by_username($username)
 	{
+		echo "Entro";
+		die();
 		$this->db->where('LOWER(username)=', strtolower($username));
+		$this->db->where('activated', '1');
 
 		$query = $this->db->get($this->table_name);
 		if ($query->num_rows() == 1) return $query->row();
@@ -208,7 +217,7 @@ class Users extends CI_Model
                            if($this->db->update('users', $data))
                                    return true;
                            else
-                                  return false;
+                                  return NULL;
                     }
 
 	/**

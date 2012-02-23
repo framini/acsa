@@ -23,9 +23,18 @@ class Empresas_frr {
 	 * @param	string
 	 * @return	bool
 	 */
-	function is_nombre_empresa_available($nombre)
-	{
+	function is_nombre_empresa_available($nombre) {
 		return ((strlen($nombre) > 0) AND $this->ci->empresas->is_nombre_empresa_available($nombre));
+	}
+	
+	/**
+	 * Chequea que la empresa este disponible para el registro.
+	 *
+	 * @param	string
+	 * @return	bool
+	 */
+	function is_cuit_empresa_available($cuit) {
+		return ((strlen($cuit) > 0) AND $this->ci->empresas->is_cuit_empresa_available($cuit));
 	}
 	
 	/**
@@ -45,6 +54,119 @@ class Empresas_frr {
 		return NULL;
 	}
 	
+	/**
+	 * Modifica una empresa del sistema
+	 */
+	function modificar_empresa($nombre, $cuit, $tipo_empresa_id, $empresa_id) {
+			//Separamos esta validacion para poder tener control sobre el mensaje de error a mostrar
+			$verif_nombre = $this->verificacion_nombre_empresa($nombre, $empresa_id);
+			$verif_cuit = $this->verificacion_cuit_empresa($cuit, $empresa_id);
+			if($verif_nombre && $verif_cuit) {
+				$data['nombre'] = $nombre;
+				$data['cuit'] = $cuit;
+				$data['tipo_empresa_id'] = $tipo_empresa_id;
+				
+				return $this->editar_empresa($empresa_id, $data);
+			} else {
+				return NULL;
+			}
+	}
+	
+	function verificacion_nombre_empresa($nombre, $empresa_id) {
+		//Si el nombre esta disponible entramos
+		//O sino chequeamos que se esten editando otros datos de una empresa que no sea su nombre
+		if($this->is_nombre_empresa_available($nombre) || $this->is_misma_empresa($nombre, $empresa_id)) {
+			return true;
+		} else {
+			$this->error['nombre'] = 'El nombre igresado ya está en uso';
+			return NULL;
+		}
+	}
+	
+	function verificacion_cuit_empresa($cuit, $empresa_id) {
+		//Primero verificamos si el cuit ingresado ya existe en la BD
+		//Sino nos fijamos que esten editando otro datos de la misma empresa
+		if($this->is_cuit_empresa_available($cuit) || $this->is_mismo_cuit($cuit, $empresa_id)) {
+			return true;
+		} else {
+			$this->error['cuit'] = 'El cuit ingresado ya está en uso';
+			return NULL;
+		}
+	}
+	
+	/**
+	 * Funcion usada para verificacion a la hora de modificar una empresa
+	 * Sirve para validar que se este modificando datos en la empresa correcta
+	 * Chequea que en caso de que el nombre de empresa ya este en el sistema se lo compare
+	 * con el nombre de la empresa con el ID de empresa a editar. En caso de ser el mismo
+	 * es valido realizar la modificacion de datos
+	 */
+	function is_misma_empresa($nombre_empresa, $empresa_id) {
+		$emp_db = $this->get_empresa_by_id($empresa_id);
+		if($emp_db[0]['nombre'] == $nombre_empresa) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	/**
+	 * Funcion usada para verificacion a la hora de modificar una empresa
+	 * Sirve para validar que se este modificando datos en la empresa correcta
+	 * Chequea que en caso de que el cuit ya este en el sistema se lo compare
+	 * con el cuit de la empresa con el ID de empresa a editar. En caso de ser el mismo
+	 * es valido realizar la modificacion de datos
+	 */
+	function is_mismo_cuit($cuit, $empresa_id) {
+		$emp_db = $this->get_empresa_by_id($empresa_id);
+		if($emp_db[0]['cuit'] == $cuit) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	/**
+     * Permite la modificacion de una determinada Empresa
+     * @param type $role_id
+     * @param type $data
+     * @return type 
+     */
+    function editar_empresa($empresa_id, $data)
+    {
+             if($this->ci->empresas->modificar_empresa($empresa_id, $data)) {
+             	return true;
+             }              
+             else {
+             	return NULL;
+             }
+    }
+	
+	/**
+	 * Eliminar una empresa del sistema
+	 */
+	function eliminar_empresa($empresa_id)
+    {
+            if($this->ci->empresas->eliminar_empresa($empresa_id))
+                return true;
+             else
+                 return false;
+    }
+	
+	/**
+	 * Eliminar una empresa del sistema
+	 */
+	function activar_empresa($empresa_id)
+    {
+            if($this->ci->empresas->activar_empresa($empresa_id))
+                return true;
+             else
+                 return false;
+    }
+	
+	/**
+	 * Devuelve los tipos de empresas
+	 */
 	function get_tipos_empresas() {
 		$tipos_empresas = $this->ci->empresas->get_tipos_empresas();
 
@@ -59,4 +181,36 @@ class Empresas_frr {
 
         return $data;
 	}
+	
+	function get_empresa_by_id($emp_id = NULL) {
+		if($emp_id) {
+			//Obtenemos la empresa en base al id enviado como parametro
+			$empresa = $this->ci->empresas->get_empresa_by_id($emp_id);
+
+			if($empresa) {
+
+		           $data[] = array(
+		                            'tipo_empresa_id'    => $empresa->tipo_empresa_id,
+		                            'nombre'       => $empresa->nombre,
+		                            'cuit'        => $empresa->cuit,
+		                            'fecha_alta'  => $empresa->fecha_alta,
+		                            'empresa_id'  => $empresa->empresa_id
+		                   );
+			}
+	
+	        return $data;
+		}
+			
+	}
+	
+	/**
+     * Devuelve el mensaje de error.
+     * Puede ser usada tras cualquier operacion fallida, como de login o registro.
+     *
+     * @return	string
+     */
+    function get_error_message()
+    {
+            return $this->error;
+    }
 }

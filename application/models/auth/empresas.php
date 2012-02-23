@@ -70,7 +70,7 @@ class Empresas extends CI_Model
         }
 		
 		/**
-		 * Chequea si el nomnbre de la empresa esta disponible para registro
+		 * Chequea si el nomnbre de la empresa esta disponible
 		 *
 		 * @param	string
 		 * @return	bool
@@ -83,6 +83,68 @@ class Empresas extends CI_Model
 			$query = $this->db->get('empresas');
 			return $query->num_rows() == 0;
 		}
+		
+		/**
+		 * Chequea si el cuit esta disponible
+		 *
+		 * @param	string
+		 * @return	bool
+		 */
+		function is_cuit_empresa_available($cuit)
+		{
+			$this->db->select('1', FALSE);
+			$this->db->where('LOWER(cuit)=', strtolower($cuit));
+	
+			$query = $this->db->get('empresas');
+			return $query->num_rows() == 0;
+		}
+		
+		/**
+		 * Eliminamos la empresa con id = $empresa_id
+		 * Y todos los usuarios que pertenecen a esa empresa
+		 * NOTA: Borrado Logico
+		 */
+		function eliminar_empresa($empresa_id)
+	    {
+	        $this->db->where('empresa_id', $empresa_id);
+			$data['activated'] = 0;
+			
+	        if($this->db->update('empresas', $data))
+	        {
+	                //Eliminamos los usuarios que hayan pertenecido a esa empresa
+	                $this->db->where('empresa_id', $empresa_id);
+	                if($this->db->update('users', $data))
+	                    return true;
+	                else
+	                    return false;
+	        }
+	        else
+	                return false;
+	    }
+		
+		/**
+		 * Activamos la empresa con id = $empresa_id
+		 * Y todos los usuarios que pertenecen a esa empresa
+		 * NOTA: Activación Lógica
+		 */
+		function activar_empresa($empresa_id)
+	    {
+	        $this->db->where('empresa_id', $empresa_id);
+			$data['activated'] = 1;
+			
+	        if($this->db->update('empresas', $data))
+	        {
+	                //Eliminamos los usuarios que hayan pertenecido a esa empresa
+	                $this->db->where('empresa_id', $empresa_id);
+	                if($this->db->update('users', $data))
+	                    return true;
+	                else
+	                    return false;
+	        }
+	        else
+	                return false;
+	    }
+    
 		
 		/**
 		 * Crea un nuevo record de usuario
@@ -101,6 +163,17 @@ class Empresas extends CI_Model
 			}
 			return NULL;
 		}
+		
+		/**
+		 * Modifica los datos de una empresa
+		 */
+		function modificar_empresa($empresa_id, $data) {
+            $this->db->where('empresa_id', $empresa_id);
+               if($this->db->update('empresas', $data))
+                       return true;
+               else
+                      return false;
+        }
 		
 		/**
        * Devuelve una lista con todos los tipos de empresa en el sistema

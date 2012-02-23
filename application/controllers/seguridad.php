@@ -39,10 +39,9 @@ class Seguridad extends MY_Controller {
 	                      $this->template->build();            
 	                }
                   
-
-                  
                   /**
-                   * Se llama a esta funcion para mostrar el formulario de nuevo role
+                   * Se llama a esta funcion para mostrar el formulario para crear roles
+				   * Cuando viene con datos en el post se usa para crear el role
                    */
                   function nuevo_role()
                   {
@@ -595,6 +594,110 @@ class Seguridad extends MY_Controller {
 								
 							}
 				    }
+					
+					/**
+					 * Modifica una empresa registrada en el sistema
+					 * NOTA: Solo disponible para admins
+					 */
+					function modificar_empresa() {
+						//Solamente los admins se argentina clearing pueden crear empresas, asi que lo primero que chequeamos
+						//es que el usuario sea admin
+						if($this->auth_frr->es_admin()){
+							$this->form_validation->set_error_delimiters('<p><i class="icon-exclamation-sign"></i> ', '</p>');
+						
+	                        $this->form_validation->set_rules('nombre', 'Nombre de la empresa', 'trim|required|xss_clean');
+	                        $this->form_validation->set_rules('cuit', 'Cuit', 'trim|required|xss_clean');
+							$this->form_validation->set_rules('tipo_empresa_id', 'Tipo Empresa', 'trim|required|xss_clean');
+	
+	                        $data['errors'] = array();
+							
+							//Chequeamos que los datos enviados por formulario sean correctos
+	                        if ($this->form_validation->run()) {
+	                        	if (!is_null($data = $this->empresas_frr->modificar_empresa(
+                                            $this->form_validation->set_value('nombre'),
+                                            $this->form_validation->set_value('cuit'),
+                                            $this->form_validation->set_value('tipo_empresa_id'),
+                                            $this->uri->segment(3)
+											))) 
+                                {
+                                			//La empresa se creo correctamente
+                                            $message = "La empresa se ha modificado correctamente!";
+                                            $this->session->set_flashdata('message', $message);
+                                            redirect('seguridad/');
+								} else {
+									$data['errors'] = $this->empresas_frr->get_error_message();
+								}
+							}
+							//Solamente hacemos algo si está presente el id de la empresa en la URI
+							if($this->uri->segment(3)) {
+								//Solamente cargamos los datos cuando no exista una request POST
+								//Para no pisar los datos enviados por el usuarios
+								if(!$this->input->post()) {
+									//Obtenemos la empresa
+									$data['row_empresa'] = $this->empresas_frr->get_empresa_by_id($this->uri->segment(3));
+								}
+								
+								//Obtenemos los tipos de empresa disponibles
+		                        $data['tipos_empresas'] = $this->empresas_frr->get_tipos_empresas();
+								//Asignamos un texto al boton submit del formulario
+								$data['tb'] = "Modificar Empresa";
+								//Asignamos un titulo para el encabezado del formulario
+								$data['tf'] = "Modificar Empresa";
+
+		                        $this->template->set_content('seguridad/agregar_empresa_form', $data);
+		                        $this->template->build();
+							} else {
+								redirect('');
+							}
+						}
+					}
+
+				  /**
+				   * Acá se muestra el formulario para eliminar una empresa dependiendo de la presencia o ausencia de los
+				   * parametros que le suministramos
+				   */
+				  function eliminar_empresa($empresa_id = NULL)
+                  {
+                  	    //Chequeamos que exista la confirmacion en la URI
+                        if($this->uri->segment(4) == "si")
+	                    {
+	                        if($this->empresas_frr->eliminar_empresa($empresa_id))
+	                        {
+                                $message = "La empresa se ha eliminado correctamente!";
+                                $this->session->set_flashdata('message', $message);
+								redirect('seguridad/');
+	                        } else {
+	                            $errormsg = "No se ha podido eliminar la empresa!";
+	                            $this->session->set_flashdata('errormsg', $errormsg);
+	                        }
+	                    }
+	                    //Mostramos el template solo en el caso que exista un id de empresa
+						if($empresa_id) {
+							$this->template->set_content('general/confirma_operacion');
+							$this->template->build();
+						}
+                  }
+				  
+				  function activar_empresa($empresa_id = NULL) {
+				  		//Chequeamos que exista la confirmacion en la URI
+                        if($this->uri->segment(4) == "si")
+	                    {
+	                        if($this->empresas_frr->activar_empresa($empresa_id))
+	                        {
+                                $message = "La empresa se ha activado correctamente!";
+                                $this->session->set_flashdata('message', $message);
+								redirect('seguridad/');
+	                        } else {
+	                            $errormsg = "No se ha podido activar la empresa!";
+	                            $this->session->set_flashdata('errormsg', $errormsg);
+	                        }
+	                    }
+	                    //Mostramos el template solo en el caso que exista un id de empresa
+						if($empresa_id) {
+							$this->template->set_content('general/confirma_operacion');
+							$this->template->build();
+						}
+				  }
         
                    /**
                    *  Muestra la pantalla con todos los usuarios del sistema
