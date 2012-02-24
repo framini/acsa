@@ -1,0 +1,32 @@
+commit 1338a1bd071eefb361f9965a619f0826e52151bd
+Author: unknown <francisco.ramini@.neoris.cxnetworks.net>
+Date:   Fri Feb 24 17:31:01 2012 -0300
+
+    ADD: Se agrego la gestion de empresas
+    ADD: Ahora todas las peticiones de la gestion de empresas se hacen via peticiones Ajax.
+
+commit dd0425e40324f0beaa943f2a41a042c5106d643b
+Author: unknown <francisco.ramini@.neoris.cxnetworks.net>
+Date:   Thu Feb 23 17:47:39 2012 -0300
+
+    * ADD: Se agregaron las funcionalidades para gestionar empresas:
+    -Agregar, modificar, eliminar y activar
+
+commit a7ff505bdda8370e83f70b5f6cab0ff8bf0cface
+Author: Francisco Ramini <framini@gmail.com>
+Date:   Sat Feb 18 17:36:26 2012 -0200
+
+    * Se cambio el config.php para mudar el proyecto a /argc
+    * Fix: Se modifico emitir.php para arreglar el problema de cuando la empresa no tenia cuentas registro depositante
+
+commit 89b6da8232a2fa62a483d597785e4ca2e71d61e6
+Author: Francisco Ramini <framini@gmail.com>
+Date:   Sat Feb 18 16:36:08 2012 -0200
+
+    Primer subida del proyecto al nuevo repositorio
+
+commit cdac3629a47e50efabdb8a711f4071fee22f3858
+Author: Francisco Ramini <framini@gmail.com>
+Date:   Sat Feb 18 16:30:05 2012 -0200
+
+    first commit
