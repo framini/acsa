@@ -559,6 +559,7 @@ class Seguridad extends MY_Controller {
 					
 					/**
 					 * Da de alta una empresa en el sistema
+					 * NOTA: Solo disponible para admins
 					 */
 					function registro_empresa() {
 	                        
@@ -620,14 +621,48 @@ class Seguridad extends MY_Controller {
                                             $this->uri->segment(3)
 											))) 
                                 {
-                                			//La empresa se creo correctamente
+                                		//Nos fijamos si la petición se hizo via AJAX
+                                		if($this->input->is_ajax_request()) {
+											$resultados['message'] = "Se modifico la empresa correctamente!";
+	                                        //Devolvemos los resultados en JSON
+	                                        echo json_encode($resultados);
+	                                        //Ya no tenemos nada que hacer en esta funcion
+	                                        return;
+										} else {
+											//La empresa se creo correctamente
                                             $message = "La empresa se ha modificado correctamente!";
                                             $this->session->set_flashdata('message', $message);
                                             redirect('seguridad/');
+										}
+                                			
 								} else {
-									$data['errors'] = $this->empresas_frr->get_error_message();
+									//Chequeamos si la peticion se hizo via ajax
+                                    if($this->input->is_ajax_request()) {
+                                        $resultados['message'] = $this->empresas_frr->get_error_message();
+                                        $resultados['error'] = true;
+                                        //Devolvemos los resultados en JSON
+                                        echo json_encode($resultados);
+                                        //Ya no tenemos nada que hacer en esta funcion
+                                        return;
+                                    } else {
+										$data['errors'] = $this->empresas_frr->get_error_message();
+									}
 								}
 							}
+							
+							//Si la peticion se hizo via AJAX
+							if($this->input->is_ajax_request()) {
+								$resultados['error'] = true;
+								//Chequeamos que alguno de los campos requeridos este vacio
+								//Si esta vacio mostramos un mensaje general
+                                if(!$this->input->post('nombre') || !$this->input->post('cuit') ) {
+                                	$resultados['message'] = "Los campos requeridos no pueden estar vacios";
+                                }
+                                //Devolvemos los resultados en JSON
+                                echo json_encode($resultados);
+                                //Ya no tenemos nada que hacer en esta funcion
+                                return;
+                            }
 							//Solamente hacemos algo si está presente el id de la empresa en la URI
 							if($this->uri->segment(3)) {
 								//Solamente cargamos los datos cuando no exista una request POST
@@ -655,6 +690,7 @@ class Seguridad extends MY_Controller {
 				  /**
 				   * Acá se muestra el formulario para eliminar una empresa dependiendo de la presencia o ausencia de los
 				   * parametros que le suministramos
+				   * NOTA: Solo disponible para admins
 				   */
 				  function eliminar_empresa($empresa_id = NULL)
                   {
@@ -678,26 +714,78 @@ class Seguridad extends MY_Controller {
 						}
                   }
 				  
+				  /**
+				   * Método para mostrar el formulario de activacion de empresa
+				   * Cuando viene con parametros POST funciona efectua la activacion
+				   * NOTA: Solo disponible para admins
+				   */
 				  function activar_empresa($empresa_id = NULL) {
 				  		//Chequeamos que exista la confirmacion en la URI
                         if($this->uri->segment(4) == "si")
 	                    {
-	                        if($this->empresas_frr->activar_empresa($empresa_id))
-	                        {
-                                $message = "La empresa se ha activado correctamente!";
-                                $this->session->set_flashdata('message', $message);
-								redirect('seguridad/');
-	                        } else {
-	                            $errormsg = "No se ha podido activar la empresa!";
-	                            $this->session->set_flashdata('errormsg', $errormsg);
-	                        }
+							//Solamente intentamos activar la empresa en caso que la misma se encuentra desactivada
+							if(!$this->empresas_frr->is_empresa_activada($empresa_id)) {
+								if($this->empresas_frr->activar_empresa($empresa_id))
+		                        {
+	                                $message = "La empresa se ha activado correctamente!";
+	                                $this->session->set_flashdata('message', $message);
+									redirect('seguridad/');
+		                        } else {
+		                            $errormsg = "No se ha podido activar la empresa!";
+		                            $this->session->set_flashdata('errormsg', $errormsg);
+		                        }
+							} else {
+								redirect('seguridad/error/3/1');
+							}  
 	                    }
 	                    //Mostramos el template solo en el caso que exista un id de empresa
-						if($empresa_id) {
+	                    //y que la empresa no este activada
+						if($empresa_id && !$this->empresas_frr->is_empresa_activada($empresa_id)) {
 							$this->template->set_content('general/confirma_operacion');
 							$this->template->build();
+						} else {
+							redirect('seguridad/error/3/1');
 						}
 				  }
+
+				   /**
+                   *  Método que muestra la gestión de empresas
+                   */
+                  function gestionar_empresas() {
+                  	  //Cargamos el archivo que contiene la info con la que se contruye el menu
+                 	  $this->config->load('menu_permisos', TRUE);
+					  
+                  	  //Obtenemos los permisos del usuario logueado asociados a la controladora seguridad y grupo gestionar_roles
+                  	  $data['permisos'] = $this->roles_frr->permisos_role_controladora_grupo($this->uri->segment(1), $this->uri->segment(2));
+                  	  
+					  
+					  //Procesamos los permisos obtenidos
+					  if(count($data['permisos']) > 0) {
+					  	foreach ($data['permisos'] as $key => $row) {
+						  $data['data_menu'][$row['permiso']] = $this->config->item($row['permiso'], 'menu_permisos');
+					  	}
+					  }
+					  
+					  //Obtenemos todas las empresas cargadas en el sistema
+                      $data['empresas'] = $this->empresas_frr->get_empresas();
+					  			  		  
+                       
+                      if ($message = $this->session->flashdata('message')) {
+                                      $data['message'] = $message;
+                                      $this->template->set_content('seguridad/gestionar_empresas', $data);
+                      }
+                      else
+                                     $this->template->set_content('seguridad/gestionar_empresas', $data);
+                      
+                      if ($errormsg = $this->session->flashdata('errormsg')) {
+                                      $data['errormsg'] = $errormsg;
+                                      $this->template->set_content('seguridad/gestionar_empresas', $data);
+                      }
+                      else
+                                     $this->template->set_content('seguridad/gestionar_empresas', $data);
+                      
+                      $this->template->build();
+                  }
         
                    /**
                    *  Muestra la pantalla con todos los usuarios del sistema
@@ -916,25 +1004,25 @@ class Seguridad extends MY_Controller {
                   }
                   
                   /**
-	 * Reemplaza el email viejo del usuario por el nuevo
-	 * Se verifica al usuario por el ID y la Key enviada por email
-	 *
-	 * @return void
-	 */
-	function reset_email()
-	{
-		$user_id		= $this->uri->segment(3);
-		$new_email_key	= $this->uri->segment(4);
-
-		// Tratamos de restear el email
-		if ($this->auth_frr->activate_new_email($user_id, $new_email_key)) {
-			$this->auth_frr->logout();
-			$this->_show_message($this->lang->line('auth_message_new_email_activated').' '.anchor('/ew/login/', 'Login'));
-
-		} else {																// fail
-			$this->_show_message($this->lang->line('auth_message_new_email_failed'));
-		}
-	}
+					 * Reemplaza el email viejo del usuario por el nuevo
+					 * Se verifica al usuario por el ID y la Key enviada por email
+					 *
+					 * @return void
+					 */
+					function reset_email()
+					{
+						$user_id		= $this->uri->segment(3);
+						$new_email_key	= $this->uri->segment(4);
+				
+						// Tratamos de restear el email
+						if ($this->auth_frr->activate_new_email($user_id, $new_email_key)) {
+							$this->auth_frr->logout();
+							$this->_show_message($this->lang->line('auth_message_new_email_activated').' '.anchor('/ew/login/', 'Login'));
+				
+						} else {																// fail
+							$this->_show_message($this->lang->line('auth_message_new_email_failed'));
+						}
+					}
                   
                   /*
                    *  Metodo para mostrar la opcion de editar un usuario
@@ -1051,6 +1139,20 @@ class Seguridad extends MY_Controller {
                             $this->template->build();
                       }
                   }
+				  
+				  /**
+				   * Método general para mostrar Errores
+				   */	
+				  function error() {
+				  		//Cargamos el archivo que contiene la info con la que se contruye el menu
+                 	  	$this->config->load('menu_permisos', TRUE);
+						
+						$item = $this->uri->segment(3) . "-" . $this->uri->segment(4);
+						$data = $this->config->item($item, 'menu_permisos');
+
+						$this->template->set_content('general/mensaje', $data);
+						$this->template->build();
+				  }
         
                           /**
 	 * Muestra mensaje con flashdata

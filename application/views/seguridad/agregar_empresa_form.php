@@ -19,6 +19,65 @@ $cuit = array(
 ?>
 
 <div class="row">
+	
+	<script type="text/javascript">
+		$(function() {
+			$('.btn-large.btn-primary').on('click', function(event) {
+				event.preventDefault();
+				
+				//url para la peticion AJAX
+				var uri = "<?php $uri = site_url() . "/" .$this->uri->uri_string(); echo $uri; ?>";
+				
+				//Seleccionamos los inputs
+				var campos = {
+					nombre: $('#nombre').val(),
+					cuit: $('#cuit').val(),
+					tipo_empresa_id: $('#tipo_empresa_id').val()
+				};
+				
+				var param = $.extend({}, campos);
+				
+				$.ajax({
+					url: uri,
+					dataType: 'json',
+					data: param,
+					type: 'POST',
+					success: function(data, textStatus, jqXHR) {
+						if(data.error) {
+							//Chequeamos si los mensajes vienen en forma de objetos
+							//o simples string
+							var msg = "";
+							if($.isPlainObject(data.message)) {
+								$.each(data.message, function(i, val){
+									msg += "<p>" + val + "</p>";
+								});
+							} else {
+								msg = data.message;
+							}
+							
+							$('#resultado-operacion').html("");
+							$('#resultado-operacion').slideUp('fast', function() {
+								$(this).html(msg)} )
+								.removeClass('alert-success')
+								.addClass('alert-error')
+								.delay(200)
+								.slideDown('slow');
+						} else {
+							
+							$('#resultado-operacion').text("");
+							$('#resultado-operacion').slideUp('fast', function() {
+								$(this).text(data.message)} )
+								.removeClass('alert-error')
+								.addClass('alert-success')
+								.delay(200)
+								.slideDown('slow');
+						}
+						
+					}
+				});
+			});
+		});
+	</script>
 
         <div class="span12 margin-bottom-10">
                 	<div class="row">
@@ -29,6 +88,9 @@ $cuit = array(
         </div>		
         <!-- .block_head ends -->
                             <div class="span12">
+                            	<div class="row margin-bottom-10">
+                                  	<div class="alert span5 alert-error margin-top-10" id="resultado-operacion" style="display: none;"></div>
+                                </div>
                                 <?php echo form_open($this->uri->uri_string()); ?>
                                 	<div class="row">
                                 		<div class="span6 control-group <?php if(form_error($empresa['name']) != "") echo "error"; ?>">

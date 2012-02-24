@@ -189,4 +189,34 @@ class Empresas extends CI_Model
                 return $query;
             }
         }
+		
+		/**
+       * Devuelve una lista con todas las empresas en el sistema
+       * @return type 
+       */
+        function get_empresas()
+        {
+            $query = $this->db->select()
+                                   ->from('empresas')
+                                   ->get();
+
+            if($query->num_rows() > 0)
+            {
+                return $query;
+            }
+        }
+		
+		/**
+		 * Devuelve el record de la empresa en base al ID
+		 *
+		 */
+		function get_tipo_empresa_by_id($tipo_empresa_id)
+		{
+			$this->db->select();
+			$this->db->where('tipo_empresa_id', $tipo_empresa_id);
+	
+			$query = $this->db->get('tipo_empresa');
+			if ($query->num_rows() == 1) return $query->row();
+			return NULL;
+		}
 }

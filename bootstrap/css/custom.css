@@ -56,3 +56,15 @@
 	bottom: 0px;
 	right: 0px;
 }
+.padding-right-20 {
+	padding-right: 20px !important;
+}
+.clear-left {
+	clear: left !important;
+}
+.min-width-170 {
+	min-width: 170px !important;
+}
+.span2.width-170, .span4.width-170 {
+	width: 170px !important;
+}

@@ -19,6 +19,17 @@ $config['ewarrant_error_no_puede_firmar'] = array('texto' => 'No puedes anular e
 $config['ewarrant_error_ya_anulado'] = array('texto' => 'El eWarrant ya esta anulado!', 'icono' => 'icon-remove');
 
 
+# Mensajes de Error
+####################################################################################
+//Explicacion manejo de errores
+//Las URI van a venir de la forma controladora/gestion/error
+//Tomamos los items de error con la forma de la string "gestion-error". Ejemplo 3-1
+//----------------------
+// Gestionar Empresas = 3 en segmento 3 URI
+//----------------------
+$config['3-1'] = array('titulo' => 'La empresa se encuentra activada!', 'contenido' => 'La empresa que estas tratando de activar ya se encuentra activada!');
+
+
 # Menu gestion eWarrants
 ####################################################################################
 $config['emitir'] = array('texto_anchor' => 'Emitir', 'icono' => 'icon-plus-sign', 'boton_superior' => false);
@@ -34,6 +45,7 @@ $config['anular'] = array('texto_anchor' => 'Anular', 'icono' => 'icon-remove-si
 ####################################################################################
 $config['gestionar_roles'] = array('texto_anchor' => 'Gestionar Roles', 'icono' => 'icon-tag', 'titulo_gestion' => 'Roles');
 $config['gestionar_usuarios'] = array('texto_anchor' => 'Gestionar Usuarios', 'icono' => 'icon-user', 'titulo_gestion' => 'Usuarios');
+$config['gestionar_empresas'] = array('texto_anchor' => 'Gestionar Empresas', 'icono' => 'icon-home', 'titulo_gestion' => 'Empresas');
 
 # Menu gestion Seguridad => Gestionar Roles
 # Notas:
@@ -58,3 +70,16 @@ $config['editar_usuario'] = array('texto_anchor' => 'Editar', 'icono' => 'icon-p
 $config['cambiar_email'] = array('texto_anchor' => 'Cambiar email', 'icono' => 'icon-pencil icon-white', 'clase_boton' => 'btn cambiar-email-usuario btn-primary margin-bottom-5', 'boton_superior' => false);
 $config['cambiar_password'] = array('texto_anchor' => 'Cambiar Password', 'icono' => 'icon-pencil icon-white', 'clase_boton' => 'btn cambiar-email-usuario btn-primary margin-bottom-5', 'boton_superior' => false);
 $config['eliminar_user'] = array('texto_anchor' => 'Eliminar', 'icono' => 'icon-trash', 'clase_boton' => 'btn btn-danger eliminar-usuario margin-bottom-5', 'boton_superior' => false, 'titulo' => "Confirma que desea eliminar el usuario?");
+
+
+# Menu gestion Seguridad => Gestionar Empresas
+# Notas:
+# texto_anchor: Es el texto a mostrar en pantalla para el boton
+# icono: Es la imagen que va a la izquierda del texto_anchor
+# clase_boton: Especifica la clase a implementar por el boton
+# boton_superior: Especifica si el boton va en la parte superior de la pantalla
+####################################################################################
+$config['registro_empresa'] = array('texto_anchor' => 'Agregar Empresa', 'icono' => 'icon-user icon-white', 'clase_boton' => 'btn btn-large btn-success pull-right', 'boton_superior' => true, 'titulo' => false);
+$config['modificar_empresa'] = array('texto_anchor' => 'Modificar', 'icono' => 'icon-pencil icon-white', 'clase_boton' => 'btn btn-info modificar-empresa margin-bottom-5', 'boton_superior' => false, 'titulo' => false);
+$config['activar_empresa'] = array('texto_anchor' => 'Activar', 'icono' => 'icon-plus icon-white', 'clase_boton' => 'btn activar-empresa btn-warning margin-bottom-5', 'boton_superior' => false);
+$config['eliminar_empresa'] = array('texto_anchor' => 'Eliminar', 'icono' => 'icon-trash', 'clase_boton' => 'btn btn-danger eliminar-empresa margin-bottom-5', 'boton_superior' => false, 'titulo' => "Confirma que desea eliminar la empresa?");

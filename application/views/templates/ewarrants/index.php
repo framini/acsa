@@ -106,6 +106,7 @@
     <script type="text/javascript" src="<?php echo base_url(); ?>js/jquery.quicksearch.js"></script>
     <?php if($this->uri->segment(2) == "gestionar_usuarios") { echo '<script type="text/javascript" src="' . base_url() . 'js/gestion-usuarios.js"></script>'; } ?>
     <?php if($this->uri->segment(2) == "gestionar_roles") { echo '<script type="text/javascript" src="' . base_url() . 'js/gestion-roles.js"></script>'; } ?>
+    <?php if($this->uri->segment(2) == "gestionar_empresas") { echo '<script type="text/javascript" src="' . base_url() . 'js/gestion-empresas.js"></script>'; } ?>
     <script type="text/javascript" src="<?php echo base_url(); ?>js/jquery.colorbox.js"></script>
     <br/>
     <script src="<?php echo base_url(); ?>bootstrap/js/custom.js"></script>

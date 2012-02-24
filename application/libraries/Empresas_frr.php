@@ -194,7 +194,8 @@ class Empresas_frr {
 		                            'nombre'       => $empresa->nombre,
 		                            'cuit'        => $empresa->cuit,
 		                            'fecha_alta'  => $empresa->fecha_alta,
-		                            'empresa_id'  => $empresa->empresa_id
+		                            'empresa_id'  => $empresa->empresa_id,
+		                            'activated'   => $empresa->activated
 		                   );
 			}
 	
@@ -202,6 +203,52 @@ class Empresas_frr {
 		}
 			
 	}
+	
+	function is_empresa_activada($empresa_id) {
+		$empresa = $this->get_empresa_by_id($empresa_id);
+		if($empresa[0]['activated'] == 1) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	/**
+     * Devuelve todos los usuarios del sistema
+     * @return type 
+     */
+      function get_empresas()
+      {
+            $empresas = $this->ci->empresas->get_empresas();
+
+            foreach ($empresas->result() as $row)
+            {
+               $data[] = array(
+                                'empresa_id'    => $row->empresa_id,
+                                'empresa_asoc_id'            => $row->empresa_asoc_id,
+                                'tipo_empresa_id'        => $row->tipo_empresa_id,
+                                'tipo_empresa'           => $this->get_tipo_empresa_by_id($row->tipo_empresa_id),
+                                'nombre'    => $row->nombre,
+                                'cuit'      => $row->cuit,
+                                'fecha_alta'      => $row->fecha_alta,
+                                'activated'      => $row->activated,
+                       );
+            }
+
+            return $data;
+      }
+	  
+	  /**
+	   * Devuelve una empresa en base al ID pasado como parametro
+	   */
+	  function get_tipo_empresa_by_id($tipo_empresa_id) {
+		   if(!is_null($tipo_empresa = $this->ci->empresas->get_tipo_empresa_by_id($tipo_empresa_id))) {
+		   		return $tipo_empresa->tipo_empresa;
+		   } else {
+		   	return null;
+		   }
+	  }
+	  
 	
 	/**
      * Devuelve el mensaje de error.
