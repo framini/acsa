@@ -88,8 +88,6 @@ class Users extends CI_Model
 	 */
 	function get_user_by_username($username)
 	{
-		echo "Entro";
-		die();
 		$this->db->where('LOWER(username)=', strtolower($username));
 		$this->db->where('activated', '1');
 
