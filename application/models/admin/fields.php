@@ -66,4 +66,33 @@ class fields extends CI_Model
 
         return null;
 	}
+	
+	/**
+	 * Devuelve una lista con todos los fields types cargados
+	 */
+	function get_fields_types() {
+		$query = $this->db->select()
+                          ->from('fields_types')
+                          ->get();
+
+        if($query->num_rows() > 0)
+        {
+            return $query;
+        }
+		
+		return NULL;
+	}
+	
+	/**
+	 * Devuelve el record de field type en base a un ID
+	 *
+	 */
+	function get_field_type_by_id($field_type_id)
+	{
+		$this->db->where('fields_type_id', $field_type_id);
+
+		$query = $this->db->get('fields_types');
+		if ($query->num_rows() == 1) return $query->row();
+		return NULL;
+	}
 }

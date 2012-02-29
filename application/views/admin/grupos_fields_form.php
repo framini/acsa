@@ -1,4 +1,3 @@
- <div class="row" id="contenido">
  	<?php
 	$grupo_field = isset($roleRow->grupos_fields_nombre) ? $roleRow->grupos_fields_nombre : set_value('grupos_fields_nombre');
 	

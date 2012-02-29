@@ -1,9 +1,36 @@
- <div class="row" id="contenido">
+
  	<?php
 	$forms_nombre = isset($roleRow->form_nombre) ? $roleRow->form_nombre : set_value('form_nombre');
+	$forms_texto_boton_enviar = isset($roleRow->forms_texto_boton_enviar) ? $roleRow->forms_texto_boton_enviar : set_value('forms_texto_boton_enviar');
+	$forms_titulo = isset($roleRow->forms_titulo) ? $roleRow->forms_titulo : set_value('forms_titulo');
+	$forms_descripcion = isset($roleRow->forms_descripcion) ? $roleRow->forms_descripcion : set_value('forms_descripcion');
 	$forms_nombre_action = isset($roleRow->forms_nombre_action) ? $roleRow->forms_nombre_action : set_value('forms_nombre_action');
 	$grupos_fields_id = isset($roleRow->grupos_fields_id) ? $roleRow->grupos_fields_id : set_value('grupos_fields_id');
 	
+	$def_form_nombre = array(
+	        'name'              => 'forms_nombre',
+	        'value'             => $forms_nombre,
+	        'class'             => 'text span5',
+	        'id'                => 'forms_nombre'
+	);
+	$def_forms_texto_boton_enviar = array(
+	        'name'              => 'forms_texto_boton_enviar',
+	        'value'             => $forms_texto_boton_enviar,
+	        'class'             => 'text span5',
+	        'id'                => 'forms_texto_boton_enviar'
+	);
+	$def_forms_titulo = array(
+	        'name'              => 'forms_titulo',
+	        'value'             => $forms_titulo,
+	        'class'             => 'text span5',
+	        'id'                => 'forms_titulo'
+	);
+	$forms_descripcion = array(
+	        'name'              => 'forms_descripcion',
+	        'value'             => $forms_descripcion,
+	        'class'             => 'text span5',
+	        'id'                => 'forms_descripcion'
+	);
 	$def_form_nombre = array(
 	        'name'              => 'forms_nombre',
 	        'value'             => $forms_nombre,
@@ -51,6 +78,51 @@
 							<div class="row">
                                 <div class="alert span4 alert-error">
 							        <?php echo form_error($def_form_nombre['name']); ?><?php echo isset($errors[$def_form_nombre['name']])?$errors[$def_form_nombre['name']]:''; ?>
+							    </div>
+							</div>
+				   			<?php } ?>
+				    	</div>
+					</div>
+					
+					<div class="row">
+                		<div class="span6 control-group <?php if(form_error($def_forms_titulo['name']) != "") echo "error"; ?>">
+                            <?php echo form_label('Titulo del form', $def_forms_titulo['name']); ?>
+                            <?php echo form_input($def_forms_titulo); ?>
+                            
+							<?php if(form_error($def_forms_titulo['name']) != "" || isset($errors[$def_forms_titulo['name']])) {?>
+							<div class="row">
+                                <div class="alert span4 alert-error">
+							        <?php echo form_error($def_forms_titulo['name']); ?><?php echo isset($errors[$def_forms_titulo['name']])?$errors[$def_forms_titulo['name']]:''; ?>
+							    </div>
+							</div>
+				   			<?php } ?>
+				    	</div>
+					</div>
+					
+					<div class="row">
+                		<div class="span6 control-group <?php if(form_error($def_forms_texto_boton_enviar['name']) != "") echo "error"; ?>">
+                            <?php echo form_label('Texto para el boton de envío del formulario', $def_forms_texto_boton_enviar['name']); ?>
+                            <?php echo form_input($def_forms_texto_boton_enviar); ?>
+                            
+							<?php if(form_error($def_forms_texto_boton_enviar['name']) != "" || isset($errors[$def_forms_texto_boton_enviar['name']])) {?>
+							<div class="row">
+                                <div class="alert span4 alert-error">
+							        <?php echo form_error($def_forms_texto_boton_enviar['name']); ?><?php echo isset($errors[$def_forms_texto_boton_enviar['name']])?$errors[$def_forms_texto_boton_enviar['name']]:''; ?>
+							    </div>
+							</div>
+				   			<?php } ?>
+				    	</div>
+					</div>
+					
+					<div class="row">
+                		<div class="span6 control-group <?php if(form_error($forms_descripcion['name']) != "") echo "error"; ?>">
+                            <?php echo form_label('Descripcion del Form', $forms_descripcion['name']); ?>
+                            <?php echo form_textarea($forms_descripcion); ?>
+                            
+							<?php if(form_error($forms_descripcion['name']) != "" || isset($errors[$forms_descripcion['name']])) {?>
+							<div class="row">
+                                <div class="alert span4 alert-error">
+							        <?php echo form_error($forms_descripcion['name']); ?><?php echo isset($errors[$forms_descripcion['name']])?$errors[$forms_descripcion['name']]:''; ?>
 							    </div>
 							</div>
 				   			<?php } ?>

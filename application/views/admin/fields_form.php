@@ -1,8 +1,9 @@
- <div class="row" id="contenido">
+
  	<?php
 	$fields_nombre = isset($roleRow->fields_nombre) ? $roleRow->fields_nombre : set_value('fields_nombre');
 	$fields_label = isset($roleRow->fields_label) ? $roleRow->fields_label : set_value('fields_label');
 	$fields_instrucciones = isset($roleRow->fields_instrucciones) ? $roleRow->fields_instrucciones : set_value('fields_instrucciones');
+	$fields_option_items = isset($roleRow->fields_option_items) ? $roleRow->fields_option_items : set_value('fields_option_items');
 	$fields_posicion = isset($roleRow->fields_posicion) ? $roleRow->fields_posicion : set_value('fields_posicion');
 	
 	//Si usamos el form para dar de alta un field, tuvimos que haber definido la posicion recomendado para el form
@@ -29,6 +30,12 @@
 	        'value'             => $fields_instrucciones,
 	        'class'             => 'text span5',
 	        'id'                => 'fields_instrucciones'
+	);
+	$def_fields_option_items = array(
+	        'name'              => 'fields_option_items',
+	        'value'             => $fields_option_items,
+	        'class'             => 'text span5',
+	        'id'                => 'fields_option_items'
 	);
 	$def_fields_posicion = array(
 	        'name'              => 'fields_posicion',
@@ -68,7 +75,9 @@
 	);
 	
 	?>
-
+	<script type="text/javascript">
+		
+	</script>
 	<div class="row">
             <div class="span12 margin-bottom-10">
                 	<div class="row">
@@ -120,6 +129,38 @@
 				    	</div>
 					</div>
 					
+					<?php if(isset($fields_types)) { ?>
+                    <div class="row">
+                		<div class="span6 control-group">
+                            <?php echo form_label('Field Type', 'grupo_id'); ?></td>
+                                    <?php
+                                        echo '<select name="fields_type_id" class="listas-padding span5" id="fields_type_id">';
+                                        foreach($fields_types as $field_type)
+                                        {
+                                           echo '<option value="' . $field_type['fields_type_id'] . '">' . $field_type['fields_type_nombre'] . "</option>";
+                                        }
+                                        echo '</select>';
+                                    ?>
+                           
+                    	</div>
+					</div>
+					<?php } ?>
+					
+					<div class="row">
+                		<div class="span6 control-group <?php if(form_error($def_fields_option_items['name']) != "") echo "error"; ?>" id="<?php echo $def_fields_option_items['name']; ?>">
+                            <?php echo form_label('Listar las Options para el Dropdown<br/><small>Forma: "value":"Texto" separadas por coma</small>', $def_fields_option_items['name']); ?>
+                            <?php echo form_textarea($def_fields_option_items); ?>
+                            
+							<?php if(form_error($def_fields_option_items['name']) != "" || isset($errors[$def_fields_option_items['name']])) {?>
+							<div class="row">
+                                <div class="alert span4 alert-error">
+							        <?php echo form_error($def_fields_option_items['name']); ?><?php echo isset($errors[$def_fields_option_items['name']])?$errors[$def_fields_option_items['name']]:''; ?>
+							    </div>
+							</div>
+				   			<?php } ?>
+				    	</div>
+					</div>
+					
 					<div class="row">
                 		<div class="span6 control-group <?php if(form_error($def_fields_label['name']) != "") echo "error"; ?>">
                             <?php echo form_label('Label para el Field <i class="icon-asterisk"></i>', $def_fields_label['name']); ?>
@@ -149,7 +190,6 @@
 				   			<?php } ?>
 				    	</div>
 					</div>
-					
 					<div class="row">
                 		<div class="span6 control-group <?php if(form_error($def_fields_posicion['name']) != "") echo "error"; ?>">
                             <?php echo form_label('Posicion (ubicación) del Field dentro del formulario <i class="icon-asterisk"></i>', $def_fields_posicion['name']); ?>
@@ -165,7 +205,7 @@
 				    	</div>
 					</div>
 					
-					<div class="row">
+					<div class="row" id="valor_defecto">
                 		<div class="span6 control-group">
                             <?php echo form_label('Valor por defecto para el Field', $fields_value_defecto['name']); ?>
                             <?php echo form_input($fields_value_defecto); ?>
@@ -187,7 +227,7 @@
 					</div>
 					
 					<div class="row">
-                		<div class="span6 control-group">
+                		<div class="span6 control-group" id="tipo_hidden">
                             <?php echo form_label('El field será de tipo hidden?', $fields_hidden_si['name']); ?>
                             <div class="controls">
 				            	<label class="radio">

@@ -24,14 +24,40 @@ class Admin extends MY_Controller {
 		}
 		
 		/**
+		 * Método utilizado para mostrar un formulario basado en la URI
+		 */
+		function form() {
+			if($id_form = $this->uri->segment(3)) {
+				//Obtenemos el registro del form en base a la URI
+				$form = $this->administracion_frr->get_form_by_id($id_form);
+				//Obtenemos los datos del grupo de fields asociados al formulario
+				$data['datos_fields'] = $this->administracion_frr->get_fields_grupo_fields($form->grupos_fields_id);
+				//Preparamos la informacion para que luego pueda ser generada dinamicamente en la vista
+				$data['datos_parseados'] = $this->administracion_frr->parser_field_type($data['datos_fields']);
+				
+				//Chequeamos que el formulario tenga fields
+				if(!empty($data)) {
+					$data['t'] = "Crear Formulario";
+					$data['tb'] = "Crear Formulario";
+					
+					$this->template->set_content('admin/mostrar_form', $data);
+					$this->template->build();
+				}
+			}
+		}
+		
+		/**
 		 * Método utilizado para mostrar el formulario para crear un formulario
 		 * Método utilizado para crear un formulario
 		 */
 		function alta_formulario() {
-
+			
 			$this->form_validation->set_rules('forms_nombre', 'Nombre del Form', 'trim|required|xss_clean');
 			$this->form_validation->set_rules('forms_nombre_action', 'Nombre del Action', 'trim|required|xss_clean');
 			$this->form_validation->set_rules('grupos_fields_id', 'Nombre del Grupo de Fields', 'trim|required|xss_clean');
+			$this->form_validation->set_rules('forms_descripcion', 'Descripcion del Form', 'trim|xss_clean');
+			$this->form_validation->set_rules('forms_titulo', 'Titulo del Form', 'trim|xss_clean');
+			$this->form_validation->set_rules('forms_texto_boton_enviar', 'Texto del Boton Enviar', 'trim|xss_clean');
 			
 			//Si ingresamos acà es porque se hizo el envío del formulario
 			if($this->form_validation->run()) {
@@ -39,8 +65,10 @@ class Admin extends MY_Controller {
 				if($this->administracion_frr->create_form(
 						$this->form_validation->set_value('forms_nombre'),
 						$this->form_validation->set_value('forms_nombre_action'),
-						$this->form_validation->set_value('grupos_fields_id')
-						
+						$this->form_validation->set_value('grupos_fields_id'),
+						$this->form_validation->set_value('forms_descripcion'),
+						$this->form_validation->set_value('forms_titulo'),
+						$this->form_validation->set_value('forms_texto_boton_enviar')
 						)) {
 					$message = "El Form se ha creado correctamente!";
                     $this->session->set_flashdata('message', $message);
@@ -102,6 +130,8 @@ class Admin extends MY_Controller {
 			$this->form_validation->set_rules('fields_requerido', '', 'trim|xss_clean');
 			$this->form_validation->set_rules('fields_hidden', '', 'trim|xss_clean');
 			$this->form_validation->set_rules('grupos_fields_id', '', 'trim|xss_clean');
+			$this->form_validation->set_rules('fields_type_id', '', 'trim|xss_clean');
+			$this->form_validation->set_rules('fields_option_items', '', 'trim|xss_clean');
 
 			//Si ingresamos acà es porque se hizo el envío del formulario
 			if($this->form_validation->run()) {
@@ -114,7 +144,9 @@ class Admin extends MY_Controller {
 						$this->form_validation->set_value('fields_requerido'),
 						$this->form_validation->set_value('fields_hidden'),
 						$this->form_validation->set_value('fields_posicion'),
-						$this->form_validation->set_value('grupos_fields_id')
+						$this->form_validation->set_value('grupos_fields_id'),
+						$this->form_validation->set_value('fields_type_id'),
+						$this->form_validation->set_value('fields_option_items')
 						)) {
 					$message = "El field se ha creado correctamente!";
                     $this->session->set_flashdata('message', $message);
@@ -134,8 +166,11 @@ class Admin extends MY_Controller {
 				//Por defecto serìa de ùltimo
 				$data['ordenSiguiente'] = $this->administracion_frr->get_orden_siguiente_field($this->uri->segment(3));
 			}
+
 			$data['t'] = "Crear Field";
 			$data['tb'] = "Crear Field";
+			//Obtenemos los fields types soportados por el sistema
+			$data['fields_types'] = $this->administracion_frr->get_fields_types();
 			
 			$this->template->set_content('admin/fields_form', $data);
 			$this->template->build();

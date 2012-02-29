@@ -37,4 +37,16 @@ class Forms extends CI_Model
 			return false;
 		}
 	}
+	
+	/**
+	 * Devuelve un form en base al ID pasado como parametro
+	 */
+	function get_form_by_id($form_id)
+	{
+		$this->db->where('forms_id', $form_id);
+
+		$query = $this->db->get('forms');
+		if ($query->num_rows() == 1) return $query->row();
+		return NULL;
+	}
 }

@@ -40,7 +40,7 @@ class Grupos_fields extends CI_Model
 	 * Devuelve todos los fields asociados al grupo
 	 */
      function get_fields_grupo_fields($grupo_field_id) {
-        $this->db->select('fields.fields_nombre, fields.fields_id, fields.fields_label, fields.fields_instrucciones, fields.fields_value_defecto, fields.fields_requerido, fields.fields_hidden, fields.fields_posicion');
+        $this->db->select('fields.fields_nombre, fields.fields_id, fields.fields_label, fields.fields_instrucciones, fields.fields_value_defecto, fields.fields_requerido, fields.fields_hidden, fields.fields_posicion, fields.fields_type_id, fields.fields_option_items');
         $this->db->from("grupos_fields_fields");
 		$this->db->join('fields', 'fields.fields_id = grupos_fields_fields.fields_id');
 		$this->db->where('grupos_fields_fields.grupos_fields_id', $grupo_field_id);

@@ -32,6 +32,44 @@ class Administracion_frr {
 
        return $data;
     }
+	 /**
+	  * Devuelve una lista con todos los fields type del sistema
+	  */
+	 function get_fields_types() {
+	 	$fields_types = $this->ci->fields->get_fields_types();
+      
+        foreach ($fields_types->result() as $row){
+          
+           $data[] = array(
+                'fields_type_id'     => $row->fields_type_id,
+                'fields_type_nombre' => $row->fields_type_nombre
+           );
+       }
+
+       return $data;
+	 }
+	 
+	 /**
+	  * Devuelve el nombre de un field type en base a su ID
+	  */
+	 function get_field_type_by_id($fields_type_id) {
+	   if(!is_null($field_type = $this->ci->fields->get_field_type_by_id($fields_type_id))) {
+	   		return $field_type->fields_type_nombre;
+	   } else {
+	   	return null;
+	   }
+	 }
+	 
+	 /**
+	  * Devuelve un form en base a su ID
+	  */
+	 function get_form_by_id($form_id) {
+	   if(!is_null($form = $this->ci->forms->get_form_by_id($form_id))) {
+	   		return $form;
+	   } else {
+	   	return null;
+	   }
+	 }
 	 
 	 function get_orden_siguiente_field($grupos_fields_id) {
 	 	if(!is_null($orden = $this->ci->fields->get_orden_siguiente_field($grupos_fields_id))) {
@@ -54,7 +92,10 @@ class Administracion_frr {
                     'fields_value_defecto' => $row->fields_value_defecto, 
                     'fields_requerido' => $row->fields_value_defecto, 
                     'fields_hidden' => $row->fields_hidden, 
-                    'fields_posicion' => $row->fields_posicion
+                    'fields_posicion' => $row->fields_posicion,
+                    'fields_type'    => $this->get_field_type_by_id($row->fields_type_id),
+                    'fields_constructor' => $this->ci->fieldstypes_frr->get_field_contructor($this->get_field_type_by_id($row->fields_type_id)),
+                    'fields_option_items' => $row->fields_option_items
                );
             }
             return $data;
@@ -62,6 +103,17 @@ class Administracion_frr {
 		   	return null;
 		}
 	 }
+	/**
+	 * Método utilizado para procesar el conjunto de fields asociados a un grupo de fields.
+	 * El objetivo de esta funciona es devolver un array listo para ser mostrado en la vista
+	 */
+	function parser_field_type($fields) {
+		foreach ($fields as $field) {
+			$data[] = $this->ci->fieldstypes_frr->get_formato_array_field($field);
+		}
+		
+		return ($data);
+	}
 	
 	function create_grupos_fields($grupos_fields_nombre) {
 		//Validaciones para los campos requeridos
@@ -81,7 +133,7 @@ class Administracion_frr {
 		return NULL;
 	}
 	
-	function create_fields($fields_nombre, $fields_label, $fields_instrucciones, $fields_value_defecto, $fields_requerido, $fields_hidden, $fields_posicion, $grupo_field_id) {
+	function create_fields($fields_nombre, $fields_label, $fields_instrucciones, $fields_value_defecto, $fields_requerido, $fields_hidden, $fields_posicion, $grupo_field_id, $fields_type_id,$fields_option_items) {
 		$data = array(
 			'fields_nombre' => $fields_nombre, 
 			'fields_label' => $fields_label, 
@@ -89,7 +141,9 @@ class Administracion_frr {
 			'fields_value_defecto' => $fields_value_defecto, 
 			'fields_requerido' => $fields_requerido, 
 			'fields_hidden' => $fields_hidden, 
-			'fields_posicion' => $fields_posicion
+			'fields_posicion' => $fields_posicion,
+			'fields_type_id'  => $fields_type_id,
+			'fields_option_items' => $fields_option_items
 		);
 		//Validaciones para los campos requeridos
 		if(!$this->is_nombre_fields_disponible($fields_nombre)) {
@@ -105,11 +159,14 @@ class Administracion_frr {
 		return NULL;
 	}
 	
-	function create_form($forms_nombre, $forms_nombre_action, $grupos_fields_id) {
+	function create_form($forms_nombre, $forms_nombre_action, $grupos_fields_id, $forms_descripcion, $forms_titulo, $forms_texto_boton_enviar) {
 		$data = array(
 			'forms_nombre' => $forms_nombre, 
 			'forms_nombre_action' => $forms_nombre_action, 
-			'grupos_fields_id' => $grupos_fields_id
+			'grupos_fields_id' => $grupos_fields_id,
+			'forms_descripcion' => $forms_descripcion,
+			'forms_titulo' => $forms_titulo,
+			'forms_texto_boton_enviar' => $forms_texto_boton_enviar
 		);
 		//Validaciones para los campos requeridos
 		if(!$this->is_nombre_form_disponible($forms_nombre)) {
