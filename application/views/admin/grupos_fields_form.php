@@ -1,5 +1,5 @@
  	<?php
-	$grupo_field = isset($roleRow->grupos_fields_nombre) ? $roleRow->grupos_fields_nombre : set_value('grupos_fields_nombre');
+	$grupo_field = isset($form_data) ? $form_data : set_value('grupos_fields_nombre');
 	
 	$grupos_fields_nombre = array(
 	        'name'              => 'grupos_fields_nombre',
@@ -7,7 +7,6 @@
 	        'class'             => 'text span5',
 	        'id'                => 'grupos_fields_nombre'
 	);
-	
 	?>
 
 	<div class="row">
@@ -26,7 +25,7 @@
                   <div class="alert span5 alert-error margin-top-10" id="resultado-operacion" style="display: none;"></div>
                 </div>
                 
-                <?php echo form_open($this->uri->uri_string()); ?>
+                <?php if(isset($fa)) echo form_open($fa); else echo form_open($this->uri->uri_string()); ?>
 					<div class="row">
                 		<div class="span6 control-group <?php if(form_error($grupos_fields_nombre['name']) != "") echo "error"; ?>">
                             <?php echo form_label('Nombre Grupo Field <i class="icon-asterisk"></i>', $grupos_fields_nombre['name']); ?>

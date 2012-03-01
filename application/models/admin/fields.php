@@ -95,4 +95,30 @@ class fields extends CI_Model
 		if ($query->num_rows() == 1) return $query->row();
 		return NULL;
 	}
+
+	  /**
+	  * Devuelve el registro del field en base a un ID
+	  */
+	 function get_field_by_id($field_id) {
+	 	$this->db->select();
+		$this->db->where('fields_id', $field_id);
+		$query = $this->db->get('fields');
+		
+		if($query->num_rows() == 1) {
+			return $query->row();
+		}
+		return NULL;
+	 }
+	 
+	 /**
+	 * Método para modificar un field
+	 */
+	function modificar_field($field_id, $data) {
+		$this->db->where('fields_id', $field_id);
+		if($this->db->update('fields', $data)) {
+			return true;
+		} else {
+			return false;
+		}
+	}
 }

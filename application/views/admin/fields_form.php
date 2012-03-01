@@ -1,17 +1,17 @@
 
  	<?php
-	$fields_nombre = isset($roleRow->fields_nombre) ? $roleRow->fields_nombre : set_value('fields_nombre');
-	$fields_label = isset($roleRow->fields_label) ? $roleRow->fields_label : set_value('fields_label');
-	$fields_instrucciones = isset($roleRow->fields_instrucciones) ? $roleRow->fields_instrucciones : set_value('fields_instrucciones');
-	$fields_option_items = isset($roleRow->fields_option_items) ? $roleRow->fields_option_items : set_value('fields_option_items');
-	$fields_posicion = isset($roleRow->fields_posicion) ? $roleRow->fields_posicion : set_value('fields_posicion');
+	$fields_nombre = isset($row->fields_nombre) ? $row->fields_nombre : set_value('fields_nombre');
+	$fields_label = isset($row->fields_label) ? $row->fields_label : set_value('fields_label');
+	$fields_instrucciones = isset($row->fields_instrucciones) ? $row->fields_instrucciones : set_value('fields_instrucciones');
+	$fields_option_items = isset($row->fields_option_items) ? $row->fields_option_items : set_value('fields_option_items');
+	$fields_posicion = isset($row->fields_posicion) ? $row->fields_posicion : set_value('fields_posicion');
 	
 	//Si usamos el form para dar de alta un field, tuvimos que haber definido la posicion recomendado para el form
 	if(isset($ordenSiguiente)) $fields_posicion = $ordenSiguiente;
 	//No requeridos
-	$fields_value_defecto = isset($roleRow->fields_value_defecto) ? $roleRow->fields_value_defecto : set_value('fields_value_defecto');
-	$fields_requerido = isset($roleRow->fields_requerido) ? $roleRow->fields_requerido : set_value('fields_requerido');
-	$fields_hidden = isset($roleRow->fields_hidden) ? $roleRow->fields_hidden : set_value('fields_hidden');
+	$fields_value_defecto = isset($row->fields_value_defecto) ? $row->fields_value_defecto : set_value('fields_value_defecto');
+	$fields_requerido = isset($row->fields_requerido) ? $row->fields_requerido : set_value('fields_requerido');
+	$fields_hidden = isset($row->fields_hidden) ? $row->fields_hidden : set_value('fields_hidden');
 	
 	$def_fields_nombre = array(
 	        'name'              => 'fields_nombre',
@@ -134,12 +134,19 @@
                 		<div class="span6 control-group">
                             <?php echo form_label('Field Type', 'grupo_id'); ?></td>
                                     <?php
-                                        echo '<select name="fields_type_id" class="listas-padding span5" id="fields_type_id">';
+                                        //echo '<select name="fields_type_id" class="listas-padding span5" id="fields_type_id">';
                                         foreach($fields_types as $field_type)
                                         {
-                                           echo '<option value="' . $field_type['fields_type_id'] . '">' . $field_type['fields_type_nombre'] . "</option>";
+                                        	$options[$field_type['fields_type_id']] = $field_type['fields_type_nombre'];
+                                           //echo '<option value="' . $field_type['fields_type_id'] . '">' . $field_type['fields_type_nombre'] . "</option>";
                                         }
-                                        echo '</select>';
+                                        //echo '</select>';
+                                        //echo '</select>';
+                                        if(isset($row)) {									
+                                        	echo form_dropdown("fields_type_id", $options, $row->fields_type_id);
+                                        } else {
+                                        	echo form_dropdown("fields_type_id", $options);
+                                        }
                                     ?>
                            
                     	</div>
@@ -216,11 +223,16 @@
                 		<div class="span6 control-group">
                             <?php echo form_label('El field será requerído?', $fields_requerido_si['name']); ?>
                             	<label class="radio">
-				                	<input type="radio" value="<?php echo $fields_requerido_si['value']; ?>" id="<?php echo $fields_requerido_si['id']; ?>" name="<?php echo $fields_requerido_si['name']; ?>">
+				                	<input type="radio" value="<?php echo $fields_requerido_si['value']; ?>" id="<?php echo $fields_requerido_si['id']; ?>" name="<?php echo $fields_requerido_si['name']; ?>" <?php if(isset($row)) 
+				                								if($fields_requerido_si['value'] == $row->fields_requerido) 
+				                									echo 'checked="checked"'?> />
 				                	Si
 				            	</label>
+				            	
 				              	<label class="radio">
-				                	<input type="radio" checked="checked" value="<?php echo $fields_requerido_no['value']; ?>" id="<?php echo $fields_requerido_no['id']; ?>" name="<?php echo $fields_requerido_no['name']; ?>">
+				                	<input type="radio" value="<?php echo $fields_requerido_no['value']; ?>" id="<?php echo $fields_requerido_no['id']; ?>" name="<?php echo $fields_requerido_no['name']; ?>" <?php if(isset($row)) { if($fields_requerido_no['value'] == $row->fields_requerido) { echo 'checked="checked"'; } } else echo 'checked="checked"' ?>  />
+				                															
+				                														 
 				                	No
 				            	</label>
 				    	</div>
@@ -231,11 +243,11 @@
                             <?php echo form_label('El field será de tipo hidden?', $fields_hidden_si['name']); ?>
                             <div class="controls">
 				            	<label class="radio">
-				                	<input type="radio" value="<?php echo $fields_hidden_si['value']; ?>" id="<?php echo $fields_hidden_no['id']; ?>" name="<?php echo $fields_hidden_no['name']; ?>">
+				                	<input type="radio" value="<?php echo $fields_hidden_si['value']; ?>" id="<?php echo $fields_hidden_no['id']; ?>" name="<?php echo $fields_hidden_no['name']; ?>" <?php if(isset($row)) if($fields_hidden_si['value'] == $row->fields_hidden) echo 'checked="checked"'?> />
 				                	Si
 				             	</label>
-				              		<label class="radio">
-				                	<input type="radio" checked="checked" value="<?php echo $fields_hidden_no['value']; ?>" id="<?php echo $fields_hidden_no['id']; ?>" name="<?php echo $fields_hidden_no['name']; ?>">
+				              		<label class="radio">			           
+				                	<input type="radio" value="<?php echo $fields_hidden_no['value']; ?>" id="<?php echo $fields_hidden_no['id']; ?>" name="<?php echo $fields_hidden_no['name']; ?>" <?php if(isset($row)) { if($fields_hidden_no['value'] == $row->fields_hidden) { echo 'checked="checked"'; } } else echo 'checked="checked"' ?> />
 				                	No
 				               </label>
 				            </div>

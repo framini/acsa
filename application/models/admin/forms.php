@@ -49,4 +49,13 @@ class Forms extends CI_Model
 		if ($query->num_rows() == 1) return $query->row();
 		return NULL;
 	}
+	
+	/**
+	 * Obtiene todos los forms del sistema
+	 */
+	function get_forms() {
+		$query = $this->db->get('forms');
+		if($query->num_rows() > 0) return $query;
+		return NULL;
+	}
 }

@@ -377,6 +377,24 @@ class Roles_frr {
         if($role)
             return $role;
     }
+	
+	/**
+	 * Este metodo es utilizado para formatear un array con los datos definidos en el archivo de configuracion de permisos
+	 * y asi construir un array que luego pueda ser mostrado en una view
+	 */
+	function procesa_permisos_view($permisos) {
+		//Cargamos el archivo que contiene la info con la que se contruye el menu
+        $this->ci->config->load('menu_permisos', TRUE);
+		//Procesamos los permisos obtenidos
+		if(count($permisos) > 0) {
+		  	foreach ($permisos as $key => $row) {
+			  $data[$row['permiso']] = $this->ci->config->item($row['permiso'], 'menu_permisos');
+		  	}
+			return $data;
+		} else {
+			return NULL;
+		}
+	}
     
     /**
      * Devuelve el mensaje de error.

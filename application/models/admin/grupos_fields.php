@@ -25,6 +25,18 @@ class Grupos_fields extends CI_Model
 	}
 	
 	/**
+	 * Método para modificar grupo de fields
+	 */
+	function modificar_grupo_fields($grupo_field_id, $data) {
+		$this->db->where('grupos_fields_id', $grupo_field_id);
+		if($this->db->update('grupos_fields', $data)) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	/**
 	 * Devuelve todas los grupos de fields cargadas en el sistema
 	 */
      function get_grupos_fields() {
@@ -35,6 +47,20 @@ class Grupos_fields extends CI_Model
         if ($query->num_rows() > 0) return $query;
         return NULL;
      }
+	 
+	 /**
+	  * Devuelve el nombre de un grupo de fields en base a un ID
+	  */
+	 function get_grupo_field_by_id($grupo_field_id) {
+	 	$this->db->select();
+		$this->db->where('grupos_fields_id', $grupo_field_id);
+		$query = $this->db->get('grupos_fields');
+		
+		if($query->num_rows() == 1) {
+			return $query->row();
+		}
+		return NULL;
+	 }
 	 
 	 /**
 	 * Devuelve todos los fields asociados al grupo

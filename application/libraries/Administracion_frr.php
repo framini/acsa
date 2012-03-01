@@ -33,6 +33,51 @@ class Administracion_frr {
        return $data;
     }
 	 /**
+	  * Obtiene todos los formularios del sistema
+	  */
+	 function get_forms() {
+	 	
+		$forms = $this->ci->forms->get_forms();
+		foreach ($forms->result() as $row){
+          
+	           $data[] = array(
+	                'forms_id'     => $row->forms_id,
+	                'forms_nombre' => $row->forms_nombre,
+	                'forms_nombre_action' => $row->forms_nombre_action,
+	                'grupos_fields_id' => $row->grupos_fields_id,
+	                'grupos_fields_nombre' => $this->get_grupo_field_by_id($row->grupos_fields_id),
+	                'forms_descripcion' => $row->forms_descripcion,
+	                'forms_titulo' => $row->forms_titulo,
+	                'forms_texto_boton_enviar' => $row->forms_texto_boton_enviar,
+	           );
+	    }
+	
+	    return $data;
+	 }
+	 
+	 /**
+	  * Devuelve el nombre de un grupo de fields en base a un ID
+	  */
+	 function get_grupo_field_by_id($grupo_field_id) {
+	 	$grupo_field = $this->ci->grupos_fields->get_grupo_field_by_id($grupo_field_id);
+		if($grupo_field) {
+			return $grupo_field->grupos_fields_nombre;
+		}
+	 	return NULL;
+	 }
+	 
+	 /**
+	  * Devuelve el nombre de un grupo de fields en base a un ID
+	  */
+	 function get_field_by_id($field_id) {
+	 	$field = $this->ci->fields->get_field_by_id($field_id);
+		if($field) {
+			return $field;
+		}
+	 	return NULL;
+	 }
+	 
+	 /**
 	  * Devuelve una lista con todos los fields type del sistema
 	  */
 	 function get_fields_types() {
@@ -80,6 +125,9 @@ class Administracion_frr {
 		}
 	 }
 	 
+	 /**
+	  * Devuelve todos los fields asociados al grupo 
+	  */
 	 function get_fields_grupo_fields($grupo_fields_id) {
 	 	if(!is_null($orden = $this->ci->grupos_fields->get_fields_grupo_fields($grupo_fields_id))) {
 	 		foreach ($orden->result() as $row)
@@ -115,6 +163,9 @@ class Administracion_frr {
 		return ($data);
 	}
 	
+	/**
+	 * Método utilizado para crear un nuevo grupo de fields
+	 */
 	function create_grupos_fields($grupos_fields_nombre) {
 		//Validaciones para los campos requeridos
 		$data = array(
@@ -131,6 +182,90 @@ class Administracion_frr {
 		}	
 		
 		return NULL;
+	}
+	
+	function modificar_grupos_fields($grupo_field_id, $grupos_fields_nombre) {
+		//Validaciones para los campos requeridos
+		$data = array(
+			'grupos_fields_nombre' => $grupos_fields_nombre
+		);
+		
+		if(!$this->verificacion_nombre_grupo_field($grupo_field_id, $grupos_fields_nombre)) {
+			$this->error['grupos_fields_nombre'] = 'El nombre ya esta siendo utilizado por otro grupo!';
+		}
+		//Solamente modificamos si los campos pasaron la validacion	
+		if(empty($this->error)) {
+			if($this->ci->grupos_fields->modificar_grupo_fields($grupo_field_id, $data)) {
+			return true;
+			} 
+		}	
+		
+		return NULL;
+	}
+	
+	function modificar_field($field_id, $data) {
+		
+		if(!$this->verificacion_nombre_field($field_id, $data['fields_nombre'])) {
+			$this->error['grupos_fields_nombre'] = 'El nombre ya esta siendo utilizado por otro field!';
+		}
+		//Solamente modificamos si los campos pasaron la validacion	
+		if(empty($this->error)) {
+			if($this->ci->fields->modificar_field($field_id, $data)) {
+			return true;
+			} 
+		}	
+		
+		return NULL;
+	}
+	
+	function verificacion_nombre_grupo_field($grupo_field_id, $nombre) {
+		//Si el nombre esta disponible entramos
+		//O sino chequeamos que se esten editando otros datos de un grupo que no sea su nombre
+		if($this->is_nombre_grupo_fields_disponible($nombre) || $this->is_mismo_grupo($nombre, $grupo_field_id)) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	function verificacion_nombre_field($field_id, $field_nombre) {
+		//Si el nombre esta disponible entramos
+		//O sino chequeamos que se esten editando otros datos de un grupo que no sea su nombre
+		if($this->is_nombre_fields_disponible($field_nombre) || $this->is_mismo($field_id, $field_nombre)) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	/**
+	 * Funcion usada para verificacion a la hora de modificar un grupo de fields
+	 * Sirve para validar que se este modificando datos en el grupo de fields correcto
+	 * Chequea que en caso de que el nombre del grupo ya este en el sistema se lo compare
+	 * con el nombre del grupo con el ID de empresa a editar. En caso de ser el mismo
+	 * es valido realizar la modificacion de datos
+	 */
+	function is_mismo_grupo($nombre, $id) {
+		$gf = $this->get_grupo_field_by_id($id);
+
+		if($gf  == $nombre) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	/**
+	 * Funcion usada para verificacion a la hora de modificar un field
+	 */
+	function is_mismo($field_id, $field_nombre) {
+		$f = $this->get_field_by_id($field_id);
+		if($f->fields_nombre  == $field_nombre) {
+			return true;
+		} else {
+			
+			return false;
+		}
 	}
 	
 	function create_fields($fields_nombre, $fields_label, $fields_instrucciones, $fields_value_defecto, $fields_requerido, $fields_hidden, $fields_posicion, $grupo_field_id, $fields_type_id,$fields_option_items) {

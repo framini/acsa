@@ -53,6 +53,7 @@ $config['gestionar_empresas'] = array('texto_anchor' => 'Gestionar Empresas', 'i
 # icono: Es la imagen que va a la izquierda del texto_anchor
 # clase_boton: Especifica la clase a implementar por el boton
 # boton_superior: Especifica si el boton va en la parte superior de la pantalla
+# titulo: Mensaje para ventana Pop-up
 ####################################################################################
 $config['nuevo_role'] = array('texto_anchor' => 'Nuevo Role', 'icono' => 'icon-plus icon-white', 'clase_boton' => 'btn btn-large btn-success pull-right', 'boton_superior' => true, 'titulo' => false);
 $config['modificar_role'] = array('texto_anchor' => 'Modificar', 'icono' => 'icon-pencil icon-white', 'clase_boton' => 'btn btn-info editar-role margin-bottom-5', 'boton_superior' => false, 'titulo' => false);
@@ -64,6 +65,7 @@ $config['eliminar_role'] = array('texto_anchor' => 'Eliminar', 'icono' => 'icon-
 # icono: Es la imagen que va a la izquierda del texto_anchor
 # clase_boton: Especifica la clase a implementar por el boton
 # boton_superior: Especifica si el boton va en la parte superior de la pantalla
+# titulo: Mensaje para ventana Pop-up
 ####################################################################################
 $config['registro'] = array('texto_anchor' => 'Agregar Usuario', 'icono' => 'icon-user icon-white', 'clase_boton' => 'btn btn-large btn-success pull-right', 'boton_superior' => true, 'titulo' => false);
 $config['editar_usuario'] = array('texto_anchor' => 'Editar', 'icono' => 'icon-pencil icon-white', 'clase_boton' => 'btn btn-info editar-usuario margin-bottom-5', 'boton_superior' => false, 'titulo' => false);
@@ -78,8 +80,24 @@ $config['eliminar_user'] = array('texto_anchor' => 'Eliminar', 'icono' => 'icon-
 # icono: Es la imagen que va a la izquierda del texto_anchor
 # clase_boton: Especifica la clase a implementar por el boton
 # boton_superior: Especifica si el boton va en la parte superior de la pantalla
+# titulo: Mensaje para ventana Pop-up
 ####################################################################################
 $config['registro_empresa'] = array('texto_anchor' => 'Agregar Empresa', 'icono' => 'icon-user icon-white', 'clase_boton' => 'btn btn-large btn-success pull-right', 'boton_superior' => true, 'titulo' => false);
 $config['modificar_empresa'] = array('texto_anchor' => 'Modificar', 'icono' => 'icon-pencil icon-white', 'clase_boton' => 'btn btn-info modificar-empresa margin-bottom-5', 'boton_superior' => false, 'titulo' => false);
 $config['activar_empresa'] = array('texto_anchor' => 'Activar', 'icono' => 'icon-plus icon-white', 'clase_boton' => 'btn activar-empresa btn-warning margin-bottom-5', 'boton_superior' => false);
 $config['eliminar_empresa'] = array('texto_anchor' => 'Eliminar', 'icono' => 'icon-trash', 'clase_boton' => 'btn btn-danger eliminar-empresa margin-bottom-5', 'boton_superior' => false, 'titulo' => "Confirma que desea eliminar la empresa?");
+
+# Seccion Admin => Forms
+# Notas:
+# texto_anchor: Es el texto a mostrar en pantalla para el boton
+# icono: Es la imagen que va a la izquierda del texto_anchor
+# clase_boton: Especifica la clase a implementar por el boton
+# boton_superior: Especifica si el boton va en la parte superior de la pantalla
+# titulo: Mensaje para ventana Pop-up
+####################################################################################
+$config['alta_formulario'] = array('texto_anchor' => 'Crear Formulario', 'icono' => 'icon-th-list icon-white', 'clase_boton' => 'btn btn-large btn-success pull-right', 'boton_superior' => true, 'titulo' => false);
+$config['alta_grupos_fields'] = array('texto_anchor' => 'Crear Grupo de Fields', 'icono' => 'icon-folder-open icon-white', 'clase_boton' => 'btn btn-large btn-success pull-right', 'boton_superior' => true, 'titulo' => false);
+$config['alta_fields'] = array('texto_anchor' => 'Crear Field', 'icono' => 'icon-align-justify icon-white', 'clase_boton' => 'btn btn-large btn-success pull-right', 'boton_superior' => true, 'titulo' => false);
+$config['modificar_field'] = array('texto_anchor' => 'Modificar', 'icono' => 'icon-pencil icon-white', 'clase_boton' => 'btn btn-info modificar-field margin-bottom-5', 'boton_superior' => false, 'titulo' => false);
+$config['fields'] = array('texto_anchor' => 'Modificar Fields', 'icono' => 'icon-align-justify icon-white', 'clase_boton' => 'btn btn-info modificar-field margin-bottom-5', 'boton_superior' => false, 'titulo' => false);
+
