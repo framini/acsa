@@ -17,7 +17,9 @@ class fields extends CI_Model
 	 * Método para crear un nuevo grupo de fields
 	 */
 	function create_fields($data, $grupo_field_id) {
-		if($this->db->insert('fields', $data)) {
+		$this->db->insert('fields', $data);
+		//Chequeamos que se haya insertado la info
+		if($this->db->affected_rows() > 0) {
 			$fields_id = $this->db->insert_id();
 			if($this->create_relacion_grupo_field($fields_id, $grupo_field_id)) {
 				return true;
@@ -34,7 +36,8 @@ class fields extends CI_Model
 			'grupos_fields_id' => $grupo_field_id,
 			'fields_id' => $fields_id
 		);
-		if($this->db->insert('grupos_fields_fields', $data)) {
+		$this->db->insert('grupos_fields_fields', $data);
+		if($this->db->affected_rows() > 0) {
 			return true;
 		}
 		return false;
@@ -115,7 +118,8 @@ class fields extends CI_Model
 	 */
 	function modificar_field($field_id, $data) {
 		$this->db->where('fields_id', $field_id);
-		if($this->db->update('fields', $data)) {
+		$this->db->update('fields', $data);
+		if($this->db->affected_rows() > 0) {
 			return true;
 		} else {
 			return false;

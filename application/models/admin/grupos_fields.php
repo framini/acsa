@@ -17,7 +17,8 @@ class Grupos_fields extends CI_Model
 	 * Método para crear un nuevo grupo de fields
 	 */
 	function create_grupo_fields($data) {
-		if($this->db->insert('grupos_fields', $data)) {
+		$this->db->insert('grupos_fields', $data);
+		if($this->db->affected_rows() > 0) {
 			return true;
 		} else {
 			return false;
@@ -29,7 +30,8 @@ class Grupos_fields extends CI_Model
 	 */
 	function modificar_grupo_fields($grupo_field_id, $data) {
 		$this->db->where('grupos_fields_id', $grupo_field_id);
-		if($this->db->update('grupos_fields', $data)) {
+		$this->db->update('grupos_fields', $data);
+		if($this->db->affected_rows() > 0) {
 			return true;
 		} else {
 			return false;
@@ -41,6 +43,19 @@ class Grupos_fields extends CI_Model
 	 */
      function get_grupos_fields() {
         $this->db->select();
+        $this->db->from("grupos_fields");
+        $query = $this->db->get();
+        
+        if ($query->num_rows() > 0) return $query;
+        return NULL;
+     }
+	 
+	 /**
+	  * Devuelve un registro de un grupo de fields en base al ID pasado como parametro
+	  */
+	 function get_grupo_field_by_id_row($grupo_field_id) {
+        $this->db->select();
+		$this->db->where('grupos_fields_id', $grupo_field_id);
         $this->db->from("grupos_fields");
         $query = $this->db->get();
         
@@ -61,6 +76,7 @@ class Grupos_fields extends CI_Model
 		}
 		return NULL;
 	 }
+	 
 	 
 	 /**
 	 * Devuelve todos los fields asociados al grupo

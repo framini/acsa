@@ -77,7 +77,15 @@
     </div>
 
     <div class="container">
-
+    	
+    	<div class="row">
+    		<div class="span12">
+    			<?php
+					echo $this->breadcrumb->output();
+				?>
+		    </div>
+		</div>
+		
       <?php echo $messages; ?>
       <?php echo $content; ?>
 
@@ -101,6 +109,7 @@
 
     <script src="<?php echo base_url(); ?>bootstrap/js/bootstrap-carousel.js"></script>
     <script src="<?php echo base_url(); ?>bootstrap/js/bootstrap-typeahead.js"></script>
+
     
     <script type="text/javascript" src="<?php echo base_url(); ?>js/jquery.blockUI.js"></script>
     <script type="text/javascript" src="<?php echo base_url(); ?>js/jquery.quicksearch.js"></script>

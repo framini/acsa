@@ -31,7 +31,8 @@ class Forms extends CI_Model
 	 * Método para crear un nuevo Form
 	 */
 	function create_form($data) {
-		if($this->db->insert('forms', $data)) {
+		$this->db->insert('forms', $data);
+		if($this->db->affected_rows() > 0) {
 			return true;
 		} else {
 			return false;
@@ -57,5 +58,18 @@ class Forms extends CI_Model
 		$query = $this->db->get('forms');
 		if($query->num_rows() > 0) return $query;
 		return NULL;
+	}
+	
+	/**
+	 * Método para modificar un form
+	 */
+	function modificar_form($form_id, $data) {
+		$this->db->where('forms_id', $form_id);
+		$this->db->update('forms', $data);
+		if($this->db->affected_rows() > 0) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 }

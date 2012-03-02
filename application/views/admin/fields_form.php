@@ -134,14 +134,10 @@
                 		<div class="span6 control-group">
                             <?php echo form_label('Field Type', 'grupo_id'); ?></td>
                                     <?php
-                                        //echo '<select name="fields_type_id" class="listas-padding span5" id="fields_type_id">';
                                         foreach($fields_types as $field_type)
                                         {
                                         	$options[$field_type['fields_type_id']] = $field_type['fields_type_nombre'];
-                                           //echo '<option value="' . $field_type['fields_type_id'] . '">' . $field_type['fields_type_nombre'] . "</option>";
                                         }
-                                        //echo '</select>';
-                                        //echo '</select>';
                                         if(isset($row)) {									
                                         	echo form_dropdown("fields_type_id", $options, $row->fields_type_id);
                                         } else {

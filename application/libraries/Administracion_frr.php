@@ -66,6 +66,21 @@ class Administracion_frr {
 	 	return NULL;
 	 }
 	 
+	 function get_grupo_field_by_id_row($grupo_field_id) {
+      
+        $grupos_fields = $this->ci->grupos_fields->get_grupo_field_by_id_row($grupo_field_id);
+      
+        foreach ($grupos_fields->result() as $row){
+          
+           $data[] = array(
+                'grupos_fields_id'     => $row->grupos_fields_id,
+                'grupos_fields_nombre' => $row->grupos_fields_nombre
+           );
+       }
+
+       return $data;
+    }
+	 
 	 /**
 	  * Devuelve el nombre de un grupo de fields en base a un ID
 	  */
@@ -203,6 +218,22 @@ class Administracion_frr {
 		return NULL;
 	}
 	
+	function modificar_form($forms_id, $data) {
+		
+		//Validaciones para los campos requeridos
+		if(!$this->verificacion_nombre_form($forms_id, $data['forms_nombre'])) {
+			$this->error['fields_nombre'] = 'El nombre del Form ya esta siendo utilizado!';
+		}
+		//Solamente creamos si los campos pasaron la validacion	
+		if(empty($this->error)) {
+			if($this->ci->forms->modificar_form($forms_id, $data)) {
+				return true;
+			} 
+		}	
+		
+		return NULL;
+	}
+	
 	function modificar_field($field_id, $data) {
 		
 		if(!$this->verificacion_nombre_field($field_id, $data['fields_nombre'])) {
@@ -238,6 +269,14 @@ class Administracion_frr {
 		}
 	}
 	
+	function verificacion_nombre_form($form_id, $form_nombre) {
+		if($this->is_nombre_form_disponible($form_nombre) || $this->is_mismo($form_id, $form_nombre, "forms")) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
 	/**
 	 * Funcion usada para verificacion a la hora de modificar un grupo de fields
 	 * Sirve para validar que se este modificando datos en el grupo de fields correcto
@@ -258,14 +297,26 @@ class Administracion_frr {
 	/**
 	 * Funcion usada para verificacion a la hora de modificar un field
 	 */
-	function is_mismo($field_id, $field_nombre) {
-		$f = $this->get_field_by_id($field_id);
-		if($f->fields_nombre  == $field_nombre) {
+	function is_mismo($id, $nombre, $tipo = null) {
+		if($tipo == "forms") {
+			$f = $this->get_form_by_id($id);
+			if($f->forms_nombre  == $nombre) {
 			return true;
+			} else {
+				
+				return false;
+			}
 		} else {
-			
-			return false;
+			$f = $this->get_field_by_id($id);
+			if($f->fields_nombre  == $nombre) {
+			return true;
+			} else {
+				
+				return false;
+			}
 		}
+		
+		
 	}
 	
 	function create_fields($fields_nombre, $fields_label, $fields_instrucciones, $fields_value_defecto, $fields_requerido, $fields_hidden, $fields_posicion, $grupo_field_id, $fields_type_id,$fields_option_items) {

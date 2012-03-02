@@ -50,6 +50,9 @@ class Admin extends MY_Controller {
 		 * Lista todos los forms del sistema
 		 */
 		function forms() {
+			$this->breadcrumb->append_crumb('Home', '/');
+			$this->breadcrumb->append_crumb('Page', '/page');
+			$this->breadcrumb->append_crumb('Page', '/page2');
 			//Obtenemos los permisos para poder construir el contenido de la seccion en base a ellos
 			$data['permisos'] = $this->roles_frr->permisos_role_controladora_grupo($this->uri->segment(1), $this->uri->segment(2));
 			$data['data_menu'] = $this->roles_frr->procesa_permisos_view($data['permisos']);
@@ -67,8 +70,14 @@ class Admin extends MY_Controller {
 			//Obtenemos los permisos para poder construir el contenido de la seccion en base a ellos
 			$data['permisos'] = $this->roles_frr->permisos_role_controladora_grupo($this->uri->segment(1), $this->uri->segment(2));
 			$data['data_menu'] = $this->roles_frr->procesa_permisos_view($data['permisos']);
-
-			$data['grupos_fields'] = $this->administracion_frr->get_grupos_fields();
+			
+			//Si se especifico un ID de grupo en la URI filtramos los grupos de fields para que solo muestre el correspondiente al ID
+			if($this->uri->segment(3)) {
+				$data['grupos_fields'] = $this->administracion_frr->get_grupo_field_by_id_row($this->uri->segment(3));
+			} else {
+				//Sino cargamos todos
+				$data['grupos_fields'] = $this->administracion_frr->get_grupos_fields();
+			}
 			
 			$this->template->set_content("admin/listar_grupos_fields", $data);
 			$this->template->build();
@@ -319,5 +328,52 @@ class Admin extends MY_Controller {
 				$this->template->build();
 				
 			}//Fin if
+		}
+
+		function modificar_form() {
+			if(!is_null($f = $this->administracion_frr->get_form_by_id($this->uri->segment(3)))) {
+				$this->form_validation->set_rules('forms_nombre', 'Nombre del Form', 'trim|required|xss_clean');
+				$this->form_validation->set_rules('forms_nombre_action', 'Nombre del Action', 'trim|required|xss_clean');
+				$this->form_validation->set_rules('grupos_fields_id', 'Nombre del Grupo de Fields', 'trim|required|xss_clean');
+				$this->form_validation->set_rules('forms_descripcion', 'Descripcion del Form', 'trim|xss_clean');
+				$this->form_validation->set_rules('forms_titulo', 'Titulo del Form', 'trim|xss_clean');
+				$this->form_validation->set_rules('forms_texto_boton_enviar', 'Texto del Boton Enviar', 'trim|xss_clean');
+				
+				//Si ingresamos acà es porque se hizo el envío del formulario
+				if($this->form_validation->run()) {
+					
+					$data = array(
+						'forms_nombre' => $this->form_validation->set_value('forms_nombre'), 
+						'forms_nombre_action' => $this->form_validation->set_value('forms_nombre_action'), 
+						'grupos_fields_id' => $this->form_validation->set_value('grupos_fields_id'),
+						'forms_descripcion' => $this->form_validation->set_value('forms_descripcion'),
+						'forms_titulo' => $this->form_validation->set_value('forms_titulo'),
+						'forms_texto_boton_enviar' => $this->form_validation->set_value('forms_texto_boton_enviar')
+					);
+	
+					if($this->administracion_frr->modificar_form($this->uri->segment(3), $data)) {
+						$message = "El Form se ha modificado correctamente!";
+	                    $this->session->set_flashdata('message', $message);
+						redirect('admin/forms');
+					} else {
+						//Si no se pudo crear el grupo buscamos que paso
+						$data['errors'] = $this->administracion_frr->get_error_message();
+					}
+				}
+				
+				//Solamente cargamos los datos cuando no exista una request POST
+				//Para no pisar los datos enviados por el usuarios
+				if(!$this->input->post()) {
+					//Obtenemos los datos
+					$data['row'] = $f;
+				}
+
+				$data['grupos_fields'] = $this->administracion_frr->get_grupos_fields();
+				$data['t'] = "Modificar Formulario";
+				$data['tb'] = "Modificar Formulario";
+				
+				$this->template->set_content('admin/forms_form', $data);
+				$this->template->build();
+			}
 		}
 }

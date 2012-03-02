@@ -1,11 +1,11 @@
 
  	<?php
-	$forms_nombre = isset($roleRow->form_nombre) ? $roleRow->form_nombre : set_value('form_nombre');
-	$forms_texto_boton_enviar = isset($roleRow->forms_texto_boton_enviar) ? $roleRow->forms_texto_boton_enviar : set_value('forms_texto_boton_enviar');
-	$forms_titulo = isset($roleRow->forms_titulo) ? $roleRow->forms_titulo : set_value('forms_titulo');
-	$forms_descripcion = isset($roleRow->forms_descripcion) ? $roleRow->forms_descripcion : set_value('forms_descripcion');
-	$forms_nombre_action = isset($roleRow->forms_nombre_action) ? $roleRow->forms_nombre_action : set_value('forms_nombre_action');
-	$grupos_fields_id = isset($roleRow->grupos_fields_id) ? $roleRow->grupos_fields_id : set_value('grupos_fields_id');
+	$forms_nombre = isset($row->forms_nombre) ? $row->forms_nombre : set_value('forms_nombre');
+	$forms_texto_boton_enviar = isset($row->forms_texto_boton_enviar) ? $row->forms_texto_boton_enviar : set_value('forms_texto_boton_enviar');
+	$forms_titulo = isset($row->forms_titulo) ? $row->forms_titulo : set_value('forms_titulo');
+	$forms_descripcion = isset($row->forms_descripcion) ? $row->forms_descripcion : set_value('forms_descripcion');
+	$forms_nombre_action = isset($row->forms_nombre_action) ? $row->forms_nombre_action : set_value('forms_nombre_action');
+	$grupos_fields_id = isset($row->grupos_fields_id) ? $row->grupos_fields_id : set_value('grupos_fields_id');
 	
 	$def_form_nombre = array(
 	        'name'              => 'forms_nombre',
@@ -134,12 +134,16 @@
                 		<div class="span6 control-group">
                             <?php echo form_label('Grupo Field', 'grupo_id'); ?></td>
                                     <?php
-                                        echo '<select name="grupos_fields_id" class="listas-padding span5" id="empresas_dd">';
-                                        foreach($grupos_fields as $grupo_field)
+										
+										foreach($grupos_fields as $grupo_field)
                                         {
-                                           echo '<option value="' . $grupo_field['grupos_fields_id'] . '">' . $grupo_field['grupos_fields_nombre'] . "</option>";
+                                        	$options[$grupo_field['grupos_fields_id']] = $grupo_field['grupos_fields_nombre'];
                                         }
-                                        echo '</select>';
+                                        if(isset($row)) {									
+                                        	echo form_dropdown("grupos_fields_id", $options, $row->grupos_fields_id);
+                                        } else {
+                                        	echo form_dropdown("grupos_fields_id", $options);
+                                        }
                                     ?>
                            
                     	</div>

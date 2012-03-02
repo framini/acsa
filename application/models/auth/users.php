@@ -20,7 +20,6 @@ class Users extends CI_Model
 
 	/**
 	 * Devuelve el record de usuario en base al ID
-	 *
 	 * @param	int
 	 * @param	bool
 	 * @return	object
