@@ -177,6 +177,7 @@ class Administracion_frr {
 		
 		return ($data);
 	}
+
 	
 	/**
 	 * Método utilizado para crear un nuevo grupo de fields

@@ -12,9 +12,11 @@
       <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
 
-    <link href="<?php echo base_url(); ?>bootstrap/css/bootstrap.css" rel="stylesheet">
-    <link href="<?php echo base_url(); ?>bootstrap/css/custom.css" rel="stylesheet">
-    <link href="<?php echo base_url(); ?>colorbox/colorbox.css" rel="stylesheet"  />
+    <link href="<?php echo base_url(); ?>bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css" />
+    <link href="<?php echo base_url(); ?>bootstrap/css/custom.css" rel="stylesheet" type="text/css" />
+    <link href="<?php echo base_url(); ?>colorbox/colorbox.css" rel="stylesheet" type="text/css"  />
+    <link href="<?php echo base_url(); ?>css/botones.css" rel="stylesheet" type="text/css"  />
+    <link href="<?php echo base_url(); ?>css/custom-theme/jquery-ui-1.8.16.custom.css" rel="stylesheet" type="text/css"  />
     <style>
       body {
         padding-top: 60px; /* Espacio para el toolbar superior*/
@@ -55,6 +57,19 @@
                   echo '><a href="' . site_url() . '/ewarrants">eWarrants</a></li>';
                 }
               ?>
+              <?php if($this->auth_frr->es_admin()) { ?>
+              <li class="dropdown">
+				<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+				Admin
+				<b class="caret"></b>
+				</a>
+				<ul class="dropdown-menu">
+					  <li><?php echo anchor('admin/forms', '<i class=""></i>Formularios'); ?></li>
+				      <li class="divider"></li>
+				      <li><?php echo anchor('/admin/grupos_fields', '<i class=""></i> Grupos Fields'); ?></li>
+				</ul>
+              </li>
+              <?php } ?>
             </ul>
             <ul class="nav pull-right">
             	<li class="dropdown">
@@ -96,6 +111,7 @@
 
     <!-- Puesto en este punto por temas de performance -->
     <script src="<?php echo base_url(); ?>bootstrap/js/bootstrap-transition.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.9/jquery-ui.min.js"></script>
     <script src="<?php echo base_url(); ?>bootstrap/js/bootstrap-alert.js"></script>
     <script src="<?php echo base_url(); ?>bootstrap/js/bootstrap-modal.js"></script>
     <script src="<?php echo base_url(); ?>bootstrap/js/bootstrap-dropdown.js"></script>
@@ -120,6 +136,19 @@
     <script type="text/javascript" src="<?php echo base_url(); ?>js/jquery.colorbox.js"></script>
     <br/>
     <script src="<?php echo base_url(); ?>bootstrap/js/custom.js"></script>
+    <!--daterangepicker-->
+    <script type="text/javascript" src="<?php echo base_url(); ?>bootstrap/third-party/jQuery-UI-Date-Range-Picker/js/date.js"></script>
+    <script type="text/javascript" src="<?php echo base_url(); ?>bootstrap/third-party/jQuery-UI-Date-Range-Picker/js/daterangepicker.jQuery.js"></script>
+
+    <!--wijmo-->
+    <script src="<?php echo base_url(); ?>bootstrap/third-party/wijmo/jquery.mousewheel.min.js" type="text/javascript"></script>
+    <script src="<?php echo base_url(); ?>bootstrap/third-party/wijmo/jquery.bgiframe-2.1.3-pre.js" type="text/javascript"></script>
+    <script src="<?php echo base_url(); ?>bootstrap/third-party/wijmo/jquery.wijmo-open.1.5.0.min.js" type="text/javascript"></script>
+
+
+    <!-- FileInput -->
+    <script src="<?php echo base_url(); ?>bootstrap/third-party/jQuery-UI-FileInput/js/enhance.min.js" type="text/javascript"></script>
+    <script src="<?php echo base_url(); ?>bootstrap/third-party/jQuery-UI-FileInput/js/fileinput.jquery.js" type="text/javascript"></script>
 
   </body>
 </html>

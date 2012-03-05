@@ -101,3 +101,17 @@ $config['alta_fields'] = array('texto_anchor' => 'Crear Field', 'icono' => 'icon
 $config['modificar_field'] = array('texto_anchor' => 'Modificar', 'icono' => 'icon-pencil icon-white', 'clase_boton' => 'btn btn-info modificar-field margin-bottom-5', 'boton_superior' => false, 'titulo' => false);
 $config['fields'] = array('texto_anchor' => 'Modificar Fields', 'icono' => 'icon-align-justify icon-white', 'clase_boton' => 'btn btn-info modificar-field margin-bottom-5', 'boton_superior' => false, 'titulo' => false);
 
+# Menu gestion Admin => Gestionar Roles
+# Notas:
+# texto_anchor: Es el texto a mostrar en pantalla para el boton
+# icono: Es la imagen que va a la izquierda del texto_anchor
+# clase_boton: Especifica la clase a implementar por el boton
+# boton_superior: Especifica si el boton va en la parte superior de la pantalla
+# titulo: Mensaje para ventana Pop-up
+####################################################################################
+$config['alta_formulario_gestion_forms'] = array('texto_anchor' => 'Crear formulario', 'icono' => 'icon-user', 'clase_boton' => 'btn btn-large btn-success pull-right', 'boton_superior' => true, 'titulo' => false);
+$config['modificar_form_gestion_forms'] = array('texto_anchor' => 'Modificar Form', 'icono' => 'icon-pencil', 'clase_boton' => 'btn btn-info editar-usuario margin-bottom-5', 'boton_superior' => false, 'titulo' => false);
+$config['alta_grupos_fields_gestion_grupos_fields'] = array('texto_anchor' => 'Crear Grupo Fields', 'icono' => 'icon-pencil', 'clase_boton' => 'btn cambiar-email-usuario btn-primary margin-bottom-5', 'boton_superior' => false);
+$config['modificar_grupo_fields_gestion_grupos_fields'] = array('texto_anchor' => 'Modificar Grupo Fields', 'icono' => 'icon-pencil', 'clase_boton' => 'btn cambiar-email-usuario btn-primary margin-bottom-5', 'boton_superior' => false);
+$config['alta_fields_gestion_fields'] = array('texto_anchor' => 'Crear Field', 'icono' => 'icon-trash', 'clase_boton' => 'btn btn-danger eliminar-usuario margin-bottom-5', 'boton_superior' => false);
+$config['modificar_field_gestion_fields'] = array('texto_anchor' => 'Modificar Field', 'icono' => 'icon-trash', 'clase_boton' => 'btn btn-danger eliminar-usuario margin-bottom-5', 'boton_superior' => false);

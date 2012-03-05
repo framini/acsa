@@ -44,6 +44,7 @@
                         <tbody>
                                 <?php 
                                 	if(!empty($fields)) {
+                                		
                                 		foreach($fields as $field)
                                         {
                                             echo "<tr>";
@@ -69,7 +70,7 @@
 								               					
 								               					if($keyp == "modificar_field") {
 								               						//if($empresa['activated'] == 0) {
-								               							echo anchor($this->uri->segment(1) ."/". $keyp . '/' .$field['fields_id'], '<i class="' . $row['icono'] . '"></i> ' . $row['texto_anchor'], $atributos);
+								               							echo anchor($this->uri->segment(1) ."/". $keyp . '/' .$field['fields_id'] . "/" . $grupo_field_id, '<i class="' . $row['icono'] . '"></i> ' . $row['texto_anchor'], $atributos);
 								               						//}
 								               					} else if($keyp == "eliminar_empresa") {
 								               						if($empresa['activated'] == 1) {

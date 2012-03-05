@@ -56,7 +56,7 @@
 												
 												echo "<td>";
 													echo "<a class='btn cambiar-email-usuario btn-primary margin-bottom-5' href='" . site_url() . "/admin/modificar_form/" .  $form['forms_id'] . "'><i class='icon-pencil icon-white'></i> Modificar</a> ";
-														echo "<a class='btn cambiar-email-usuario btn-info margin-bottom-5' href='" . site_url() . "/admin/grupos_fields/" .  $form['grupos_fields_id'] . "'><i class='icon-align-justify icon-white'></i> Ver Grupo</a> ";
+														echo "<a class='btn cambiar-email-usuario btn-info margin-bottom-5' href='" . site_url() . "/admin/grupos_fields/" .  $form['grupos_fields_id'] . "'><i class='icon-folder-open icon-white'></i> Ver Grupo</a> ";
 													echo "</td>";
 												echo "</td>";
                                             echo "</tr>";

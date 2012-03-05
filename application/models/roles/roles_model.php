@@ -87,6 +87,34 @@ class  Roles_model extends CI_Model
     }
 	
 	/**
+     * Devuelve el conjunto de permisos asociados al admin logueado
+     * @param type $role_id
+     * @return row 
+     */
+    
+    function get_permisos_controladora_admin($role_id, $controladora)
+    {
+       $this->load->helper('array');
+	   
+       $permisos = $this->db->select('permisos.permiso, permisos.grupo')
+										   ->where('permisos.controladora', $controladora)
+                                           ->get('permisos');
+       if($permisos->num_rows() > 0) 
+       {
+           foreach ($permisos->result() as $key => $row)
+           {
+               $data[$key]['permiso'] = $row->permiso;
+			   $data[$key]['grupo'] = $row->grupo;
+           }
+           
+           return $data;
+       }
+       
+        
+        return null;
+    }
+	
+	/**
 	 * Devuelve el conjunto de permisos asociados al role_id del usuario logueado y relacionados a una seccion
 	 * y un determinado grupo
 	 */
@@ -145,6 +173,7 @@ class  Roles_model extends CI_Model
 	 */
 	function get_gestiones() {
 		$gestiones = $this->db->distinct('grupos')
+							  ->where('controladora !=', 'admin')
 							  ->get('permisos');
 							 
 							  

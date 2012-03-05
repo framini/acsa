@@ -21,6 +21,28 @@ class Admin extends MY_Controller {
         * Main controla la pagina cuando ingresan a Admin
        */    
         public function index() {
+         	  //Cargamos el archivo que contiene la info con la que se contruye el menu
+	 		  $this->config->load('menu_permisos', TRUE);
+			  
+			  $data['permisos'] = $this->roles_frr->permisos_role_controladora($this->uri->segment(1));
+			  
+			  //Obtenemos la info necesaria para construir el menu de cada uno de los permisos
+			  //Los datos estan de la forma $data['data_menu']['nombre_permiso']
+			  if(count($data['permisos']) > 0) {
+			  	foreach ($data['permisos'] as $key => $row) {
+				 $data['data_menu'][$row['permiso']] = $this->config->item($row['permiso'] . '_gestion_' . $row['grupo'], 'menu_permisos');
+			 	}
+			  } else {
+			  	$data['error_sin_permiso'] = $this->config->item('error_sin_permiso', 'menu_permisos');
+			  }
+			 
+			 
+			  
+	          if ($message = $this->session->flashdata('message')) {
+			  		$data['message'] = $message;
+			  }
+			  $this->template->set_content('admin/gestion_admin',$data);
+	          $this->template->build();
 		}
 		
 		/**
@@ -50,9 +72,9 @@ class Admin extends MY_Controller {
 		 * Lista todos los forms del sistema
 		 */
 		function forms() {
-			$this->breadcrumb->append_crumb('Home', '/');
-			$this->breadcrumb->append_crumb('Page', '/page');
-			$this->breadcrumb->append_crumb('Page', '/page2');
+			$this->breadcrumb->append_crumb('Home', site_url());
+			$this->breadcrumb->append_crumb('Admin', site_url() . "/admin");
+			$this->breadcrumb->append_crumb('Forms', site_url() . "/admin/forms");
 			//Obtenemos los permisos para poder construir el contenido de la seccion en base a ellos
 			$data['permisos'] = $this->roles_frr->permisos_role_controladora_grupo($this->uri->segment(1), $this->uri->segment(2));
 			$data['data_menu'] = $this->roles_frr->procesa_permisos_view($data['permisos']);
@@ -71,8 +93,16 @@ class Admin extends MY_Controller {
 			$data['permisos'] = $this->roles_frr->permisos_role_controladora_grupo($this->uri->segment(1), $this->uri->segment(2));
 			$data['data_menu'] = $this->roles_frr->procesa_permisos_view($data['permisos']);
 			
+			$this->breadcrumb->append_crumb('Home', site_url());
+			$this->breadcrumb->append_crumb('Admin', site_url() . "/admin");
+			$this->breadcrumb->append_crumb('Forms', site_url() . "/admin/forms");
+			$this->breadcrumb->append_crumb('Grupos Fields', site_url() . "/admin/grupos_fields");
+			
 			//Si se especifico un ID de grupo en la URI filtramos los grupos de fields para que solo muestre el correspondiente al ID
 			if($this->uri->segment(3)) {
+				$grupo_field_nombre = $this->administracion_frr->get_grupo_field_by_id($this->uri->segment(3));
+				$this->breadcrumb->append_crumb($grupo_field_nombre, site_url() . "/admin/forms");
+				
 				$data['grupos_fields'] = $this->administracion_frr->get_grupo_field_by_id_row($this->uri->segment(3));
 			} else {
 				//Sino cargamos todos
@@ -88,12 +118,22 @@ class Admin extends MY_Controller {
 		 */
 		function fields() {
 			//Solo hacemos algo si existe el registro del grupo que pasamos en la URI
-			if(!is_null($gf = $this->administracion_frr->get_grupo_field_by_id($this->uri->segment(3)))) {
+			if(!is_null($gf = $this->administracion_frr->get_grupo_field_by_id_row($this->uri->segment(3)))) {
+				$this->breadcrumb->append_crumb('Home', site_url());
+				$this->breadcrumb->append_crumb('Admin', site_url() . "/admin");
+				$this->breadcrumb->append_crumb('Forms', site_url() . "/admin/forms");
+				$this->breadcrumb->append_crumb('Grupos Fields', site_url() . "/admin/grupos_fields");
+				$grupo_field_nombre = $this->administracion_frr->get_grupo_field_by_id($this->uri->segment(3));
+				$this->breadcrumb->append_crumb($grupo_field_nombre, site_url() . "/admin/grupos_fields/" . $gf[0]['grupos_fields_id']);	
+				$this->breadcrumb->append_crumb('Fields', site_url() . "/admin/fields");
+				
 				//Obtenemos los permisos para poder construir el contenido de la seccion en base a ellos
 				$data['permisos'] = $this->roles_frr->permisos_role_controladora_grupo($this->uri->segment(1), $this->uri->segment(2));
 				$data['data_menu'] = $this->roles_frr->procesa_permisos_view($data['permisos']);
 				
 				$data['fields'] = $this->administracion_frr->get_fields_grupo_fields($this->uri->segment(3));
+				
+				$data['grupo_field_id'] = $gf[0]['grupos_fields_id'];
 				
 				$this->template->set_content("admin/listar_fields", $data);
 				$this->template->build();
@@ -237,8 +277,12 @@ class Admin extends MY_Controller {
 			
 			//Si existe algun grupo field con el ID pasado como parametro
 			if(!is_null($gf = $this->administracion_frr->get_grupo_field_by_id($this->uri->segment(3)))) {
-				//print_r($grupo_field);
-				//die();
+				$this->breadcrumb->append_crumb('Home', site_url());
+				$this->breadcrumb->append_crumb('Admin', site_url() . "/admin");
+				$this->breadcrumb->append_crumb('Forms', site_url() . "/admin/forms");
+				$this->breadcrumb->append_crumb('Grupos Fields', site_url() . "/admin/grupos_fields");
+				$this->breadcrumb->append_crumb('Modificar Grupo Fields', site_url() . "/");
+				
 				$this->form_validation->set_rules('grupos_fields_nombre', 'Nombre del Grupo de Fields', 'trim|required|xss_clean');
 				
 				if($this->form_validation->run()) {
@@ -277,6 +321,15 @@ class Admin extends MY_Controller {
 			
 			//Si existe un field con el ID pasado como parametro
 			if(!is_null($f = $this->administracion_frr->get_field_by_id($this->uri->segment(3)))) {
+				$this->breadcrumb->append_crumb('Home', site_url());
+				$this->breadcrumb->append_crumb('Admin', site_url() . "/admin");
+				$this->breadcrumb->append_crumb('Forms', site_url() . "/admin/forms");
+				$this->breadcrumb->append_crumb('Grupos Fields', site_url() . "/admin/grupos_fields");
+				if($this->uri->segment(4)) {
+					$grupo_field_nombre = $this->administracion_frr->get_grupo_field_by_id($this->uri->segment(4));
+					$this->breadcrumb->append_crumb($grupo_field_nombre, site_url() . "/admin/forms");
+				}
+				$this->breadcrumb->append_crumb('Modificar Fields', site_url() . "/");
 				
 				$this->form_validation->set_rules('fields_nombre', 'Nombre del Fields', 'trim|required|xss_clean');
 				$this->form_validation->set_rules('fields_label', 'Nombre del Fields', 'trim|required|xss_clean');
@@ -332,6 +385,11 @@ class Admin extends MY_Controller {
 
 		function modificar_form() {
 			if(!is_null($f = $this->administracion_frr->get_form_by_id($this->uri->segment(3)))) {
+				$this->breadcrumb->append_crumb('Home', site_url());
+				$this->breadcrumb->append_crumb('Admin', site_url() . "/admin");
+				$this->breadcrumb->append_crumb('Forms', site_url() . "/admin/forms");
+				$this->breadcrumb->append_crumb('Modificar Formulario', "/");			
+				
 				$this->form_validation->set_rules('forms_nombre', 'Nombre del Form', 'trim|required|xss_clean');
 				$this->form_validation->set_rules('forms_nombre_action', 'Nombre del Action', 'trim|required|xss_clean');
 				$this->form_validation->set_rules('grupos_fields_id', 'Nombre del Grupo de Fields', 'trim|required|xss_clean');

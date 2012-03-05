@@ -152,6 +152,7 @@ class Roles_frr {
            return $permisos;
         }
     }
+
 	
 	/**
      * Acceder a los permisos del usuario logueado relacionados a una determinada controladora
@@ -163,8 +164,12 @@ class Roles_frr {
            $user_id = $this->ci->auth_frr->get_user_id();
 
            $role_id = $this->get_role_id($user_id);
-           $permisos = $this->ci->roles_model->get_permisos_controladora($role_id, $controladora);
-            
+		   //Si el usuario es un admin, devolvemos todos los permisos asociados a la controladora en cuestion
+			if($this->ci->auth_frr->es_admin()) {
+			   $permisos =  $this->ci->roles_model->get_permisos_controladora_admin($role_id, $controladora);
+			} else {
+           		$permisos = $this->ci->roles_model->get_permisos_controladora($role_id, $controladora);
+			}
            return $permisos;
         }
     }
