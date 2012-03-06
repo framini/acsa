@@ -43,7 +43,8 @@
 
                         <tbody>
                                 <?php 
-                                        foreach($forms as $form)
+                                	if(isset($forms)) {
+                                		foreach($forms as $form)
                                         {
                                             echo "<tr>";
                                             	echo "<td>";
@@ -61,6 +62,8 @@
 												echo "</td>";
                                             echo "</tr>";
                                         }
+                                	}
+                                        
                                 ?>
                         </tbody>
                 </table>                                

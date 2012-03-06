@@ -49,9 +49,24 @@ class Admin extends MY_Controller {
 		 * Método utilizado para mostrar un formulario basado en la URI
 		 */
 		function form() {
-			if($id_form = $this->uri->segment(3)) {
+			//Chequeamos si existen elementos en $_POST y si hay los procesamos
+			if($this->input->post()) {
+				$this->administracion_frr->parser_post($this->input->post());
+			}
+			//Con esto chequeamos si un campo existe en una tabla
+			//Usarla antes de la insercion de contenido en tabla forms_data
+			/*if ($this->db->field_exists('user_ids', 'users')) {
+				echo "SDADSAD";
+				die();
+			} else {
+				echo "NO EXISTE!";
+				die();
+			}*/
+			
+			
+			if(!is_null($form = $this->administracion_frr->get_form_by_id($this->uri->segment(3)))) {
 				//Obtenemos el registro del form en base a la URI
-				$form = $this->administracion_frr->get_form_by_id($id_form);
+				//$form = $this->administracion_frr->get_form_by_id($id_form);
 				//Obtenemos los datos del grupo de fields asociados al formulario
 				$data['datos_fields'] = $this->administracion_frr->get_fields_grupo_fields($form->grupos_fields_id);
 				//Preparamos la informacion para que luego pueda ser generada dinamicamente en la vista
@@ -59,8 +74,8 @@ class Admin extends MY_Controller {
 				
 				//Chequeamos que el formulario tenga fields
 				if(!empty($data)) {
-					$data['t'] = "Crear Formulario";
-					$data['tb'] = "Crear Formulario";
+					$data['t'] = "Formulario";
+					$data['tb'] = "Enviar!";
 					
 					$this->template->set_content('admin/mostrar_form', $data);
 					$this->template->build();
@@ -147,7 +162,7 @@ class Admin extends MY_Controller {
 		function alta_formulario() {
 			
 			$this->form_validation->set_rules('forms_nombre', 'Nombre del Form', 'trim|required|xss_clean');
-			$this->form_validation->set_rules('forms_nombre_action', 'Nombre del Action', 'trim|required|xss_clean');
+			$this->form_validation->set_rules('forms_nombre_action', 'Nombre del Action', 'trim|xss_clean');
 			$this->form_validation->set_rules('grupos_fields_id', 'Nombre del Grupo de Fields', 'trim|required|xss_clean');
 			$this->form_validation->set_rules('forms_descripcion', 'Descripcion del Form', 'trim|xss_clean');
 			$this->form_validation->set_rules('forms_titulo', 'Titulo del Form', 'trim|xss_clean');
@@ -166,7 +181,7 @@ class Admin extends MY_Controller {
 						)) {
 					$message = "El Form se ha creado correctamente!";
                     $this->session->set_flashdata('message', $message);
-					redirect('seguridad');
+					redirect('admin/forms');
 				} else {
 					//Si no se pudo crear el grupo buscamos que paso
 					$data['errors'] = $this->administracion_frr->get_error_message();
@@ -195,7 +210,7 @@ class Admin extends MY_Controller {
 				if($this->administracion_frr->create_grupos_fields($this->form_validation->set_value('grupos_fields_nombre'))) {
 					$message = "El grupo de fields se ha creado correctamente!";
                     $this->session->set_flashdata('message', $message);
-					redirect('seguridad');
+					redirect('admin/grupos_fields');
 				} else {
 					//Si no se pudo crear el grupo buscamos que paso
 					$data['errors'] = $this->administracion_frr->get_error_message();
@@ -244,7 +259,7 @@ class Admin extends MY_Controller {
 						)) {
 					$message = "El field se ha creado correctamente!";
                     $this->session->set_flashdata('message', $message);
-					redirect('seguridad');
+					redirect('admin/fields/' . $this->uri->segment(3) );
 				} else {
 					//Si no se pudo crear el grupo buscamos que paso
 					$data['errors'] = $this->administracion_frr->get_error_message();
@@ -277,6 +292,7 @@ class Admin extends MY_Controller {
 			
 			//Si existe algun grupo field con el ID pasado como parametro
 			if(!is_null($gf = $this->administracion_frr->get_grupo_field_by_id($this->uri->segment(3)))) {
+				
 				$this->breadcrumb->append_crumb('Home', site_url());
 				$this->breadcrumb->append_crumb('Admin', site_url() . "/admin");
 				$this->breadcrumb->append_crumb('Forms', site_url() . "/admin/forms");
@@ -354,7 +370,8 @@ class Admin extends MY_Controller {
 						'fields_hidden' => $this->form_validation->set_value('fields_hidden'),
 						'fields_posicion' => $this->form_validation->set_value('fields_posicion'),
 						'fields_type_id' => $this->form_validation->set_value('fields_type_id'),
-						'fields_option_items' => $this->form_validation->set_value('fields_option_items')
+						'fields_option_items' => $this->form_validation->set_value('fields_option_items'),
+						'grupos_fields_id'  => $this->uri->segment(4)
 					);
 					if($this->administracion_frr->modificar_field($this->uri->segment(3), $data)) {
 						$message = "El field se ha modificado correctamente!";
@@ -431,6 +448,38 @@ class Admin extends MY_Controller {
 				$data['tb'] = "Modificar Formulario";
 				
 				$this->template->set_content('admin/forms_form', $data);
+				$this->template->build();
+			}
+		}
+
+		function baja_field() {
+			//Si existe un field con el ID pasado como parametro
+			if(!is_null($f = $this->administracion_frr->get_field_by_id($this->uri->segment(3)))) {
+				if($this->uri->segment(4) == "si") {
+					if($this->administracion_frr->eliminar_field($this->uri->segment(3))) {
+						$message = "El field se ha eliminado correctamente!";
+	                    $this->session->set_flashdata('message', $message);
+						redirect('admin/grupos_fields/');
+					}
+				}
+				
+				$this->template->set_content('general/confirma_operacion');
+				$this->template->build();
+			}
+		}
+		
+		function baja_grupo_fields() {
+			//Si existe un field con el ID pasado como parametro
+			if(!is_null($gf = $this->administracion_frr->get_grupo_field_by_id($this->uri->segment(3)))) {
+				if($this->uri->segment(4) == "si") {
+					if($this->administracion_frr->eliminar_grupo_fields($this->uri->segment(3))) {
+						$message = "El grupo de fields se ha eliminado correctamente!";
+	                    $this->session->set_flashdata('message', $message);
+						redirect('admin/grupos_fields/');
+					}
+				}
+				
+				$this->template->set_content('general/confirma_operacion');
 				$this->template->build();
 			}
 		}

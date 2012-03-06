@@ -41,7 +41,8 @@
 
                         <tbody>
                                 <?php 
-                                        foreach($grupos_fields as $grupo_field)
+                                	if(!empty($grupos_fields)) {
+                                		foreach($grupos_fields as $grupo_field)
                                         {
                                             echo "<tr>";
                                             	echo "<td>";
@@ -58,6 +59,7 @@
 												echo "</td>";
                                             echo "</tr>";
                                         }
+                                	}
                                 ?>
                         </tbody>
                 </table>                                

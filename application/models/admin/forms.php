@@ -30,7 +30,40 @@ class Forms extends CI_Model
 	/**
 	 * Método para crear un nuevo Form
 	 */
-	function create_form($data) {
+	function create_form($data, $actualizar = FALSE) {
+		if($actualizar) {
+			//Chequiamos que los fiels asociados al grupo esten presenten en la tabla forms_data
+			$fields = $this->administracion_frr->get_fields_grupo_fields($data['grupos_fields_id']);
+		
+			//Procesamos los resultados
+			foreach ($fields as $row)
+	        {
+	           $campos[] = array(
+	                'fields_id' => $row['fields_id'],
+	                'fields_value_defecto' => $row['fields_value_defecto']
+	           );
+	        }
+
+			//Chequeamos que campos son los que tenemos que actualizar en forms_data
+	        foreach ($campos as $row) {
+	            //print_r($row['fields_nombre']);
+				//Si la columna no existe guardamos los datos en un array para luego poder crearlos
+				if(!$this->administracion_frr->existe_columna('field_id_' . $row['fields_id'])) {
+					$campos_a_crear['field_id_' . $row['fields_id']] = array(
+						'type' => 'TEXT',
+						'null' => TRUE
+					);
+				}
+	        }
+			//Si entramos aca creamos los campos en forms_data
+			if(isset($campos_a_crear)) {
+				//Insertamos las columnas en forms_data
+				foreach($campos_a_crear as $id => $campo) {
+					$this->dbforge->add_column('forms_data', array($id => $campo));
+				}
+			}
+		}
+
 		$this->db->insert('forms', $data);
 		if($this->db->affected_rows() > 0) {
 			return true;
@@ -63,7 +96,41 @@ class Forms extends CI_Model
 	/**
 	 * Método para modificar un form
 	 */
-	function modificar_form($form_id, $data) {
+	function modificar_form($form_id, $data, $actualizar = FALSE) {
+		
+		if($actualizar) {
+			//Chequiamos que los fiels asociados al grupo esten presenten en la tabla forms_data
+			$fields = $this->administracion_frr->get_fields_grupo_fields($data['grupos_fields_id']);
+		
+			//Procesamos los resultados
+			foreach ($fields as $row)
+	        {
+	           $campos[] = array(
+	                'fields_id' => $row['fields_id'],
+	                'fields_value_defecto' => $row['fields_value_defecto']
+	           );
+	        }
+
+			//Chequeamos que campos son los que tenemos que actualizar en forms_data
+	        foreach ($campos as $row) {
+	            //print_r($row['fields_nombre']);
+				//Si la columna no existe guardamos los datos en un array para luego poder crearlos
+				if(!$this->administracion_frr->existe_columna('field_id_' . $row['fields_id'])) {
+					$campos_a_crear['field_id_' . $row['fields_id']] = array(
+						'type' => 'TEXT',
+						'null' => TRUE
+					);
+				}
+	        }
+			//Si entramos aca creamos los campos en forms_data
+			if(isset($campos_a_crear)) {
+				//Insertamos las columnas en forms_data
+				foreach($campos_a_crear as $id => $campo) {
+					$this->dbforge->add_column('forms_data', array($id => $campo));
+				}
+			}
+		}
+		
 		$this->db->where('forms_id', $form_id);
 		$this->db->update('forms', $data);
 		if($this->db->affected_rows() > 0) {

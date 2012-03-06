@@ -21,16 +21,18 @@ class Administracion_frr {
      function get_grupos_fields() {
       
         $grupos_fields = $this->ci->grupos_fields->get_grupos_fields();
-      
-        foreach ($grupos_fields->result() as $row){
+      	if(isset($grupos_fields) ) {
+      		foreach ($grupos_fields->result() as $row){
           
-           $data[] = array(
-                'grupos_fields_id'     => $row->grupos_fields_id,
-                'grupos_fields_nombre' => $row->grupos_fields_nombre
-           );
-       }
-
-       return $data;
+	           $data[] = array(
+	                'grupos_fields_id'     => $row->grupos_fields_id,
+	                'grupos_fields_nombre' => $row->grupos_fields_nombre
+	           );
+	       }
+	
+	       return $data;
+      	}
+        return NULL;
     }
 	 /**
 	  * Obtiene todos los formularios del sistema
@@ -38,21 +40,24 @@ class Administracion_frr {
 	 function get_forms() {
 	 	
 		$forms = $this->ci->forms->get_forms();
-		foreach ($forms->result() as $row){
+		if(isset($forms)) {
+			foreach ($forms->result() as $row){
           
-	           $data[] = array(
-	                'forms_id'     => $row->forms_id,
-	                'forms_nombre' => $row->forms_nombre,
-	                'forms_nombre_action' => $row->forms_nombre_action,
-	                'grupos_fields_id' => $row->grupos_fields_id,
-	                'grupos_fields_nombre' => $this->get_grupo_field_by_id($row->grupos_fields_id),
-	                'forms_descripcion' => $row->forms_descripcion,
-	                'forms_titulo' => $row->forms_titulo,
-	                'forms_texto_boton_enviar' => $row->forms_texto_boton_enviar,
-	           );
-	    }
-	
-	    return $data;
+		           $data[] = array(
+		                'forms_id'     => $row->forms_id,
+		                'forms_nombre' => $row->forms_nombre,
+		                'forms_nombre_action' => $row->forms_nombre_action,
+		                'grupos_fields_id' => $row->grupos_fields_id,
+		                'grupos_fields_nombre' => $this->get_grupo_field_by_id($row->grupos_fields_id),
+		                'forms_descripcion' => $row->forms_descripcion,
+		                'forms_titulo' => $row->forms_titulo,
+		                'forms_texto_boton_enviar' => $row->forms_texto_boton_enviar,
+		           );
+		    }
+		
+		    return $data;
+		}
+		return NULL;
 	 }
 	 
 	 /**
@@ -171,11 +176,43 @@ class Administracion_frr {
 	 * El objetivo de esta funciona es devolver un array listo para ser mostrado en la vista
 	 */
 	function parser_field_type($fields) {
-		foreach ($fields as $field) {
-			$data[] = $this->ci->fieldstypes_frr->get_formato_array_field($field);
+			if(count($fields) > 0) {
+				foreach ($fields as $field) {
+				$data[] = $this->ci->fieldstypes_frr->get_formato_array_field($field);
+			}
+			
+			return ($data);
+		} else {
+			return NULL;
 		}
-		
-		return ($data);
+	}
+	
+	/**
+	 * Metodo utilizado para parsear el arreglo POST proveniente de los forms generados dinamicamente
+	 */
+	function parser_post($post) {
+		if(count($post) > 0) {
+			foreach ($post as $key => $value) {
+				if(!$this->existe_columna($key)) {
+					//Si la columna no existe tenemos que crearla en la tabla forms_data
+					$data['cols_a_crear'][] = $key;
+				}
+				$data['campos'][$key] = $value; 
+			}
+			print_r($data);
+			die();
+		}
+	}
+	
+	/**
+	 * Metodo para chequear la existencia de una columna en una tabla
+	 */
+	function existe_columna($columna, $tabla = "forms_data") {
+		if ($this->ci->fields->existe_columna($columna, $tabla)) {
+			return TRUE;
+		} else {
+			return FALSE;
+		}
 	}
 
 	
@@ -208,15 +245,49 @@ class Administracion_frr {
 		
 		if(!$this->verificacion_nombre_grupo_field($grupo_field_id, $grupos_fields_nombre)) {
 			$this->error['grupos_fields_nombre'] = 'El nombre ya esta siendo utilizado por otro grupo!';
-		}
+		} 
 		//Solamente modificamos si los campos pasaron la validacion	
 		if(empty($this->error)) {
-			if($this->ci->grupos_fields->modificar_grupo_fields($grupo_field_id, $data)) {
-			return true;
-			} 
+			//Chequeamos si el grupo esta siendo usado por algun formulario
+			if($this->grupo_fields_en_uso($grupo_field_id)) {
+				//Si esta siendo utilizado chequeamos que los fields que pertenecen al grupo esten creados en forms_data
+				if($this->ci->grupos_fields->modificar_grupo_fields($grupo_field_id, $data, TRUE)) {
+					return true;
+				} else {
+					return NULL;
+				}
+			} else {
+				//El grupo no esta siendo usado por ningun formulario
+				if($this->ci->grupos_fields->modificar_grupo_fields($grupo_field_id, $data, FALSE)) {
+					return true;
+				} else {
+					return NULL;
+				}
+			}
 		}	
 		
 		return NULL;
+	}
+	/**
+	 * Metodo para comprobar si un grupo de fields esta siendo usado por al menos un formulario
+	 */
+	function grupo_fields_en_uso($grupo_field_id) {
+		if($this->ci->grupos_fields->grupo_fields_en_uso($grupo_field_id)) {
+			return TRUE;
+		} else {
+			return FALSE;
+		}
+	}
+	
+	/**
+	 * Metodo para comprobar si un grupo de fields esta siendo usado por al menos un formulario
+	 */
+	function field_en_uso($field_id) {
+		if($this->ci->fields->existe_columna('field_id_' . $field_id, 'forms_data')) {
+			return TRUE;
+		} else {
+			return FALSE;
+		}
 	}
 	
 	function modificar_form($forms_id, $data) {
@@ -227,24 +298,54 @@ class Administracion_frr {
 		}
 		//Solamente creamos si los campos pasaron la validacion	
 		if(empty($this->error)) {
-			if($this->ci->forms->modificar_form($forms_id, $data)) {
-				return true;
-			} 
+			//Si el grupo no estaba siendo usado por otro form
+			//actualizamos la tabla forms_data con los nuevos fields
+			if(!$this->grupo_fields_en_uso($data['grupos_fields_id'])) {
+				if($this->ci->forms->modificar_form($forms_id, $data, TRUE)) {
+					return TRUE;
+				} else {
+					return NULL;
+				}
+			} else {
+				//El grupo ya esta en uso con lo cual no actualizamos la tabla forms_data
+				if($this->ci->forms->modificar_form($forms_id, $data, FALSE)) {
+					return TRUE;
+				} else {
+					return NULL;
+				}
+			}
+			 
 		}	
 		
 		return NULL;
 	}
 	
 	function modificar_field($field_id, $data) {
-		
 		if(!$this->verificacion_nombre_field($field_id, $data['fields_nombre'])) {
 			$this->error['grupos_fields_nombre'] = 'El nombre ya esta siendo utilizado por otro field!';
 		}
 		//Solamente modificamos si los campos pasaron la validacion	
 		if(empty($this->error)) {
-			if($this->ci->fields->modificar_field($field_id, $data)) {
-			return true;
-			} 
+			//Chequeamos que el grupo al cual pertence el field este en uso por al menos un form
+			if($this->grupo_fields_en_uso($data['grupos_fields_id'])) {
+				//Si el field no esta en uso (Es nuevo al grupo) lo creamos
+				if(!$this->field_en_uso($field_id)) {
+					//Actualizamos el field y creamos la columna en forms_data
+					if($this->ci->fields->modificar_field($field_id, $data, TRUE)) {
+						return TRUE;
+					} 
+				} else {
+					//Actualizamos el field
+					if($this->ci->fields->modificar_field($field_id, $data, FALSE)) {
+						return true;
+					}
+				}
+				
+			} else {
+				if($this->ci->fields->modificar_field($field_id, $data, FALSE)) {
+					return true;
+				} 
+			}
 		}	
 		
 		return NULL;
@@ -330,7 +431,8 @@ class Administracion_frr {
 			'fields_hidden' => $fields_hidden, 
 			'fields_posicion' => $fields_posicion,
 			'fields_type_id'  => $fields_type_id,
-			'fields_option_items' => $fields_option_items
+			'fields_option_items' => $fields_option_items,
+			'grupos_fields_id' => $grupo_field_id
 		);
 		//Validaciones para los campos requeridos
 		if(!$this->is_nombre_fields_disponible($fields_nombre)) {
@@ -338,12 +440,41 @@ class Administracion_frr {
 		}
 		//Solamente creamos si los campos pasaron la validacion	
 		if(empty($this->error)) {
-			if($this->ci->fields->create_fields($data, $grupo_field_id)) {
+			//Chequeamos que el grupo al cual pertence el field este en uso por al menos un form
+			if($this->grupo_fields_en_uso($grupo_field_id)) {
+				//Si el grupo esta siendo usado por algun formulario creamos el nuevo campo en forms_data
+				if($this->ci->fields->create_fields($data, TRUE)) {
+					return TRUE;
+				} 
+			} else {
+				if($this->ci->fields->create_fields($data, FALSE)) {
+					return true;
+				} 
+			}
+			/*if($this->ci->fields->create_fields($data, $grupo_field_id)) {
 			return true;
-			} 
+			} */
 		}	
 		
 		return NULL;
+	}
+
+	function eliminar_field($field_id) {
+		if($this->ci->fields->eliminar_field($field_id)) {
+			return true;
+		} else {
+        	return false;
+        }
+            
+	}
+	
+	function eliminar_grupo_fields($grupo_field_id) {
+		if($this->ci->grupos_fields->eliminar_grupo_fields($grupo_field_id)) {
+			return true;
+		} else {
+        	return false;
+        }
+            
 	}
 	
 	function create_form($forms_nombre, $forms_nombre_action, $grupos_fields_id, $forms_descripcion, $forms_titulo, $forms_texto_boton_enviar) {
@@ -361,9 +492,18 @@ class Administracion_frr {
 		}
 		//Solamente creamos si los campos pasaron la validacion	
 		if(empty($this->error)) {
-			if($this->ci->forms->create_form($data)) {
-			return true;
-			} 
+			//Si el grupo no estaba siendo usado por otro form
+			//actualizamos la tabla forms_data con los nuevos fields
+			if(!$this->grupo_fields_en_uso($data['grupos_fields_id'])) {
+				if($this->ci->forms->create_form($data, TRUE)) {
+					return TRUE;
+				} 
+			} else {
+				//El grupo de fields ya esta siendo utilizado por otro form con lo cual los fields ya deben estar presentens en forms_data
+				if($this->ci->forms->create_form($data, FALSE)) {
+					return TRUE;
+				} 
+			}
 		}	
 		
 		return NULL;

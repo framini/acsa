@@ -16,31 +16,38 @@ class fields extends CI_Model
 	/**
 	 * Método para crear un nuevo grupo de fields
 	 */
-	function create_fields($data, $grupo_field_id) {
+	function create_fields($data, $actualizar = FALSE) {
 		$this->db->insert('fields', $data);
 		//Chequeamos que se haya insertado la info
 		if($this->db->affected_rows() > 0) {
-			$fields_id = $this->db->insert_id();
-			if($this->create_relacion_grupo_field($fields_id, $grupo_field_id)) {
-				return true;
-			}
+			return true;
 		} 
 		
 		return false;
 	}
-	/**
-	 * Inserta los datos en la tabla de relacion grupos_fields - fields
-	 */
-	function create_relacion_grupo_field($fields_id, $grupo_field_id) {
-		$data = array(
-			'grupos_fields_id' => $grupo_field_id,
-			'fields_id' => $fields_id
-		);
-		$this->db->insert('grupos_fields_fields', $data);
-		if($this->db->affected_rows() > 0) {
-			return true;
+	
+	
+	function eliminar_field($field_id) {
+
+		//Eliminamos el registro de forms_data
+		if($this->existe_columna('field_id_' . $field_id)) {
+			$this->dbforge->drop_column('forms_data', 'field_id_' . $field_id);
 		}
-		return false;
+		//Comenzamos la transaccion
+		$this->db->trans_start();
+		
+		//Eliminamos el registro de la tabla fields
+		$this->db->where('fields_id', $field_id);
+		$this->db->delete('fields');
+		
+		//Comitiamos la transaccion
+		$this->db->trans_complete();
+		
+        if($this->db->trans_status() === FALSE) {
+            return FALSE;
+        } else {
+        	return TRUE;
+        }
 	}
 	
 	/**
@@ -58,11 +65,9 @@ class fields extends CI_Model
 	}
 	
 	function get_orden_siguiente_field($grupos_fields_id) {
-		$this->db->select_max('fields.fields_posicion')
-				 ->from('grupos_fields_fields')
-				 //->join('grupos_fields_fields', 'grupos_fields_fields.grupos_fields_id = grupos_fields.grupos_fields_id', 'left inner')
-				 ->join('fields', 'grupos_fields_fields.fields_id = fields.fields_id', 'left inner')
-				 ->where('grupos_fields_fields.grupos_fields_id', $grupos_fields_id);
+		$this->db->select_max('fields_posicion')
+				 ->from('fields')
+				 ->where('grupos_fields_id', $grupos_fields_id);
 		$query = $this->db->get();
 		
 		if ($query->num_rows() > 0) return $query->row();
@@ -114,9 +119,55 @@ class fields extends CI_Model
 	 }
 	 
 	 /**
+	 * Metodo para chequear la existencia de una columna en una tabla
+	 */
+	 function existe_columna($columna, $tabla = "forms_data") {
+	 	
+		if ($this->db->field_exists($columna, $tabla)) {
+			return TRUE;
+		} else {
+			return FALSE;
+		}
+	 }
+	 
+	 /**
 	 * Método para modificar un field
 	 */
-	function modificar_field($field_id, $data) {
+	function modificar_field($field_id, $data, $actualizar = FALSE) {
+		if($actualizar) {
+			//Chequiamos que los fiels asociados al grupo esten presenten en la tabla forms_data
+			$fields = $this->administracion_frr->get_fields_grupo_fields($data['grupos_fields_id']);
+		
+			//Procesamos los resultados
+			foreach ($fields as $row)
+	        {
+	           $campos[] = array(
+	                'fields_id' => $row['fields_id'],
+	                'fields_value_defecto' => $row['fields_value_defecto']
+	           );
+	        }
+
+			//Chequeamos que campos son los que tenemos que actualizar en forms_data
+	        foreach ($campos as $row) {
+	            //print_r($row['fields_nombre']);
+				//Si la columna no existe guardamos los datos en un array para luego poder crearlos
+				if(!$this->administracion_frr->existe_columna('field_id_' . $row['fields_id'])) {
+					$campos_a_crear['field_id_' . $row['fields_id']] = array(
+						'type' => 'TEXT',
+						'null' => TRUE
+					);
+				}
+	        }
+			//Si entramos aca creamos los campos en forms_data
+			if(isset($campos_a_crear)) {
+				//Insertamos las columnas en forms_data
+				foreach($campos_a_crear as $id => $campo) {
+					$this->dbforge->add_column('forms_data', array($id => $campo));
+				}
+			}
+		}
+		unset($data['grupos_fields_id']);
+		
 		$this->db->where('fields_id', $field_id);
 		$this->db->update('fields', $data);
 		if($this->db->affected_rows() > 0) {
