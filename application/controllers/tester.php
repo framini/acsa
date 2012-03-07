@@ -27,9 +27,10 @@ class Tester extends CI_Controller
         //$user = $this->users->get_user_by_login("quique");
        //print_r($user->user_id);
         
-        $this->load->model('productos/financiero');
+        /*$this->load->model('productos/financiero');
         echo $this->financiero->test();
-        die();
+        die();*/
+       echo CI_VERSION; 
         
         /* if($permisos && in_array('baja_usuario', $permisos))
         {
