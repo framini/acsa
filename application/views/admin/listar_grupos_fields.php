@@ -21,14 +21,16 @@
         </div>
 
         <div class="span12">
-            <?php
-             if(isset($message))
-             {
-                  echo "<div class='message success'>";
-                             echo "<p>" . $message. "</p>";
-                  echo "</div>";
-             }
-             ?>     
+            	<?php
+	            	if(isset($errormsg)) {
+	            		$data['estado'] = "error";
+	            	} else if(isset($message)) {
+	            		$data['estado'] = "success";
+	            	}
+					if(isset($data)) {
+						$this->load->view('general/mensaje_operacion', $data); 
+					}
+	            ?>     
                 <table class="table table-striped table-bordered">
 
                         <thead>
@@ -55,6 +57,7 @@
 												
 												echo "<td>";
 														echo "<a class='btn cambiar-email-usuario btn-primary margin-bottom-5' href='" . site_url() . "/admin/modificar_grupo_field/" .  $grupo_field['grupos_fields_id'] . "'><i class='icon-pencil icon-white'></i> Modificar</a> ";
+														echo "<a class='btn cambiar-email-usuario btn-danger margin-bottom-5' href='" . site_url() . "/admin/baja_grupo_fields/" .  $grupo_field['grupos_fields_id'] . "'><i class='icon-trash icon-white'></i> Eliminar</a> ";
 														echo "<a class='btn cambiar-email-usuario btn-info margin-bottom-5' href='" . site_url() . "/admin/fields/" .  $grupo_field['grupos_fields_id'] . "'><i class='icon-align-justify icon-white'></i> Ver Fields</a> ";
 												echo "</td>";
                                             echo "</tr>";

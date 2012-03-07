@@ -75,6 +75,8 @@ class Grupos_fields extends CI_Model
 		
 		$fields = $this->get_fields_grupo_fields($grupo_field_id);
 		
+		//Comenzamos la transaccion
+		$this->db->trans_start();
 		if(!empty($fields)) {
 			//Procesamos los resultados
 			foreach ($fields->result() as $row)
@@ -91,24 +93,22 @@ class Grupos_fields extends CI_Model
 				}
 	        }
 			
-			//Comenzamos la transaccion
-			$this->db->trans_start();
+			//Eliminamos cada uno de los fields que pertenecen al grupo
 			$this->db->where('grupos_fields_id', $grupo_field_id);
 			$this->db->delete('fields');
-			
-			$this->db->where('grupos_fields_id', $grupo_field_id);
-			$this->db->delete('grupos_fields');
-			//Comitiamos la transaccion
-			$this->db->trans_complete();
-			
-			if($this->db->trans_status() === FALSE) {
-	            return FALSE;
-	        } else {
-	        	return TRUE;
-	        }
+
 		}
+		//Eliminamos el grupo de fields
+		$this->db->where('grupos_fields_id', $grupo_field_id);
+		$this->db->delete('grupos_fields');
+		//Comitiamos la transaccion
+		$this->db->trans_complete();
 		
-		return NULL;
+		if($this->db->trans_status() === FALSE) {
+            return FALSE;
+        } else {
+        	return TRUE;
+        }
 	}
 	
 	/**

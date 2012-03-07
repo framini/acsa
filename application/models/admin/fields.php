@@ -76,6 +76,22 @@ class fields extends CI_Model
 	}
 	
 	/**
+	 * Devuelve el grupos_fields_id al cual pertence el field
+	 */
+	function get_field_group_id($field_id) {
+		$this->db->where('fields_id', $field_id);
+		$this->db->select('grupos_fields_id');
+		$this->db->from('fields');
+		$query = $this->db->get();
+		
+		if($query->num_rows() > 0) {
+			return $query->row()->grupos_fields_id;
+		} else {
+			return NULL;
+		}
+	}
+	
+	/**
 	 * Devuelve una lista con todos los fields types cargados
 	 */
 	function get_fields_types() {
@@ -169,8 +185,7 @@ class fields extends CI_Model
 		unset($data['grupos_fields_id']);
 		
 		$this->db->where('fields_id', $field_id);
-		$this->db->update('fields', $data);
-		if($this->db->affected_rows() > 0) {
+		if($this->db->update('fields', $data)) {
 			return true;
 		} else {
 			return false;

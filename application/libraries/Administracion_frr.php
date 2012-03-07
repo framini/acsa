@@ -74,17 +74,31 @@ class Administracion_frr {
 	 function get_grupo_field_by_id_row($grupo_field_id) {
       
         $grupos_fields = $this->ci->grupos_fields->get_grupo_field_by_id_row($grupo_field_id);
-      
-        foreach ($grupos_fields->result() as $row){
+      	
+		if($grupos_fields) {
+			foreach ($grupos_fields->result() as $row){
           
-           $data[] = array(
-                'grupos_fields_id'     => $row->grupos_fields_id,
-                'grupos_fields_nombre' => $row->grupos_fields_nombre
-           );
-       }
+	           $data[] = array(
+	                'grupos_fields_id'     => $row->grupos_fields_id,
+	                'grupos_fields_nombre' => $row->grupos_fields_nombre
+	           );
+	       }
 
-       return $data;
+       	   return $data;
+		}
+        return NULL;
     }
+	 /**
+	 * Devuelve el grupos_fields_id al cual pertence el field
+	 */
+	 function get_field_group_id($id) {
+	 	$grupo_field_id = $this->ci->fields->get_field_group_id($id);
+		if($grupo_field_id) {
+			return $grupo_field_id;
+		} else {
+			return NULL;
+		}
+	 }
 	 
 	 /**
 	  * Devuelve el nombre de un grupo de fields en base a un ID
@@ -400,7 +414,7 @@ class Administracion_frr {
 	 * Funcion usada para verificacion a la hora de modificar un field
 	 */
 	function is_mismo($id, $nombre, $tipo = null) {
-		if($tipo == "forms") {
+		if(isset($tipo) && $tipo == "forms") {
 			$f = $this->get_form_by_id($id);
 			if($f->forms_nombre  == $nombre) {
 			return true;
@@ -411,9 +425,8 @@ class Administracion_frr {
 		} else {
 			$f = $this->get_field_by_id($id);
 			if($f->fields_nombre  == $nombre) {
-			return true;
+				return true;
 			} else {
-				
 				return false;
 			}
 		}
@@ -464,8 +477,7 @@ class Administracion_frr {
 			return true;
 		} else {
         	return false;
-        }
-            
+        }  
 	}
 	
 	function eliminar_grupo_fields($grupo_field_id) {
@@ -473,8 +485,15 @@ class Administracion_frr {
 			return true;
 		} else {
         	return false;
+        }   
+	}
+	
+	function eliminar_form($form_id) {
+		if($this->ci->forms->eliminar_form($form_id)) {
+			return true;
+		} else {
+        	return false;
         }
-            
 	}
 	
 	function create_form($forms_nombre, $forms_nombre_action, $grupos_fields_id, $forms_descripcion, $forms_titulo, $forms_texto_boton_enviar) {

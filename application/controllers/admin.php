@@ -93,7 +93,9 @@ class Admin extends MY_Controller {
 			//Obtenemos los permisos para poder construir el contenido de la seccion en base a ellos
 			$data['permisos'] = $this->roles_frr->permisos_role_controladora_grupo($this->uri->segment(1), $this->uri->segment(2));
 			$data['data_menu'] = $this->roles_frr->procesa_permisos_view($data['permisos']);
-
+			if ($message = $this->session->flashdata('message')) {
+		  		$data['message'] = $message;
+		    }
 			$data['forms'] = $this->administracion_frr->get_forms();
 			
 			$this->template->set_content("admin/listar_forms", $data);
@@ -124,6 +126,10 @@ class Admin extends MY_Controller {
 				$data['grupos_fields'] = $this->administracion_frr->get_grupos_fields();
 			}
 			
+			if ($message = $this->session->flashdata('message')) {
+			  	$data['message'] = $message;
+			}
+			
 			$this->template->set_content("admin/listar_grupos_fields", $data);
 			$this->template->build();
 		}
@@ -149,6 +155,9 @@ class Admin extends MY_Controller {
 				$data['fields'] = $this->administracion_frr->get_fields_grupo_fields($this->uri->segment(3));
 				
 				$data['grupo_field_id'] = $gf[0]['grupos_fields_id'];
+				if ($message = $this->session->flashdata('message')) {
+				  	$data['message'] = $message;
+				}
 				
 				$this->template->set_content("admin/listar_fields", $data);
 				$this->template->build();
@@ -371,12 +380,12 @@ class Admin extends MY_Controller {
 						'fields_posicion' => $this->form_validation->set_value('fields_posicion'),
 						'fields_type_id' => $this->form_validation->set_value('fields_type_id'),
 						'fields_option_items' => $this->form_validation->set_value('fields_option_items'),
-						'grupos_fields_id'  => $this->uri->segment(4)
+						'grupos_fields_id'  => $this->administracion_frr->get_field_group_id($this->uri->segment(3))
 					);
 					if($this->administracion_frr->modificar_field($this->uri->segment(3), $data)) {
 						$message = "El field se ha modificado correctamente!";
 	                    $this->session->set_flashdata('message', $message);
-						redirect('admin/grupos_fields/');
+						redirect('admin/fields/' . $data['grupos_fields_id']);
 					} else {
 						//Si no se pudo crear el grupo buscamos que paso
 						$data['errors'] = $this->administracion_frr->get_error_message();
@@ -469,13 +478,30 @@ class Admin extends MY_Controller {
 		}
 		
 		function baja_grupo_fields() {
-			//Si existe un field con el ID pasado como parametro
+			//Si existe un grupo de fields con el ID pasado como parametro
 			if(!is_null($gf = $this->administracion_frr->get_grupo_field_by_id($this->uri->segment(3)))) {
 				if($this->uri->segment(4) == "si") {
 					if($this->administracion_frr->eliminar_grupo_fields($this->uri->segment(3))) {
 						$message = "El grupo de fields se ha eliminado correctamente!";
 	                    $this->session->set_flashdata('message', $message);
 						redirect('admin/grupos_fields/');
+					}
+				}
+				
+				$this->template->set_content('general/confirma_operacion');
+				$this->template->build();
+			}
+		}
+		
+		function baja_formulario() {
+			//Si existe un field con el ID pasado como parametro
+			if(!is_null($f = $this->administracion_frr->get_form_by_id($this->uri->segment(3)))) {
+				if($this->uri->segment(4) == "si") {
+					if($this->administracion_frr->eliminar_form($this->uri->segment(3))) {
+						$message = "El form se ha eliminado correctamente!";
+	                    $this->session->set_flashdata('message', $message);
+						$this->template->add_message("succes", $message);
+						redirect('admin/forms/');
 					}
 				}
 				

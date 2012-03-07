@@ -93,6 +93,24 @@ class Forms extends CI_Model
 		return NULL;
 	}
 	
+	function eliminar_form($form_id) {
+		//Comenzamos la transaccion
+		$this->db->trans_start();
+		
+		$tablas = array('forms_data', 'forms');
+		$this->db->where('forms_id', $form_id);
+		$this->db->delete($tablas);
+		
+		//Comitiamos la transaccion
+		$this->db->trans_complete();
+		
+		if($this->db->trans_status() === FALSE) {
+            return FALSE;
+        } else {
+        	return TRUE;
+        }
+	}
+	
 	/**
 	 * Método para modificar un form
 	 */
