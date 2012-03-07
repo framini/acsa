@@ -68,3 +68,25 @@
 .span2.width-170, .span4.width-170 {
 	width: 170px !important;
 }
+.nav li + .nav-header {
+    margin-top: 9px;
+}
+
+.nav .nav-header {
+    color: #999999;
+    display: block;
+    font-size: 11px;
+    font-weight: bold;
+    line-height: 18px;
+    padding: 3px 15px;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+    text-transform: uppercase;
+}
+.small.menu {
+	font-size: 9px;
+    font-weight: bold !important;
+}
+ul.sin-estilo {
+	list-style: none !important;
+	margin-left: 9px !important;
+}

@@ -134,6 +134,17 @@ class fields extends CI_Model
 		return NULL;
 	 }
 	 
+	 function get_field_by_nombre($nombre) {
+	 	$this->db->select();
+		$this->db->where('fields_nombre', $nombre);
+		$query = $this->db->get('fields');
+		
+		if($query->num_rows() == 1) {
+			return $query->row();
+		}
+		return NULL;
+	 }
+	 
 	 /**
 	 * Metodo para chequear la existencia de una columna en una tabla
 	 */

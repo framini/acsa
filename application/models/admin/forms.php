@@ -71,6 +71,61 @@ class Forms extends CI_Model
 			return false;
 		}
 	}
+	/**
+	 * Metodo utilizado para persistir en forms_data los datos enviados en los formularios 
+	 */
+	function persistir_datos_form($data, $entrada) {
+		//Datos comunes a todos los forms
+		$entrada['autor_id'] = $this->auth_frr->get_user_id();
+		$entrada['ip_address'] = $this->session->userdata('ip_address');
+		$entrada['entry_date'] = date('Y-m-d H:i:s');
+		$entrada['edit_date'] = date('Y-m-d H:i:s');
+		$entrada['forms_id'] = $data['forms_id'];
+		
+		//Comenzamos la transaccion
+		$this->db->trans_start();
+		
+		$this->db->insert('forms_entradas', $entrada);
+		//Almacenamos el entry_id devuelto del insert anterior
+		$data['entry_id'] = $this->db->insert_id();
+		
+		$this->db->insert('forms_data', $data);
+
+		//Comitiamos la transaccion
+		$this->db->trans_complete();
+		
+		if($this->db->trans_status() === FALSE) {
+            return FALSE;
+        } else {
+        	return TRUE;
+        }
+	}
+	
+	/**
+	 * Metodo utilizado para persistir en forms_data los datos enviados en los formularios 
+	 */
+	function actualizar_datos_form($data, $entrada, $entry_id) {
+		//Datos comunes a todos los forms
+		$entrada['edit_date'] = date('Y-m-d H:i:s');
+
+		//Comenzamos la transaccion
+		$this->db->trans_start();
+		
+		$this->db->where('entry_id', $entry_id);
+		$this->db->update('forms_entradas', $entrada);
+
+		$this->db->where('entry_id', $entry_id);
+		$this->db->update('forms_data', $data);
+
+		//Comitiamos la transaccion
+		$this->db->trans_complete();
+		
+		if($this->db->trans_status() === FALSE) {
+            return FALSE;
+        } else {
+        	return TRUE;
+        }
+	}
 	
 	/**
 	 * Devuelve un form en base al ID pasado como parametro
@@ -81,6 +136,16 @@ class Forms extends CI_Model
 
 		$query = $this->db->get('forms');
 		if ($query->num_rows() == 1) return $query->row();
+		return NULL;
+	}
+	
+	/**
+	 * Devuelve un entry en base al ID pasado como parametro
+	 */
+	function get_entry_by_id($entry_id) {
+		$query = $this->db->query("SELECT * FROM forms_entradas as Fe INNER JOIN forms_data AS Fd ON Fd.entry_id = Fe.entry_id WHERE Fe.entry_id = {$entry_id}");
+
+		if ($query->num_rows() > 0 ) return $query->row();
 		return NULL;
 	}
 	
@@ -97,7 +162,7 @@ class Forms extends CI_Model
 		//Comenzamos la transaccion
 		$this->db->trans_start();
 		
-		$tablas = array('forms_data', 'forms');
+		$tablas = array('forms_data', 'forms', 'forms_entradas');
 		$this->db->where('forms_id', $form_id);
 		$this->db->delete($tablas);
 		

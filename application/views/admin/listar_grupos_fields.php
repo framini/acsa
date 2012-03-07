@@ -9,7 +9,7 @@
 				                			<?php } ?>
 				                		<?php } ?>
 				                	<?php } ?>
-                                    <h2>Forms</h2>
+                                    <h2>Grupos Fields</h2>
                             </div>
 	                		<div class="span12">
 	                			<?php $this->load->file('includes/buscador.php');?>

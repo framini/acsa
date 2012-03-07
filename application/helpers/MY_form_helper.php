@@ -10,6 +10,29 @@ function form_input($data = '', $value = '', $extra = '')
 	}
 }
 
+function form_textarea($data = '', $value = '', $extra = '')
+{
+	$defaults = array('name' => (( ! is_array($data)) ? $data : ''), 'cols' => '40', 'rows' => '10');
+
+	if ( ! is_array($data) OR ! isset($data['value']))
+	{
+		$val = $value;
+	} 
+	else
+	{
+		$val = $data['value'];
+		unset($data['value']); // textareas don't use the value attribute
+	}
+	
+	$name = (is_array($data)) ? $data['name'] : $data;
+	
+	if(is_array($value)) {
+		$val = $value['value'];
+		return '<textarea '._parse_form_attributes($value, $defaults).$extra.'>'.form_prep($val, $name)."</textarea>\n";
+	}
+	return '<textarea '._parse_form_attributes($data, $defaults).$extra.'>'.form_prep($val, $name)."</textarea>\n";
+}
+
 function form_checkbox($data = '', $value = '', $checked = FALSE, $extra = '')
 {
 	$defaults = array('type' => 'checkbox', 'name' => (( ! is_array($data)) ? $data : ''), 'value' => $value);

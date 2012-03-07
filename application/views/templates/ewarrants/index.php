@@ -57,7 +57,7 @@
                   echo '><a href="' . site_url() . '/ewarrants">eWarrants</a></li>';
                 }
               ?>
-              <?php if($this->auth_frr->es_admin()) { ?>
+              <?php if(isset($admin)) { ?>
               <li class="dropdown">
 				<a href="#" class="dropdown-toggle" data-toggle="dropdown">
 				Admin
@@ -67,6 +67,38 @@
 					  <li><?php echo anchor('admin/forms', '<i class=""></i>Formularios'); ?></li>
 				      <li class="divider"></li>
 				      <li><?php echo anchor('/admin/grupos_fields', '<i class=""></i> Grupos Fields'); ?></li>
+				</ul>
+              </li>
+              <?php } ?>
+              <?php if(isset($admin)) { ?>
+              <li class="dropdown">
+				<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+				Diseño
+				<b class="caret"></b>
+				</a>
+				<ul class="dropdown-menu">
+					  <li><?php echo anchor('admin/templates', '<i class=""></i>Templates'); ?></li>
+				      <li class="divider"></li>
+				      <li><?php echo anchor('/admin/grupos_templates', '<i class=""></i> Grupos Templates'); ?></li>
+				</ul>
+              </li>
+              <?php } ?>
+              
+              <?php if(isset($admin) && isset($forms)) { ?>
+              <li class="dropdown">
+				<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+				Contenido
+				<b class="caret"></b>
+				</a>
+				<ul class="dropdown-menu">
+					<li class="nav-header"><span class="small menu">Generar contenido en:</span></li>
+					<?php foreach($forms as $form) { ?>
+						 <li><?php echo anchor('admin/form/' . $form['forms_id'], '<i class=""></i>' . format_texto($form['forms_nombre'])); ?></li>
+					<?php } ?>
+					<li class="divider"></li>
+					<li class="nav-header"><span class="small menu">Editar:</span></li>
+					<li><?php echo anchor('admin/editar_contenido', 'Editar Contenido') ?></li>
+
 				</ul>
               </li>
               <?php } ?>

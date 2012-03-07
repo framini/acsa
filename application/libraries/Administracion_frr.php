@@ -6,6 +6,10 @@ if (!defined('BASEPATH'))
 class Administracion_frr {
     
     private $error = array();
+	//Utilizada para almancenar los datos de fields comunes a todos los forms
+	private $datos_entradas = array();
+	//Utilizada para almacenar los datos comunes a todas las entradas. Como autor, fecha de creacion, etc
+	private $datos_extras_entradas = array();
 
     public function __construct() {
         $this->ci = & get_instance();
@@ -190,8 +194,8 @@ class Administracion_frr {
 	 * El objetivo de esta funciona es devolver un array listo para ser mostrado en la vista
 	 */
 	function parser_field_type($fields) {
-			if(count($fields) > 0) {
-				foreach ($fields as $field) {
+		if(count($fields) > 0) {
+			foreach ($fields as $field) {
 				$data[] = $this->ci->fieldstypes_frr->get_formato_array_field($field);
 			}
 			
@@ -201,21 +205,127 @@ class Administracion_frr {
 		}
 	}
 	
+	function get_entry_by_id($entry_id) {
+		$entry = $this->ci->forms->get_entry_by_id($entry_id);
+		if($entry) {
+			return $entry;
+		}
+	 	return NULL;
+	}
+	
+	/**
+	 * Devuelve en un array los datos almacenados en los fields del form
+	 */
+	function get_entry_datos_fields($entry) {
+		$form_id = $entry->forms_id;
+		$entry_id = $entry->entry_id;
+		
+		//Obtenemos el form al cual pertenece la entrada
+		$form = $this->get_form_by_id($form_id);
+		$grupo_fields_id = $form->grupos_fields_id;
+		
+		//Obtenemos el conjunto de fields asociados al grupo de fields
+		$fields = $this->get_fields_grupo_fields($grupo_fields_id);
+		
+		foreach ($fields as $field) {
+			//Buscamos los campos custom para el formulario
+			if($f = in_object("field_id_" . $field['fields_id'], $entry)) {
+				$campos[$f]['atributos'] = array(
+					'value'             => $entry->$f,
+			        'class'             => 'text span5',
+			        'id'                => $entry->$f
+				);
+			}
+		}
+		//Seteamos los campos comunes a todos los forms
+		$campos['titulo']['atributos'] = array(
+					'value'             => $entry->titulo,
+			        'class'             => 'text span5',
+			        'id'                => 'titulo'
+		);
+		$campos['url_titulo']['atributos'] = array(
+					'value'             => $entry->url_titulo,
+			        'class'             => 'text span5',
+			        'id'                => 'url_titulo'
+		);
+		
+		if(isset($campos)) {
+			return $campos;
+		} else {
+			return NULL;
+		}
+	}
+	
 	/**
 	 * Metodo utilizado para parsear el arreglo POST proveniente de los forms generados dinamicamente
+	 * Devuelve el conjunto de datos a insertar si los datos fueron correctamente parseados y validados
 	 */
 	function parser_post($post) {
 		if(count($post) > 0) {
+			$data = array();
 			foreach ($post as $key => $value) {
-				if(!$this->existe_columna($key)) {
-					//Si la columna no existe tenemos que crearla en la tabla forms_data
-					$data['cols_a_crear'][] = $key;
+				//Obtenemos el registro del feild
+				if(!is_null($f = $this->ci->fields->get_field_by_id(field_name_parser($key)))) {
+					//Lo almacenamos en una array con la estructura que utiliza la tabla en BDD
+					$data['field_id_' . $f->fields_id] = $value;
+					
+					//Chequeamos si el campo es requerido
+					if($f->fields_requerido != 0) {
+						//Si es requerido, seteamos reglas de validacion
+						$this->ci->form_validation->set_rules('field_id_' . $f->fields_id,$f->fields_label, 'trim|required|xss_clean');
+					} else {
+						//Si no es requerido solo lo limpiamos
+						$this->ci->form_validation->set_rules('field_id_' . $f->fields_id,$f->fields_label, 'trim|xss_clean');
+					}
 				}
-				$data['campos'][$key] = $value; 
 			}
-			print_r($data);
-			die();
+
+			//Validacion datos comunes todos los forms
+			$this->ci->form_validation->set_rules('titulo', 'Titulo', 'trim|required|xss_clean');
+			$this->ci->form_validation->set_rules('url_titulo', 'Titulo', 'trim|required|xss_clean');
+
+			if($this->ci->form_validation->run()) {
+				
+				//Datos comunes a todos los forms
+				$this->datos_entradas['titulo'] = $this->ci->form_validation->set_value('titulo');
+				$this->datos_entradas['url_titulo'] = $this->ci->form_validation->set_value('url_titulo');
+				
+				return $data;
+			} else {
+				
+				$this->error['datos_incompletos'] = 'Completa los fields requeridos!';
+				return NULL;
+			}
+		} else {
+			return NULL;
 		}
+	}
+	
+	/**
+	 * Metodo utilizado para persistir los datos enviados por los forms creados dinamicamente
+	 */
+	function persistir_datos_form($forms_id,$data) {
+		$data['forms_id'] = $forms_id;
+		if(empty($this->error)) {
+			if($this->ci->forms->persistir_datos_form($data, $this->get_datos_entradas())) {
+				return true;
+			} 
+		}
+		
+		return NULL;
+	}
+	
+	/**
+	 * Metodo utilizado para actualizar los datos enviados por los forms creados dinamicamente
+	 */
+	function actualizar_datos_form($forms_id, $data, $entry_id) {
+		if(empty($this->error)) {
+			if($this->ci->forms->actualizar_datos_form($data, $this->get_datos_entradas(), $entry_id)) {
+				return true;
+			} 
+		}
+		
+		return NULL;
 	}
 	
 	/**
@@ -548,5 +658,28 @@ class Administracion_frr {
 	 */
 	 function get_error_message() {
 		return $this->error;
+	 }
+	 
+	 /**
+	  * Devuelve un arreglo con todos los datos comunes a los forms
+	  */
+	 function get_datos_entradas() {
+		return $this->datos_entradas;
+	 }
+	 
+	 /**
+	  * Devuelve un arreglo con todos los datos extras de una entrada
+	  * Ejemplo: fecha de creacion, fecha de edicion, autor, etc
+	  */
+	 function get_datos_extras_entradas($entry) {
+
+	 	//Seteamos datos extras comunes a todas las entries
+		$this->datos_extras_entradas['numero_entrada'] = $entry->entry_id;
+		$this->datos_extras_entradas['form'] = $entry->forms_id;
+		$this->datos_extras_entradas['autor'] = $entry->autor_id;
+		$this->datos_extras_entradas['fecha_creacion'] = $entry->entry_date;
+		$this->datos_extras_entradas['fecha_edicion'] = $entry->edit_date;
+		
+	 	return $this->datos_extras_entradas;
 	 }
 }

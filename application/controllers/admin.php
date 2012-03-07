@@ -46,36 +46,56 @@ class Admin extends MY_Controller {
 		}
 		
 		/**
-		 * Método utilizado para mostrar un formulario basado en la URI
+		 * Método utilizado para mostrar un formulario, crear contenido y editar contenido basado en la URI
 		 */
 		function form() {
-			//Chequeamos si existen elementos en $_POST y si hay los procesamos
-			if($this->input->post()) {
-				$this->administracion_frr->parser_post($this->input->post());
-			}
-			//Con esto chequeamos si un campo existe en una tabla
-			//Usarla antes de la insercion de contenido en tabla forms_data
-			/*if ($this->db->field_exists('user_ids', 'users')) {
-				echo "SDADSAD";
-				die();
-			} else {
-				echo "NO EXISTE!";
-				die();
-			}*/
-			
-			
+
 			if(!is_null($form = $this->administracion_frr->get_form_by_id($this->uri->segment(3)))) {
-				//Obtenemos el registro del form en base a la URI
-				//$form = $this->administracion_frr->get_form_by_id($id_form);
+				//Chequeamos si existen elementos en $_POST y si hay los procesamos
+				if($this->input->post()) {
+					//Pareamos los datos del $_POST, los validamos y si son correctos obtenemos el conjuto de datos a insertar
+					if(!is_null($datos = $this->administracion_frr->parser_post($this->input->post()))) {
+						$datos['forms_id'] = $this->uri->segment(3);
+						//Si hay un entry_id especificado en la URI, es porque estamos tratando de editar una entrada
+						
+						if($this->uri->segment(4) && !is_null($entry = $this->administracion_frr->get_entry_by_id($this->uri->segment(4)))) {
+							
+							//Intentamos actualizar la entrada con los nuevos datos ingresados
+							if($this->administracion_frr->actualizar_datos_form($this->uri->segment(3), $datos, $this->uri->segment(4))) {
+								$message = "El contenido se ha actualizado correctamente!";
+			                    $this->session->set_flashdata('message', $message);
+								redirect('admin/forms');
+							}
+						} else {
+							//Si no se especifico un entry_id en la URI, es porque se esta tratando de crear contenido
+							if($this->administracion_frr->persistir_datos_form($this->uri->segment(3), $datos)) {
+								$message = "El contenido se ha creado correctamente!";
+			                    $this->session->set_flashdata('message', $message);
+								redirect('admin/forms');
+							}
+						}
+					}
+				} else {
+					//Si hay un entry_id especificado en la URI, es porque estamos tratando de editar una entrada
+					if($this->uri->segment(4) && !is_null($entry = $this->administracion_frr->get_entry_by_id($this->uri->segment(4)))) {
+						//Datos extras
+						$data['datos_extras'] = $this->administracion_frr->get_datos_extras_entradas($entry);
+						//Cargamos los datos almancenados en la base de datos para luego mostrarlos en los campos del form
+						$data['valores_campos'] = $this->administracion_frr->get_entry_datos_fields($entry);
+					}
+				}
+
 				//Obtenemos los datos del grupo de fields asociados al formulario
 				$data['datos_fields'] = $this->administracion_frr->get_fields_grupo_fields($form->grupos_fields_id);
 				//Preparamos la informacion para que luego pueda ser generada dinamicamente en la vista
 				$data['datos_parseados'] = $this->administracion_frr->parser_field_type($data['datos_fields']);
+				/*print_r($data['datos_parseados']);
+				die();*/
 				
 				//Chequeamos que el formulario tenga fields
 				if(!empty($data)) {
-					$data['t'] = "Formulario";
-					$data['tb'] = "Enviar!";
+					$data['t'] = isset($form->forms_titulo ) ? $form->forms_titulo  : "Formulario";
+					$data['tb'] = isset($form->forms_texto_boton_enviar ) ? $form->forms_texto_boton_enviar  : "Enviar!";
 					
 					$this->template->set_content('admin/mostrar_form', $data);
 					$this->template->build();
