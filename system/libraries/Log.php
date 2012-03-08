@@ -1,25 +1,13 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 /**
  * CodeIgniter
  *
  * An open source application development framework for PHP 5.1.6 or newer
  *
- * NOTICE OF LICENSE
- *
- * Licensed under the Open Software License version 3.0
- *
- * This source file is subject to the Open Software License (OSL 3.0) that is
- * bundled with this package in the files license.txt / license.rst.  It is
- * also available through the world wide web at this URL:
- * http://opensource.org/licenses/OSL-3.0
- * If you did not receive a copy of the license and are unable to obtain it
- * through the world wide web, please send an email to
- * licensing@ellislab.com so we can send you a copy immediately.
- *
  * @package		CodeIgniter
- * @author		EllisLab Dev Team
- * @copyright	Copyright (c) 2008 - 2012, EllisLab, Inc. (http://ellislab.com/)
- * @license		http://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
+ * @author		ExpressionEngine Dev Team
+ * @copyright	Copyright (c) 2008 - 2011, EllisLab, Inc.
+ * @license		http://codeigniter.com/user_guide/license.html
  * @link		http://codeigniter.com
  * @since		Version 1.0
  * @filesource
@@ -33,18 +21,16 @@
  * @package		CodeIgniter
  * @subpackage	Libraries
  * @category	Logging
- * @author		EllisLab Dev Team
+ * @author		ExpressionEngine Dev Team
  * @link		http://codeigniter.com/user_guide/general/errors.html
  */
 class CI_Log {
 
 	protected $_log_path;
-	protected $_threshold		= 1;
-	protected $_threshold_max	= 0;
-	protected $_threshold_array	= array();
-	protected $_date_fmt		= 'Y-m-d H:i:s';
-	protected $_enabled			= TRUE;
-	protected $_levels			= array('ERROR' => 1, 'DEBUG' => 2,  'INFO' => 3, 'ALL' => 4);
+	protected $_threshold	= 1;
+	protected $_date_fmt	= 'Y-m-d H:i:s';
+	protected $_enabled	= TRUE;
+	protected $_levels	= array('ERROR' => '1', 'DEBUG' => '2',  'INFO' => '3', 'ALL' => '4');
 
 	/**
 	 * Constructor
@@ -62,12 +48,7 @@ class CI_Log {
 
 		if (is_numeric($config['log_threshold']))
 		{
-			$this->_threshold = (int) $config['log_threshold'];
-		}
-		elseif (is_array($config['log_threshold']))
-		{
-			$this->_threshold = $this->_threshold_max;
-			$this->_threshold_array = array_flip($config['log_threshold']);
+			$this->_threshold = $config['log_threshold'];
 		}
 
 		if ($config['log_date_format'] != '')
@@ -97,20 +78,17 @@ class CI_Log {
 
 		$level = strtoupper($level);
 
-		if (( ! isset($this->_levels[$level]) OR ($this->_levels[$level] > $this->_threshold))
-			AND ! isset($this->_threshold_array[$this->_levels[$level]]))
+		if ( ! isset($this->_levels[$level]) OR ($this->_levels[$level] > $this->_threshold))
 		{
 			return FALSE;
 		}
-
 
 		$filepath = $this->_log_path.'log-'.date('Y-m-d').'.php';
 		$message  = '';
 
 		if ( ! file_exists($filepath))
 		{
-			$newfile = TRUE;
-			$message .= "<"."?php if ( ! defined('BASEPATH')) exit('No direct script access allowed'); ?".">\n\n";
+			$message .= "<"."?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed'); ?".">\n\n";
 		}
 
 		if ( ! $fp = @fopen($filepath, FOPEN_WRITE_CREATE))
@@ -125,10 +103,7 @@ class CI_Log {
 		flock($fp, LOCK_UN);
 		fclose($fp);
 
-		if (isset($newfile) AND $newfile === TRUE)
-		{
-			@chmod($filepath, FILE_WRITE_MODE);
-		}
+		@chmod($filepath, FILE_WRITE_MODE);
 		return TRUE;
 	}
 

@@ -1,25 +1,13 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 /**
  * CodeIgniter
  *
  * An open source application development framework for PHP 5.1.6 or newer
  *
- * NOTICE OF LICENSE
- *
- * Licensed under the Open Software License version 3.0
- *
- * This source file is subject to the Open Software License (OSL 3.0) that is
- * bundled with this package in the files license.txt / license.rst.  It is
- * also available through the world wide web at this URL:
- * http://opensource.org/licenses/OSL-3.0
- * If you did not receive a copy of the license and are unable to obtain it
- * through the world wide web, please send an email to
- * licensing@ellislab.com so we can send you a copy immediately.
- *
  * @package		CodeIgniter
- * @author		EllisLab Dev Team
- * @copyright	Copyright (c) 2008 - 2012, EllisLab, Inc. (http://ellislab.com/)
- * @license		http://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
+ * @author		ExpressionEngine Dev Team
+ * @copyright	Copyright (c) 2008 - 2011, EllisLab, Inc.
+ * @license		http://codeigniter.com/user_guide/license.html
  * @link		http://codeigniter.com
  * @since		Version 1.0
  * @filesource
@@ -33,7 +21,7 @@
  * @package		CodeIgniter
  * @subpackage	Helpers
  * @category	Helpers
- * @author		EllisLab Dev Team
+ * @author		ExpressionEngine Dev Team
  * @link		http://codeigniter.com/user_guide/helpers/html_helper.html
  */
 
@@ -54,7 +42,8 @@ if ( ! function_exists('heading'))
 {
 	function heading($data = '', $h = '1', $attributes = '')
 	{
-		return '<h'.$h.($attributes != '' ? ' ' : '').$attributes.'>'.$data.'</h'.$h.'>';
+		$attributes = ($attributes != '') ? ' '.$attributes : $attributes;
+		return "<h".$h.$attributes.">".$data."</h".$h.">";
 	}
 }
 
@@ -123,7 +112,7 @@ if ( ! function_exists('_list'))
 		}
 
 		// Set the indentation based on the depth
-		$out = str_repeat(' ', $depth);
+		$out = str_repeat(" ", $depth);
 
 		// Were any attributes submitted?  If so generate a string
 		if (is_array($attributes))
@@ -141,7 +130,7 @@ if ( ! function_exists('_list'))
 		}
 
 		// Write the opening list tag
-		$out .= '<'.$type.$attributes.">\n";
+		$out .= "<".$type.$attributes.">\n";
 
 		// Cycle through the list elements.  If an array is
 		// encountered we will recursively call _list()
@@ -151,7 +140,8 @@ if ( ! function_exists('_list'))
 		{
 			$_last_list_item = $key;
 
-			$out .= str_repeat(' ', $depth + 2).'<li>';
+			$out .= str_repeat(" ", $depth + 2);
+			$out .= "<li>";
 
 			if ( ! is_array($val))
 			{
@@ -159,14 +149,21 @@ if ( ! function_exists('_list'))
 			}
 			else
 			{
-				$out .= $_last_list_item."\n"._list($type, $val, '', $depth + 4).str_repeat(' ', $depth + 2);
+				$out .= $_last_list_item."\n";
+				$out .= _list($type, $val, '', $depth + 4);
+				$out .= str_repeat(" ", $depth + 2);
 			}
 
 			$out .= "</li>\n";
 		}
 
-		// Set the indentation for the closing tag and apply it
-		return $out.str_repeat(' ', $depth).'</'.$type.">\n";
+		// Set the indentation for the closing tag
+		$out .= str_repeat(" ", $depth);
+
+		// Write the closing list tag
+		$out .= "</".$type.">\n";
+
+		return $out;
 	}
 }
 
@@ -183,7 +180,7 @@ if ( ! function_exists('br'))
 {
 	function br($num = 1)
 	{
-		return str_repeat('<br />', $num);
+		return str_repeat("<br />", $num);
 	}
 }
 
@@ -215,9 +212,10 @@ if ( ! function_exists('img'))
 
 		$img = '<img';
 
-		foreach ($src as $k => $v)
+		foreach ($src as $k=>$v)
 		{
-			if ($k === 'src' AND strpos($v, '://') === FALSE)
+
+			if ($k == 'src' AND strpos($v, '://') === FALSE)
 			{
 				$CI =& get_instance();
 
@@ -236,7 +234,9 @@ if ( ! function_exists('img'))
 			}
 		}
 
-		return $img.'/>';
+		$img .= '/>';
+
+		return $img;
 	}
 }
 
@@ -278,7 +278,14 @@ if ( ! function_exists('doctype'))
 			}
 		}
 
-		return (isset($_doctypes[$type])) ? $_doctypes[$type] : FALSE;
+		if (isset($_doctypes[$type]))
+		{
+			return $_doctypes[$type];
+		}
+		else
+		{
+			return FALSE;
+		}
 	}
 }
 
@@ -303,13 +310,14 @@ if ( ! function_exists('link_tag'))
 	function link_tag($href = '', $rel = 'stylesheet', $type = 'text/css', $title = '', $media = '', $index_page = FALSE)
 	{
 		$CI =& get_instance();
+
 		$link = '<link ';
 
 		if (is_array($href))
 		{
-			foreach ($href as $k => $v)
+			foreach ($href as $k=>$v)
 			{
-				if ($k === 'href' AND strpos($v, '://') === FALSE)
+				if ($k == 'href' AND strpos($v, '://') === FALSE)
 				{
 					if ($index_page === TRUE)
 					{
@@ -326,11 +334,11 @@ if ( ! function_exists('link_tag'))
 				}
 			}
 
-			$link .= '/>';
+			$link .= "/>";
 		}
 		else
 		{
-			if (strpos($href, '://') !== FALSE)
+			if ( strpos($href, '://') !== FALSE)
 			{
 				$link .= 'href="'.$href.'" ';
 			}
@@ -345,12 +353,12 @@ if ( ! function_exists('link_tag'))
 
 			$link .= 'rel="'.$rel.'" type="'.$type.'" ';
 
-			if ($media != '')
+			if ($media	!= '')
 			{
 				$link .= 'media="'.$media.'" ';
 			}
 
-			if ($title != '')
+			if ($title	!= '')
 			{
 				$link .= 'title="'.$title.'" ';
 			}
@@ -358,7 +366,8 @@ if ( ! function_exists('link_tag'))
 			$link .= '/>';
 		}
 
-		return $link."\n";
+
+		return $link;
 	}
 }
 
@@ -418,9 +427,10 @@ if ( ! function_exists('nbs'))
 {
 	function nbs($num = 1)
 	{
-		return str_repeat('&nbsp;', $num);
+		return str_repeat("&nbsp;", $num);
 	}
 }
+
 
 /* End of file html_helper.php */
 /* Location: ./system/helpers/html_helper.php */

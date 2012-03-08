@@ -1,25 +1,13 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 /**
  * CodeIgniter
  *
  * An open source application development framework for PHP 5.1.6 or newer
  *
- * NOTICE OF LICENSE
- *
- * Licensed under the Open Software License version 3.0
- *
- * This source file is subject to the Open Software License (OSL 3.0) that is
- * bundled with this package in the files license.txt / license.rst.  It is
- * also available through the world wide web at this URL:
- * http://opensource.org/licenses/OSL-3.0
- * If you did not receive a copy of the license and are unable to obtain it
- * through the world wide web, please send an email to
- * licensing@ellislab.com so we can send you a copy immediately.
- *
  * @package		CodeIgniter
- * @author		EllisLab Dev Team
- * @copyright	Copyright (c) 2008 - 2012, EllisLab, Inc. (http://ellislab.com/)
- * @license		http://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
+ * @author		ExpressionEngine Dev Team
+ * @copyright	Copyright (c) 2008 - 2011, EllisLab, Inc.
+ * @license		http://codeigniter.com/user_guide/license.html
  * @link		http://codeigniter.com
  * @since		Version 1.0
  * @filesource
@@ -30,41 +18,42 @@
 /**
  * User Agent Class
  *
- * Identifies the platform, browser, robot, or mobile device of the browsing agent
+ * Identifies the platform, browser, robot, or mobile devise of the browsing agent
  *
  * @package		CodeIgniter
  * @subpackage	Libraries
  * @category	User Agent
- * @author		EllisLab Dev Team
+ * @author		ExpressionEngine Dev Team
  * @link		http://codeigniter.com/user_guide/libraries/user_agent.html
  */
 class CI_User_agent {
 
-	public $agent		= NULL;
+	var $agent		= NULL;
 
-	public $is_browser	= FALSE;
-	public $is_robot	= FALSE;
-	public $is_mobile	= FALSE;
+	var $is_browser	= FALSE;
+	var $is_robot	= FALSE;
+	var $is_mobile	= FALSE;
 
-	public $languages	= array();
-	public $charsets	= array();
+	var $languages	= array();
+	var $charsets	= array();
 
-	public $platforms	= array();
-	public $browsers	= array();
-	public $mobiles		= array();
-	public $robots		= array();
+	var $platforms	= array();
+	var $browsers	= array();
+	var $mobiles	= array();
+	var $robots		= array();
 
-	public $platform	= '';
-	public $browser		= '';
-	public $version		= '';
-	public $mobile		= '';
-	public $robot		= '';
+	var $platform	= '';
+	var $browser	= '';
+	var $version	= '';
+	var $mobile		= '';
+	var $robot		= '';
 
 	/**
 	 * Constructor
 	 *
 	 * Sets the User Agent and runs the compilation routine
 	 *
+	 * @access	public
 	 * @return	void
 	 */
 	public function __construct()
@@ -90,9 +79,10 @@ class CI_User_agent {
 	/**
 	 * Compile the User Agent Data
 	 *
+	 * @access	private
 	 * @return	bool
 	 */
-	protected function _load_agent_file()
+	private function _load_agent_file()
 	{
 		if (defined('ENVIRONMENT') AND is_file(APPPATH.'config/'.ENVIRONMENT.'/user_agents.php'))
 		{
@@ -145,9 +135,10 @@ class CI_User_agent {
 	/**
 	 * Compile the User Agent Data
 	 *
+	 * @access	private
 	 * @return	bool
 	 */
-	protected function _compile_data()
+	private function _compile_data()
 	{
 		$this->_set_platform();
 
@@ -165,9 +156,10 @@ class CI_User_agent {
 	/**
 	 * Set the Platform
 	 *
+	 * @access	private
 	 * @return	mixed
 	 */
-	protected function _set_platform()
+	private function _set_platform()
 	{
 		if (is_array($this->platforms) AND count($this->platforms) > 0)
 		{
@@ -188,9 +180,10 @@ class CI_User_agent {
 	/**
 	 * Set the Browser
 	 *
+	 * @access	private
 	 * @return	bool
 	 */
-	protected function _set_browser()
+	private function _set_browser()
 	{
 		if (is_array($this->browsers) AND count($this->browsers) > 0)
 		{
@@ -214,9 +207,10 @@ class CI_User_agent {
 	/**
 	 * Set the Robot
 	 *
+	 * @access	private
 	 * @return	bool
 	 */
-	protected function _set_robot()
+	private function _set_robot()
 	{
 		if (is_array($this->robots) AND count($this->robots) > 0)
 		{
@@ -238,9 +232,10 @@ class CI_User_agent {
 	/**
 	 * Set the Mobile Device
 	 *
+	 * @access	private
 	 * @return	bool
 	 */
-	protected function _set_mobile()
+	private function _set_mobile()
 	{
 		if (is_array($this->mobiles) AND count($this->mobiles) > 0)
 		{
@@ -262,16 +257,19 @@ class CI_User_agent {
 	/**
 	 * Set the accepted languages
 	 *
+	 * @access	private
 	 * @return	void
 	 */
-	protected function _set_languages()
+	private function _set_languages()
 	{
-		if ((count($this->languages) === 0) AND isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) AND $_SERVER['HTTP_ACCEPT_LANGUAGE'] != '')
+		if ((count($this->languages) == 0) AND isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) AND $_SERVER['HTTP_ACCEPT_LANGUAGE'] != '')
 		{
-			$this->languages = explode(',', preg_replace('/(;q=[0-9\.]+)/i', '', strtolower(trim($_SERVER['HTTP_ACCEPT_LANGUAGE']))));
+			$languages = preg_replace('/(;q=[0-9\.]+)/i', '', strtolower(trim($_SERVER['HTTP_ACCEPT_LANGUAGE'])));
+
+			$this->languages = explode(',', $languages);
 		}
 
-		if (count($this->languages) === 0)
+		if (count($this->languages) == 0)
 		{
 			$this->languages = array('Undefined');
 		}
@@ -282,16 +280,19 @@ class CI_User_agent {
 	/**
 	 * Set the accepted character sets
 	 *
+	 * @access	private
 	 * @return	void
 	 */
-	protected function _set_charsets()
+	private function _set_charsets()
 	{
-		if ((count($this->charsets) === 0) AND isset($_SERVER['HTTP_ACCEPT_CHARSET']) AND $_SERVER['HTTP_ACCEPT_CHARSET'] != '')
+		if ((count($this->charsets) == 0) AND isset($_SERVER['HTTP_ACCEPT_CHARSET']) AND $_SERVER['HTTP_ACCEPT_CHARSET'] != '')
 		{
-			$this->charsets = explode(',', preg_replace('/(;q=.+)/i', '', strtolower(trim($_SERVER['HTTP_ACCEPT_CHARSET']))));
+			$charsets = preg_replace('/(;q=.+)/i', '', strtolower(trim($_SERVER['HTTP_ACCEPT_CHARSET'])));
+
+			$this->charsets = explode(',', $charsets);
 		}
 
-		if (count($this->charsets) === 0)
+		if (count($this->charsets) == 0)
 		{
 			$this->charsets = array('Undefined');
 		}
@@ -302,6 +303,7 @@ class CI_User_agent {
 	/**
 	 * Is Browser
 	 *
+	 * @access	public
 	 * @return	bool
 	 */
 	public function is_browser($key = NULL)
@@ -326,6 +328,7 @@ class CI_User_agent {
 	/**
 	 * Is Robot
 	 *
+	 * @access	public
 	 * @return	bool
 	 */
 	public function is_robot($key = NULL)
@@ -350,6 +353,7 @@ class CI_User_agent {
 	/**
 	 * Is Mobile
 	 *
+	 * @access	public
 	 * @return	bool
 	 */
 	public function is_mobile($key = NULL)
@@ -374,11 +378,16 @@ class CI_User_agent {
 	/**
 	 * Is this a referral from another site?
 	 *
+	 * @access	public
 	 * @return	bool
 	 */
 	public function is_referral()
 	{
-		return ( ! isset($_SERVER['HTTP_REFERER']) OR $_SERVER['HTTP_REFERER'] == '') ? FALSE : TRUE;
+		if ( ! isset($_SERVER['HTTP_REFERER']) OR $_SERVER['HTTP_REFERER'] == '')
+		{
+			return FALSE;
+		}
+		return TRUE;
 	}
 
 	// --------------------------------------------------------------------
@@ -386,6 +395,7 @@ class CI_User_agent {
 	/**
 	 * Agent String
 	 *
+	 * @access	public
 	 * @return	string
 	 */
 	public function agent_string()
@@ -398,6 +408,7 @@ class CI_User_agent {
 	/**
 	 * Get Platform
 	 *
+	 * @access	public
 	 * @return	string
 	 */
 	public function platform()
@@ -410,6 +421,7 @@ class CI_User_agent {
 	/**
 	 * Get Browser Name
 	 *
+	 * @access	public
 	 * @return	string
 	 */
 	public function browser()
@@ -422,6 +434,7 @@ class CI_User_agent {
 	/**
 	 * Get the Browser Version
 	 *
+	 * @access	public
 	 * @return	string
 	 */
 	public function version()
@@ -434,6 +447,7 @@ class CI_User_agent {
 	/**
 	 * Get The Robot Name
 	 *
+	 * @access	public
 	 * @return	string
 	 */
 	public function robot()
@@ -445,6 +459,7 @@ class CI_User_agent {
 	/**
 	 * Get the Mobile Device
 	 *
+	 * @access	public
 	 * @return	string
 	 */
 	public function mobile()
@@ -457,6 +472,7 @@ class CI_User_agent {
 	/**
 	 * Get the referrer
 	 *
+	 * @access	public
 	 * @return	bool
 	 */
 	public function referrer()
@@ -469,11 +485,12 @@ class CI_User_agent {
 	/**
 	 * Get the accepted languages
 	 *
+	 * @access	public
 	 * @return	array
 	 */
 	public function languages()
 	{
-		if (count($this->languages) === 0)
+		if (count($this->languages) == 0)
 		{
 			$this->_set_languages();
 		}
@@ -486,11 +503,12 @@ class CI_User_agent {
 	/**
 	 * Get the accepted Character Sets
 	 *
+	 * @access	public
 	 * @return	array
 	 */
 	public function charsets()
 	{
-		if (count($this->charsets) === 0)
+		if (count($this->charsets) == 0)
 		{
 			$this->_set_charsets();
 		}
@@ -503,6 +521,7 @@ class CI_User_agent {
 	/**
 	 * Test for a particular language
 	 *
+	 * @access	public
 	 * @return	bool
 	 */
 	public function accept_lang($lang = 'en')
@@ -515,6 +534,7 @@ class CI_User_agent {
 	/**
 	 * Test for a particular character set
 	 *
+	 * @access	public
 	 * @return	bool
 	 */
 	public function accept_charset($charset = 'utf-8')
@@ -523,6 +543,7 @@ class CI_User_agent {
 	}
 
 }
+
 
 /* End of file User_agent.php */
 /* Location: ./system/libraries/User_agent.php */

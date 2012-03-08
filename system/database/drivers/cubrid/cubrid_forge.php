@@ -1,25 +1,13 @@
-<?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 /**
  * CodeIgniter
  *
  * An open source application development framework for PHP 5.1.6 or newer
  *
- * NOTICE OF LICENSE
- * 
- * Licensed under the Open Software License version 3.0
- * 
- * This source file is subject to the Open Software License (OSL 3.0) that is
- * bundled with this package in the files license.txt / license.rst.  It is
- * also available through the world wide web at this URL:
- * http://opensource.org/licenses/OSL-3.0
- * If you did not receive a copy of the license and are unable to obtain it
- * through the world wide web, please send an email to
- * licensing@ellislab.com so we can send you a copy immediately.
- *
  * @package		CodeIgniter
- * @author		EllisLab Dev Team
- * @copyright	Copyright (c) 2008 - 2012, EllisLab, Inc. (http://ellislab.com/)
- * @license		http://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
+ * @author		Esen Sagynov
+ * @copyright	Copyright (c) 2008 - 2011, EllisLab, Inc.
+ * @license		http://codeigniter.com/user_guide/license.html
  * @link		http://codeigniter.com
  * @since		Version 1.0
  * @filesource
@@ -93,11 +81,11 @@ class CI_DB_cubrid_forge extends CI_DB_forge {
 			{
 				$attributes = array_change_key_case($attributes, CASE_UPPER);
 
-				$sql .= "\n\t\"".$this->db->protect_identifiers($field).'"';
+				$sql .= "\n\t\"" . $this->db->_protect_identifiers($field) . "\"";
 
 				if (array_key_exists('NAME', $attributes))
 				{
-					$sql .= ' '.$this->db->protect_identifiers($attributes['NAME']).' ';
+					$sql .= ' '.$this->db->_protect_identifiers($attributes['NAME']).' ';
 				}
 
 				if (array_key_exists('TYPE', $attributes))
@@ -197,9 +185,10 @@ class CI_DB_cubrid_forge extends CI_DB_forge {
 		// If there is a PK defined
 		if (count($primary_keys) > 0)
 		{
-			$key_name = 'pk_'.$table.'_'.$this->db->protect_identifiers(implode('_', $primary_keys));
-
-			$primary_keys = $this->db->protect_identifiers($primary_keys);
+			$key_name = "pk_" . $table . "_" .
+				$this->db->_protect_identifiers(implode('_', $primary_keys));
+			
+			$primary_keys = $this->db->_protect_identifiers($primary_keys);
 			$sql .= ",\n\tCONSTRAINT " . $key_name . " PRIMARY KEY(" . implode(', ', $primary_keys) . ")";
 		}
 
@@ -209,15 +198,15 @@ class CI_DB_cubrid_forge extends CI_DB_forge {
 			{
 				if (is_array($key))
 				{
-					$key_name = $this->db->protect_identifiers(implode('_', $key));
-					$key = $this->db->protect_identifiers($key);
+					$key_name = $this->db->_protect_identifiers(implode('_', $key));
+					$key = $this->db->_protect_identifiers($key);
 				}
 				else
 				{
-					$key_name = $this->db->protect_identifiers($key);
+					$key_name = $this->db->_protect_identifiers($key);
 					$key = array($key_name);
 				}
-
+				
 				$sql .= ",\n\tKEY \"{$key_name}\" (" . implode(', ', $key) . ")";
 			}
 		}
@@ -257,19 +246,19 @@ class CI_DB_cubrid_forge extends CI_DB_forge {
 	 */
 	function _alter_table($alter_type, $table, $fields, $after_field = '')
 	{
-		$sql = 'ALTER TABLE '.$this->db->protect_identifiers($table).' '.$alter_type.' ';
+		$sql = 'ALTER TABLE '.$this->db->_protect_identifiers($table)." $alter_type ";
 
 		// DROP has everything it needs now.
 		if ($alter_type == 'DROP')
 		{
-			return $sql.$this->db->protect_identifiers($fields);
+			return $sql.$this->db->_protect_identifiers($fields);
 		}
 
 		$sql .= $this->_process_fields($fields);
 
 		if ($after_field != '')
 		{
-			return $sql.' AFTER '.$this->db->protect_identifiers($after_field);
+			$sql .= ' AFTER ' . $this->db->_protect_identifiers($after_field);
 		}
 
 		return $sql;
@@ -289,7 +278,8 @@ class CI_DB_cubrid_forge extends CI_DB_forge {
 	 */
 	function _rename_table($table_name, $new_table_name)
 	{
-		return 'RENAME TABLE '.$this->db->protect_identifiers($table_name).' AS '.$this->db->protect_identifiers($new_table_name);
+		$sql = 'RENAME TABLE '.$this->db->_protect_identifiers($table_name)." AS ".$this->db->_protect_identifiers($new_table_name);
+		return $sql;
 	}
 
 }

@@ -4,22 +4,10 @@
  *
  * An open source application development framework for PHP 5.1.6 or newer
  *
- * NOTICE OF LICENSE
- * 
- * Licensed under the Open Software License version 3.0
- * 
- * This source file is subject to the Open Software License (OSL 3.0) that is
- * bundled with this package in the files license.txt / license.rst.  It is
- * also available through the world wide web at this URL:
- * http://opensource.org/licenses/OSL-3.0
- * If you did not receive a copy of the license and are unable to obtain it
- * through the world wide web, please send an email to
- * licensing@ellislab.com so we can send you a copy immediately.
- *
  * @package		CodeIgniter
- * @author		EllisLab Dev Team
- * @copyright	Copyright (c) 2008 - 2012, EllisLab, Inc. (http://ellislab.com/)
- * @license		http://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
+ * @author		ExpressionEngine Dev Team
+ * @copyright	Copyright (c) 2008 - 2011, EllisLab, Inc.
+ * @license		http://codeigniter.com/user_guide/license.html
  * @link		http://codeigniter.com
  * @since		Version 1.0
  * @filesource
@@ -37,7 +25,7 @@
  * @package		CodeIgniter
  * @subpackage	Drivers
  * @category	Database
- * @author		EllisLab Dev Team
+ * @author		ExpressionEngine Dev Team
  * @link		http://codeigniter.com/user_guide/database/
  */
 class CI_DB_sqlsrv_driver extends CI_DB {
@@ -98,7 +86,7 @@ class CI_DB_sqlsrv_driver extends CI_DB {
 	 */
 	function db_pconnect()
 	{
-		return $this->db_connect(TRUE);
+		$this->db_connect(TRUE);
 	}
 
 	// --------------------------------------------------------------------
@@ -122,23 +110,28 @@ class CI_DB_sqlsrv_driver extends CI_DB {
 	/**
 	 * Select the database
 	 *
-	 * @param	string	database name
-	 * @return	bool
+	 * @access	private called by the base class
+	 * @return	resource
 	 */
-	public function db_select($database = '')
+	function db_select()
 	{
-		if ($database === '')
-		{
-			$database = $this->database;
-		}
+		return $this->_execute('USE ' . $this->database);
+	}
 
-		if ($this->_execute('USE '.$database))
-		{
-			$this->database = $database;
-			return TRUE;
-		}
+	// --------------------------------------------------------------------
 
-		return FALSE;
+	/**
+	 * Set client character set
+	 *
+	 * @access	public
+	 * @param	string
+	 * @param	string
+	 * @return	resource
+	 */
+	function db_set_charset($charset, $collation)
+	{
+		// @todo - add support if needed
+		return TRUE;
 	}
 
 	// --------------------------------------------------------------------
@@ -317,23 +310,15 @@ class CI_DB_sqlsrv_driver extends CI_DB {
 	// --------------------------------------------------------------------
 
 	/**
-	 * Database version number
-	 *
-	 * @return	string
-	 */
-	public function version()
+	* Version number query string
+	*
+	* @access public
+	* @return string
+	*/
+	function _version()
 	{
-		if (isset($this->data_cache['version']))
-		{
-			return $this->data_cache['version'];
-		}
-
-		if (($info = sqlsrv_server_info($this->conn_id)) === FALSE)
-		{
-			return FALSE;
-		}
-
-		return $this->data_cache['version'] = $info['SQLServerVersion'];
+		$info = sqlsrv_server_info($this->conn_id);
+		return sprintf("select '%s' as ver", $info['SQLServerVersion']);
 	}
 
 	// --------------------------------------------------------------------
@@ -414,39 +399,29 @@ class CI_DB_sqlsrv_driver extends CI_DB {
 	// --------------------------------------------------------------------
 
 	/**
-	 * Error
+	 * The error message string
 	 *
-	 * Returns an array containing code and message of the last
-	 * database error that has occured.
-	 *
-	 * @return	array
+	 * @access	private
+	 * @return	string
 	 */
-	public function error()
+	function _error_message()
 	{
-		$error = array('code' => '00000', 'message' => '');
-		$sqlsrv_errors = sqlsrv_errors(SQLSRV_ERR_ERRORS);
+		$error = array_shift(sqlsrv_errors());
+		return !empty($error['message']) ? $error['message'] : null;
+	}
 
-		if ( ! is_array($sqlsrv_errors))
-		{
-			return $error;
-		}
+	// --------------------------------------------------------------------
 
-		$sqlsrv_error = array_shift($sqlsrv_errors);
-		if (isset($sqlsrv_error['SQLSTATE']))
-		{
-			$error['code'] = isset($sqlsrv_error['code']) ? $sqlsrv_error['SQLSTATE'].'/'.$sqlsrv_error['code'] : $sqlsrv_error['SQLSTATE'];
-		}
-		elseif (isset($sqlsrv_error['code']))
-		{
-			$error['code'] = $sqlsrv_error['code'];
-		}
-
-		if (isset($sqlsrv_error['message']))
-		{
-			$error['message'] = $sqlsrv_error['message'];
-		}
-
-		return $error;
+	/**
+	 * The error message number
+	 *
+	 * @access	private
+	 * @return	integer
+	 */
+	function _error_number()
+	{
+		$error = array_shift(sqlsrv_errors());
+		return isset($error['SQLSTATE']) ? $error['SQLSTATE'] : null;
 	}
 
 	// --------------------------------------------------------------------

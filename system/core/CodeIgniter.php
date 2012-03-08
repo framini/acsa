@@ -1,25 +1,13 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 /**
  * CodeIgniter
  *
  * An open source application development framework for PHP 5.1.6 or newer
  *
- * NOTICE OF LICENSE
- *
- * Licensed under the Open Software License version 3.0
- *
- * This source file is subject to the Open Software License (OSL 3.0) that is
- * bundled with this package in the files license.txt / license.rst.  It is
- * also available through the world wide web at this URL:
- * http://opensource.org/licenses/OSL-3.0
- * If you did not receive a copy of the license and are unable to obtain it
- * through the world wide web, please send an email to
- * licensing@ellislab.com so we can send you a copy immediately.
- *
  * @package		CodeIgniter
- * @author		EllisLab Dev Team
- * @copyright	Copyright (c) 2008 - 2012, EllisLab, Inc. (http://ellislab.com/)
- * @license		http://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
+ * @author		ExpressionEngine Dev Team
+ * @copyright	Copyright (c) 2008 - 2011, EllisLab, Inc.
+ * @license		http://codeigniter.com/user_guide/license.html
  * @link		http://codeigniter.com
  * @since		Version 1.0
  * @filesource
@@ -35,7 +23,7 @@
  * @package		CodeIgniter
  * @subpackage	codeigniter
  * @category	Front-controller
- * @author		EllisLab Dev Team
+ * @author		ExpressionEngine Dev Team
  * @link		http://codeigniter.com/user_guide/
  */
 
@@ -45,7 +33,15 @@
  * @var string
  *
  */
-	define('CI_VERSION', '3.0-dev');
+	define('CI_VERSION', '2.1.0');
+
+/**
+ * CodeIgniter Branch (Core = TRUE, Reactor = FALSE)
+ *
+ * @var boolean
+ *
+ */
+	define('CI_CORE', FALSE);
 
 /*
  * ------------------------------------------------------
@@ -59,7 +55,7 @@
  *  Load the framework constants
  * ------------------------------------------------------
  */
-	if (defined('ENVIRONMENT') && file_exists(APPPATH.'config/'.ENVIRONMENT.'/constants.php'))
+	if (defined('ENVIRONMENT') AND file_exists(APPPATH.'config/'.ENVIRONMENT.'/constants.php'))
 	{
 		require(APPPATH.'config/'.ENVIRONMENT.'/constants.php');
 	}
@@ -91,12 +87,12 @@
  * "libraries" folder. Since CI allows config items to be
  * overriden via data set in the main index. php file,
  * before proceeding we need to know if a subclass_prefix
- * override exists. If so, we will set this value now,
+ * override exists.  If so, we will set this value now,
  * before any classes are loaded
  * Note: Since the config file data is cached it doesn't
  * hurt to load it here.
  */
-	if (isset($assign_to_config['subclass_prefix']) && $assign_to_config['subclass_prefix'] != '')
+	if (isset($assign_to_config['subclass_prefix']) AND $assign_to_config['subclass_prefix'] != '')
 	{
 		get_config(array('subclass_prefix' => $assign_to_config['subclass_prefix']));
 	}
@@ -106,8 +102,7 @@
  *  Set a liberal script execution time limit
  * ------------------------------------------------------
  */
-	if (function_exists('set_time_limit') && @ini_get('safe_mode') == 0
-		&& php_sapi_name() !== 'cli') // Do not override the Time Limit value if running from Command Line
+	if (function_exists("set_time_limit") == TRUE AND @ini_get("safe_mode") == 0)
 	{
 		@set_time_limit(300);
 	}
@@ -159,6 +154,7 @@
  * after the Config class is instantiated.
  *
  */
+
 	$UNI =& load_class('Utf8', 'core');
 
 /*
@@ -191,13 +187,15 @@
 
 /*
  * ------------------------------------------------------
- *	Is there a valid cache file? If so, we're done...
+ *	Is there a valid cache file?  If so, we're done...
  * ------------------------------------------------------
  */
-	if ($EXT->_call_hook('cache_override') === FALSE
-		&& $OUT->_display_cache($CFG, $URI) == TRUE)
+	if ($EXT->_call_hook('cache_override') === FALSE)
 	{
-		exit;
+		if ($OUT->_display_cache($CFG, $URI) == TRUE)
+		{
+			exit;
+		}
 	}
 
 /*
@@ -267,13 +265,13 @@
 	$method = $RTR->fetch_method();
 
 	if ( ! class_exists($class)
-		OR strpos($method, '_') === 0
+		OR strncmp($method, '_', 1) == 0
 		OR in_array(strtolower($method), array_map('strtolower', get_class_methods('CI_Controller')))
 		)
 	{
 		if ( ! empty($RTR->routes['404_override']))
 		{
-			$x = explode('/', $RTR->routes['404_override'], 2);
+			$x = explode('/', $RTR->routes['404_override']);
 			$class = $x[0];
 			$method = (isset($x[1]) ? $x[1] : 'index');
 			if ( ! class_exists($class))
@@ -335,7 +333,7 @@
 			// Check and see if we are using a 404 override and use it.
 			if ( ! empty($RTR->routes['404_override']))
 			{
-				$x = explode('/', $RTR->routes['404_override'], 2);
+				$x = explode('/', $RTR->routes['404_override']);
 				$class = $x[0];
 				$method = (isset($x[1]) ? $x[1] : 'index');
 				if ( ! class_exists($class))
@@ -360,6 +358,7 @@
 		// Any URI segments present (besides the class/function) will be passed to the method for convenience
 		call_user_func_array(array(&$CI, $method), array_slice($URI->rsegments, 2));
 	}
+
 
 	// Mark a benchmark end point
 	$BM->mark('controller_execution_time_( '.$class.' / '.$method.' )_end');
@@ -393,10 +392,11 @@
  *  Close the DB connection if one exists
  * ------------------------------------------------------
  */
-	if (class_exists('CI_DB') && isset($CI->db))
+	if (class_exists('CI_DB') AND isset($CI->db))
 	{
 		$CI->db->close();
 	}
+
 
 /* End of file CodeIgniter.php */
 /* Location: ./system/core/CodeIgniter.php */

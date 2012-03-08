@@ -4,22 +4,10 @@
  *
  * An open source application development framework for PHP 5.1.6 or newer
  *
- * NOTICE OF LICENSE
- * 
- * Licensed under the Open Software License version 3.0
- * 
- * This source file is subject to the Open Software License (OSL 3.0) that is
- * bundled with this package in the files license.txt / license.rst.  It is
- * also available through the world wide web at this URL:
- * http://opensource.org/licenses/OSL-3.0
- * If you did not receive a copy of the license and are unable to obtain it
- * through the world wide web, please send an email to
- * licensing@ellislab.com so we can send you a copy immediately.
- *
  * @package		CodeIgniter
- * @author		EllisLab Dev Team
- * @copyright   Copyright (c) 2008 - 2012, EllisLab, Inc. (http://ellislab.com/)
- * @license		http://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
+ * @author		ExpressionEngine Dev Team
+ * @copyright   Copyright (c) 2008 - 2011, EllisLab, Inc.
+ * @license		http://codeigniter.com/user_guide/license.html
  * @link		http://codeigniter.com
  * @since		Version 1.0
  * @filesource
@@ -33,23 +21,14 @@
  * This class extends the parent result class: CI_DB_result
  *
  * @category	Database
- * @author		EllisLab Dev Team
+ * @author		ExpressionEngine Dev Team
  * @link		http://codeigniter.com/user_guide/database/
  */
 class CI_DB_oci8_result extends CI_DB_result {
 
-	public $stmt_id;
-	public $curs_id;
-	public $limit_used;
-
-	public function __construct(&$driver_object)
-	{
-		parent::__construct($driver_object);
-		$this->stmt_id = $driver_object->stmt_id;
-		$this->curs_id = $driver_object->curs_id;
-		$this->limit_used = $driver_object->limit_used;
-		$driver_object->stmt_id = FALSE;
-	}
+	var $stmt_id;
+	var $curs_id;
+	var $limit_used;
 
 	/**
 	 * Number of rows in the result set.
@@ -66,15 +45,15 @@ class CI_DB_oci8_result extends CI_DB_result {
 		if ($this->num_rows === 0 && count($this->result_array()) > 0)
 		{
 			$this->num_rows = count($this->result_array());
-			@oci_execute($this->stmt_id, OCI_DEFAULT);
+			@oci_execute($this->stmt_id);
 
 			if ($this->curs_id)
 			{
-				@oci_execute($this->curs_id, OCI_DEFAULT);
+				@oci_execute($this->curs_id);
 			}
 		}
 
-		return $this->num_rows;
+		return $rowcount;
 	}
 
 	// --------------------------------------------------------------------

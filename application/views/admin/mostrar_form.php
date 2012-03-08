@@ -86,7 +86,8 @@
             </div><!--fin span12-->
             <?php if(isset($datos_extras)) { ?>
             <div class="span6">
-            	    <div class="well alert-info">
+            		<h3>Datos de la entrada</h3>
+            	    <div class="well alert">
 					    <ul class="margin-bot-none sin-estilo">
 					    	<?php foreach ($datos_extras as $key => $value) { 
 								echo "<li><h6>". format_texto($key) . "</h6>" . $value . "</li>";
