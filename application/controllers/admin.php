@@ -59,29 +59,43 @@ class Admin extends MY_Controller {
 						//Si hay un entry_id especificado en la URI, es porque estamos tratando de editar una entrada
 						
 						if($this->uri->segment(4) && !is_null($entry = $this->administracion_frr->get_entry_by_id($this->uri->segment(4)))) {
+							$this->breadcrumb->append_crumb('Home', site_url());
+							$this->breadcrumb->append_crumb('Publicar', site_url() . "/admin/publicar_contenido");
+							$this->breadcrumb->append_crumb('Editar entrada', site_url() . "/admin/editar_contenido");
 							
 							//Intentamos actualizar la entrada con los nuevos datos ingresados
 							if($this->administracion_frr->actualizar_datos_form($this->uri->segment(3), $datos, $this->uri->segment(4))) {
 								$message = "El contenido se ha actualizado correctamente!";
 			                    $this->session->set_flashdata('message', $message);
-								redirect('admin/forms');
+								redirect('admin/editar_contenido');
 							}
 						} else {
+							$this->breadcrumb->append_crumb('Home', site_url());
+							$this->breadcrumb->append_crumb('Publicar', site_url() . "/admin/publicar_contenido");
+							$this->breadcrumb->append_crumb('Nueva Entrada', site_url() . "/");
+							
 							//Si no se especifico un entry_id en la URI, es porque se esta tratando de crear contenido
 							if($this->administracion_frr->persistir_datos_form($this->uri->segment(3), $datos)) {
 								$message = "El contenido se ha creado correctamente!";
 			                    $this->session->set_flashdata('message', $message);
-								redirect('admin/forms');
+								redirect('admin/editar_contenido');
 							}
 						}
 					}
 				} else {
 					//Si hay un entry_id especificado en la URI, es porque estamos tratando de editar una entrada
 					if($this->uri->segment(4) && !is_null($entry = $this->administracion_frr->get_entry_by_id($this->uri->segment(4)))) {
+						$this->breadcrumb->append_crumb('Home', site_url());
+						$this->breadcrumb->append_crumb('Publicar', site_url() . "/admin/publicar_contenido");
+						$this->breadcrumb->append_crumb('Editar entrada', site_url() . "/admin/editar_contenido");
 						//Datos extras
 						$data['datos_extras'] = $this->administracion_frr->get_datos_extras_entradas($entry);
 						//Cargamos los datos almancenados en la base de datos para luego mostrarlos en los campos del form
 						$data['valores_campos'] = $this->administracion_frr->get_entry_datos_fields($entry);
+					} else {
+						$this->breadcrumb->append_crumb('Home', site_url());
+						$this->breadcrumb->append_crumb('Publicar', site_url() . "/admin/publicar_contenido");
+						$this->breadcrumb->append_crumb('Nueva Entrada', site_url() . "/");
 					}
 				}
 
@@ -89,8 +103,6 @@ class Admin extends MY_Controller {
 				$data['datos_fields'] = $this->administracion_frr->get_fields_grupo_fields($form->grupos_fields_id);
 				//Preparamos la informacion para que luego pueda ser generada dinamicamente en la vista
 				$data['datos_parseados'] = $this->administracion_frr->parser_field_type($data['datos_fields']);
-				/*print_r($data['datos_parseados']);
-				die();*/
 				
 				//Chequeamos que el formulario tenga fields
 				if(!empty($data)) {
@@ -100,6 +112,63 @@ class Admin extends MY_Controller {
 					$this->template->set_content('admin/mostrar_form', $data);
 					$this->template->build();
 				}
+			}
+		}
+		
+		/**
+		 * Eliminacion de un entry en base a un ID provisto en la URI
+		 */
+		function eliminar_entry() {
+			//Antes de intentar eliminar la entrada chequeamos que exista
+			if($this->uri->segment(3) && !is_null($entry = $this->administracion_frr->entry_exist($this->uri->segment(3)))) {
+				//Nos fijamos si esta confirmada la eliminacion
+				if($this->uri->segment(4) == "si") {
+					if($this->administracion_frr->eliminar_entry($this->uri->segment(3))) {
+					$message = "El contenido se ha eliminado correctamente!";
+                    $this->session->set_flashdata('message', $message);
+					redirect('admin/editar_contenido');
+					} else {
+						//Especificar error en caso de que no se haya podido eliminar la entrada
+					}
+				}
+				
+				$this->template->set_content('general/confirma_operacion');
+				$this->template->build();
+				
+			} else {
+				//Especificar un error en caso de que no exista un entry con el ID pasado
+			}
+		}
+		
+		/**
+		 * Lista los forms disponibles para publicar contenido
+		 */
+		function publicar_contenido() {
+			$this->breadcrumb->append_crumb('Home', site_url());
+			$this->breadcrumb->append_crumb('Publicar', site_url() . "/admin/publicar_contenido");
+			
+			$data['forms'] = $this->administracion_frr->get_forms();
+			
+			if ($message = $this->session->flashdata('message')) {
+		  		$data['message'] = $message;
+		    }
+			$this->template->set_content('admin/publicar_contenido', $data);
+			$this->template->build();
+		}
+		
+		/**
+		 * Lista las entries del sistema
+		 */
+		function editar_contenido() {
+			$this->breadcrumb->append_crumb('Home', site_url());
+			$this->breadcrumb->append_crumb('Editar', site_url() . "/admin/editar_contenido");
+			$data['entries'] = $this->administracion_frr->get_entries();
+			if(!is_null($data['entries'])) {
+				if ($message = $this->session->flashdata('message')) {
+			  		$data['message'] = $message;
+			    }
+				$this->template->set_content('admin/listar_entradas', $data);
+				$this->template->build();
 			}
 		}
 		

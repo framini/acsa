@@ -140,6 +140,53 @@ class Forms extends CI_Model
 	}
 	
 	/**
+	 * Metodo utilizado para ver si una entrada existe.
+	 * Chequea en la tabla forms_entradas que exista una entrada con ese id
+	 */
+	function entry_exist($entry_id) {
+		$this->db->where('entry_id', $entry_id);
+		$this->db->from('forms_entradas');
+		$count = $this->db->count_all_results();
+		
+		if ($count == 1) return true;
+		return NULL;
+	}
+	
+	/**
+	 * Metodo utilizado para eliminar un entry del sistema
+	 */
+	function eliminar_entry($entry_id) {
+		//Iniciamos la transacccion
+		$this->db->trans_start();
+		
+		$this->db->where('entry_id', $entry_id);
+		
+		$tablas = array('forms_entradas', 'forms_data');
+		$this->db->delete($tablas);
+		
+		//Comitiamos la transaccion
+		$this->db->trans_complete();
+		
+		if($this->db->trans_status() === FALSE) {
+            return NULL;
+        } else {
+        	return TRUE;
+        }
+	}
+	
+	/**
+	 * Devuelve todas las entradas del sistema
+	 */
+	function get_entries() {
+		$this->db->select();
+        $this->db->from("forms_entradas");
+        $query = $this->db->get();
+        
+        if ($query->num_rows() > 0) return $query;
+        return NULL;
+	}
+	
+	/**
 	 * Devuelve un entry en base al ID pasado como parametro
 	 */
 	function get_entry_by_id($entry_id) {

@@ -214,6 +214,18 @@ class Administracion_frr {
 	}
 	
 	/**
+	 * Metodo utilizado para ver si una entrada existe.
+	 */
+	function entry_exist($entry_id) {
+		$entry = $this->ci->forms->entry_exist($entry_id);
+		if($entry) {
+			return $entry;
+		}
+	 	return NULL;
+	}
+	
+	
+	/**
 	 * Devuelve en un array los datos almacenados en los fields del form
 	 */
 	function get_entry_datos_fields($entry) {
@@ -326,6 +338,43 @@ class Administracion_frr {
 		}
 		
 		return NULL;
+	}
+	
+	/**
+	 * Metodo utilizado para eliminar un entry del sistema
+	 */
+	function eliminar_entry($entry_id) {
+		if($entry_id && $this->ci->forms->eliminar_entry($entry_id)) {
+			return TRUE;
+		} else {
+			return NULL;
+		}
+	}
+	
+	/**
+	 * Metodo utilizado para devolver todas las entradas del sistema
+	 */
+	function get_entries() {
+		$entries = $this->ci->forms->get_entries();
+		
+		if(!is_null($entries)) {
+			foreach ($entries->result() as $row)
+	        {
+	           $data[] = array(
+	           					'entry_id' => $row->entry_id,
+	                            'forms_id'    => $row->forms_id,
+	                            'autor_id'            => $row->autor_id,
+	                            'titulo'        => $row->titulo,
+	                            'entry_date'           => $row->entry_date,
+	                            'form'    => $this->get_form_by_id($row->forms_id)->forms_nombre,
+	                            'autor'      => $this->ci->auth_frr->get_username_by_id($row->autor_id)
+	                   );
+	        }
+			
+			return $data;
+		} else {
+			return NULL;
+		}
 	}
 	
 	/**
@@ -675,10 +724,13 @@ class Administracion_frr {
 
 	 	//Seteamos datos extras comunes a todas las entries
 		$this->datos_extras_entradas['numero_entrada'] = $entry->entry_id;
-		$this->datos_extras_entradas['form'] = $entry->forms_id;
-		$this->datos_extras_entradas['autor'] = $entry->autor_id;
+		$this->datos_extras_entradas['form'] =  $this->get_form_by_id($entry->forms_id)->forms_nombre;
+		$this->datos_extras_entradas['form_id'] = $entry->forms_id;
+	    $this->datos_extras_entradas['autor'] =  $this->ci->auth_frr->get_username_by_id($entry->autor_id);
+		$this->datos_extras_entradas['autor_id'] = $entry->autor_id;
 		$this->datos_extras_entradas['fecha_creacion'] = $entry->entry_date;
 		$this->datos_extras_entradas['fecha_edicion'] = $entry->edit_date;
+		
 		
 	 	return $this->datos_extras_entradas;
 	 }
