@@ -17,6 +17,9 @@ class Template
 	var $js_load = '';
 	var $messages = array('success' => array(), 'notice' => array(), 'warning' => array());
 	
+	var $template;
+	var $final_template;
+	
 
 	public function __construct($config = array())
 	{
@@ -313,6 +316,30 @@ class Template
 	
 		$this->CI->load->view('templates/'.$this->data['template'].'/index.php', $this->data);
 		
+	}
+	
+	function run_template_engine($template_group, $template) {
+		$this->obtener_y_parsear($template_group, $template);
+		
+		//Tratamiento extras
+		//.....
+		
+		$this->final_template = $this->template;
+		
+		$this->CI->output->set_output($this->final_template); 
+	}
+	
+	function obtener_y_parsear($template_group, $template) {
+		$this->template = $this->obtener_template($template_group, $template);
+		
+		/**
+		 * Parseamos
+		 */
+	}
+	
+	function obtener_template($template_group, $template) {
+		$this->CI->load->model('admin/templates');
+		return $this->CI->templates->obtener_template($template_group, $template);
 	}
                 
 }
