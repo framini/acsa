@@ -56,5 +56,11 @@ class Tester extends CI_Controller
     {
         echo $this->router->fetch_method();
     }
+	
+	function twig() {
+		$this->load->library('twig');
+		$data['title'] = "Testing Twig!!";
+		$this->twig->display('welcome_message.php', $data);
+	}
     
 }

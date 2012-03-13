@@ -1,0 +1,4 @@
+$ mkdir -p application/cache/twig
+$ chmod o+w application/cache/twig
+
+permisos de escritura en el folder views/temp

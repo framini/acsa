@@ -19,6 +19,7 @@ class Template
 	
 	var $template;
 	var $final_template;
+	var $nombre_file;
 	
 
 	public function __construct($config = array())
@@ -87,6 +88,12 @@ class Template
 			$this->data[$citem] = $cval;
 		}
 		unset($tempalte_conf);
+		
+		foreach($template_file_config as $citem => $cval)
+		{
+			$this->data[$citem] = $cval;
+		}
+		unset($template_file_config);
 		
 		
 		// display the profiler if in dev mode
@@ -307,7 +314,7 @@ class Template
 	
 	
 	/**
-	 * Send the data compiled data to the screen
+	 * Construimos la vista en base al template definido
 	 */
 	function build(){
 	
@@ -326,20 +333,100 @@ class Template
 		
 		$this->final_template = $this->template;
 		
-		$this->CI->output->set_output($this->final_template); 
+		//Cargamos la libreria Twig
+		$this->CI->load->library('twig');
+		
+		//Variables globales para usar dentro de los templates
+		$data['title'] = "Testing Twig!!";
+		$data['navigation'] = array('menu1' => array(
+													'href' => "http://www.google.com",
+													'caption' => "texto fruta"
+ 													)
+		);
+		
+		//Mostramos el template
+		$this->CI->twig->display("frr_temp/" . $this->nombre_file, $data);
 	}
 	
 	function obtener_y_parsear($template_group, $template) {
+		//Primero obtenemos el template
 		$this->template = $this->obtener_template($template_group, $template);
-		
-		/**
-		 * Parseamos
-		 */
+
+		//Creamos el arreglo de propiedas que seran usadas para crear el file	
+		$tdata = array(
+			'template_group'	=> $template_group ,
+			'template_name'		=> $template,
+			'template_data'		=> $this->template,
+		);
+
+		//Creamos el file que luego sera parseado		
+		$this->nombre_file = $this->update_template_file($tdata);
 	}
 	
 	function obtener_template($template_group, $template) {
 		$this->CI->load->model('admin/templates');
 		return $this->CI->templates->obtener_template($template_group, $template);
+	}
+	
+	
+	/**
+	 * Metodo utilizado para crear un file en base al template que pasamos
+	 * Solo se usa para poder ser parseado usando la libreria Twig
+	 */
+	function update_template_file($data, $actualizando = NULL)
+	{
+		$basepath = $this->data['ruta_default'];
+		
+		//Chequeamos que el directorio temporal exista
+		if(@file_exists($basepath)) {
+			//Chequeamos que el directorio sea writeable
+			if ( ! @is_dir($basepath) OR ! is_really_writable($basepath))
+			{
+				return FALSE;
+			} else {
+				//Chequeamos que el directorio del grupo de templates exista
+				if(@file_exists($basepath . "/" . $data['template_group'])) {
+					//Chequeamos que el folder del grupo de templates sea realmente un folder y se writeable
+					if ( ! @is_dir($this->data['ruta_default'] . "/" . $data['template_group']) OR ! is_really_writable($this->data['ruta_default'] . "/" . $data['template_group']))
+					{
+						return FALSE;
+					}
+				} else {
+					mkdir($basepath . "/" . $data['template_group']);
+				}
+			}
+			
+		} else {
+			//Si no existe lo creamos con permisos chmod 0777
+			mkdir($basepath);
+			//Lo mismo para el directorio del grupo de templates
+			mkdir($basepath . "/" . $data['template_group']);
+		}
+		
+		//Establecemos la ruta default en base al nombre del grupo de templates usado
+		$basepath = $this->data['ruta_default'] . "/" . $data['template_group'];
+		
+		//Le damos la extension fijada en la config template al archivo a crear/buscar
+		$filename = $data['template_name'] . "." .  $this->data['extension_file'];
+		
+		//Chequeamos si existe o no el file. En caso de existir no hay sentido volver a crearlo
+		//a menos que lo estemos actualizando
+		if(file_exists($basepath . "/" . $filename) && (isset($actualizando) && $actualizando)) {
+			return $filename;
+		}
+		
+		if ( ! $fp = @fopen($basepath.'/'.$filename, FOPEN_WRITE_CREATE_DESTRUCTIVE)) {
+			return FALSE;
+		} else {
+			flock($fp, LOCK_EX);
+			fwrite($fp, $data['template_data']);
+			flock($fp, LOCK_UN);
+			fclose($fp);
+			
+			@chmod($basepath.'/'.$filename, FILE_WRITE_MODE); 
+		}
+
+		return $data['template_group'] . "/" . $filename;
 	}
                 
 }

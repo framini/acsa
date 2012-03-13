@@ -6,7 +6,7 @@
 					<div class="bheadl"></div>
 					<div class="bheadr"></div>
 					
-					<h2>Welcome to CodeIgniter!</h2>
+					<h2>{{ title }}</h2>
 				</div>		
                                                                         <!-- .block_head ends -->
 				

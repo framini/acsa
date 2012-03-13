@@ -24,3 +24,9 @@ $template_head = array(
 					google.load("jquery", "1.5.0");
 					</script>'
 );
+
+$template_file_config = array(
+	'ruta_default' => APPPATH.'views/frr_temp',
+	'extension_file' => 'html',
+	
+);
