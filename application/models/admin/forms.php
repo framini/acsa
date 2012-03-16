@@ -140,6 +140,17 @@ class Forms extends CI_Model
 	}
 	
 	/**
+	 * Devuelve un form en base al ID pasado como parametro
+	 */
+	function get_form_id_by_nombre($form_nombre)
+	{
+		$this->db->where('forms_nombre', $form_nombre);
+		$query = $this->db->get('forms');
+		if ($query->num_rows() == 1) return $query->row();
+		return NULL;
+	}
+	
+	/**
 	 * Metodo utilizado para ver si una entrada existe.
 	 * Chequea en la tabla forms_entradas que exista una entrada con ese id
 	 */

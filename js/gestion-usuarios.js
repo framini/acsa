@@ -1,6 +1,6 @@
     $(document).ready(function() {
     		var datos = {};
-        	var dire = "http://localhost/acsa/index.php" + "/general";
+        	var dire = "http://localhost/argc/index.php" + "/general";
 			
 			////////////////////////////////////////////////////////////
 			//BOTONES Eliminar

@@ -115,6 +115,14 @@ class Administracion_frr {
 	 	return NULL;
 	 }
 	 
+	 function get_nombre_field_by_id($field_id) {
+	 	$field = $this->ci->fields->get_nombre_field_by_id($field_id);
+		if($field) {
+			return $field->fields_nombre;
+		}
+	 	return NULL;
+	 }
+	 
 	 /**
 	  * Devuelve una lista con todos los fields type del sistema
 	  */
@@ -149,6 +157,14 @@ class Administracion_frr {
 	 function get_form_by_id($form_id) {
 	   if(!is_null($form = $this->ci->forms->get_form_by_id($form_id))) {
 	   		return $form;
+	   } else {
+	   	return null;
+	   }
+	 }
+	 
+	 function get_form_id_by_nombre($form_nombre) {
+	   if(!is_null($form = $this->ci->forms->get_form_id_by_nombre($form_nombre))) {
+	   		return $form->forms_id;
 	   } else {
 	   	return null;
 	   }
@@ -189,6 +205,21 @@ class Administracion_frr {
 		   	return null;
 		}
 	 }
+	
+	function get_fields_grupo_fields_by_form_name($forms_nombre) {
+		$form_id = $this->get_form_id_by_nombre($forms_nombre);
+		$form = $this->get_form_by_id($form_id);
+		$grupo_field_id = $form->grupos_fields_id;
+		
+		$campos = $this->get_fields_grupo_fields($grupo_field_id);
+		
+		foreach ($campos as $c) {
+			$resultado[] = $c['fields_id'];
+		}
+		
+		return $resultado;
+	}
+
 	/**
 	 * Método utilizado para procesar el conjunto de fields asociados a un grupo de fields.
 	 * El objetivo de esta funciona es devolver un array listo para ser mostrado en la vista

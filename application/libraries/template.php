@@ -21,6 +21,9 @@ class Template
 	var $final_template;
 	var $nombre_file;
 	
+	var $param;
+	var $tags_custom;
+	
 
 	public function __construct($config = array())
 	{
@@ -121,6 +124,15 @@ class Template
 			$this->add_head($head);
 		}
 		unset($tempalte_head);
+		
+		foreach($parametros_tags_form as $p) 
+		{
+			$this->param[] = $p;
+		}
+		
+		foreach ($tags_custom_disponibles as $t) {
+			$this->tags_custom[] = $t;
+		}
 
 		return true;
 	}
@@ -328,6 +340,17 @@ class Template
 	function run_template_engine($template_group, $template) {
 		$this->obtener_y_parsear($template_group, $template);
 		
+		//Paginacion
+		
+		// load pagination class
+	    $this->CI->load->library('pagination');
+		//die(base_url() . $template_group . '/' . $template);
+	    /*$config['base_url'] = base_url() . $template_group . '/' . $template;
+	    $config['total_rows'] = $this->CI->db->count_all('christian_books');
+	    $config['per_page'] = '5';
+	    $config['full_tag_open'] = '<p>';
+	    $config['full_tag_close'] = '</p>';*/
+		
 		//Tratamiento extras
 		//.....
 		
@@ -338,11 +361,43 @@ class Template
 		
 		//Variables globales para usar dentro de los templates
 		$data['title'] = "Testing Twig!!";
-		$data['navigation'] = array('menu1' => array(
+		/*$data['navigation'] = array('menu1' => array(
 													'href' => "http://www.google.com",
-													'caption' => "texto fruta"
- 													)
-		);
+													'caption' => "texto fruta",
+													'titulo' => "MENU 1",
+													'width' => "DASDSADSADSADSADSAD"
+ 													),
+ 									'menu2' => array(
+													'href' => "http://www.google.com",
+													'caption' => "texto fruta",
+													'titulo' => "MENU 2",
+													'width' => "DASDSADSADSADSADSAD"
+ 													),
+ 									'menu3' => array(
+													'href' => "http://www.google.com",
+													'caption' => "texto fruta",
+													'titulo' => "MENU 3",
+													'width' => "DASDSADSADSADSADSAD"
+ 													),
+ 									'menu4' => array(
+													'href' => "http://www.google.com",
+													'caption' => "texto fruta",
+													'titulo' => "MENU 4",
+													'width' => "DASDSADSADSADSADSAD"
+ 													),
+		);*/
+		
+		//Obtenemos el contenido del tag Forms en caso que este siendo usado
+		//Las variables parseadas aca despues podran ser usadas denro de un foreach
+		//en la vista. 
+		//Cada uno de los fields se mostrara de la forma entrada.nombre_field
+		if(!is_null($contenido_tags = $this->CI->parser_frr->get_campos())) {
+			foreach($contenido_tags as $entry_id => $entrada) {
+				foreach($entrada as $nombre_field => $valor) {
+					$data['contenido_form'][$entry_id][$nombre_field] = $valor;
+				}
+			}
+		}
 		
 		//Mostramos el template
 		$this->CI->twig->display("frr_temp/" . $this->nombre_file, $data);
@@ -351,7 +406,11 @@ class Template
 	function obtener_y_parsear($template_group, $template) {
 		//Primero obtenemos el template
 		$this->template = $this->obtener_template($template_group, $template);
-
+		
+		$this->CI->load->library('parser_frr');
+		//Parseamos los tags custom que nos dicen de donde hay que sacar el contenido
+		$this->template = $this->CI->parser_frr->parse_custom_tags($this->template);
+		
 		//Creamos el arreglo de propiedas que seran usadas para crear el file	
 		$tdata = array(
 			'template_group'	=> $template_group ,

@@ -18,9 +18,30 @@ class fields extends CI_Model
 	 */
 	function create_fields($data, $actualizar = FALSE) {
 		$this->db->insert('fields', $data);
+		$query = $this->db->query('SELECT LAST_INSERT_ID()');
+  		$row = $query->row_array();
+  		$id = $row['LAST_INSERT_ID()'];
 		//Chequeamos que se haya insertado la info
 		if($this->db->affected_rows() > 0) {
-			return true;
+			//Si ingresamos aca significa que el grupo al cual pertenece el field esta en uso
+			if($actualizar) {
+				//Si la columna no existe guardamos los datos en un array para luego poder crearlos en forms_data
+				if(!$this->administracion_frr->existe_columna('field_id_' . $id)) {
+						$campos_a_crear['field_id_' . $id] = array(
+							'type' => 'TEXT',
+							'null' => TRUE
+						);
+				}
+				//Si entramos aca creamos los campos en forms_data
+				if(isset($campos_a_crear)) {
+					$this->dbforge->add_column('forms_data', $campos_a_crear);
+				}
+				
+				return TRUE;
+			} else {
+				return true;
+			}
+			
 		} 
 		
 		return false;
@@ -145,6 +166,17 @@ class fields extends CI_Model
 		return NULL;
 	 }
 	 
+	 function get_nombre_field_by_id($field_id) {
+	 	$this->db->select('fields_nombre');
+		$this->db->where('fields_id', $field_id);
+		$query = $this->db->get('fields');
+		
+		if($query->num_rows() == 1) {
+			return $query->row();
+		}
+		return NULL;
+	 }
+	 
 	 /**
 	 * Metodo para chequear la existencia de una columna en una tabla
 	 */
@@ -162,7 +194,7 @@ class fields extends CI_Model
 	 */
 	function modificar_field($field_id, $data, $actualizar = FALSE) {
 		if($actualizar) {
-			//Chequiamos que los fiels asociados al grupo esten presenten en la tabla forms_data
+			//Chequeamos que los fields asociados al grupo esten presenten en la tabla forms_data
 			$fields = $this->administracion_frr->get_fields_grupo_fields($data['grupos_fields_id']);
 		
 			//Procesamos los resultados

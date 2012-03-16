@@ -4,5 +4,17 @@
 PPPRUEBA
 </title>
 </head>
-<body><div style="color:red">{{title}}</div></body>
+<body><div style="color:red">
+<p>sa</p>
+{% set entry_id %}
+Sasdasdsaddsa
+{% endset %}
+{{ foo }}
+{{ entry_id }}
+
+{% for entrada in contenido_form if loop.index < 4 %}
+        <li>{{ entrada.titulo }} - {{ entrada.enlaces }} - {{ entrada.autores }}</li>
+    {% endfor %}
+</div>
+</body>
 </html>

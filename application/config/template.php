@@ -30,3 +30,14 @@ $template_file_config = array(
 	'extension_file' => 'html',
 	
 );
+
+//Tags Custom disponibles
+$tags_custom_disponibles = array(
+	'form'
+);
+
+//Paramtros validos para el tag {$ form $}
+$parametros_tags_form = array(
+	'forms_nombre',
+	'entry_id'
+);
