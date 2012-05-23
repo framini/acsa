@@ -18,13 +18,13 @@ class MY_Router extends CI_Router {
 			return $segments;
 		}
 
-		// Does the requested controller exist in the root folder?
+		// Nos fijamos si el controller solicitado existe en el root
 		if (file_exists(APPPATH.'controllers/'.$segments[0].'.php'))
 		{
 			return $segments;
 		}
 
-		// Is the controller in a sub-folder?
+		// Nos fijamos si el controller es un sub-folder
 		if (is_dir(APPPATH.'controllers/'.$segments[0]))
 		{
 			// Set the directory and remove it from the segment array
@@ -33,7 +33,7 @@ class MY_Router extends CI_Router {
 
 			if (count($segments) > 0)
 			{
-				// Does the requested controller exist in the sub-folder?
+				// Nos fijamos si el controller existe dentro del subfolder
 				if ( ! file_exists(APPPATH.'controllers/'.$this->fetch_directory().$segments[0].'.php'))
 				{
 					if ( ! empty($this->routes['404_override']))
@@ -54,7 +54,7 @@ class MY_Router extends CI_Router {
 			}
 			else
 			{
-				// Is the method being specified in the route?
+				// Chequeamos si el metodo esta especificado en la ruta
 				if (strpos($this->default_controller, '/') !== FALSE)
 				{
 					$x = explode('/', $this->default_controller);
@@ -68,7 +68,7 @@ class MY_Router extends CI_Router {
 					$this->set_method('index');
 				}
 
-				// Does the default controller exist in the sub-folder?
+				// Nos fijamos si existe un controlador default en el subfolder
 				if ( ! file_exists(APPPATH.'controllers/'.$this->fetch_directory().$this->default_controller.'.php'))
 				{
 					$this->directory = '';
@@ -105,9 +105,7 @@ class MY_Router extends CI_Router {
 		//Fin agregado
 		//-----------------------------------------------------------------------
 
-		// If we've gotten this far it means that the URI does not correlate to a valid
-		// controller class.  We will now see if there is an override
-		
+		//Si llegamos hasta aca significa que la URI no se correlaciona con ningun controlador
 		if ( ! empty($this->routes['404_override']))
 		{
 			$x = explode('/', $this->routes['404_override']);
@@ -118,7 +116,7 @@ class MY_Router extends CI_Router {
 			return $x;
 		}
 		
-		// Nothing else to do at this point but show a 404
+		// Si llegamos hasta aca lo unico que hay por hacer es mostrar el error 404
 		show_404($segments[0]);
 	}
 
@@ -135,19 +133,15 @@ class MY_Router extends CI_Router {
 
 		if (isset($segments[1]))
 		{
-			// A standard method request
 			$this->set_method($segments[1]);
 		}
 		else
 		{
-			// This lets the "routed" segment array identify that the default
-			// index method is being used.
+			// Esto permite a los segmentos "ruteados" identificar que el metodo
+			// index por default esta siendo utilizado
 			$segments[1] = 'index';
 		}
 
-		// Update our "routed" segment array to contain the segments.
-		// Note: If there is no custom routing, this array will be
-		// identical to $this->uri->segments
 		$this->uri->rsegments = $segments;
 	}
 

@@ -39,5 +39,6 @@ $tags_custom_disponibles = array(
 //Paramtros validos para el tag {$ form $}
 $parametros_tags_form = array(
 	'forms_nombre',
-	'entry_id'
+	'entry_id',
+	'contenido'
 );

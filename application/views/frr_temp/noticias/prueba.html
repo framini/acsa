@@ -1,0 +1,38 @@
+<html>
+<head>
+<title>
+PPPRUEBA
+</title>
+</head>
+<body><div style="color:red">
+<p>sa</p>
+{% set entry_id %}
+Sasdasdsaddsa
+{% endset %}
+{{ foo }}
+noticias
+prueba
+7
+{{ entry_id }}
+{{ title }}
+
+
+{% for entrada in coco if loop.index < 4 %}
+        <li>{{ entrada.titulo }} - {{ entrada.enlaces }} - {{ entrada.autores }}</li>
+    {% endfor %}
+
+
+{% for entrada in perro if loop.index < 4 %}
+        <li>{{ entrada.titulo }} - {{ entrada.enlaces }} - {{ entrada.autores }}</li>
+    {% endfor %}
+
+
+
+{% for entrada in coco2 if loop.index < 4 %}
+        <li>{{ entrada.titulo }} - {{ entrada.enlaces }} - {{ entrada.autores }}</li>
+    {% endfor %}
+
+
+</div>
+</body>
+</html>

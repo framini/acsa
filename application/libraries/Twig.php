@@ -31,9 +31,9 @@ class Twig
 
 		$this->_twig = new Twig_Environment($loader, array(
                 'cache' => $this->_cache_dir,
-                'debug' => $debug,
+                'debug' => $debug
 		));
-		
+
 	        foreach(get_defined_functions() as $functions) {
             		foreach($functions as $function) {
                 		$this->_twig->addFunction($function, new Twig_Function_Function($function));

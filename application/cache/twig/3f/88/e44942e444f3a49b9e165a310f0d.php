@@ -22,14 +22,17 @@ PPPRUEBA
         if (isset($context["foo"])) { $_foo_ = $context["foo"]; } else { $_foo_ = null; }
         echo twig_escape_filter($this->env, $_foo_, "html", null, true);
         echo "
+test
+prueba
+1
 ";
-        // line 13
+        // line 16
         if (isset($context["entry_id"])) { $_entry_id_ = $context["entry_id"]; } else { $_entry_id_ = null; }
         echo twig_escape_filter($this->env, $_entry_id_, "html", null, true);
         echo "
 
 ";
-        // line 15
+        // line 18
         if (isset($context["contenido_form"])) { $_contenido_form_ = $context["contenido_form"]; } else { $_contenido_form_ = null; }
         $context['_parent'] = (array) $context;
         $context['_seq'] = twig_ensure_traversable($_contenido_form_);
@@ -42,7 +45,7 @@ PPPRUEBA
         foreach ($context['_seq'] as $context["_key"] => $context["entrada"]) {
             if (isset($context["loop"])) { $_loop_ = $context["loop"]; } else { $_loop_ = null; }
             if (($this->getAttribute($_loop_, "index") < 4)) {
-                // line 16
+                // line 19
                 echo "        <li>";
                 if (isset($context["entrada"])) { $_entrada_ = $context["entrada"]; } else { $_entrada_ = null; }
                 echo twig_escape_filter($this->env, $this->getAttribute($_entrada_, "titulo"), "html", null, true);
@@ -62,7 +65,7 @@ PPPRUEBA
         $_parent = $context['_parent'];
         unset($context['_seq'], $context['_iterated'], $context['_key'], $context['entrada'], $context['_parent'], $context['loop']);
         $context = array_merge($_parent, array_intersect_key($context, $_parent));
-        // line 18
+        // line 21
         echo "</div>
 </body>
 </html>";

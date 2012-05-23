@@ -207,17 +207,25 @@ class Administracion_frr {
 	 }
 	
 	function get_fields_grupo_fields_by_form_name($forms_nombre) {
-		$form_id = $this->get_form_id_by_nombre($forms_nombre);
+		/*$form_id = $this->get_form_id_by_nombre($forms_nombre);
 		$form = $this->get_form_by_id($form_id);
-		$grupo_field_id = $form->grupos_fields_id;
+		$grupo_field_id = $form->grupos_fields_id;*/
+		if(!is_null($form_id = $this->get_form_id_by_nombre($forms_nombre))) {
+			if(!is_null($form = $this->get_form_by_id($form_id))) {
+				if(!is_null($grupo_field_id = $form->grupos_fields_id)) {
+					$campos = $this->get_fields_grupo_fields($grupo_field_id);
 		
-		$campos = $this->get_fields_grupo_fields($grupo_field_id);
+					foreach ($campos as $c) {
+						$resultado[] = $c['fields_id'];
+					}
+					
+					return $resultado;
+				}
+			}
+		} 
 		
-		foreach ($campos as $c) {
-			$resultado[] = $c['fields_id'];
-		}
-		
-		return $resultado;
+		return NULL;
+
 	}
 
 	/**

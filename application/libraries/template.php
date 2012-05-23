@@ -361,6 +361,7 @@ class Template
 		
 		//Variables globales para usar dentro de los templates
 		$data['title'] = "Testing Twig!!";
+		
 		/*$data['navigation'] = array('menu1' => array(
 													'href' => "http://www.google.com",
 													'caption' => "texto fruta",
@@ -387,15 +388,25 @@ class Template
  													),
 		);*/
 		
-		//Obtenemos el contenido del tag Forms en caso que este siendo usado
-		//Las variables parseadas aca despues podran ser usadas denro de un foreach
-		//en la vista. 
-		//Cada uno de los fields se mostrara de la forma entrada.nombre_field
-		if(!is_null($contenido_tags = $this->CI->parser_frr->get_campos())) {
-			foreach($contenido_tags as $entry_id => $entrada) {
-				foreach($entrada as $nombre_field => $valor) {
-					$data['contenido_form'][$entry_id][$nombre_field] = $valor;
+		/**
+		 * Una vez parseados los tags y obtenida la informacion procedemos a definir las
+		 * variables que permitiran mostrar el contenido de los tags via variables-tag
+		 */
+		if(!is_null($contenido_tags = $this->CI->parser_frr->get_campos()) && !is_null($nombres_contenido = $this->CI->parser_frr->get_nombre_contenido())) {
+			//Primero obtenemos el array de campos-valor via get_campos()
+			//Despues obtenemos el valor asignado al atributo contenido que nos permitira
+			//definir la variable que almacenara el contenido de la entrada.
+			//El parametro contenido permite que convivan varios tags dentro de una misma pagina
+			foreach ($contenido_tags as $key => $arreglo) {
+				foreach ($arreglo as $entry_id => $entrada) {
+					foreach($entrada as $nombre_field => $valor) {
+						$var_nombre_contenido = $nombres_contenido[$key];
+						//Definimos la variable a usar en el template
+						//Accedemos a ella de la forma entrada.nombre_field
+						$data[$var_nombre_contenido][$entry_id][$nombre_field] = $valor;
+					}
 				}
+				
 			}
 		}
 		
