@@ -17,15 +17,49 @@ class Templates extends CI_Model
 	/**
 	 * Metodo utilizado para persistir un template en la base de datos
 	 */
-	function create_template($data) {
+	function create_template($data, $g_id) {
+		$data['template_group_id'] = $g_id;
 		$data['edit_date'] = date('Y-m-d H:i:s');
-		$this->db->insert('templates', $data);
 		
+		$this->db->insert('templates', $data);
 		if($this->db->affected_rows() > 0) {
 			return true;
 		} else {
-			return NULL;
+			return false;
 		}
+	}
+	
+	function modificar_template($template_id, $data) {
+		$this->db->where('template_id', $template_id);
+		if($this->db->update('templates', $data)) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	/**
+	 * Metodo utilizado para obtener todos los grupos de templates cargados en el sistema
+	 */
+	function get_templates() {
+		$this->db->select();
+        $this->db->from("templates");
+		$this->db->order_by('template_group_id', 'asc');
+        $query = $this->db->get();
+        
+        if ($query->num_rows() > 0) return $query;
+        return NULL;
+	}
+	
+	function get_template_by_id($template_id) {
+		$this->db->select();
+		$this->db->where('template_id', $template_id);
+		$query = $this->db->get('templates');
+		
+		if($query->num_rows() == 1) {
+			return $query->row();
+		}
+		return NULL;
 	}
 	
 	function obtener_template($template_group, $template) {
@@ -104,4 +138,38 @@ class Templates extends CI_Model
 		if ($query->num_rows() > 0) return $query;
         return null;	
 	}
+	
+	/**
+	 * Chequea si el nombre del template esta disponible para registro
+	 *
+	 * @param	string
+	 * @return	bool
+	 */
+	function is_nombre_template_disponible($nombre_template) {
+		$this->db->select('1', FALSE);
+		$this->db->where('LOWER(nombre)=', strtolower($nombre_template));
+
+		$query = $this->db->get('templates');
+		return $query->num_rows() == 0;
+	}
+	
+	function eliminar_template($template_id) {
+		//Comenzamos la transaccion
+		$this->db->trans_start();
+
+		//Eliminamos el template
+		$this->db->where('template_id', $template_id);
+		$this->db->delete('templates');
+		
+		//Comitiamos la transaccion
+		$this->db->trans_complete();
+		
+		if($this->db->trans_status() === FALSE) {
+            return FALSE;
+        } else {
+        	return TRUE;
+        }
+	}
+	
+	
 }

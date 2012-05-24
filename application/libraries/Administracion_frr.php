@@ -13,9 +13,78 @@ class Administracion_frr {
 
     public function __construct() {
         $this->ci = & get_instance();
+		$this->ci->load->model('admin/grupos_templates');
 		$this->ci->load->model('admin/grupos_fields');
 		$this->ci->load->model('admin/fields');
 		$this->ci->load->model('admin/forms');
+		$this->ci->load->model('admin/templates');
+    }
+	
+	/**
+   	* Devuelve todos los grupos de templates cargadas en el sistema
+   	* @return type 
+   	*/
+     function get_grupos_templates() {
+      
+        $get_grupos_templates = $this->ci->grupos_templates->get_grupos_templates();
+      	if(isset($get_grupos_templates) ) {
+      		foreach ($get_grupos_templates->result() as $row){
+          
+	           $data[] = array(
+	                'template_group_id'     => $row->template_group_id,
+	                'nombre' => $row->nombre
+	           );
+	       }
+	
+	       return $data;
+      	}
+        return NULL;
+    }
+	 
+	 function get_nombre_grupo_template_by_id($grupo_id) {
+	 	$grupo_template = $this->ci->grupos_templates->get_nombre_grupo_template_by_id($grupo_id);
+		if($grupo_template) {
+			return $grupo_template->nombre;
+		}
+	 	return NULL;
+	 }
+	 
+	 function get_templates_by_id($template_id) {
+	 	$template = $this->ci->templates->get_template_by_id($template_id);
+		if($template) {
+           $data[] = array(
+                'template_id'     => $template->template_id,
+                'template_group_id' => $template->template_group_id,
+                'template_group_nombre' => $this->get_nombre_grupo_template_by_id($template->template_group_id),
+                'nombre' => $template->nombre,
+                'data' => $template->data
+           );
+       	   return $data;
+		}
+        return NULL;
+	 }
+	 
+	 /**
+   	* Devuelve todos los grupos de templates cargadas en el sistema
+   	* @return type 
+   	*/
+     function get_templates() {
+      
+        $get_templates = $this->ci->templates->get_templates();
+      	if(isset($get_templates) ) {
+      		foreach ($get_templates->result() as $row){
+          
+	           $data[] = array(
+	                'template_id'     => $row->template_id,
+	                'template_group_id' => $row->template_group_id,
+	                'template_group_nombre' => $this->get_nombre_grupo_template_by_id($row->template_group_id),
+	                'nombre' => $row->nombre
+	           );
+	       }
+	
+	       return $data;
+      	}
+        return NULL;
     }
 	
 	/**
@@ -426,6 +495,97 @@ class Administracion_frr {
 			return FALSE;
 		}
 	}
+	
+	/**
+	 * Método utilizado para crear un grupo de templates
+	 */
+	function create_grupo($nombre) {
+		//Validaciones para los campos requeridos
+		$data = array(
+			'nombre' => $nombre,
+		);
+		
+		if(!$this->is_nombre_grupo_template_disponible($nombre)) {
+			$this->error['nombre'] = 'El nombre ya esta siendo utilizado por otro grupo!';
+		}
+		//Solamente creamos si los campos pasaron la validacion	
+		if(empty($this->error)) {
+			if($this->ci->grupos_templates->create_grupo_templates($data)) {
+			return true;
+			} 
+		}	
+		
+		return NULL;
+	}
+	
+	/**
+	 * Método utilizado para crear un template
+	 */
+	function create_template($nombre, $codigo, $grupo_id) {
+		//Validaciones para los campos requeridos
+		$data = array(
+			'nombre' => $nombre,
+			'data' => $codigo,
+			'autor_id' => $this->ci->auth_frr->get_user_id()
+		);
+		
+		if(!$this->is_nombre_template_disponible($nombre)) {
+			$this->error['nombre'] = 'El nombre ya esta siendo utilizado por otro template!';
+		}
+		//Solamente creamos si los campos pasaron la validacion	
+		if(empty($this->error)) {
+			if($this->ci->templates->create_template($data, $grupo_id)) {
+			return true;
+			} 
+		}	
+		
+		return NULL;
+	}
+	
+	/**
+	 * Método utilizado para modificar un grupo template
+	 */
+	function modificar_grupo_templates($id, $nombre) {
+		//Validaciones para los campos requeridos
+		$data = array(
+			'nombre' => $nombre,
+		);
+		
+		if(!$this->verificacion_nombre_grupo_template($id, $nombre)) {
+			$this->error['nombre'] = 'El nombre ya esta siendo utilizado por otro grupo!';
+		}
+		//Solamente creamos si los campos pasaron la validacion	
+		if(empty($this->error)) {
+			if($this->ci->grupos_templates->modificar_grupo_template($id, $data)) {
+				return true;
+			} 
+		}	
+		
+		return NULL;
+	}
+	
+	/**
+	 * Método utilizado para modificar un template
+	 */
+	function modificar_template($id, $nombre, $codigo) {
+		//Validaciones para los campos requeridos
+		$data = array(
+			'nombre' => $nombre,
+			'data' => $codigo,
+		);
+		
+		if(!$this->verificacion_nombre_template($id, $nombre)) {
+			$this->error['nombre'] = 'El nombre ya esta siendo utilizado por otro template!';
+		}
+		//Solamente creamos si los campos pasaron la validacion	
+		if(empty($this->error)) {
+			if($this->ci->templates->modificar_template($id, $data)) {
+			return true;
+			} 
+		}	
+		
+		return NULL;
+	}
 
 	
 	/**
@@ -562,6 +722,26 @@ class Administracion_frr {
 		
 		return NULL;
 	}
+
+	function verificacion_nombre_grupo_template($grupo_template_id, $nombre) {
+		//Si el nombre esta disponible entramos
+		//O sino chequeamos que se esten editando otros datos de un grupo que no sea su nombre
+		if($this->is_nombre_grupo_template_disponible($nombre) || $this->is_mismo_grupo_template($grupo_template_id, $nombre)) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	function verificacion_nombre_template($template_id, $nombre) {
+		//Si el nombre esta disponible entramos
+		//O sino chequeamos que se esten editando otros datos de un grupo que no sea su nombre
+		if($this->is_nombre_template_disponible($nombre) || $this->is_mismo_template($template_id, $nombre)) {
+			return true;
+		} else {
+			return false;
+		}
+	}
 	
 	function verificacion_nombre_grupo_field($grupo_field_id, $nombre) {
 		//Si el nombre esta disponible entramos
@@ -632,6 +812,26 @@ class Administracion_frr {
 		
 	}
 	
+	function is_mismo_template($id, $nombre) {
+		$template = $this->ci->templates->get_template_by_id($id);
+
+		if($template && $template->nombre == $nombre) {
+            return true;
+		} else {
+			return false;
+		}
+	}
+	
+	function is_mismo_grupo_template($id, $nombre) {
+		$grupo_template = $this->ci->grupos_templates->get_nombre_grupo_template_by_id($id);
+
+		if($grupo_template && $grupo_template->nombre == $nombre) {
+            return true;
+		} else {
+			return false;
+		}
+	}
+	
 	function create_fields($fields_nombre, $fields_label, $fields_instrucciones, $fields_value_defecto, $fields_requerido, $fields_hidden, $fields_posicion, $grupo_field_id, $fields_type_id,$fields_option_items) {
 		$data = array(
 			'fields_nombre' => $fields_nombre, 
@@ -686,6 +886,22 @@ class Administracion_frr {
         }   
 	}
 	
+	function eliminar_grupo_templates($grupo_template_id) {
+		if($this->ci->grupos_templates->eliminar_grupo_templates($grupo_template_id)) {
+			return true;
+		} else {
+        	return false;
+        }   
+	}
+	
+	function eliminar_template($template_id) {
+		if($this->ci->templates->eliminar_template($template_id)) {
+			return true;
+		} else {
+        	return false;
+        }   
+	}
+	
 	function eliminar_form($form_id) {
 		if($this->ci->forms->eliminar_form($form_id)) {
 			return true;
@@ -725,6 +941,10 @@ class Administracion_frr {
 		
 		return NULL;
 	}
+
+	function is_nombre_template_disponible($nombre_template) {
+		return $this->ci->templates->is_nombre_template_disponible($nombre_template);
+	}
 	
 	function is_nombre_grupo_fields_disponible($grupos_fields_nombre) {
 		return $this->ci->grupos_fields->is_nombre_grupo_fields_disponible($grupos_fields_nombre);
@@ -736,6 +956,10 @@ class Administracion_frr {
 	
 	function is_nombre_form_disponible($form_nombre) {
 		return $this->ci->forms->is_nombre_form_disponible($form_nombre);
+	}
+	
+	function is_nombre_grupo_template_disponible($nombre) {
+		return $this->ci->grupos_templates->is_nombre_grupo_template_disponible($nombre);
 	}
 	
 	/**

@@ -46,6 +46,178 @@ class Admin extends MY_Controller {
 		}
 		
 		/**
+		 * Metodo que muestra el template manager
+		 * Sobre la izquierda se mostraran los grupos de templates
+		 * Sobre la derecha se listaran los templates pertenecientes a cada grupo
+		 */
+		function templates() {
+			
+			$this->breadcrumb->append_crumb('Home', site_url());
+			$this->breadcrumb->append_crumb('Admin', site_url() . "/admin/");
+			$this->breadcrumb->append_crumb('Template Manager', site_url() . "/admin/templates");
+			
+			$data['t'] = "Template manager";
+			$data['grupos_templates'] = $this->administracion_frr->get_grupos_templates();
+			$data['templates'] = $this->administracion_frr->get_templates();
+			
+			if ($message = $this->session->flashdata('message')) {
+			  		$data['message'] = $message;
+			  }
+			
+			$this->template->set_content('admin/template_manager', $data);
+			$this->template->build();
+		}
+
+		function alta_grupos() {
+			$this->breadcrumb->append_crumb('Home', site_url());
+			$this->breadcrumb->append_crumb('Admin', site_url() . "/admin/");
+			$this->breadcrumb->append_crumb('Template Manager', site_url() . "/admin/templates");
+			$this->breadcrumb->append_crumb('Alta grupo templates', site_url() . "/admin/alta_grupos");
+			
+			$this->form_validation->set_rules('nombre', 'Nombre del Template', 'trim|required|xss_clean');
+			
+			//Si ingresamos acà es porque se hizo el envío del formulario
+			if($this->form_validation->run()) {
+
+				if($this->administracion_frr->create_grupo($this->form_validation->set_value('nombre'))) {
+					$message = "El grupo de templates se ha creado correctamente!";
+                    $this->session->set_flashdata('message', $message);
+					redirect('admin/templates');
+				} else {
+					//Si no se pudo crear el grupo buscamos que paso
+					$data['errors'] = $this->administracion_frr->get_error_message();
+				}
+			}
+
+			$data['t'] = "Crear Grupo de Templates";
+			$data['tb'] = "Crear Grupo";
+			
+			$this->template->set_content('admin/grupos_templates_form', $data);
+			$this->template->build();
+		}
+		
+		/**
+		 * Método utilizado para mostrar el formulario para crear un template
+		 * Método utilizado para crear un template
+		 */
+		function alta_templates() {
+			
+			$this->breadcrumb->append_crumb('Home', site_url());
+			$this->breadcrumb->append_crumb('Admin', site_url() . "/admin/");
+			$this->breadcrumb->append_crumb('Template Manager', site_url() . "/admin/templates");
+			$this->breadcrumb->append_crumb('Alta templates', site_url() . "/admin/alta_templates");
+			
+			$this->form_validation->set_rules('nombre', 'Nombre del Template', 'trim|required|xss_clean');
+			$this->form_validation->set_rules('codigo', 'Codigo del Template', 'required');
+			
+			//Si ingresamos acà es porque se hizo el envío del formulario
+			if($this->form_validation->run()) {
+
+				if($this->administracion_frr->create_template($this->form_validation->set_value('nombre'), $this->form_validation->set_value('codigo'), $this->uri->segment(3))) {
+					$message = "El template se ha creado correctamente!";
+                    $this->session->set_flashdata('message', $message);
+					redirect('admin/templates');
+				} else {
+					//Si no se pudo crear el grupo buscamos que paso
+					$data['errors'] = $this->administracion_frr->get_error_message();
+				}
+			}
+
+			$data['t'] = "Crear Template";
+			$data['tb'] = "Crear Template";
+			
+			$this->template->set_content('admin/alta_template', $data);
+			$this->template->build();
+		}
+		
+		/**
+		 * Método utilizado para editar un grupo template
+		 */
+		function editar_grupo_templates() {
+			
+			$this->breadcrumb->append_crumb('Home', site_url());
+			$this->breadcrumb->append_crumb('Admin', site_url() . "/admin/");
+			$this->breadcrumb->append_crumb('Template Manager', site_url() . "/admin/templates");
+			$this->breadcrumb->append_crumb('Editar grupo templates', site_url() . "/admin/editar_grupo_templates");
+			
+			//Si existe un grupo template con el id pasado en la URI
+			if(!is_null($gt = $this->administracion_frr->get_nombre_grupo_template_by_id($this->uri->segment(3)))) {
+				$this->form_validation->set_rules('nombre', 'Nombre del Grupo Template', 'trim|required|xss_clean');
+				
+				//Si ingresamos acà es porque se hizo el envío del formulario
+				if($this->form_validation->run()) {
+	
+					if($this->administracion_frr->modificar_grupo_templates($this->uri->segment(3), $this->form_validation->set_value('nombre'))) {
+						$message = "El grupo de templates se ha modificado correctamente!";
+	                    $this->session->set_flashdata('message', $message);
+						redirect('admin/templates');
+					} else {
+						//Si no se pudo crear el grupo buscamos que paso
+						$data['errors'] = $this->administracion_frr->get_error_message();
+					}
+				}
+	
+				$data['t'] = "Modificar Grupo de Templates";
+				$data['tb'] = "Modificar Grupo";
+				$data['template_data'] = $gt;
+				
+				if ($message = $this->session->flashdata('message')) {
+			  		$data['message'] = $message;
+			  	}
+				
+				$this->template->set_content('admin/grupos_templates_form', $data);
+				$this->template->build();
+			} else {
+				//Ver que mensaje mostrar
+			}
+			
+		}
+		
+		/**
+		 * Método utilizado para editar un template
+		 */
+		function editar_templates() {
+			
+			$this->breadcrumb->append_crumb('Home', site_url());
+			$this->breadcrumb->append_crumb('Admin', site_url() . "/admin/");
+			$this->breadcrumb->append_crumb('Template Manager', site_url() . "/admin/templates");
+			$this->breadcrumb->append_crumb('Editar templates', site_url() . "/admin/editar_templates");
+			
+			//Si existe un template con el id pasado en la URI
+			if(!is_null($template = $this->administracion_frr->get_templates_by_id($this->uri->segment(3)))) {
+				$this->form_validation->set_rules('nombre', 'Nombre del Template', 'trim|required|xss_clean');
+				$this->form_validation->set_rules('codigo', 'Codigo del Template', 'required');
+				
+				//Si ingresamos acà es porque se hizo el envío del formulario
+				if($this->form_validation->run()) {
+	
+					if($this->administracion_frr->modificar_template($this->uri->segment(3), $this->form_validation->set_value('nombre'), $this->form_validation->set_value('codigo'))) {
+						$message = "El template se ha modificado correctamente!";
+	                    $this->session->set_flashdata('message', $message);
+						redirect($this->uri->uri_string());
+					} else {
+						//Si no se pudo crear el grupo buscamos que paso
+						$data['errors'] = $this->administracion_frr->get_error_message();
+					}
+				}
+	
+				$data['t'] = "Modificar Template";
+				$data['tb'] = "Modificar Template";
+				$data['template_data'] = $template;
+				
+				if ($message = $this->session->flashdata('message')) {
+			  		$data['message'] = $message;
+			  	}
+				
+				$this->template->set_content('admin/editar_template', $data);
+				$this->template->build();
+			} else {
+				//Ver que mensaje mostrar
+			}
+			
+		}
+		
+		/**
 		 * Método utilizado para mostrar un formulario, crear contenido y editar contenido basado en la URI
 		 */
 		function form() {
@@ -574,6 +746,38 @@ class Admin extends MY_Controller {
 						$message = "El grupo de fields se ha eliminado correctamente!";
 	                    $this->session->set_flashdata('message', $message);
 						redirect('admin/grupos_fields/');
+					}
+				}
+				
+				$this->template->set_content('general/confirma_operacion');
+				$this->template->build();
+			}
+		}
+		
+		function baja_grupo_template() {
+			//Si existe un grupo de fields con el ID pasado como parametro
+			if(!is_null($gt = $this->administracion_frr->get_nombre_grupo_template_by_id($this->uri->segment(3)))) {
+				if($this->uri->segment(4) == "si") {
+					if($this->administracion_frr->eliminar_grupo_templates($this->uri->segment(3))) {
+						$message = "El grupo de templates se ha eliminado correctamente!";
+	                    $this->session->set_flashdata('message', $message);
+						redirect('admin/templates/');
+					}
+				}
+				
+				$this->template->set_content('general/confirma_operacion');
+				$this->template->build();
+			}
+		}
+		
+		function baja_template() {
+			//Si existe un template con el ID pasado como parametro
+			if(!is_null($gt = $this->administracion_frr->get_templates_by_id($this->uri->segment(3)))) {
+				if($this->uri->segment(4) == "si") {
+					if($this->administracion_frr->eliminar_template($this->uri->segment(3))) {
+						$message = "El template se ha eliminado correctamente!";
+	                    $this->session->set_flashdata('message', $message);
+						redirect('admin/templates/');
 					}
 				}
 				

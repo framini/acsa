@@ -24,7 +24,7 @@ PPPRUEBA
         echo "
 noticias
 prueba
-7
+8
 ";
         // line 16
         if (isset($context["entry_id"])) { $_entry_id_ = $context["entry_id"]; } else { $_entry_id_ = null; }

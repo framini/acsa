@@ -1,0 +1,19 @@
+<html>
+<head>
+<title>
+HOLA
+</title>
+</head>
+<body>
+<h1>{{title}}</h1>
+{% for item in navigation %}
+            <li><a href="{{ item.href }}">{{ item.caption }}</a></li>
+        {% endfor %}
+
+{% filter upper %}
+  This text becomes uppercase
+{% endfilter %}
+
+{% include "welcome_message.php" %}
+</body>
+</html>
