@@ -18,6 +18,7 @@ class Administracion_frr {
 		$this->ci->load->model('admin/fields');
 		$this->ci->load->model('admin/forms');
 		$this->ci->load->model('admin/templates');
+		$this->ci->load->model('admin/extensiones');
     }
 	
 	/**
@@ -57,7 +58,8 @@ class Administracion_frr {
                 'template_group_id' => $template->template_group_id,
                 'template_group_nombre' => $this->get_nombre_grupo_template_by_id($template->template_group_id),
                 'nombre' => $template->nombre,
-                'data' => $template->data
+                'data' => $template->data,
+                'extension' => $template->template_extension
            );
        	   return $data;
 		}
@@ -521,12 +523,13 @@ class Administracion_frr {
 	/**
 	 * Método utilizado para crear un template
 	 */
-	function create_template($nombre, $codigo, $grupo_id) {
+	function create_template($nombre, $codigo, $grupo_id, $extension) {
 		//Validaciones para los campos requeridos
 		$data = array(
 			'nombre' => $nombre,
 			'data' => $codigo,
-			'autor_id' => $this->ci->auth_frr->get_user_id()
+			'autor_id' => $this->ci->auth_frr->get_user_id(),
+			'template_extension' => $extension
 		);
 		
 		if(!$this->is_nombre_template_disponible($nombre)) {
@@ -535,11 +538,32 @@ class Administracion_frr {
 		//Solamente creamos si los campos pasaron la validacion	
 		if(empty($this->error)) {
 			if($this->ci->templates->create_template($data, $grupo_id)) {
-			return true;
+				//Creamos el file fisico del template
+				$nombre_grupo = $this->ci->grupos_templates->get_nombre_grupo_template_by_id($grupo_id)->nombre;
+				
+				$this->ci->template->obtener_y_parsear($nombre_grupo, $nombre, $extension);
+					
+				return true;
 			} 
 		}	
 		
 		return NULL;
+	}
+	
+	function get_extensiones() {
+		$get_extensiones = $this->ci->extensiones->get_extensiones();
+      	if(isset($get_extensiones) ) {
+      		foreach ($get_extensiones->result() as $row){
+          
+	           $data[] = array(
+	                'id_extension'     => $row->id_extension,
+	                'extension' => $row->extension
+	           );
+	       }
+	
+	       return $data;
+      	}
+        return NULL;
 	}
 	
 	/**
@@ -886,19 +910,39 @@ class Administracion_frr {
         }   
 	}
 	
+	/**
+	 * Metodo para borrar fisicamente (el archivo y en Bdd) un grupo de templates
+	 */
 	function eliminar_grupo_templates($grupo_template_id) {
+		$data = array(
+			'template_group' => $this->ci->grupos_templates->get_nombre_grupo_template_by_id($grupo_template_id)->nombre
+		);
 		if($this->ci->grupos_templates->eliminar_grupo_templates($grupo_template_id)) {
+			$this->ci->template->borrar_fis_grupo_template($data);
 			return true;
 		} else {
         	return false;
         }   
 	}
 	
+	/**
+	 * Metodo para eliminar fisicamente (el archivo y en Bdd) un template
+	 */
 	function eliminar_template($template_id) {
+		$t = $this->get_templates_by_id($template_id);
+
+		$tdata = array(
+			'template_name'		=> $t[0]['nombre'],
+			'template_extension' => $t[0]['extension'],
+			'template_group' => $this->ci->grupos_templates->get_nombre_grupo_template_by_id($t[0]['template_group_id'])->nombre
+		);
+		
 		if($this->ci->templates->eliminar_template($template_id)) {
+
+			$this->ci->template->borrar_fis_template($tdata);
 			return true;
 		} else {
-        	return false;
+       		return false;
         }   
 	}
 	

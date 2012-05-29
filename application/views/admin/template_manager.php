@@ -25,7 +25,8 @@
             	<script type="text/javascript">
             		$(function() {
             			//Ocultamos todos los templates a excepcion del primero y le damos la clase de activo
-            			$('.lista_templates').filter(':first').addClass('activo').end().not(':first').hide();
+            			//$('.lista_templates').filter(':first').addClass('activo').end().not(':first').hide();
+            			$('.lista_templates').filter(':first').addClass('activo');
             			//Asignamos la clase de activo al primer item
             			$('.lista_grupos li:first').addClass('active');
 
@@ -70,11 +71,8 @@
 	            			<ul class="nav nav-pills nav-stacked lista_grupos margin-bottom-none">
 	            				<?php 
 				            	if(isset($grupos_templates)) {
-				            		//print_r($grupos_templates[0]['template_group_id']);
-				            		$band = 0;
 				            		foreach ($grupos_templates as $key => $grupo) {
 										echo '<li><a href="#" class="link_grupos" id="' . $grupo['nombre'] . '">' . $grupo['nombre'] . '</a> ';
-										//echo '<button class="btn btn-mini btn-danger elim-grupo">Eliminar</button>';
 										echo '</li>';
 									}
 				            	}
@@ -90,22 +88,23 @@
 	            				<h3>Templates</h3>
 	            				<?php 
 				            	if(isset($grupos_templates)) {
-				            		//print_r($grupos_templates[0]['template_group_id']);
-				            		$band = 0;
+				            		$tn = 0;
 				            		foreach ($grupos_templates as $key => $grupo) {
-										//echo '<li><a href="#" class="link_grupos" id="' . $grupo['nombre'] . '">' . $grupo['nombre'] . '</a></li>';
-										
 										echo ' <a class="btn btn-small btn-success posicion-6-top-right pull-right bot-crear-template"';
 										echo ' id="' . $grupo['nombre'] . '-boton-crear"';
+										if($tn > 0) echo "style=\"display:none;\"";
 										echo ' href="'. site_url() . '/admin/alta_templates/' . $grupo['template_group_id'] . '">Crear Template</a> ';
 										
 										echo ' <a class="btn btn-small posicion-6-top-right pull-right bot-elim-grupo-template"';
 										echo ' id="' . $grupo['nombre'] . '-boton-eliminar"';
+										if($tn > 0) echo "style=\"display:none;\"";
 										echo ' href="'. site_url() . '/admin/baja_grupo_template/' . $grupo['template_group_id'] . '">Eliminar grupo</a>';
 										
 										echo ' <a class="btn btn-small posicion-6-top-right pull-right bot-mod-grupo-template"';
 										echo ' id="' . $grupo['nombre'] . '-boton-mod"';
+										if($tn > 0) echo "style=\"display:none;\"";
 										echo ' href="'. site_url() . '/admin/editar_grupo_templates/' . $grupo['template_group_id'] . '">Modificar grupo</a>';
+										$tn++;
 									}
 				            	}
 				            	?>
@@ -113,9 +112,11 @@
 	            			</div>
 	            			<div class="widget-content lista-templates">
 		 				 				<?php 
-				            				//$grupo = -1;
+				            				$gn = 0;
 											foreach ($grupos_templates as $keyg => $grupo) {
-												echo '<table class="lista_templates table table-bordered table-striped" id="' . $grupo['nombre'] . '-content">';
+												echo '<table class="lista_templates table table-bordered table-striped" id="' . $grupo['nombre'] . '-content" ';
+												if($gn > 0) echo "style=\"display:none;\"";
+												echo ' >';
 				 				 				echo '<thead>';
 			 				 					echo '<tr>';								
 												echo '<th>Nombre</th>';
@@ -124,24 +125,31 @@
 												echo '</thead>';
 												echo '<tbody>';
 												
-												$band = true;
+												$band = 0;
 					            				foreach ($templates as $keyt => $template) {
 													if($template['template_group_id'] == $grupo['template_group_id']) {
-														$band = false;
+														
 														echo "<tr>";
 														echo '<td width="70%"><a href="' . site_url() . '/admin/editar_templates/' . $template['template_id'] . '">' . $template['nombre'] . '</a></td>';
 														echo '<td width="30%">';
-															echo '<a class="btn btn-mini" href="' . site_url() . "/" . $template['template_group_nombre'] . "/" . $template['nombre'] . '" target="_blank"><i class="icon-eye-open"></i></a> ';
-															echo '<a class="btn btn-mini" href="' . site_url() . '/admin/editar_templates/' . $template['template_id'] . '">Modificar</a> ';
-															echo '<a class="btn btn-mini" href="' . site_url() . '/admin/baja_template/' . $template['template_id'] . '">Eliminar</a> ';
+															echo '<a class="btn btn-mini" href="' . site_url() . "/" . $template['template_group_nombre'] . "/" . $template['nombre'];
+																if($band > 0) echo "style=\"display:none;\"";
+															echo '" target="_blank"><i class="icon-eye-open"></i></a> ';
+															echo '<a class="btn btn-mini" href="' . site_url() . '/admin/editar_templates/' . $template['template_id'];
+																if($band > 0) echo "style=\"display:none;\"";
+															echo '">Modificar</a> ';
+															echo '<a class="btn btn-mini" href="' . site_url() . '/admin/baja_template/' . $template['template_id'];
+																if($band > 0) echo "style=\"display:none;\"";
+															echo '">Eliminar</a> ';
 															
 														echo '</td>';
 														echo '</tr>';
 														$grupo = $template['template_group_id'];
+														$band++;
 													}
 												}
 												//Significa que no hay templates en el grupo
-												if($band) {
+												if($band == 0) {
 													echo "<tr>";
 													echo '<td colspan="2">';
 														echo '<em>No hay templates cargados en el grupo seleccionado</em>';
@@ -151,6 +159,8 @@
 												
 												echo '</tbody>';
 												echo '</table>';
+												
+												$gn++;
 											}
 				            			?>
 		            		</div>

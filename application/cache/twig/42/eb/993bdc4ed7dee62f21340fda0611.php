@@ -13,10 +13,16 @@ PPPRUEBA
 </title>
 </head>
 <body>
+<script>
+";
+        // line 9
+        $this->env->loadTemplate("frr_temp/js/tendriaqueserjs.js")->display($context);
+        // line 10
+        echo "</script>
 
 
 ";
-        // line 10
+        // line 13
         if (isset($context["perro"])) { $_perro_ = $context["perro"]; } else { $_perro_ = null; }
         $context['_parent'] = (array) $context;
         $context['_seq'] = twig_ensure_traversable($_perro_);
@@ -29,7 +35,7 @@ PPPRUEBA
         foreach ($context['_seq'] as $context["_key"] => $context["entrada"]) {
             if (isset($context["loop"])) { $_loop_ = $context["loop"]; } else { $_loop_ = null; }
             if (($this->getAttribute($_loop_, "index") < 4)) {
-                // line 11
+                // line 14
                 echo "        <li>";
                 if (isset($context["entrada"])) { $_entrada_ = $context["entrada"]; } else { $_entrada_ = null; }
                 echo twig_escape_filter($this->env, $this->getAttribute($_entrada_, "titulo"), "html", null, true);
@@ -49,7 +55,7 @@ PPPRUEBA
         $_parent = $context['_parent'];
         unset($context['_seq'], $context['_iterated'], $context['_key'], $context['entrada'], $context['_parent'], $context['loop']);
         $context = array_merge($_parent, array_intersect_key($context, $_parent));
-        // line 13
+        // line 16
         echo "
 </body>
 </html>

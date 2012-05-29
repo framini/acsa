@@ -72,15 +72,7 @@
               <?php } ?>
               <?php if(isset($admin)) { ?>
               <li class="dropdown">
-				<a href="#" class="dropdown-toggle" data-toggle="dropdown">
-				Diseño
-				<b class="caret"></b>
-				</a>
-				<ul class="dropdown-menu">
-					  <li><?php echo anchor('admin/templates', '<i class=""></i>Templates'); ?></li>
-				      <li class="divider"></li>
-				      <li><?php echo anchor('/admin/grupos_templates', '<i class=""></i> Grupos Templates'); ?></li>
-				</ul>
+				<?php echo anchor('admin/templates', '<i class=""></i>Template Manager'); ?>
               </li>
               <?php } ?>
               

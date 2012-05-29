@@ -414,7 +414,7 @@ class Template
 		$this->CI->twig->display("frr_temp/" . $this->nombre_file, $data);
 	}
 	
-	function obtener_y_parsear($template_group, $template) {
+	function obtener_y_parsear($template_group, $template, $extension = NULL) {
 		//Primero obtenemos el template
 		$this->template = $this->obtener_template($template_group, $template);
 		
@@ -427,16 +427,61 @@ class Template
 			'template_group'	=> $template_group ,
 			'template_name'		=> $template,
 			'template_data'		=> $this->template,
+			'template_extension' => $extension
 		);
 
 		//Creamos el file que luego sera parseado		
-		$this->nombre_file = $this->update_template_file($tdata);
+		$this->nombre_file = $this->update_template_file($tdata, NULL);
 	}
 	
 	function obtener_template($template_group, $template) {
 		$this->CI->load->model('admin/templates');
 		return $this->CI->templates->obtener_template($template_group, $template);
 	}
+	
+	/**
+	 * Metodo utilizado para borrar el template fisico
+	 */
+	function borrar_fis_template($data) {
+		$basepath = $this->data['ruta_default'];
+		$filename = $data['template_name'] . "." .  $data['template_extension'];
+		
+		if(@file_exists($basepath . "/" . $data['template_group'] . "/" . $filename)) {
+			unlink($basepath . "/" . $data['template_group'] . "/" . $filename);
+			
+			return true;
+		} else {
+			return NULL;
+		}
+	}
+	
+	function borrar_fis_grupo_template($data) {
+		$basepath = $this->data['ruta_default'];
+		
+		if(@file_exists($basepath . "/" . $data['template_group'])) {
+			$this->rrmdir($basepath . "/" . $data['template_group']);
+			echo "ENTRO";
+			return true;
+		} else {
+			return NULL;
+		}
+	}
+	
+	/**
+	 * Helper para borrar un folder cuando no esta vacio
+	 */
+	function rrmdir($dir) {
+	   if (is_dir($dir)) {
+	     $objects = scandir($dir);
+	     foreach ($objects as $object) {
+	       if ($object != "." && $object != "..") {
+	         if (filetype($dir."/".$object) == "dir") rrmdir($dir."/".$object); else unlink($dir."/".$object);
+	       }
+	     }
+	     reset($objects);
+	     rmdir($dir);
+	   }
+	 }
 	
 	
 	/**
@@ -476,8 +521,12 @@ class Template
 		//Establecemos la ruta default en base al nombre del grupo de templates usado
 		$basepath = $this->data['ruta_default'] . "/" . $data['template_group'];
 		
-		//Le damos la extension fijada en la config template al archivo a crear/buscar
-		$filename = $data['template_name'] . "." .  $this->data['extension_file'];
+		if(isset($data['template_extension'])) {
+			$filename = $data['template_name'] . "." .  $data['template_extension'];
+		} else {
+			//Le damos la extension fijada en la config template al archivo a crear/buscar
+			$filename = $data['template_name'] . "." .  $this->data['extension_file'];
+		}
 		
 		//Chequeamos si existe o no el file. En caso de existir no hay sentido volver a crearlo
 		//a menos que lo estemos actualizando
