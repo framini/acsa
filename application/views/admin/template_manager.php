@@ -99,11 +99,11 @@
 										echo ' id="' . $grupo['nombre'] . '-boton-crear"';
 										echo ' href="'. site_url() . '/admin/alta_templates/' . $grupo['template_group_id'] . '">Crear Template</a> ';
 										
-										echo ' <a class="btn btn-small btn-danger posicion-6-top-right pull-right bot-elim-grupo-template"';
+										echo ' <a class="btn btn-small posicion-6-top-right pull-right bot-elim-grupo-template"';
 										echo ' id="' . $grupo['nombre'] . '-boton-eliminar"';
 										echo ' href="'. site_url() . '/admin/baja_grupo_template/' . $grupo['template_group_id'] . '">Eliminar grupo</a>';
 										
-										echo ' <a class="btn btn-small btn-info posicion-6-top-right pull-right bot-mod-grupo-template"';
+										echo ' <a class="btn btn-small posicion-6-top-right pull-right bot-mod-grupo-template"';
 										echo ' id="' . $grupo['nombre'] . '-boton-mod"';
 										echo ' href="'. site_url() . '/admin/editar_grupo_templates/' . $grupo['template_group_id'] . '">Modificar grupo</a>';
 									}
@@ -132,8 +132,8 @@
 														echo '<td width="70%"><a href="' . site_url() . '/admin/editar_templates/' . $template['template_id'] . '">' . $template['nombre'] . '</a></td>';
 														echo '<td width="30%">';
 															echo '<a class="btn btn-mini" href="' . site_url() . "/" . $template['template_group_nombre'] . "/" . $template['nombre'] . '" target="_blank"><i class="icon-eye-open"></i></a> ';
-															echo '<a class="btn btn-mini btn-primary" href="' . site_url() . '/admin/editar_templates/' . $template['template_id'] . '">Modificar</a> ';
-															echo '<a class="btn btn-mini btn-danger" href="' . site_url() . '/admin/baja_template/' . $template['template_id'] . '">Eliminar</a> ';
+															echo '<a class="btn btn-mini" href="' . site_url() . '/admin/editar_templates/' . $template['template_id'] . '">Modificar</a> ';
+															echo '<a class="btn btn-mini" href="' . site_url() . '/admin/baja_template/' . $template['template_id'] . '">Eliminar</a> ';
 															
 														echo '</td>';
 														echo '</tr>';
