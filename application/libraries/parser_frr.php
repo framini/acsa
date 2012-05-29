@@ -72,37 +72,20 @@ class Parser_frr {
 					}
 					
 				}
-				
-				//print_r($parametros);die();
-				
-				//foreach ($tag['nombre'] as $key => $t) {
+
 					//Recorremos la lista de parametros utilizados en el tag
 					//y definimos las variables que se corresponden con los nombres de los tags
 					$ind = 0;
 					foreach ($parametros as $param => $valor) {
 						foreach ($valor as $key => $value) {
-							//echo $param;
-							//echo $key;
-							//print_r($value['valor'][0]); die();
-							
 							//Funca
-							$variable = $key . "_" . $param;
-							$this->$variable = $value['valor'][0];
-							//
-							
-							//echo $this->$key[$param];
+							if(isset($value['valor'][0])) {
+								$variable = $key . "_" . $param;
+								$this->$variable = $value['valor'][0];
+							}
 						}
-						
-						/*if(!empty($valor)) {
-							$this->$param[$key] = $valor['valor'];
-						}*/
 						$ind++;
 					}
-					//die();
-				//}
-				//die();
-
-				//echo $this->forms_nombre_0; die();
 				
 				
 				$form_id = NULL;
