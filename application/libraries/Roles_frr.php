@@ -268,6 +268,17 @@ class Roles_frr {
         
        return $permisos;
     }
+	
+	/**
+     * Devuelve todos los permisos del sistema que no sean del tipo solo para admin
+     * @return type 
+     */
+    function get_all_permisos_no_admin()
+    {
+        $permisos = $this->ci->roles_model->get_all_permisos_no_admin();
+        
+       return $permisos;
+    }
     
 	
     function get_permisos_role($role_id)

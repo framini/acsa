@@ -50,7 +50,7 @@ class Admin extends MY_Controller {
 		 * Sobre la izquierda se mostraran los grupos de templates
 		 * Sobre la derecha se listaran los templates pertenecientes a cada grupo
 		 */
-		function templates() {
+		function template_manager() {
 			
 			$this->breadcrumb->append_crumb('Home', site_url());
 			$this->breadcrumb->append_crumb('Admin', site_url() . "/admin/");

@@ -70,11 +70,11 @@
 				</ul>
               </li>
               <?php } ?>
-              <?php if(isset($admin)) { ?>
+              <?php //if(isset($admin)) { ?>
               <li class="dropdown">
-				<?php echo anchor('admin/templates', '<i class=""></i>Template Manager'); ?>
+				<?php echo anchor('admin/template_manager', '<i class=""></i>Template Manager'); ?>
               </li>
-              <?php } ?>
+              <?php //} ?>
               
               <?php if(isset($admin) && isset($forms)) { ?>
               <li class="dropdown">

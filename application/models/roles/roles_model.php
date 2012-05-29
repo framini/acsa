@@ -226,6 +226,32 @@ class  Roles_model extends CI_Model
         else
             return NULL;
     }
+	
+	/**
+     * Devuelve todos los permisos del sistema que no sean del tipo solo para admins
+     * @return type 
+     */
+    function get_all_permisos_no_admin()
+    {
+        $this->db->select();
+        $this->db->from('permisos');
+		$this->db->where('admin_only', 0);
+        $permisos = $this->db->get();
+											
+        
+        if($permisos->num_rows > 0)
+        {
+            foreach ($permisos->result() as $row)
+           {
+               $data[] = array('id' => $row->permiso_id, 'permiso' => $row->permiso);
+           }
+           
+           return $data;
+           // return $permisos->result();
+        }
+        else
+            return NULL;
+    }
     
     function agrega_permisos_role($permisos)
     {
