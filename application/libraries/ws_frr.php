@@ -25,11 +25,53 @@ class Ws_frr
 																			'include_rts' => true,
 																			'screen_name' => $de,
 																			'count' => $cantidad ));
-			
-			return $tweets;
+																			
+			if(isset($tweets->errors) || count($tweets) == 0) {
+				return NULL;
+			} else {
+				return $tweets;
+			}
 		} else {
 			return NULL;
 		}
+	}
+	
+	/**
+	 * Obtiene todas las cuentas agregadas al sistema
+	 */
+	function get_cuentas_twitter() {
+		$this->ci->load->model('services/twitter_model');
+		$cuentas = $this->ci->twitter_model->get_cuentas();
+		
+		if(!is_null($cuentas)) {
+			foreach ($cuentas->result() as $row)
+	        {
+	           $data[] = array(
+	           					'id_cuenta' => $row->id_cuenta,
+	                            'usuario'    => $row->usuario,
+	                   );
+	        }
+			
+			return $data;
+		} else {
+			return NULL;
+		}
+	}
+	
+	/**
+	 * Obtiene todas las cuentas agregadas al sistema y sus tweets asociados
+	 */
+	function get_cuentas_twitter_y_tweets() {
+		$cuentas = $this->get_cuentas_twitter();
+		if(!is_null($cuentas)) {
+			foreach ($cuentas as $key => $cuenta) {
+			$cuentas[$key]['tweets'] = $this->get_tweets($cuenta['usuario']);
+		}
+		
+			return($cuentas);
+		}
+		
+		return NULL;
 	}
 	
 	/**

@@ -20,8 +20,9 @@ class Home extends CI_Controller {
 	function index() {
 		$this->load->library('ws_frr');
 		
-		$data['tweets'] = $this->ws_frr->get_tweets('alvaronbamartin');
+		//$data['tweets'] = $this->ws_frr->get_tweets('alvaronbamartin');
 		$data['cotizacion'] = $this->ws_frr->obtener_cotizacion(array('ARS', 'EUR'));
+		$data['cuentas'] = $this->ws_frr->get_cuentas_twitter_y_tweets();
 		
 	    $this->template->set_content('home', $data);
         $this->template->build();
