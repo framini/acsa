@@ -17,8 +17,9 @@ class MY_Controller extends CI_Controller
 		 if($permiso = $this->uri->segment(2)) {
 		 	//Comprobamos que el usuario tenga los permisos necesarios
 		 	//Parametros (permiso, controladora, grupo)
-		 	if(!$this->roles_frr->tiene_permisos($permiso, $this->uri->segment(1), $this->uri->segment(2))) {	 
-             	redirect('');
+		 	if(!$this->roles_frr->tiene_permisos($permiso, $this->uri->segment(1), $this->uri->segment(2))) {
+		 		//Si no tiene permisos los redireccionamos a la web de error	 
+             	redirect('error/m');
             	die();
 			}
 		 }

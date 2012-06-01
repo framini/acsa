@@ -135,6 +135,9 @@ width: auto;
 margin-bottom: 2em;
 overflow: hidden;
 }
+.widget.last {
+	clear:none !important;
+}
 .widget-header {
 position: relative;
 height: 40px;
@@ -293,8 +296,46 @@ padding: 0;
 .widget-content > br {
 	display:none;
 }
+.news-item-detail {
+display: table-cell;
+}
+.news-item-title {
+font-size: 13px;
+font-weight: 600;
+}
+.news-item-preview {
+margin-bottom: 0;
+color: 
+#777;
+}
+.news-item-date {
+width: 75px;
+vertical-align: middle;
+text-align: right;
+display: table-cell;
+}
+.news-item-day {
+display: block;
+margin-bottom: .25em;
+font-size: 24px;
+color: 
+#888;
+}
+.news-item-month {
+display: block;
+padding-right: 1px;
+font-size: 12px;
+font-weight: 600;
+color: 
+#888;
+}
 
 /*Iconos nuevos*/
+
+.widget-header .btn [class^="icon-"] {
+	margin-left:0px !important;
+	margin-right:0px !important;
+}
 
 [class^="icon-"],
 [class*=" icon-"] {
@@ -876,4 +917,15 @@ padding: 0;
 
 .icon-fullscreen {
   background-position: -456px -144px;
+}
+.icon-nav-home-logged-out {
+width: 105px;
+height: 20px;
+background-image: url("../img/twitter_logo_top_bar.png");
+background-position: 0 0;
+}
+#twitter_barra {
+	background-color: #2C2C2C;
+    background-image: -moz-linear-gradient(center top , #333333, #222222);
+	border: 1px solid #2C2C2C;
 }

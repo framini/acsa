@@ -800,7 +800,7 @@ class Seguridad extends MY_Controller {
                   	  //Cargamos el archivo que contiene la info con la que se contruye el menu
                  	  $this->config->load('menu_permisos', TRUE);
 					  
-                  	  //Obtenemos los permisos del usuario logueado asociados a la controladora seguridad y grupo gestionar_roles
+                  	  //Obtenemos los permisos del usuario logueado asociados a la controladora seguridad y grupo gestionar_usuarios
                   	  $data['permisos'] = $this->roles_frr->permisos_role_controladora_grupo($this->uri->segment(1), $this->uri->segment(2));
 					  
 					  //Procesamos los permisos obtenidos

@@ -115,3 +115,15 @@ $config['alta_grupos_fields_gestion_grupos_fields'] = array('texto_anchor' => 'C
 $config['modificar_grupo_fields_gestion_grupos_fields'] = array('texto_anchor' => 'Modificar Grupo Fields', 'icono' => 'icon-pencil', 'clase_boton' => 'btn cambiar-email-usuario btn-primary margin-bottom-5', 'boton_superior' => false);
 $config['alta_fields_gestion_fields'] = array('texto_anchor' => 'Crear Field', 'icono' => 'icon-trash', 'clase_boton' => 'btn btn-danger eliminar-usuario margin-bottom-5', 'boton_superior' => false);
 $config['modificar_field_gestion_fields'] = array('texto_anchor' => 'Modificar Field', 'icono' => 'icon-trash', 'clase_boton' => 'btn btn-danger eliminar-usuario margin-bottom-5', 'boton_superior' => false);
+
+
+# Template Manager
+# Notas:
+# grupo sirve para diferenciar a cual de los dos divs pertence cada boton
+####################################################################################
+$config['alta_grupos'] = array('texto_anchor' => 'Crear Grupo', 'icono' => 'icon-plus icon-white', 'boton_superior' => true, 'grupo' => 'grupos', 'clase_boton' => 'btn btn-small btn-success posicion-6-top-right pull-right');
+$config['editar_grupo_templates'] = array('texto_anchor' => 'Modificar grupo', 'icono' => 'icon-pencil', 'boton_superior' => true, 'clase_boton' => 'btn btn-small posicion-6-top-right pull-right bot-mod-grupo-template' , 'grupo' => 'templates');
+$config['baja_grupo_template']  = array('texto_anchor' => 'Eliminar grupo', 'icono' => 'icon-remove', 'boton_superior' => true, 'clase_boton' => 'btn btn-small posicion-6-top-right pull-right bot-elim-grupo-template', 'grupo' => 'templates');
+$config['alta_templates'] = array('texto_anchor' => 'Crear Template', 'icono' => 'icon-plus icon-white', 'boton_superior' => true, 'clase_boton' => 'btn btn-small btn-success posicion-6-top-right pull-right bot-crear-template', 'grupo' => 'templates');
+$config['editar_templates'] = array('texto_anchor' => 'Modificar', 'icono' => 'icon-remove-sign', 'boton_superior' => false, 'clase_boton' => 'btn btn-small posicion-6-top-right pull-right bot-mod-grupo-template', 'grupo' => 'templates');
+$config['baja_template'] = array('texto_anchor' => 'Eliminar', 'icono' => 'icon-remove', 'boton_superior' => false, 'clase_boton' => 'btn btn-small posicion-6-top-right pull-right bot-elim-grupo-template', 'grupo' => 'templates');

@@ -1,4 +1,4 @@
-
+<?php //print_r($data_menu); die(); ?>
 	<div class="row">
             <div class="span12 margin-bottom-10">
                 	<div class="row">
@@ -65,7 +65,13 @@
             		<div class="span4 widget">
             			<div class="widget-header">
             				<h3>Grupos de Templates</h3>
-            				<a class="btn btn-small btn-success posicion-6-top-right pull-right" href="<?php echo site_url() . "/admin/alta_grupos/"; ?>">Crear Grupo Template</a>
+            				<!--<a class="btn btn-small btn-success posicion-6-top-right pull-right" href="<?php echo site_url() . "/admin/alta_grupos/"; ?>">Crear Grupo Template</a>-->
+            				
+            				<?php foreach ($data_menu as $keyp => $row) { ?>
+	               				<?php if($row['boton_superior'] && (isset($row['grupo']) && $row['grupo'] == 'grupos')) { ?>
+	               					<?php echo anchor($this->uri->segment(1) ."/". $keyp, '<i class="' . $row['icono'] . '"></i> ' . $row['texto_anchor'], 'class="' . $row['clase_boton'] . '"');  ?>
+	                			<?php } ?>
+	                		<?php } ?>
             			</div>
             			<div class="widget-content">
 	            			<ul class="nav nav-pills nav-stacked lista_grupos margin-bottom-none">
@@ -86,7 +92,7 @@
             			<div class="widget widget-table">
 	            			<div class="widget-header header-templates">
 	            				<h3>Templates</h3>
-	            				<?php 
+	            				<!--<?php 
 				            	if(isset($grupos_templates)) {
 				            		$tn = 0;
 				            		foreach ($grupos_templates as $key => $grupo) {
@@ -107,6 +113,28 @@
 										$tn++;
 									}
 				            	}
+				            	?>-->
+				            	<?php
+				            	$tn = 0;
+				            	foreach ($grupos_templates as $key => $grupo) {
+                                    foreach ($data_menu as $keyp => $row) { 
+			               				if($row['boton_superior'] && (isset($row['grupo']) && $row['grupo'] == 'templates')) {
+			               					if(isset($row['titulo'])) {
+			               						$atributos = array('data-original-title' => $row['titulo'], 'class' => $row['clase_boton'], 'id' => $grupo['nombre'] . '-boton-crear');
+			               					} else {
+			               						$atributos = array('class' => $row['clase_boton'], 'id' => $grupo['nombre'] . '-boton-crear');
+			               					}
+											//Ocultamos todos los botones que no se utilizan
+											if($tn > 0) {
+												$atributos['style'] = "display:none;";
+											}
+			               					echo anchor($this->uri->segment(1) ."/". $keyp ."/". $grupo['template_group_id'], '<i class="' . $row['icono'] . '"></i> ' . $row['texto_anchor'], $atributos);
+			                				//Fix espacio entre botones
+			                				echo ' ';
+										}
+			                		}
+									$tn++;
+								}
 				            	?>
 	            				
 	            			</div>
@@ -133,14 +161,16 @@
 														echo '<td width="70%"><a href="' . site_url() . '/admin/editar_templates/' . $template['template_id'] . '">' . $template['nombre'] . '</a></td>';
 														echo '<td width="30%">';
 															echo '<a class="btn btn-mini" href="' . site_url() . "/" . $template['template_group_nombre'] . "/" . $template['nombre'];
-																if($band > 0) echo "style=\"display:none;\"";
 															echo '" target="_blank"><i class="icon-eye-open"></i></a> ';
-															echo '<a class="btn btn-mini" href="' . site_url() . '/admin/editar_templates/' . $template['template_id'];
-																if($band > 0) echo "style=\"display:none;\"";
-															echo '">Modificar</a> ';
-															echo '<a class="btn btn-mini" href="' . site_url() . '/admin/baja_template/' . $template['template_id'];
-																if($band > 0) echo "style=\"display:none;\"";
-															echo '">Eliminar</a> ';
+															if(isset($data_menu) && isset($data_menu['editar_templates'])) {
+																echo '<a class="btn btn-mini" href="' . site_url() . '/admin/editar_templates/' . $template['template_id'];
+																echo '">Modificar</a> ';
+															}
+															
+															if(isset($data_menu) && isset($data_menu['baja_template'])) {
+																echo '<a class="btn btn-mini" href="' . site_url() . '/admin/baja_template/' . $template['template_id'] . '" ';
+																echo '>Eliminar</a> ';
+															}
 															
 														echo '</td>';
 														echo '</tr>';

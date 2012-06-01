@@ -54,11 +54,24 @@ class Admin extends MY_Controller {
 			
 			$this->breadcrumb->append_crumb('Home', site_url());
 			$this->breadcrumb->append_crumb('Admin', site_url() . "/admin/");
-			$this->breadcrumb->append_crumb('Template Manager', site_url() . "/admin/templates");
+			$this->breadcrumb->append_crumb('Template Manager', site_url() . "/admin/template_manager");
 			
 			$data['t'] = "Template manager";
 			$data['grupos_templates'] = $this->administracion_frr->get_grupos_templates();
 			$data['templates'] = $this->administracion_frr->get_templates();
+			
+			//Cargamos el archivo que contiene la info con la que se contruye el menu
+     	    $this->config->load('menu_permisos', TRUE);
+		  
+      	    //Obtenemos los permisos del usuario logueado asociados a la controladora admin y grupo template_manager
+      	    $data['permisos'] = $this->roles_frr->permisos_role_controladora_grupo($this->uri->segment(1), $this->uri->segment(2));
+			
+			//Procesamos los permisos obtenidos
+		    if(count($data['permisos']) > 0) {
+		  	  foreach ($data['permisos'] as $key => $row) {
+			    $data['data_menu'][$row['permiso']] = $this->config->item($row['permiso'], 'menu_permisos');
+		  	  }
+		    }
 			
 			if ($message = $this->session->flashdata('message')) {
 			  		$data['message'] = $message;
@@ -71,7 +84,7 @@ class Admin extends MY_Controller {
 		function alta_grupos() {
 			$this->breadcrumb->append_crumb('Home', site_url());
 			$this->breadcrumb->append_crumb('Admin', site_url() . "/admin/");
-			$this->breadcrumb->append_crumb('Template Manager', site_url() . "/admin/templates");
+			$this->breadcrumb->append_crumb('Template Manager', site_url() . "/admin/template_manager");
 			$this->breadcrumb->append_crumb('Alta grupo templates', site_url() . "/admin/alta_grupos");
 			
 			$this->form_validation->set_rules('nombre', 'Nombre del Template', 'trim|required|xss_clean');
@@ -82,7 +95,7 @@ class Admin extends MY_Controller {
 				if($this->administracion_frr->create_grupo($this->form_validation->set_value('nombre'))) {
 					$message = "El grupo de templates se ha creado correctamente!";
                     $this->session->set_flashdata('message', $message);
-					redirect('admin/templates');
+					redirect('admin/template_manager');
 				} else {
 					//Si no se pudo crear el grupo buscamos que paso
 					$data['errors'] = $this->administracion_frr->get_error_message();
@@ -104,7 +117,7 @@ class Admin extends MY_Controller {
 			
 			$this->breadcrumb->append_crumb('Home', site_url());
 			$this->breadcrumb->append_crumb('Admin', site_url() . "/admin/");
-			$this->breadcrumb->append_crumb('Template Manager', site_url() . "/admin/templates");
+			$this->breadcrumb->append_crumb('Template Manager', site_url() . "/admin/template_manager");
 			$this->breadcrumb->append_crumb('Alta templates', site_url() . "/admin/alta_templates");
 			
 			$this->form_validation->set_rules('nombre', 'Nombre del Template', 'trim|required|xss_clean');
@@ -116,7 +129,7 @@ class Admin extends MY_Controller {
 				if($this->administracion_frr->create_template($this->form_validation->set_value('nombre'), $this->form_validation->set_value('codigo'), $this->uri->segment(3), $this->form_validation->set_value('extension'))) {
 					$message = "El template se ha creado correctamente!";
                     $this->session->set_flashdata('message', $message);
-					redirect('admin/templates');
+					redirect('admin/template_manager');
 				} else {
 					//Si no se pudo crear el grupo buscamos que paso
 					$data['errors'] = $this->administracion_frr->get_error_message();
@@ -138,7 +151,7 @@ class Admin extends MY_Controller {
 			
 			$this->breadcrumb->append_crumb('Home', site_url());
 			$this->breadcrumb->append_crumb('Admin', site_url() . "/admin/");
-			$this->breadcrumb->append_crumb('Template Manager', site_url() . "/admin/templates");
+			$this->breadcrumb->append_crumb('Template Manager', site_url() . "/admin/template_manager");
 			$this->breadcrumb->append_crumb('Editar grupo templates', site_url() . "/admin/editar_grupo_templates");
 			
 			//Si existe un grupo template con el id pasado en la URI
@@ -151,7 +164,7 @@ class Admin extends MY_Controller {
 					if($this->administracion_frr->modificar_grupo_templates($this->uri->segment(3), $this->form_validation->set_value('nombre'))) {
 						$message = "El grupo de templates se ha modificado correctamente!";
 	                    $this->session->set_flashdata('message', $message);
-						redirect('admin/templates');
+						redirect('admin/template_manager');
 					} else {
 						//Si no se pudo crear el grupo buscamos que paso
 						$data['errors'] = $this->administracion_frr->get_error_message();
@@ -181,7 +194,7 @@ class Admin extends MY_Controller {
 			
 			$this->breadcrumb->append_crumb('Home', site_url());
 			$this->breadcrumb->append_crumb('Admin', site_url() . "/admin/");
-			$this->breadcrumb->append_crumb('Template Manager', site_url() . "/admin/templates");
+			$this->breadcrumb->append_crumb('Template Manager', site_url() . "/admin/template_manager");
 			$this->breadcrumb->append_crumb('Editar templates', site_url() . "/admin/editar_templates");
 			
 			//Si existe un template con el id pasado en la URI
@@ -762,7 +775,7 @@ class Admin extends MY_Controller {
 					if($this->administracion_frr->eliminar_grupo_templates($this->uri->segment(3))) {
 						$message = "El grupo de templates se ha eliminado correctamente!";
 	                    $this->session->set_flashdata('message', $message);
-						redirect('admin/templates/');
+						redirect('admin/template_manager/');
 					}
 				}
 				
@@ -778,7 +791,7 @@ class Admin extends MY_Controller {
 					if($this->administracion_frr->eliminar_template($this->uri->segment(3))) {
 						$message = "El template se ha eliminado correctamente!";
 	                    $this->session->set_flashdata('message', $message);
-						redirect('admin/templates/');
+						redirect('admin/template_manager/');
 					}
 				}
 				
