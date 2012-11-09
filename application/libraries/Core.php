@@ -21,7 +21,9 @@ class Core {
 	function generar_pagina() {
 		$template_group = $this->ci->uri->segment(1);
 		$template = $this->ci->uri->segment(2);
-
-		$this->ci->template->run_template_engine($template_group, $template);
+		$template_extension = $this->ci->administracion_frr->get_extension_template($template);
+		if( isset($template_extension) ) {
+			$this->ci->template->run_template_engine($template_group, $template, $template_extension);
+		}
 	}
 }

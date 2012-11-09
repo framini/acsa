@@ -21,4 +21,14 @@ class Extensiones extends CI_Model
         if ($query->num_rows() > 0) return $query;
         return NULL;
 	}
+	
+	function get_extensione_template($template) {
+		$this->db->select('template_extension');
+        $this->db->from("templates");
+		$this->db->where('nombre', $template);
+        $query = $this->db->get();
+        
+        if ($query->num_rows() == 1) return $query->row();
+        return NULL;
+	}
 }

@@ -11,21 +11,29 @@ class __TwigTemplate_42eb993bdc4ed7dee62f21340fda0611 extends Twig_Template
 <title>
 PPPRUEBA
 </title>
+<style>
+";
+        // line 7
+        $this->env->loadTemplate("frr_temp/css/estilo.css")->display($context);
+        // line 8
+        echo "</style>
+
 </head>
 <body>
+
 <script>
 ";
-        // line 9
-        $this->env->loadTemplate("frr_temp/js/tendriaqueserjs.js")->display($context);
-        // line 10
+        // line 14
+        $this->env->loadTemplate("frr_temp/js/principal.js")->display($context);
+        // line 15
         echo "</script>
 
 
+<ul>
 ";
-        // line 13
-        if (isset($context["perro"])) { $_perro_ = $context["perro"]; } else { $_perro_ = null; }
+        // line 19
         $context['_parent'] = (array) $context;
-        $context['_seq'] = twig_ensure_traversable($_perro_);
+        $context['_seq'] = twig_ensure_traversable((isset($context["perro"]) ? $context["perro"] : null));
         $context['loop'] = array(
           'parent' => $context['_parent'],
           'index0' => 0,
@@ -33,18 +41,14 @@ PPPRUEBA
           'first'  => true,
         );
         foreach ($context['_seq'] as $context["_key"] => $context["entrada"]) {
-            if (isset($context["loop"])) { $_loop_ = $context["loop"]; } else { $_loop_ = null; }
-            if (($this->getAttribute($_loop_, "index") < 4)) {
-                // line 14
+            if (($this->getAttribute((isset($context["loop"]) ? $context["loop"] : null), "index") < 4)) {
+                // line 20
                 echo "        <li>";
-                if (isset($context["entrada"])) { $_entrada_ = $context["entrada"]; } else { $_entrada_ = null; }
-                echo twig_escape_filter($this->env, $this->getAttribute($_entrada_, "titulo"), "html", null, true);
+                echo twig_escape_filter($this->env, $this->getAttribute((isset($context["entrada"]) ? $context["entrada"] : null), "titulo"), "html", null, true);
                 echo " - ";
-                if (isset($context["entrada"])) { $_entrada_ = $context["entrada"]; } else { $_entrada_ = null; }
-                echo twig_escape_filter($this->env, $this->getAttribute($_entrada_, "nombre"), "html", null, true);
+                echo twig_escape_filter($this->env, $this->getAttribute((isset($context["entrada"]) ? $context["entrada"] : null), "nombre"), "html", null, true);
                 echo " - ";
-                if (isset($context["entrada"])) { $_entrada_ = $context["entrada"]; } else { $_entrada_ = null; }
-                echo twig_escape_filter($this->env, $this->getAttribute($_entrada_, "direccion"), "html", null, true);
+                echo twig_escape_filter($this->env, $this->getAttribute((isset($context["entrada"]) ? $context["entrada"] : null), "direccion"), "html", null, true);
                 echo "</li>
     ";
                 ++$context['loop']['index0'];
@@ -55,8 +59,8 @@ PPPRUEBA
         $_parent = $context['_parent'];
         unset($context['_seq'], $context['_iterated'], $context['_key'], $context['entrada'], $context['_parent'], $context['loop']);
         $context = array_merge($_parent, array_intersect_key($context, $_parent));
-        // line 16
-        echo "
+        // line 22
+        echo "</ul>
 </body>
 </html>
 ";

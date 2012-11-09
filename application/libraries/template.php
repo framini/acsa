@@ -337,8 +337,8 @@ class Template
 		
 	}
 	
-	function run_template_engine($template_group, $template) {
-		$this->obtener_y_parsear($template_group, $template);
+	function run_template_engine($template_group, $template, $template_extension) {
+		$this->obtener_y_parsear($template_group, $template, $template_extension);
 		
 		//Paginacion
 		
@@ -517,6 +517,8 @@ class Template
 			//Lo mismo para el directorio del grupo de templates
 			mkdir($basepath . "/" . $data['template_group']);
 		}
+		
+		//print_r($data); die();
 		
 		//Establecemos la ruta default en base al nombre del grupo de templates usado
 		$basepath = $this->data['ruta_default'] . "/" . $data['template_group'];

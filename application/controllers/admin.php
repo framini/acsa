@@ -125,7 +125,7 @@ class Admin extends MY_Controller {
 			$this->form_validation->set_rules('extension', 'Extension del Template', 'required');
 			//Si ingresamos acà es porque se hizo el envío del formulario
 			if($this->form_validation->run()) {
-
+				
 				if($this->administracion_frr->create_template($this->form_validation->set_value('nombre'), $this->form_validation->set_value('codigo'), $this->uri->segment(3), $this->form_validation->set_value('extension'))) {
 					$message = "El template se ha creado correctamente!";
                     $this->session->set_flashdata('message', $message);
@@ -218,6 +218,7 @@ class Admin extends MY_Controller {
 				$data['t'] = "Modificar Template";
 				$data['tb'] = "Modificar Template";
 				$data['template_data'] = $template;
+				$data['extensiones'] = $this->administracion_frr->get_extensiones();
 				
 				if ($message = $this->session->flashdata('message')) {
 			  		$data['message'] = $message;

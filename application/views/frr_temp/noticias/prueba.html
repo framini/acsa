@@ -3,16 +3,22 @@
 <title>
 PPPRUEBA
 </title>
+<style>
+{% include "frr_temp/css/estilo.css" %}
+</style>
+
 </head>
 <body>
+
 <script>
-{% include "frr_temp/js/tendriaqueserjs.js" %}
+{% include "frr_temp/js/principal.js" %}
 </script>
 
 
+<ul>
 {% for entrada in perro if loop.index < 4 %}
         <li>{{ entrada.titulo }} - {{ entrada.nombre}} - {{ entrada.direccion}}</li>
     {% endfor %}
-
+</ul>
 </body>
 </html>

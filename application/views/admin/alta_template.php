@@ -63,7 +63,13 @@
 								/*var tmode = "ace/mode/" + $(this).val();
 								var mode = require(tmode).Mode;
    	 							editor.getSession().setMode(new mode());*/
-   	 							var tmode = "ace/mode/" + $(this).val();
+   	 							var tmode;
+   	 							
+   	 							if($(this).val() == "js") {
+   	 								tmode = "ace/mode/" + "javascript";
+   	 							} else {
+   	 								tmode = "ace/mode/" + $(this).val();
+   	 							}
    	 							
    	 							editor.getSession().setMode(tmode);
    	 							editor.getSession().modeName = $(this).val();
@@ -80,11 +86,11 @@
 						<?php 
 							foreach ($extensiones as $key => $extension) {
 								echo '<option value="';
-								if($extension['extension'] == "js") {
+								/*if($extension['extension'] == "js") {
 									echo "javascript";
-								} else {
+								} else {*/
 									echo $extension['extension'];
-								}
+								//}
 								echo '">' . $extension['extension'] . '</option>';
 							} 
 						?>

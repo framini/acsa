@@ -343,6 +343,10 @@ color:
 #bot-agregar-cuenta-tw:hover {
 	border-color: lightblue;
 }
+.nav-tabs > li > a, .nav-pills > li > a {
+	margin-left:6px !important;
+	margin-right:6px !important;
+}
 
 /*Iconos nuevos*/
 
@@ -940,6 +944,11 @@ background-position: 0 0;
 }
 #twitter_barra {
 	background-color: #2C2C2C;
-    background-image: -moz-linear-gradient(center top , #333333, #222222);
+    background-image: -moz-linear-gradient(top, #333333, #222222);
+    background-image: -ms-linear-gradient(top, #333333, #222222);
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#333333), to(#222222));
+    background-image: -webkit-linear-gradient(top, #333333, #222222);
+    background-image: -o-linear-gradient(top, #333333, #222222);
+    background-image: linear-gradient(top, #333333, #222222);
 	border: 1px solid #2C2C2C;
 }

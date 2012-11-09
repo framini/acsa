@@ -96,3 +96,34 @@ function form_radios($data = '', $value = '', $checked = FALSE, $extra = '')
 	}
 	echo '</div>';
 }
+
+
+function form_dropdown_custom($name = '', $options = array(), $selected = array(), $extra = '')
+{
+		// If no selected state was submitted we will attempt to set it automatically
+		if (count($selected) === 0)
+		{
+			// If the form name appears in the $_POST array we have a winner!
+			if (isset($_POST[$name]))
+			{
+				$selected = array($_POST[$name]);
+			}
+		}
+
+		if ($extra != '') $extra = ' '.$extra;
+
+		$multiple = (count($selected) > 1 && strpos($extra, 'multiple') === FALSE) ? ' multiple="multiple"' : '';
+
+		$form = '<select name="'.$name.'"'.$extra.$multiple.">\n";
+
+		foreach ($options as $key => $val)
+		{
+			
+				$sel = ( $val['extension'] == $selected ) ? ' selected="selected"' : '';
+				$form .= '<option value="'.$val['id_extension'].'"'.$sel.'>'. $val['extension'] ."</option>\n";
+		}
+
+		$form .= '</select>';
+
+		return $form;
+}

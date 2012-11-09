@@ -154,8 +154,11 @@
 												echo '<tbody>';
 												
 												$band = 0;
+												$grupo_id = $grupo['template_group_id'];
+
 					            				foreach ($templates as $keyt => $template) {
-													if($template['template_group_id'] == $grupo['template_group_id']) {
+					            					//print_r($templates); die();
+													if( $template['template_group_id'] == $grupo_id ) {
 														
 														echo "<tr>";
 														echo '<td width="70%"><a href="' . site_url() . '/admin/editar_templates/' . $template['template_id'] . '">' . $template['nombre'] . '</a></td>';

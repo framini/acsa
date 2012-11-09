@@ -566,6 +566,16 @@ class Administracion_frr {
         return NULL;
 	}
 	
+	function get_extension_template($template) {
+		$extension = $this->ci->extensiones->get_extensione_template($template);
+		
+		if(isset($extension)) {
+			return $extension->template_extension;
+		} else {
+			return NULL;
+		}
+	}
+	
 	/**
 	 * Método utilizado para modificar un grupo template
 	 */

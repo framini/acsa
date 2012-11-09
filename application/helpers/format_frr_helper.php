@@ -22,9 +22,8 @@ if ( ! function_exists('field_name_parser'))
 	{
 		$CI =& get_instance();
 		if($uri) {
-			//Reemplazamos los guiones bajos por un espacio en blanco
+			//Limpiamos la string pasado borrando el "field_id"
 			//Pasamos a lower case
-			//Y por ultimo pone la primer letra en uppercase
 			$uri = strtolower(str_replace("field_id_", "", $uri));
 		}
 		return $uri;

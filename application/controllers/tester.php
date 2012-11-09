@@ -1,5 +1,7 @@
 <?php
 
+require(APPPATH . 'libraries/image-uploader/upload.php');
+
 class Tester extends CI_Controller
 {
     function __construct() {
@@ -30,7 +32,8 @@ class Tester extends CI_Controller
         /*$this->load->model('productos/financiero');
         echo $this->financiero->test();
         die();*/
-       echo CI_VERSION; 
+       echo CI_VERSION;
+	    
         
         /* if($permisos && in_array('baja_usuario', $permisos))
         {
@@ -43,6 +46,7 @@ class Tester extends CI_Controller
         
        /*echo  $this->router->fetch_class(); // class = controller
        echo $this->router->fetch_method();*/
+       
     }
     
     function ban($user)
@@ -51,6 +55,45 @@ class Tester extends CI_Controller
         
         $this->users->ban_user($user);
     }
+	
+	function carga() {
+		//require(APPPATH.'libraries/' . 'image-uploader/upload.php');
+		//echo APPPATH; die();
+		//$this->load->file('image-uploader/upload.php', true);
+		
+		//$datos = $this->administracion_frr->parser_post($this->input->post());
+		
+		$upload_handler = new UploadHandler();
+		
+		header('Pragma: no-cache');
+		header('Cache-Control: no-store, no-cache, must-revalidate');
+		header('Content-Disposition: inline; filename="files.json"');
+		header('X-Content-Type-Options: nosniff');
+		header('Access-Control-Allow-Origin: *');
+		header('Access-Control-Allow-Methods: OPTIONS, HEAD, GET, POST, PUT, DELETE');
+		header('Access-Control-Allow-Headers: X-File-Name, X-File-Type, X-File-Size');
+		
+		switch ($_SERVER['REQUEST_METHOD']) {
+		    case 'OPTIONS':
+		        break;
+		    case 'HEAD':
+		    case 'GET':
+		        $upload_handler->get();
+		        break;
+		    case 'POST':
+		        if (isset($_REQUEST['_method']) && $_REQUEST['_method'] === 'DELETE') {
+		            $upload_handler->delete();
+		        } else {
+		            $upload_handler->post();
+		        }
+		        break;
+		    case 'DELETE':
+		        $upload_handler->delete();
+		        break;
+		    default:
+		        header('HTTP/1.1 405 Method Not Allowed');
+		}
+	}
     
     function limited_access()
     {
