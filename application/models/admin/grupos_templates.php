@@ -32,6 +32,17 @@ class Grupos_templates extends CI_Model
 		return NULL;
 	}
 	
+	function get_nombre_grupo_template_by_name($grupo_template) {
+		$this->db->select('template_group_id');
+		$this->db->where('nombre', $grupo_template);
+		$query = $this->db->get('templates_groups');
+		
+		if($query->num_rows() == 1) {
+			return $query->row();
+		}
+		return NULL;
+	}
+	
 	function is_nombre_grupo_template_disponible($nombre) {
 		$this->db->select('1', FALSE);
 		$this->db->where('LOWER(nombre)=', strtolower($nombre));

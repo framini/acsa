@@ -409,7 +409,7 @@ class Template
 				
 			}
 		}
-		
+
 		//Mostramos el template
 		$this->CI->twig->display("frr_temp/" . $this->nombre_file, $data);
 	}
@@ -421,7 +421,7 @@ class Template
 		$this->CI->load->library('parser_frr');
 		//Parseamos los tags custom que nos dicen de donde hay que sacar el contenido
 		$this->template = $this->CI->parser_frr->parse_custom_tags($this->template);
-		
+
 		//Creamos el arreglo de propiedas que seran usadas para crear el file	
 		$tdata = array(
 			'template_group'	=> $template_group ,
@@ -431,12 +431,36 @@ class Template
 		);
 
 		//Creamos el file que luego sera parseado		
-		$this->nombre_file = $this->update_template_file($tdata, NULL);
+		$this->nombre_file = $this->update_template_file($tdata, NULL, $extension);
 	}
 	
 	function obtener_template($template_group, $template) {
 		$this->CI->load->model('admin/templates');
 		return $this->CI->templates->obtener_template($template_group, $template);
+	}
+	
+	function obtener_ruta_template($grupo_template, $template, $extension) {
+		
+		$basepath = $this->data['ruta_default'];
+		
+		if(!@file_exists($basepath . "/" . $grupo_template . "/" . $template . "." . $extension)) {
+			
+			//En caso de no existir el file del template pasado como parametro, nos fijamos si existe tanto el grupo como el template
+			if( !is_null( $template_group_id = $this->CI->administracion_frr->grupo_template_exists_by_name($grupo_template) ) ) {
+				if ( $this->CI->administracion_frr->template_exists_by_name($template, $template_group_id) ) {
+					//Si llegamos hasta este punto quiere decir que tenemos que crear el file correspondiente al template
+					$this->obtener_y_parsear($grupo_template, $template, $extension);
+				} else {
+					return NULL;
+				}
+			} else {
+				return NULL;
+			}
+		}
+		
+		//Si llegamos hasta este punto devolvemos la ruta para acceder al file correspondiente al template pasado como parametro
+		return $grupo_template . "/" . $template;
+
 	}
 	
 	/**
@@ -460,7 +484,6 @@ class Template
 		
 		if(@file_exists($basepath . "/" . $data['template_group'])) {
 			$this->rrmdir($basepath . "/" . $data['template_group']);
-			echo "ENTRO";
 			return true;
 		} else {
 			return NULL;
@@ -488,9 +511,10 @@ class Template
 	 * Metodo utilizado para crear un file en base al template que pasamos
 	 * Solo se usa para poder ser parseado usando la libreria Twig
 	 */
-	function update_template_file($data, $actualizando = NULL)
+	function update_template_file($data, $actualizando = NULL, $extension = NULL)
 	{
 		$basepath = $this->data['ruta_default'];
+		
 		
 		//Chequeamos que el directorio temporal exista
 		if(@file_exists($basepath)) {
@@ -521,7 +545,7 @@ class Template
 		//print_r($data); die();
 		
 		//Establecemos la ruta default en base al nombre del grupo de templates usado
-		$basepath = $this->data['ruta_default'] . "/" . $data['template_group'];
+		$basepath .=  "/" . $data['template_group'];
 		
 		if(isset($data['template_extension'])) {
 			$filename = $data['template_name'] . "." .  $data['template_extension'];

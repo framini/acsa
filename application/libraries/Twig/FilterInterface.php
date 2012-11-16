@@ -22,17 +22,19 @@ interface Twig_FilterInterface
      *
      * @return string The PHP code for the filter
      */
-    function compile();
+    public function compile();
 
-    function needsEnvironment();
+    public function needsEnvironment();
 
-    function needsContext();
+    public function needsContext();
 
-    function getSafe(Twig_Node $filterArgs);
+    public function getSafe(Twig_Node $filterArgs);
 
-    function getPreEscape();
+    public function getPreservesSafety();
 
-    function setArguments($arguments);
+    public function getPreEscape();
 
-    function getArguments();
+    public function setArguments($arguments);
+
+    public function getArguments();
 }

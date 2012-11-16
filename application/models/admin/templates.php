@@ -61,6 +61,22 @@ class Templates extends CI_Model
 		}
 		return NULL;
 	}
+
+	function get_template_by_name( $template, $template_group_id = NULL ) {
+		$this->db->select();
+		$this->db->where('nombre', $template);
+		
+		if( !is_null($template_group_id) ) {
+			$this->db->where('template_group_id', $template_group_id);
+		}
+		
+		$query = $this->db->get('templates');
+		
+		if($query->num_rows() == 1) {
+			return $query->row();
+		}
+		return NULL;
+	}
 	
 	function obtener_template($template_group, $template) {
 		$sql = "SELECT templates.nombre, 

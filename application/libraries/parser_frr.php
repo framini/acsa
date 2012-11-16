@@ -44,13 +44,141 @@ class Parser_frr {
 				 //reemplazamos el tag del segmento por el valor puesto en la URI
 				 $template = preg_replace($sg, $this->CI->uri->segment($num[0]), $template);
 			 }
+			 
+			 #Forma {{ url_sitio }}
+			 $url_sitio = '/\{\{\s?url_sitio\s?\}\}/';
+			 //Reemplazamos el tag con la dire del sitio
+			 $template = preg_replace($url_sitio, base_url(), $template);
+			 
 			 #fin variable segmentos
 			 
 			 /**
 			  * Una vez parseadas las variables seguimos con los tags
 			  */
+			
+			
+			/**
+			 * TAG CSS (Incluye archivos CSS. -Siempre trata de utilizar la version File del template-. Si la version File no existe, la crea)
+			 */
+			//El tag sera de la forma {$css propiedad="valor" $}
+			$tag_form = '/(?<nombre>\{\$css\s?.+\s?\$\})/';
+			
+			if($this->num_tags = preg_match_all($tag_form, $template, $tags_css)) {
+				
+				$parametros = array();
+				//Recorremos los parametros disponibles para este tag
+				//NOTA: Definidos en la config de esta librerias
+				foreach ($this->param_css as $p) {
+					$regex = '/\s?' . $p . '\s*=(?:\"|\')\s?(?<valor>[\w\/]+)\s?(?:\"|\')/';
+					$i = 0;
+					foreach ($tags_css['nombre'] as $key => $t) {
+						preg_match_all($regex, $tags_css['nombre'][$i], $parametros[$key][$p]);
+						$i++;
+					}
+				}
+				
+				$tag_a_reemplazar = array();
+				
+				//Procesamos los parametros parseados y generamos los tags de reemplazo
+				foreach ($parametros as $key => $value) {
+					foreach ($value as $parametro => $val ) {
+						//Si valor del parametro esta definido
+						if( isset($val['valor'][0] ) && $tipo = $val['valor'][0] ) {
+							
+							if( $parametro == "url" ) {
+								//Intentamos obtener el file correspondiente al grupo de template y template especificado
+								//En caso de no existir el file (pero tanto el grupo como el template existen) se genera uno
+								//En caso de no existir el template no se hace nada
+								
+								$grp_tpl = explode( "/", $val['valor'][0] );
+								
+								//Obtenemos la ruta al template especificados
+								$url_tpl_cache = $this->CI->template->obtener_ruta_template( $grp_tpl[0], $grp_tpl[1], "css" ) ; 
+								
+								if( !is_null( $url_tpl_cache ) ) {
+									$tag_a_reemplazar[] = '<link rel="stylesheet" type="text/css" media="all" href="' . site_url( $url_tpl_cache ) . '" />';
+								} else {
+									//En el caso que la url especificada no exista, borramos el tag (lo reemplazamos con espacio en blanco)
+									$tag_a_reemplazar[] = '';
+								}
+							}
+						}
+					}
+				}
+				
+				//Recorremos todos los tags de css presentes y los reemplazamos con la representacion HTML del mismo
+				foreach ($tag_a_reemplazar as $key => $tag) {
+					$tag_patt = preg_quote( $tags_css['nombre'][ $key ] ) ;
+					//Escapeamos las barras
+					$tag_patt = '/'. preg_replace('/\//', '\/', $tag_patt) . '/';
+					//print_r($tag_patt); die();
+					$template = preg_replace($tag_patt, $tag_a_reemplazar[$key], $template); 
+				}
+				
+			}
 
-			//Buscamos el tag que define el contenido del template
+			
+			/**
+			 * TAG JS (Incluye archivos Javascript. -Siempre trata de utilizar la version File del template-. Si la version File del template pasado como parametro no existe, la crea)
+			 */
+			//El tag sera de la forma {$js propiedad="valor" $}
+			$tag_form = '/(?<nombre>\{\$js\s?.+\s?\$\})/';
+			
+			if($this->num_tags = preg_match_all($tag_form, $template, $tags_js)) {
+				
+				$parametros = array();
+				//Recorremos los parametros disponibles para este tag
+				//NOTA: Definidos en la config de esta librerias
+				foreach ($this->param_js as $p) {
+					$regex = '/\s?' . $p . '\s*=(?:\"|\')\s?(?<valor>[\w\/]+)\s?(?:\"|\')/';
+					$i = 0;
+					foreach ($tags_js['nombre'] as $key => $t) {
+						preg_match_all($regex, $tags_js['nombre'][$i], $parametros[$key][$p]);
+						$i++;
+					}
+				}
+				
+				$tag_a_reemplazar = array();
+				
+				//Procesamos los parametros parseados y generamos los tags de reemplazo
+				foreach ($parametros as $key => $value) {
+					foreach ($value as $parametro => $val ) {
+						//Si valor del parametro esta definido
+						if( isset($val['valor'][0] ) && $tipo = $val['valor'][0] ) {
+							
+							if( $parametro == "url" ) {
+								//Intentamos obtener el file correspondiente al grupo de template y template especificado
+								//En caso de no existir el file (pero tanto el grupo como el template existen) se genera uno
+								//En caso de no existir el template no se hace nada
+								
+								$grp_tpl = explode( "/", $val['valor'][0] );
+								
+								//Obtenemos la ruta al template especificados
+								$url_tpl_cache = $this->CI->template->obtener_ruta_template( $grp_tpl[0], $grp_tpl[1], "css" ) ; 
+								
+								if( !is_null( $url_tpl_cache ) ) {
+									$tag_a_reemplazar[] = '<script src="' . site_url( $url_tpl_cache ) . '"></script>';
+								} else {
+									//En el caso que la url especificada no exista, borramos el tag (lo reemplazamos con espacio en blanco)
+									$tag_a_reemplazar[] = '';
+								}
+							}
+						}
+					}
+				}
+				
+				//Recorremos todos los tags de css presentes y los reemplazamos con la representacion HTML del mismo
+				foreach ($tag_a_reemplazar as $key => $tag) {
+					$tag_patt = preg_quote( $tags_js['nombre'][ $key ] ) ;
+					//Escapeamos las barras
+					$tag_patt = '/'. preg_replace('/\//', '\/', $tag_patt) . '/';
+					//print_r($tag_patt); die();
+					$template = preg_replace($tag_patt, $tag_a_reemplazar[$key], $template); 
+				}
+				
+			}
+
+			
 			/**
 			 * TAG FORM
 			 */
@@ -58,7 +186,6 @@ class Parser_frr {
 			$tag_form = '/(?<nombre>\{\$form\s?.+\s?\$\})/';
 
 			if($this->num_tags = preg_match_all($tag_form, $template, $tag)) {
-				//print_r($tag['nombre']);die();
 				//Si se encontro el tag vamos en busca de los parametros
 				
 				//Recorremos los parametros disponibles para este tag
@@ -73,19 +200,20 @@ class Parser_frr {
 					
 				}
 
-					//Recorremos la lista de parametros utilizados en el tag
-					//y definimos las variables que se corresponden con los nombres de los tags
-					$ind = 0;
-					foreach ($parametros as $param => $valor) {
-						foreach ($valor as $key => $value) {
-							//Funca
-							if(isset($value['valor'][0])) {
-								$variable = $key . "_" . $param;
-								$this->$variable = $value['valor'][0];
-							}
+				//Recorremos la lista de parametros utilizados en el tag
+				//y definimos las variables que se corresponden con los nombres de los tags
+				$ind = 0;
+				foreach ($parametros as $param => $valor) {
+					foreach ($valor as $key => $value) {
+						
+						//Funca
+						if(isset($value['valor'][0])) {
+							$variable = $key . "_" . $param;
+							$this->$variable = $value['valor'][0];
 						}
-						$ind++;
 					}
+					$ind++;
+				}
 				
 				
 				$form_id = NULL;
@@ -122,7 +250,8 @@ class Parser_frr {
 								$contenido = $this->CI->templates->get_contenido_by_form_y_entry_id($fields_grupo_fields, $form_id, $this->$p);
 							}
 						} else if($parametro == "contenido") {
-							//Si se especifico el parametro contenido=""
+							//El parametro contenido="" define el nombre del array que va a almacenar toda la data
+							//a ser mostrada por el tag
 							$this->n_contenido[$i] = $this->$p;
 						}
 					}//end for
@@ -207,6 +336,17 @@ class Parser_frr {
 		{
 			return FALSE;
 		}
+		
+		foreach($parametros_tags_css as $p) 
+		{
+			$this->param_css[] = $p;
+		}
+		
+		foreach($parametros_tags_js as $p) 
+		{
+			$this->param_js[] = $p;
+		}
+		
 		foreach($parametros_tags_form as $p) 
 		{
 			$this->param_form[] = $p;

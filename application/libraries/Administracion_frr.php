@@ -42,6 +42,27 @@ class Administracion_frr {
         return NULL;
     }
 	 
+	 function grupo_template_exists_by_name($grupo_template) {
+	 	
+	 	$grupo_template = $this->ci->grupos_templates->get_nombre_grupo_template_by_name($grupo_template);
+		
+		if($grupo_template) {
+			return $grupo_template->template_group_id;
+		}
+	 	return NULL;
+	 }
+	 
+	 function template_exists_by_name($template, $template_grupo_id) {
+	 	
+		$template = $this->ci->templates->get_template_by_name($template, $template_grupo_id);
+		if( !is_null($template) ) {
+			return true;
+		} else {
+			false;
+		}
+		
+	 }
+	 
 	 function get_nombre_grupo_template_by_id($grupo_id) {
 	 	$grupo_template = $this->ci->grupos_templates->get_nombre_grupo_template_by_id($grupo_id);
 		if($grupo_template) {

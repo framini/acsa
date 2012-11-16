@@ -17,6 +17,7 @@
     <link href="<?php echo base_url(); ?>colorbox/colorbox.css" rel="stylesheet" type="text/css"  />
     <link href="<?php echo base_url(); ?>css/botones.css" rel="stylesheet" type="text/css"  />
     <link href="<?php echo base_url(); ?>css/custom-theme/jquery-ui-1.8.16.custom.css" rel="stylesheet" type="text/css"  />
+    <link href="<?php echo base_url(); ?>css/style.css" rel="stylesheet" type="text/css" />
     <style>
       body {
         padding-top: 60px; /* Espacio para el toolbar superior*/
@@ -83,7 +84,7 @@
 				<b class="caret"></b>
 				</a>
 				<ul class="dropdown-menu">
-					<li class="nav-header"><span class="small menu">Generar contenido en:</span></li>
+					<li class="nav-header"><span class="small menu">Generar contenido:</span></li>
 					<?php foreach($forms as $form) { ?>
 						 <li><?php echo anchor('admin/form/' . $form['forms_id'], '<i class=""></i>' . format_texto($form['forms_nombre'])); ?></li>
 					<?php } ?>
