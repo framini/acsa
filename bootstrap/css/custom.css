@@ -952,3 +952,31 @@ background-position: 0 0;
     background-image: linear-gradient(top, #333333, #222222);
 	border: 1px solid #2C2C2C;
 }
+
+.dropdown-menu {
+position: absolute;
+top: 100%;
+left: 0;
+z-index: 1000;
+display: none;
+float: left;
+min-width: 160px;
+max-width: 300px;
+padding: 0px 0;
+margin: 2px 0 0;
+list-style: none;
+text-shadow: none;
+background-color: #FCFCFC;
+border: 4px solid rgba(0, 0, 0, 0.2);
+-webkit-border-radius: 4px;
+-moz-border-radius: 4px;
+border-radius: 4px;
+-webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+-moz-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+-webkit-background-clip: padding-box;
+-moz-background-clipp: padding;
+background-clip: padding-box;
+}
+
+

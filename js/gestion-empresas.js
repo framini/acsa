@@ -61,7 +61,7 @@
 	        	{
 	        		ajax: true,
 	        		width:"370", 
-	        		height:"200",
+	        		height:"250",
 	        		overlayClose: false,
 	        		escKey: false,
 	        		href: datos.dire,
@@ -249,7 +249,7 @@
 	        		iframe: true,
 	        		ajax:true,
 	        		width:"390", 
-	        		height:"450",
+	        		height:"500",
 	        		overlayClose: false,
 	        		escKey: false,
 	        		href: datos.dire,

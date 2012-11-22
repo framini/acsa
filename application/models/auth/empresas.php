@@ -14,7 +14,7 @@ class Empresas extends CI_Model
 		$ci =& get_instance();
 	}
         
-       /**
+     /**
      * Devuelve el record de la empresa en base al ID
      *
      * @param	int
@@ -24,6 +24,22 @@ class Empresas extends CI_Model
         function get_empresa_by_id($empresa_id) {
 			$this->db->where('empresa_id', $empresa_id);
             $this->db->from('empresas');
+			$query = $this->db->get();
+			if ($query->num_rows() == 1) return $query->row();
+                        return NULL;
+		}
+		
+		function get_cuenta_registro_by_id($empresa_id) {
+			$this->db->where('cuentaregistro_id', $empresa_id);
+            $this->db->from('cuentas_registro');
+			$query = $this->db->get();
+			if ($query->num_rows() == 1) return $query->row();
+                        return NULL;
+		}
+		
+		function get_tipo_cuenta_registro_by_id($tipo_cuenta_id) {
+			$this->db->where('tipo_cuentaregistro_id', $tipo_cuenta_id);
+            $this->db->from('tipo_cuenta_registro');
 			$query = $this->db->get();
 			if ($query->num_rows() == 1) return $query->row();
                         return NULL;
@@ -40,6 +56,18 @@ class Empresas extends CI_Model
             if ($query->num_rows() > 0) return $query;
             return NULL;
         }
+		
+		/**
+		 * Devuelve las cuentas registro asociadas a una empresa
+		 */
+        function get_cuentas_registro_all() {
+            $this->db->select();
+            $this->db->from("cuentas_registro");
+            $query = $this->db->get();
+            
+            if ($query->num_rows() > 0) return $query;
+            return NULL;
+        }
         
 		/**
 		 * Devuelve las cuentas registro asociadas a una empresa
@@ -48,6 +76,18 @@ class Empresas extends CI_Model
             $this->db->select();
             $this->db->from("cuentas_registro");
             $this->db->where('empresa_id', $empresa_id);
+            $query = $this->db->get();
+            
+            if ($query->num_rows() > 0) return $query;
+            return NULL;
+        }
+		
+		/**
+		 * Devuelve los tipos de las cuentas registro
+		 */
+        function get_tipos_cuentas_registro() {
+            $this->db->select();
+            $this->db->from("tipo_cuenta_registro");
             $query = $this->db->get();
             
             if ($query->num_rows() > 0) return $query;
@@ -75,12 +115,16 @@ class Empresas extends CI_Model
 		 * @param	string
 		 * @return	bool
 		 */
-		function is_nombre_empresa_available($nombre)
+		function is_nombre_empresa_available($nombre, $tabla)
 		{
 			$this->db->select('1', FALSE);
 			$this->db->where('LOWER(nombre)=', strtolower($nombre));
-	
-			$query = $this->db->get('empresas');
+			if( !is_null($tabla) ) {
+				$query = $this->db->get( $tabla );
+			} else {
+				$query = $this->db->get('empresas');
+			}
+			
 			return $query->num_rows() == 0;
 		}
 		
@@ -122,6 +166,19 @@ class Empresas extends CI_Model
 	                return false;
 	    }
 		
+		function eliminar_cuenta_registro($empresa_id)
+	    {
+	        $this->db->where('cuentaregistro_id', $empresa_id);
+			$data['activated'] = 0;
+			
+	        if($this->db->update('cuentas_registro', $data))
+	        {
+	                return true;
+	        }
+	        else
+	                return false;
+	    }
+		
 		/**
 		 * Activamos la empresa con id = $empresa_id
 		 * Y todos los usuarios que pertenecen a esa empresa
@@ -144,10 +201,25 @@ class Empresas extends CI_Model
 	        else
 	                return false;
 	    }
+		
+		
+		function activar_cuenta_registro($empresa_id)
+	    {
+	        $this->db->where('cuentaregistro_id', $empresa_id);
+			$data['activated'] = 1;
+			
+	        if($this->db->update('cuentas_registro', $data)) {
+	             return true;
+	        }
+	        else {
+	        	return false;
+	        }
+	             
+	    }
     
 		
 		/**
-		 * Crea un nuevo record de usuario
+		 * Crea un nuevo record de empresa
 		 *
 		 * @param	array
 		 * @param	bool
@@ -165,14 +237,45 @@ class Empresas extends CI_Model
 		}
 		
 		/**
+		 * Crea una nueva cuenta registro
+		 *
+		 * @param	array
+		 * @param	bool
+		 * @return	array
+		 */
+		function create_cuenta_registro($data)
+		{
+			$data['fecha_alta'] = date('Y-m-d H:i:s');
+		
+			if ($this->db->insert('cuentas_registro', $data)) {
+				$cr_id = $this->db->insert_id();
+				return array('cuentaregistro_id' => $cr_id);
+			}
+			return NULL;
+		}
+		
+		/**
 		 * Modifica los datos de una empresa
 		 */
-		function modificar_empresa($empresa_id, $data) {
-            $this->db->where('empresa_id', $empresa_id);
-               if($this->db->update('empresas', $data))
+		function modificar_empresa($empresa_id, $data, $tabla = NULL) {
+			
+			if( is_null($tabla) ) {
+				$c = 'empresa_id';
+				$t = 'empresas';
+			} else {
+				$c = 'cuentaregistro_id';
+				$t = $tabla;
+			}
+			
+			
+			
+            $this->db->where($c, $empresa_id);
+			
+               if($this->db->update( $t, $data)) {
                        return true;
-               else
+			   } else {
                       return false;
+			   }
         }
 		
 		/**

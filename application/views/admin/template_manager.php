@@ -66,12 +66,13 @@
             			<div class="widget-header">
             				<h3>Grupos de Templates</h3>
             				<!--<a class="btn btn-small btn-success posicion-6-top-right pull-right" href="<?php echo site_url() . "/admin/alta_grupos/"; ?>">Crear Grupo Template</a>-->
-            				
-            				<?php foreach ($data_menu as $keyp => $row) { ?>
-	               				<?php if($row['boton_superior'] && (isset($row['grupo']) && $row['grupo'] == 'grupos')) { ?>
-	               					<?php echo anchor($this->uri->segment(1) ."/". $keyp, '<i class="' . $row['icono'] . '"></i> ' . $row['texto_anchor'], 'class="' . $row['clase_boton'] . '"');  ?>
-	                			<?php } ?>
-	                		<?php } ?>
+            				<?php if( isset($data_menu) ) {  ?>
+	            				<?php foreach ($data_menu as $keyp => $row) { ?>
+		               				<?php if($row['boton_superior'] && (isset($row['grupo']) && $row['grupo'] == 'grupos')) { ?>
+		               					<?php echo anchor($this->uri->segment(1) ."/". $keyp, '<i class="' . $row['icono'] . '"></i> ' . $row['texto_anchor'], 'class="' . $row['clase_boton'] . '"');  ?>
+		                			<?php } ?>
+		                		<?php } ?>
+		                	<?php } ?>
             			</div>
             			<div class="widget-content">
 	            			<ul class="nav nav-pills nav-stacked lista_grupos margin-bottom-none">
@@ -117,23 +118,25 @@
 				            	<?php
 				            	$tn = 0;
 				            	foreach ($grupos_templates as $key => $grupo) {
-                                    foreach ($data_menu as $keyp => $row) { 
-			               				if($row['boton_superior'] && (isset($row['grupo']) && $row['grupo'] == 'templates')) {
-			               					if(isset($row['titulo'])) {
-			               						$atributos = array('data-original-title' => $row['titulo'], 'class' => $row['clase_boton'], 'id' => $grupo['nombre'] . '-boton-crear');
-			               					} else {
-			               						$atributos = array('class' => $row['clase_boton'], 'id' => $grupo['nombre'] . '-boton-crear');
-			               					}
-											//Ocultamos todos los botones que no se utilizan
-											if($tn > 0) {
-												$atributos['style'] = "display:none;";
+				            		if( isset($data_menu) ) { 
+	                                    foreach ($data_menu as $keyp => $row) { 
+				               				if($row['boton_superior'] && (isset($row['grupo']) && $row['grupo'] == 'templates')) {
+				               					if(isset($row['titulo'])) {
+				               						$atributos = array('data-original-title' => $row['titulo'], 'class' => $row['clase_boton'], 'id' => $grupo['nombre'] . '-boton-crear');
+				               					} else {
+				               						$atributos = array('class' => $row['clase_boton'], 'id' => $grupo['nombre'] . '-boton-crear');
+				               					}
+												//Ocultamos todos los botones que no se utilizan
+												if($tn > 0) {
+													$atributos['style'] = "display:none;";
+												}
+				               					echo anchor($this->uri->segment(1) ."/". $keyp ."/". $grupo['template_group_id'], '<i class="' . $row['icono'] . '"></i> ' . $row['texto_anchor'], $atributos);
+				                				//Fix espacio entre botones
+				                				echo ' ';
 											}
-			               					echo anchor($this->uri->segment(1) ."/". $keyp ."/". $grupo['template_group_id'], '<i class="' . $row['icono'] . '"></i> ' . $row['texto_anchor'], $atributos);
-			                				//Fix espacio entre botones
-			                				echo ' ';
-										}
-			                		}
-									$tn++;
+				                		}
+										$tn++;
+									}
 								}
 				            	?>
 	            				

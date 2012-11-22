@@ -45,7 +45,7 @@ class Ew extends CI_Controller {
 			$data['login_by_username'] = ($this->config->item('login_by_username', 'auth_frr') AND $this->config->item('use_username', 'auth_frr'));
 			$data['login_by_email'] = $this->config->item('login_by_email', 'auth_frr');
 
-			$this->form_validation->set_rules('login', 'Login', 'trim|required|xss_clean');
+			$this->form_validation->set_rules('login', 'Nombre de usuario', 'trim|required|xss_clean');
 			$this->form_validation->set_rules('password', 'Password', 'trim|required|xss_clean');
 			$this->form_validation->set_rules('remember', 'Remember me', 'integer');
 

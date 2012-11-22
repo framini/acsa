@@ -46,7 +46,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </a>
-          <a class="brand" href="#">eWarrants</a>
+          <a class="brand" href="<?php echo site_url(); ?>">eWarrants</a>
           <div class="nav-collapse">
             <ul class="nav">
               <li <?php if($this->uri->segment(1) == "seguridad") echo "class='active'" ?> ><a href="<?php echo site_url(); ?>/seguridad">Seguridad</a></li>
@@ -105,9 +105,8 @@
 				<b class="caret"></b>
 				</a>
 				<ul class="dropdown-menu">
-					  <li><a href="#">Perfil</a></li>
-				      <li class="divider"></li>
-				      <li><?php echo anchor('ew/logout', 'Cerrar Sesión') ?></li>
+					  <li><a href="#"><i class="icon-user"></i> Perfil</a></li>
+				      <li><?php echo anchor('ew/logout', '<i class="icon-off"></i> Cerrar Sesión') ?></li>
 				</ul>
               </li>
             </ul>
@@ -156,7 +155,7 @@
     <script type="text/javascript" src="<?php echo base_url(); ?>js/jquery.quicksearch.js"></script>
     <?php if($this->uri->segment(2) == "gestionar_usuarios") { echo '<script type="text/javascript" src="' . base_url() . 'js/gestion-usuarios.js"></script>'; } ?>
     <?php if($this->uri->segment(2) == "gestionar_roles") { echo '<script type="text/javascript" src="' . base_url() . 'js/gestion-roles.js"></script>'; } ?>
-    <?php if($this->uri->segment(2) == "gestionar_empresas") { echo '<script type="text/javascript" src="' . base_url() . 'js/gestion-empresas.js"></script>'; } ?>
+    <?php if($this->uri->segment(2) == "gestionar_empresas" || $this->uri->segment(2) == "gestionar_cuentas_registro") { echo '<script type="text/javascript" src="' . base_url() . 'js/gestion-empresas.js"></script>'; } ?>
     <?php if($this->uri->segment(2) == "alta_fields") { echo '<script type="text/javascript" src="' . base_url() . 'js/fields_form.js"></script>'; } ?>
     <script type="text/javascript" src="<?php echo base_url(); ?>js/jquery.colorbox.js"></script>
     <br/>
