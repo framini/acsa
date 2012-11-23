@@ -421,18 +421,27 @@ class Template
 	}
 	
 	function obtener_y_parsear($template_group, $template, $extension = NULL) {
+		
 		//Primero obtenemos el template
 		$this->template = $this->obtener_template($template_group, $template);
 		
 		$this->CI->load->library('parser_frr');
+		
+		//TODO: Poder seleccionar si el parseo del PHP se hace en el input o el output.
+		//Asi como esta -> input
+		if( $extension == "css") {
+			$this->template = '<?php header("Content-type: text/css"); ?>' . $this->template;
+			$this->template = $this->CI->parser_frr->parsear_php_input( $this->template );
+		}
+		
 		//Parseamos los tags custom que nos dicen de donde hay que sacar el contenido
 		$this->template = $this->CI->parser_frr->parse_custom_tags($this->template);
 
 		//Creamos el arreglo de propiedas que seran usadas para crear el file	
 		$tdata = array(
-			'template_group'	=> $template_group ,
-			'template_name'		=> $template,
-			'template_data'		=> $this->template,
+			'template_group'	 => $template_group ,
+			'template_name'		 => $template,
+			'template_data'		 => $this->template,
 			'template_extension' => $extension
 		);
 
@@ -579,5 +588,5 @@ class Template
 
 		return $data['template_group'] . "/" . $filename;
 	}
-                
+           
 }

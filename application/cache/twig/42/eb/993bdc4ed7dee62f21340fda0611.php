@@ -51,7 +51,7 @@ Prueba
                 echo "        <li>";
                 echo twig_escape_filter($this->env, $this->getAttribute((isset($context["entrada"]) ? $context["entrada"] : null), "titulo"), "html", null, true);
                 echo " - ";
-                echo twig_escape_filter($this->env, $this->getAttribute((isset($context["entrada"]) ? $context["entrada"] : null), "nombre"), "html", null, true);
+                echo twig_escape_filter($this->env, $this->getAttribute((isset($context["entrada"]) ? $context["entrada"] : null), "cuerpo_noticia"), "html", null, true);
                 echo " - ";
                 echo twig_escape_filter($this->env, $this->getAttribute((isset($context["entrada"]) ? $context["entrada"] : null), "direccion"), "html", null, true);
                 echo "</li>

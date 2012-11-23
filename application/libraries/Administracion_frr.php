@@ -306,12 +306,16 @@ class Administracion_frr {
 			if(!is_null($form = $this->get_form_by_id($form_id))) {
 				if(!is_null($grupo_field_id = $form->grupos_fields_id)) {
 					$campos = $this->get_fields_grupo_fields($grupo_field_id);
-		
-					foreach ($campos as $c) {
-						$resultado[] = $c['fields_id'];
-					}
 					
-					return $resultado;
+					if(!is_null($campos)) {
+						foreach ($campos as $c) {
+							$resultado[] = $c['fields_id'];
+						}
+						return $resultado;
+					} else {
+						return NULL;
+					}
+				
 				}
 			}
 		} 

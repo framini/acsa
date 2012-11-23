@@ -15,6 +15,11 @@ class Parser_frr {
 		
 		$this->CI->load->model('admin/templates');
     }
+	
+	
+	function parsear_php_input( $template ) {
+		return $this->_parse_template_php( $template );
+	}
 
 	function parse_custom_tags($template) {
 		$forms_sistema = $this->CI->administracion_frr->get_forms();
@@ -69,7 +74,7 @@ class Parser_frr {
 				//Recorremos los parametros disponibles para este tag
 				//NOTA: Definidos en la config de esta librerias
 				foreach ($this->param_css as $p) {
-					$regex = '/\s?' . $p . '\s*=(?:\"|\')\s?(?<valor>[\w\/]+)\s?(?:\"|\')/';
+					$regex = '/\s?' . $p . '\s*=(?:\"|\')\s?(?<valor>[\w\.\-\/]+)\s?(?:\"|\')/';
 					$i = 0;
 					foreach ($tags_css['nombre'] as $key => $t) {
 						preg_match_all($regex, $tags_css['nombre'][$i], $parametros[$key][$p]);
@@ -130,7 +135,7 @@ class Parser_frr {
 				//Recorremos los parametros disponibles para este tag
 				//NOTA: Definidos en la config de esta librerias
 				foreach ($this->param_js as $p) {
-					$regex = '/\s?' . $p . '\s*=(?:\"|\')\s?(?<valor>[\w\/]+)\s?(?:\"|\')/';
+					$regex = '/\s?' . $p . '\s*=(?:\"|\')\s?(?<valor>[\w\-\/]+)\s?(?:\"|\')/';
 					$i = 0;
 					foreach ($tags_js['nombre'] as $key => $t) {
 						preg_match_all($regex, $tags_js['nombre'][$i], $parametros[$key][$p]);
@@ -357,6 +362,40 @@ class Parser_frr {
 		}
 
 		return true;
+	}
+	
+	/**
+	 * Devuelve una string con el PHP procesado
+	 *
+	 * @param	string
+	 * @return	string
+	 */
+	public function _parse_template_php($str) {
+		ob_start();
+
+		echo $this->_evaluate($str);
+		
+		$str = ob_get_contents();
+		
+		ob_end_clean(); 
+		
+		$this->parse_php = FALSE;
+		
+		return $str;
+	}
+	
+
+	/**
+	 * eval() 
+	 *
+	 * Evalua una string como PHP
+	 *
+	 * @access	public
+	 * @param	string
+	 * @return	mixed
+	 */	
+	function _evaluate($str) {	
+		return eval('?'.'>'.$str.'<?php ');		
 	}
 	
 	function get_campos() {
