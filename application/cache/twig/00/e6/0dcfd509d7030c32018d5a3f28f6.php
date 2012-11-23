@@ -111,7 +111,7 @@ class __TwigTemplate_00e60dcfd509d7030c32018d5a3f28f6 extends Twig_Template
 
 @media (min-width: 1200px) {
   .row {
-    margin-left: -30px;
+    /*margin-left: -30px;*/
     *zoom: 1;
   }
   .row:before,

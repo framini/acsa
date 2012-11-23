@@ -218,7 +218,7 @@ a:hover {
 }
 
 .row {
-  margin-left: -20px;
+  /*margin-left: -20px;*/
   *zoom: 1;
 }
 
