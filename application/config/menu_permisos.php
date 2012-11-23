@@ -58,10 +58,10 @@ $config['gestionar_cuentas_registro'] = array('texto_anchor' => 'Gestionar Cuent
 # titulo: Mensaje para ventana Pop-up
 ####################################################################################
 $config['nuevo_role'] = array('texto_anchor' => 'Nuevo Role', 'icono' => 'icon-plus icon-white', 'clase_boton' => 'btn btn-large btn-success pull-right', 'boton_superior' => true, 'titulo' => false);
-$config['modificar_role'] = array('texto_anchor' => 'Modificar', 'icono' => 'icon-pencil icon-white', 'clase_boton' => 'btn btn-info editar-role margin-bottom-5', 'boton_superior' => false, 'titulo' => false);
-$config['eliminar_role'] = array('texto_anchor' => 'Eliminar', 'icono' => 'icon-trash', 'clase_boton' => 'btn btn-danger eliminar-role margin-bottom-5', 'boton_superior' => false, 'titulo' => "Confirma que desea eliminar el role?");
+$config['modificar_role'] = array('texto_anchor' => 'Modificar', 'icono' => 'icon-pencil icon-white', 'clase_boton' => 'btn btn-info editar-role margin-bottom-5 btn-mini', 'boton_superior' => false, 'titulo' => false);
+$config['eliminar_role'] = array('texto_anchor' => 'Eliminar', 'icono' => 'icon-trash', 'clase_boton' => 'btn btn-danger eliminar-role margin-bottom-5 btn-mini', 'boton_superior' => false, 'titulo' => "Confirma que desea eliminar el role?");
 
-# Menu gestion Seguridad => Gestionar Roles
+# Menu gestion Seguridad => Gestionar Usuarios
 # Notas:
 # texto_anchor: Es el texto a mostrar en pantalla para el boton
 # icono: Es la imagen que va a la izquierda del texto_anchor
@@ -70,10 +70,10 @@ $config['eliminar_role'] = array('texto_anchor' => 'Eliminar', 'icono' => 'icon-
 # titulo: Mensaje para ventana Pop-up
 ####################################################################################
 $config['registro'] = array('texto_anchor' => 'Agregar Usuario', 'icono' => 'icon-user icon-white', 'clase_boton' => 'btn btn-large btn-success pull-right', 'boton_superior' => true, 'titulo' => false);
-$config['editar_usuario'] = array('texto_anchor' => 'Editar', 'icono' => 'icon-pencil icon-white', 'clase_boton' => 'btn btn-info editar-usuario margin-bottom-5', 'boton_superior' => false, 'titulo' => false);
-$config['cambiar_email'] = array('texto_anchor' => 'Cambiar email', 'icono' => 'icon-pencil icon-white', 'clase_boton' => 'btn cambiar-email-usuario btn-primary margin-bottom-5', 'boton_superior' => false);
-$config['cambiar_password'] = array('texto_anchor' => 'Cambiar Password', 'icono' => 'icon-pencil icon-white', 'clase_boton' => 'btn cambiar-email-usuario btn-primary margin-bottom-5', 'boton_superior' => false);
-$config['eliminar_user'] = array('texto_anchor' => 'Eliminar', 'icono' => 'icon-trash', 'clase_boton' => 'btn btn-danger eliminar-usuario margin-bottom-5', 'boton_superior' => false, 'titulo' => "Confirma que desea eliminar el usuario?");
+$config['editar_usuario'] = array('texto_anchor' => 'Editar', 'icono' => 'icon-pencil icon-white', 'clase_boton' => 'btn btn-info editar-usuario margin-bottom-5 btn-mini', 'boton_superior' => false, 'titulo' => false);
+$config['cambiar_email'] = array('texto_anchor' => 'Cambiar email', 'icono' => 'icon-pencil icon-white', 'clase_boton' => 'btn cambiar-email-usuario btn-primary margin-bottom-5 btn-mini', 'boton_superior' => false);
+$config['cambiar_password'] = array('texto_anchor' => 'Cambiar Password', 'icono' => 'icon-pencil icon-white', 'clase_boton' => 'btn cambiar-email-usuario btn-primary margin-bottom-5 btn-mini', 'boton_superior' => false);
+$config['eliminar_user'] = array('texto_anchor' => 'Eliminar', 'icono' => 'icon-trash', 'clase_boton' => 'btn btn-danger eliminar-usuario margin-bottom-5 btn-mini', 'boton_superior' => false, 'titulo' => "Confirma que desea eliminar el usuario?");
 
 
 # Menu gestion Seguridad => Gestionar Cuentas registro
@@ -85,9 +85,9 @@ $config['eliminar_user'] = array('texto_anchor' => 'Eliminar', 'icono' => 'icon-
 # titulo: Mensaje para ventana Pop-up
 ####################################################################################
 $config['registro_cuenta_registro'] = array('texto_anchor' => 'Agregar Cuenta Registro', 'icono' => 'icon-user icon-white', 'clase_boton' => 'btn btn-large btn-success pull-right', 'boton_superior' => true, 'titulo' => false);
-$config['modificar_cuenta_registro'] = array('texto_anchor' => 'Modificar', 'icono' => 'icon-pencil icon-white', 'clase_boton' => 'btn btn-info modificar-empresa margin-bottom-5', 'boton_superior' => false, 'titulo' => false);
-$config['activar_cuenta_registro'] = array('texto_anchor' => 'Activar', 'icono' => 'icon-plus icon-white', 'clase_boton' => 'btn activar-empresa btn-warning margin-bottom-5', 'boton_superior' => false);
-$config['eliminar_cuenta_registro'] = array('texto_anchor' => 'Eliminar', 'icono' => 'icon-trash', 'clase_boton' => 'btn btn-danger eliminar-empresa margin-bottom-5', 'boton_superior' => false, 'titulo' => "Confirma que desea eliminar la empresa?");
+$config['modificar_cuenta_registro'] = array('texto_anchor' => 'Modificar', 'icono' => 'icon-pencil icon-white', 'clase_boton' => 'btn btn-info modificar-empresa margin-bottom-5 btn-mini', 'boton_superior' => false, 'titulo' => false);
+$config['activar_cuenta_registro'] = array('texto_anchor' => 'Activar', 'icono' => 'icon-plus icon-white', 'clase_boton' => 'btn activar-empresa btn-warning margin-bottom-5 btn-mini', 'boton_superior' => false);
+$config['eliminar_cuenta_registro'] = array('texto_anchor' => 'Eliminar', 'icono' => 'icon-trash', 'clase_boton' => 'btn btn-danger eliminar-empresa margin-bottom-5 btn-mini', 'boton_superior' => false, 'titulo' => "Confirma que desea eliminar la empresa?");
 
 
 # Menu gestion Seguridad => Gestionar Empresas
@@ -99,9 +99,9 @@ $config['eliminar_cuenta_registro'] = array('texto_anchor' => 'Eliminar', 'icono
 # titulo: Mensaje para ventana Pop-up
 ####################################################################################
 $config['registro_empresa'] = array('texto_anchor' => 'Agregar Empresa', 'icono' => 'icon-user icon-white', 'clase_boton' => 'btn btn-large btn-success pull-right', 'boton_superior' => true, 'titulo' => false);
-$config['modificar_empresa'] = array('texto_anchor' => 'Modificar', 'icono' => 'icon-pencil icon-white', 'clase_boton' => 'btn btn-info modificar-empresa margin-bottom-5', 'boton_superior' => false, 'titulo' => false);
-$config['activar_empresa'] = array('texto_anchor' => 'Activar', 'icono' => 'icon-plus icon-white', 'clase_boton' => 'btn activar-empresa btn-warning margin-bottom-5', 'boton_superior' => false);
-$config['eliminar_empresa'] = array('texto_anchor' => 'Eliminar', 'icono' => 'icon-trash', 'clase_boton' => 'btn btn-danger eliminar-empresa margin-bottom-5', 'boton_superior' => false, 'titulo' => "Confirma que desea eliminar la empresa?");
+$config['modificar_empresa'] = array('texto_anchor' => 'Modificar', 'icono' => 'icon-pencil icon-white', 'clase_boton' => 'btn btn-info modificar-empresa margin-bottom-5 btn-mini', 'boton_superior' => false, 'titulo' => false);
+$config['activar_empresa'] = array('texto_anchor' => 'Activar', 'icono' => 'icon-plus icon-white', 'clase_boton' => 'btn activar-empresa btn-warning margin-bottom-5 btn-mini', 'boton_superior' => false);
+$config['eliminar_empresa'] = array('texto_anchor' => 'Eliminar', 'icono' => 'icon-trash', 'clase_boton' => 'btn btn-danger eliminar-empresa margin-bottom-5 btn-mini', 'boton_superior' => false, 'titulo' => "Confirma que desea eliminar la empresa?");
 
 
 # Menu gestion Seguridad => Gestionar Productos
@@ -113,8 +113,8 @@ $config['eliminar_empresa'] = array('texto_anchor' => 'Eliminar', 'icono' => 'ic
 # titulo: Mensaje para ventana Pop-up
 ####################################################################################
 $config['registro_producto'] = array('texto_anchor' => 'Agregar Producto', 'icono' => 'icon-user icon-white', 'clase_boton' => 'btn btn-large btn-success pull-right', 'boton_superior' => true, 'titulo' => false);
-$config['modificar_producto'] = array('texto_anchor' => 'Modificar', 'icono' => 'icon-pencil icon-white', 'clase_boton' => 'btn btn-info modificar-empresa margin-bottom-5', 'boton_superior' => false, 'titulo' => false);
-$config['eliminar_producto'] = array('texto_anchor' => 'Eliminar', 'icono' => 'icon-trash', 'clase_boton' => 'btn btn-danger eliminar-empresa margin-bottom-5', 'boton_superior' => false, 'titulo' => "Confirma que desea eliminar la empresa?");
+$config['modificar_producto'] = array('texto_anchor' => 'Modificar', 'icono' => 'icon-pencil icon-white', 'clase_boton' => 'btn btn-info modificar-empresa margin-bottom-5 btn-mini', 'boton_superior' => false, 'titulo' => false);
+$config['eliminar_producto'] = array('texto_anchor' => 'Eliminar', 'icono' => 'icon-trash', 'clase_boton' => 'btn btn-danger eliminar-empresa margin-bottom-5 btn-mini', 'boton_superior' => false, 'titulo' => "Confirma que desea eliminar la empresa?");
 
 
 
@@ -129,8 +129,17 @@ $config['eliminar_producto'] = array('texto_anchor' => 'Eliminar', 'icono' => 'i
 $config['alta_formulario'] = array('texto_anchor' => 'Crear Formulario', 'icono' => 'icon-th-list icon-white', 'clase_boton' => 'btn btn-large btn-success pull-right', 'boton_superior' => true, 'titulo' => false);
 $config['alta_grupos_fields'] = array('texto_anchor' => 'Crear Grupo de Fields', 'icono' => 'icon-folder-open icon-white', 'clase_boton' => 'btn btn-large btn-success pull-right', 'boton_superior' => true, 'titulo' => false);
 $config['alta_fields'] = array('texto_anchor' => 'Crear Field', 'icono' => 'icon-align-justify icon-white', 'clase_boton' => 'btn btn-large btn-success pull-right', 'boton_superior' => true, 'titulo' => false);
-$config['modificar_field'] = array('texto_anchor' => 'Modificar', 'icono' => 'icon-pencil icon-white', 'clase_boton' => 'btn btn-info modificar-field margin-bottom-5', 'boton_superior' => false, 'titulo' => false);
-$config['fields'] = array('texto_anchor' => 'Modificar Fields', 'icono' => 'icon-align-justify icon-white', 'clase_boton' => 'btn btn-info modificar-field margin-bottom-5', 'boton_superior' => false, 'titulo' => false);
+
+$config['baja_field'] = array('texto_anchor' => 'Eliminar', 'icono' => 'icon-remove icon-white', 'clase_boton' => 'btn btn-danger eliminar-empresa margin-bottom-5 btn-mini', 'boton_superior' => false, 'titulo' => false);
+$config['baja_grupo_field'] = array('texto_anchor' => 'Eliminar', 'icono' => 'icon-remove icon-white', 'clase_boton' => 'btn btn-danger eliminar-empresa margin-bottom-5 btn-mini', 'boton_superior' => false, 'titulo' => false);
+$config['baja_formulario'] = array('texto_anchor' => 'Eliminar', 'icono' => 'icon-remove icon-white', 'clase_boton' => 'btn btn-danger eliminar-empresa margin-bottom-5 btn-mini', 'boton_superior' => false, 'titulo' => false);
+
+$config['modificar_field'] = array('texto_anchor' => 'Modificar', 'icono' => 'icon-pencil icon-white', 'clase_boton' => 'btn btn-info modificar-field margin-bottom-5 btn-mini', 'boton_superior' => false, 'titulo' => false);
+$config['modificar_grupo_field'] = array('texto_anchor' => 'Modificar', 'icono' => 'icon-pencil icon-white', 'clase_boton' => 'btn btn-info modificar-field margin-bottom-5 btn-mini', 'boton_superior' => false, 'titulo' => false);
+$config['modificar_form'] = array('texto_anchor' => 'Modificar', 'icono' => 'icon-pencil icon-white', 'clase_boton' => 'btn btn-info modificar-field margin-bottom-5 btn-mini', 'boton_superior' => false, 'titulo' => false);
+
+$config['fields'] = array('texto_anchor' => 'Ver Fields', 'icono' => 'icon-align-justify icon-white', 'clase_boton' => 'btn btn-primary modificar-field margin-bottom-5 btn-mini', 'boton_superior' => false, 'titulo' => false);
+$config['grupos_fields'] = array('texto_anchor' => 'Ver Grupos Fields', 'icono' => 'icon-folder-open icon-white', 'clase_boton' => 'btn btn-primary modificar-field margin-bottom-5 btn-mini', 'boton_superior' => false, 'titulo' => false);
 
 # Menu gestion Admin => Gestionar Roles
 # Notas:

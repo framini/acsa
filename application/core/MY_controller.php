@@ -13,6 +13,13 @@ class MY_Controller extends CI_Controller
              die();
          }
 		 
+		 //Si el usuario logueado fue eliminado, tenemos que forzar su cierre de sesion
+		 if( !$this->auth_frr->user_exists() ) {
+		 	$this->auth_frr->logout();
+			redirect('');
+            die();
+		 } 
+		 
 		 //Chequeamos si se trata de ejecutar alguna funcion de la controladora entramos a este condicional
 		 if($permiso = $this->uri->segment(2)) {
 		 	//Comprobamos que el usuario tenga los permisos necesarios

@@ -456,7 +456,8 @@ class Seguridad extends MY_Controller {
                   
                   function eliminar_role($role_id = NULL)
                   {
-                      if($role_id)
+
+                      if( $role_id )
                         {
                             $data['roleRow'] = $this->roles_frr->get_role_by_id($role_id);
                             if($this->roles_frr->eliminar_role($role_id))
@@ -545,7 +546,7 @@ class Seguridad extends MY_Controller {
                                                 //$this->_show_message($this->lang->line('auth_message_registration_completed_2').' '.anchor('/auth/login/', 'Login'));
                                                 $message = "El usuario se ha creado correctamente!";
                                                 $this->session->set_flashdata('message', $message);
-                                                redirect('seguridad/');
+                                                redirect('seguridad/gestionar_usuarios');
                                         }
                                 } 
                                 // No se pudo crear el usuario, ya sea porque el usuario o mail existia, o algun otro problema
@@ -1332,6 +1333,9 @@ class Seguridad extends MY_Controller {
                       else
                         $data['usuarios'] = $this->auth_frr->get_users_empresa($empid);
 					  
+					  //Obtenemos el id del usuario logueado
+					  $data['id_usuario_logueado'] = $this->auth_frr->get_user_id();
+					  
 					  
 					  //print_r($data['usuarios']);
 					  foreach ($data['usuarios'] as $key => $value) {
@@ -1365,14 +1369,22 @@ class Seguridad extends MY_Controller {
                   }
                   
                   function eliminar_user($user_id) {
-                      if($this->auth_frr->delete_user_admin($user_id)) {
-                          $message = "Se ha eliminado al usuario correctamente!";
-                          $this->session->set_flashdata('message', $message);
-                      }
-                      else {
-                          $errormsg = "No se pudo eliminar el usuario usuario!";
-                          $this->session->set_flashdata('errormsg', $errormsg);
-                      }
+                  	
+					//Obtenemos el id del usuario logueado
+					$id_usuario_logueado = $this->auth_frr->get_user_id();
+					
+					//Chequeamos que el usuario no pueda eliminarse a si mismo
+                  	if( $user_id != $id_usuario_logueado ) {
+                  		if($this->auth_frr->delete_user_admin($user_id)) {
+	                          $message = "Se ha eliminado al usuario correctamente!";
+	                          $this->session->set_flashdata('message', $message);
+	                    }
+	                    else {
+	                          $errormsg = "No se pudo eliminar el usuario usuario!";
+	                          $this->session->set_flashdata('errormsg', $errormsg);
+	                    }
+                  	}
+                      
                   }
                   
                   /**
@@ -1395,9 +1407,9 @@ class Seguridad extends MY_Controller {
                           $this->template->build();*/
                          if($this->form_validation->run()) {
                               
-                              if($this->auth_frr->change_email_admin($user_id, $this->input->post('password'))) {
+                              if($this->auth_frr->cambiar_password_admin($user_id, $this->input->post('password'))) {
                                   
-                                    //Si el cambio de email se peticiono por medio de ajax devolvemos el resultado via JSON
+                                    //Si el cambio de password se peticiono por medio de ajax devolvemos el resultado via JSON
                                     if($this->input->is_ajax_request()) {
                                         
                                         $resultados['message'] = "Se cambio el password correctamente!";

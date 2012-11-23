@@ -33,6 +33,17 @@ class Users extends CI_Model
 		if ($query->num_rows() == 1) return $query->row();
 		return NULL;
 	}
+	
+	/**
+	 * Devuelve true en caso que el usuario exista, false caso contrario
+	 */
+	 
+	 function user_exists($user_id) {
+	 	$this->db->where('user_id', $user_id);
+		$query = $this->db->get('users');
+		if ($query->num_rows() == 1) return TRUE;
+		return NULL;
+	 }
 
 	/**
 	 * Devuelve el record de usuario por login (username o email)

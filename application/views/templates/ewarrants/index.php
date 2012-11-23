@@ -49,8 +49,10 @@
           <a class="brand" href="<?php echo site_url(); ?>">eWarrants</a>
           <div class="nav-collapse">
             <ul class="nav">
+              <?php if( (isset($gestiones_disponibles) && is_array($gestiones_disponibles) && ( count($gestiones_disponibles) > 0 ) ) || isset($admin) ) { ?>
               <li <?php if($this->uri->segment(1) == "seguridad") echo "class='active'" ?> ><a href="<?php echo site_url(); ?>/seguridad">Seguridad</a></li>
-
+			  <?php } ?>
+			  
               <?php 
                 if(isset($warrantera) || isset($argclearing)) {
                   echo '<li ';
@@ -58,27 +60,52 @@
                   echo '><a href="' . site_url() . '/ewarrants">eWarrants</a></li>';
                 }
               ?>
-              <?php if(isset($admin)) { ?>
-              <li class="dropdown">
+              
+              <?php
+              
+              $m_contenido = array(
+              	"controladora" => "admin",
+              	"submenu" => array(
+              		"forms",
+              		"grupos_fields"
+				)
+			  );
+              
+              ?>
+              
+              <?php if( (isset($permisos) && is_array($permisos) && (in_array("forms", $permisos) || in_array("grupos_fields", $permisos)) ) || isset($admin) ) { ?>
+              <li class="dropdown <?php if($this->uri->segment(1) == $m_contenido['controladora'] && in_array($this->uri->segment(2), $m_contenido['submenu'], TRUE) ) echo "active" ?>">
 				<a href="#" class="dropdown-toggle" data-toggle="dropdown">
 				Admin
 				<b class="caret"></b>
 				</a>
 				<ul class="dropdown-menu">
-					  <li><?php echo anchor('admin/forms', '<i class=""></i>Formularios'); ?></li>
-				      <li class="divider"></li>
-				      <li><?php echo anchor('/admin/grupos_fields', '<i class=""></i> Grupos Fields'); ?></li>
+					  <li><?php if( ( isset($permisos) && is_array($permisos) && (in_array("forms", $permisos)) ) || isset($admin) ) echo anchor('admin/forms', '<i class="icon-th-list"></i> Formularios'); ?></li>
+				      <li><?php if( ( isset($permisos) && is_array($permisos) && (in_array("grupos_fields", $permisos)) ) || isset($admin) ) echo anchor('admin/grupos_fields', '<i class="icon-folder-open"></i> Grupos Fields'); ?></li>
 				</ul>
               </li>
               <?php } ?>
-              <?php //if(isset($admin)) { ?>
-              <li class="dropdown">
+              
+              <?php if( (isset($permisos) && is_array($permisos) && in_array("template_manager", $permisos)) || isset($admin) ) { ?>
+              <li <?php if($this->uri->segment(2) == "template_manager") echo "class='active'" ?>>
 				<?php echo anchor('admin/template_manager', '<i class=""></i>Template Manager'); ?>
               </li>
-              <?php //} ?>
+              <?php } ?>
               
-              <?php if(isset($admin) && isset($forms)) { ?>
-              <li class="dropdown">
+              <?php
+              
+              $m_contenido = array(
+              	"controladora" => "admin",
+              	"submenu" => array(
+              		"editar_contenido",
+              		"form"
+				)
+			  );
+              
+              ?>
+              
+              <?php if( (isset($permisos) && is_array($permisos) && in_array("forms", $permisos)) || isset($admin) ) { ?>
+              <li class="dropdown <?php if($this->uri->segment(1) == $m_contenido['controladora'] && in_array($this->uri->segment(2), $m_contenido['submenu'], TRUE) ) echo "active" ?>">
 				<a href="#" class="dropdown-toggle" data-toggle="dropdown">
 				Contenido
 				<b class="caret"></b>
@@ -86,11 +113,11 @@
 				<ul class="dropdown-menu">
 					<li class="nav-header"><span class="small menu">Generar contenido:</span></li>
 					<?php foreach($forms as $form) { ?>
-						 <li><?php echo anchor('admin/form/' . $form['forms_id'], '<i class=""></i>' . format_texto($form['forms_nombre'])); ?></li>
+						 <li><?php echo anchor('admin/form/' . $form['forms_id'], '<i class="icon-chevron-right"></i>' . format_texto($form['forms_nombre'])); ?></li>
 					<?php } ?>
 					<li class="divider"></li>
 					<li class="nav-header"><span class="small menu">Editar:</span></li>
-					<li><?php echo anchor('admin/editar_contenido', 'Editar Contenido') ?></li>
+					<li><?php echo anchor('admin/editar_contenido', '<i class="icon-pencil"></i> Editar Contenido') ?></li>
 
 				</ul>
               </li>

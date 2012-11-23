@@ -145,6 +145,12 @@ class Template
 	 */
 	function set_content($view, $data = array()){
 		
+		//TODO: Ver alguna forma de crear el menu de forma dinamica asi no se cargan datos innecesarios
+		//Dejamos los permisos asociados al usuario
+		$this->data['permisos'] = $this->CI->roles_frr->permisos_role();
+		$this->data['forms'] = $this->CI->administracion_frr->get_forms();
+		$data['gestiones_disponibles'] = $this->CI->roles_frr->gestiones_disponibles('seguridad');
+		
 		$this->data['content'] = $this->CI->load->view($view, $data, true);
         
 	}

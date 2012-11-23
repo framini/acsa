@@ -71,8 +71,11 @@
                                                    echo '<td>';
                                                    if(count($data_menu) > 0) {
 														$band = 0;
-	                                                    foreach ($data_menu as $keyp => $row) { 
+	                                                    foreach ($data_menu as $keyp => $row) {
 								               				if(!$row['boton_superior']) {
+								               					if( $keyp == "eliminar_user" && ( isset( $id_usuario_logueado ) && $user['user_id'] == $id_usuario_logueado ) ) {
+								               						continue;
+								               					}
 								               					$band +=1;
 								               					if(isset($row['titulo'])) {
 								               						$atributos = array('data-original-title' => $row['titulo'], 'class' => $row['clase_boton']);

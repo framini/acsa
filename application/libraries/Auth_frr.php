@@ -86,6 +86,7 @@ class Auth_frr
                                 $configuracion['empresa_id'] = $user->empresa_id;
                                 $configuracion['status'] = ($user->activated == 1) ? STATUS_ACTIVATED : STATUS_NOT_ACTIVATED;
                                 $configuracion['es_admin'] = $user->es_admin;
+								$configuracion['role_id'] = $user->role_id;
 
 
                                 $this->ci->session->set_userdata($configuracion);
@@ -200,14 +201,15 @@ class Auth_frr
 	{
 		$this->delete_autologin();
 
-                                    //Explicitamente se borra la informacion de la sesion del usuario para que no haya problemas con is_logged_in
-                $configuracion['user_id'] = '';
-                $configuracion['username'] = '';
-                $configuracion['empresa_id'] = '';
-                $configuracion['status'] = '';
-                $configuracion['es_admin'] = '';
+        //Explicitamente se borra la informacion de la sesion del usuario para que no haya problemas con is_logged_in
+        $configuracion['user_id'] = '';
+        $configuracion['username'] = '';
+        $configuracion['empresa_id'] = '';
+        $configuracion['status'] = '';
+        $configuracion['es_admin'] = '';
+		$configuracion['role_id'] = '';
 
-                $this->ci->session->set_userdata($configuracion);
+        $this->ci->session->set_userdata($configuracion);
 
 		$this->ci->session->sess_destroy();
 	}
@@ -222,6 +224,15 @@ class Auth_frr
 	{
 		return $this->ci->session->userdata('status') === ($activado ? STATUS_ACTIVATED : STATUS_NOT_ACTIVATED);
 	}
+	
+	/**
+	 * Chequea que el usuario logueado todavia exista en la base de datos
+	 * -> Cuando elimina su usuario => no puede seguir navegando
+	 */
+	 
+	 function user_exists() {
+	 	return $this->ci->users->user_exists( $this->get_user_id() );
+	 }
         
         function is_warrantera() {
             
@@ -373,9 +384,13 @@ class Auth_frr
               else
                     return false;
           }
+		  
+		  function get_role_id() {
+              return $this->ci->session->userdata('role_id');
+          }
 
 	/**
-	 * Devuelve el user_id
+	 * Devuelve el user_id del usuario logueado
 	 *
 	 * @return	string
 	 */
@@ -747,20 +762,20 @@ class Auth_frr
 		return FALSE;
 	}
                   
-                   function change_email_admin($user_id, $new_pass) {
-                       
-                       $hasher = new PasswordHash( $this->ci->config->item('phpass_hash_strength', 'auth_frr'),
-                                                                         $this->ci->config->item('phpass_hash_portable', 'auth_frr'));
-                       
-                       // Hashea el nuevo password usando phpass
-                        $hashed_password = $hasher->HashPassword($new_pass);
+       function cambiar_password_admin($user_id, $new_pass) {
+           
+           $hasher = new PasswordHash( $this->ci->config->item('phpass_hash_strength', 'auth_frr'),
+                                                             $this->ci->config->item('phpass_hash_portable', 'auth_frr'));
+           
+           // Hashea el nuevo password usando phpass
+            $hashed_password = $hasher->HashPassword($new_pass);
 
-                        // Reemplazamos el password viejo con el nuevo
-                        if($this->ci->users->change_password($user_id, $hashed_password))
-                            return true;
-                        else
-                            return false;
-                   }
+            // Reemplazamos el password viejo con el nuevo
+            if($this->ci->users->change_password($user_id, $hashed_password))
+                return true;
+            else
+                return false;
+       }
                   
 
 	/**
@@ -991,6 +1006,7 @@ class Auth_frr
                                                 $configuracion['empresa_id'] = $user->empresa_id;
                                                 $configuracion['status'] = ($user->activated == 1) ? STATUS_ACTIVATED : STATUS_NOT_ACTIVATED;
                                                 $configuracion['es_admin'] = $user->es_admin;
+												$configuracion['role_id'] = $user->role_id;
 
                                                 $this->ci->session->set_userdata($configuracion);
 

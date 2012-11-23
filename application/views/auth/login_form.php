@@ -99,7 +99,7 @@ $remember = array(
 	                  
 	                  if(form_error($login['name']) != '' || form_error($password['name']) != '' || $errorLogueo != '' || $errorPassword != '')
 	                  {
-	                       echo "<div class='alert alert-error'>";
+	                       echo "<div class='alert alert-error' style='max-width: 300px; padding: 10px 29px 10px; margin: 0 auto 20px;'>";
 	                                 echo form_error($login['name'],  '<p>', '</p>'); 
 	                                 echo isset($errors[$login['name']]) ? "<p>" . $errors[$login['name']] . "</p>" : '';
 	                                 echo form_error($password['name'],  '<p>', '</p>'); 

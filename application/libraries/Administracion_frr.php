@@ -987,13 +987,14 @@ class Administracion_frr {
 	
 	function create_form($forms_nombre, $forms_nombre_action, $grupos_fields_id, $forms_descripcion, $forms_titulo, $forms_texto_boton_enviar) {
 		$data = array(
-			'forms_nombre' => $forms_nombre, 
-			'forms_nombre_action' => $forms_nombre_action, 
-			'grupos_fields_id' => $grupos_fields_id,
-			'forms_descripcion' => $forms_descripcion,
-			'forms_titulo' => $forms_titulo,
-			'forms_texto_boton_enviar' => $forms_texto_boton_enviar
+			'forms_nombre'             => $forms_nombre, 
+			'forms_nombre_action'      => $forms_nombre_action, 
+			'grupos_fields_id'         => $grupos_fields_id,
+			'forms_descripcion'        => $forms_descripcion,
+			'forms_titulo'             => $forms_titulo,
+			'forms_texto_boton_enviar' => $forms_texto_boton_enviar,
 		);
+		
 		//Validaciones para los campos requeridos
 		if(!$this->is_nombre_form_disponible($forms_nombre)) {
 			$this->error['fields_nombre'] = 'El nombre del Form ya esta siendo utilizado!';

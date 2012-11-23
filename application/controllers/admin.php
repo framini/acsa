@@ -349,6 +349,7 @@ class Admin extends MY_Controller {
 		function editar_contenido() {
 			$this->breadcrumb->append_crumb('Home', site_url());
 			$this->breadcrumb->append_crumb('Editar', site_url() . "/admin/editar_contenido");
+			
 			$data['entries'] = $this->administracion_frr->get_entries();
 			if(!is_null($data['entries'])) {
 				if ($message = $this->session->flashdata('message')) {
@@ -753,7 +754,7 @@ class Admin extends MY_Controller {
 			}
 		}
 		
-		function baja_grupo_fields() {
+		function baja_grupo_field() {
 			//Si existe un grupo de fields con el ID pasado como parametro
 			if(!is_null($gf = $this->administracion_frr->get_grupo_field_by_id($this->uri->segment(3)))) {
 				if($this->uri->segment(4) == "si") {
