@@ -1,6 +1,7 @@
  	<?php
 	$template_n = isset($template_data) ? $template_data[0]['nombre'] : set_value('nombre');
 	$template_c = isset($template_data) ? $template_data[0]['data'] : set_value('codigo');
+	$template_ext = isset($template_data) ? $template_data[0]['extension'] : set_value('extension');
 	
 	$template_codigo = array(
 	        'name'              => 'codigo',
@@ -69,15 +70,28 @@
                             
 						    <script src="<?php echo base_url(); ?>js/ace/ace.js" type="text/javascript" charset="utf-8"></script>
 						    <script src="<?php echo base_url(); ?>js/ace/theme-monokai.js" type="text/javascript" charset="utf-8"></script>
-						    <script src="<?php echo base_url(); ?>js/ace/mode-html.js" type="text/javascript" charset="utf-8"></script>
+						    <?php if ( $template_ext == "css" ) { ?>
+						    	<script src="<?php echo base_url(); ?>js/ace/mode-css.js" type="text/javascript" charset="utf-8"></script>
+						    <?php } elseif ( $template_ext == "html" ) { ?>
+						    	<script src="<?php echo base_url(); ?>js/ace/mode-html.js" type="text/javascript" charset="utf-8"></script>
+						    <?php } elseif ( $template_ext == "js" ) { ?>
+						    	<script src="<?php echo base_url(); ?>js/ace/mode-javascript.js" type="text/javascript" charset="utf-8"></script>
+						    <?php } ?>
 						    
 						    <script>
 						    window.onload = function() {
 						        var editor = ace.edit("editor");
 						        editor.setTheme("ace/theme/monokai");
 						        //editor.getSession().setMode("ace/mode/javascript");
-						        var HtmlMode = require("ace/mode/html").Mode;
-   	 							editor.getSession().setMode(new HtmlMode());
+						        <?php
+						        	if ($template_ext == "css") {
+						        		echo 'var CssMode = require("ace/mode/css").Mode;editor.getSession().setMode(new CssMode());';
+						        	} elseif($template_ext == "html") {
+						        		echo 'var HtmlMode = require("ace/mode/html").Mode;editor.getSession().setMode(new HtmlMode());';
+						        	} elseif($template_ext == "js") {
+						        		echo 'var jsMode = require("ace/mode/javascript").Mode;editor.getSession().setMode(new jsMode());';
+									}
+						        ?>
 						        
 								var textarea = $('textarea[name="codigo"]').hide();
 								editor.getSession().setValue(textarea.val());

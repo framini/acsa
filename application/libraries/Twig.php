@@ -47,6 +47,7 @@ class Twig
 		# Inicializacion de Filtros Custom
 		##################################
 		$this->_twig->addFilter('longitud_max', new Twig_Filter_Function('Twig::longitud_max'));
+		$this->_twig->addFilter('url_sitio', new Twig_Filter_Function('Twig::url_sitio'));
 		
 		# Fin de definicion de filtros custom
 		#####################################
@@ -86,4 +87,13 @@ class Twig
 		return (strlen($string) > $length) ? substr($string,0,$length). $end_char : $string;
 	}
 	
-}
+	public static function url_sitio($string, $entry_id = NULL) {
+		if(!is_null($entry_id)) {
+			return site_url($string . "/" . $entry_id);
+		} else {
+			return site_url($string);
+		}
+		
+	}
+	
+} 

@@ -54,3 +54,8 @@ $parametros_tags_css = array(
 $parametros_tags_js = array(
 	'url',
 );
+
+//Paramtros validos para el tag {$incluir $}
+$parametros_tags_incluir = array(
+	'url',
+);

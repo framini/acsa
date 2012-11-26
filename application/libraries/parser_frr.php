@@ -183,6 +183,62 @@ class Parser_frr {
 				
 			}
 
+			/**
+			 * TAG INCLUIR
+			 */
+			 //El tag sera de la forma {$incluir url="valor" $}
+			$tag_form = '/(?<nombre>\{\$incluir\s?.+\s?\$\})/';
+			
+			if($this->num_tags = preg_match_all($tag_form, $template, $tags_incluir)) {
+				$parametros = array();
+				//Recorremos los parametros disponibles para este tag
+				//NOTA: Definidos en la config de esta librerias
+				foreach ($this->param_incluir as $p) {
+					$regex = '/\s?' . $p . '\s*=(?:\"|\')\s?(?<valor>[\w\-\/]+)\s?(?:\"|\')/';
+					$i = 0;
+					foreach ($tags_incluir['nombre'] as $key => $t) {
+						preg_match_all($regex, $tags_incluir['nombre'][$i], $parametros[$key][$p]);
+						$i++;
+					}
+				}
+				
+				$tag_a_reemplazar = array();
+				
+				//Procesamos los parametros parseados y generamos los tags de reemplazo
+				foreach ($parametros as $key => $value) {
+					foreach ($value as $parametro => $val ) {
+						//Si valor del parametro esta definido
+						if( isset($val['valor'][0] ) && $tipo = $val['valor'][0] ) {
+							
+							if( $parametro == "url" ) {
+								
+								$grp_tpl = explode( "/", $val['valor'][0] );
+								
+								//Obtenemos la ruta al template especificados
+								$url_tpl = $this->CI->template->obtener_ruta_fisica_template( $grp_tpl[0], $grp_tpl[1] ) ; 
+								
+								if( !is_null( $url_tpl ) ) {
+									$tag_a_reemplazar[] = '{% include "' . $url_tpl . '" %}';
+								} else {
+									//En el caso que la url especificada no exista, borramos el tag (lo reemplazamos con espacio en blanco)
+									$tag_a_reemplazar[] = '';
+								}
+							}
+						}
+					}
+				}
+
+				//Recorremos todos los tags de css presentes y los reemplazamos con la representacion HTML del mismo
+				foreach ($tag_a_reemplazar as $key => $tag) {
+					$tag_patt = preg_quote( $tags_incluir['nombre'][ $key ] ) ;
+					//Escapeamos las barras
+					$tag_patt = '/'. preg_replace('/\//', '\/', $tag_patt) . '/';
+					//print_r($tag_patt); die();
+					$template = preg_replace($tag_patt, $tag_a_reemplazar[$key], $template); 
+				}
+				
+			}
+			
 			
 			/**
 			 * TAG FORM
@@ -350,6 +406,11 @@ class Parser_frr {
 		foreach($parametros_tags_js as $p) 
 		{
 			$this->param_js[] = $p;
+		}
+		
+		foreach($parametros_tags_incluir as $p) 
+		{
+			$this->param_incluir[] = $p;
 		}
 		
 		foreach($parametros_tags_form as $p) 

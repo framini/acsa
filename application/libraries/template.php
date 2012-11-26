@@ -411,6 +411,9 @@ class Template
 						//Definimos la variable a usar en el template
 						//Accedemos a ella de la forma entrada.nombre_field
 						$data[$var_nombre_contenido][$entry_id][$nombre_field] = $valor;
+						if($nombre_field == 'autor_id' ) {
+							$data[$var_nombre_contenido][$entry_id]['autor'] = $this->CI->auth_frr->get_username_by_id($valor);
+						}
 					}
 				}
 				
@@ -421,7 +424,7 @@ class Template
 		$this->CI->twig->display("frr_temp/" . $this->nombre_file, $data);
 	}
 	
-	function obtener_y_parsear($template_group, $template, $extension = NULL) {
+	function obtener_y_parsear($template_group, $template, $extension = NULL, $actualizando = NULL) {
 		
 		//Primero obtenemos el template
 		$this->template = $this->obtener_template($template_group, $template);
@@ -447,7 +450,7 @@ class Template
 		);
 
 		//Creamos el file que luego sera parseado		
-		$this->nombre_file = $this->update_template_file($tdata, NULL, $extension);
+		$this->nombre_file = $this->update_template_file($tdata, $actualizando, $extension);
 	}
 	
 	function obtener_template($template_group, $template) {
@@ -477,6 +480,26 @@ class Template
 		//Si llegamos hasta este punto devolvemos la ruta para acceder al file correspondiente al template pasado como parametro
 		return $grupo_template . "/" . $template;
 
+	}
+	
+	function obtener_ruta_fisica_template($grupo_template, $template, $extension = NULL) {
+		
+		$basepath = $this->data['ruta_default_short'];
+		
+		//Si existe un template, creamos/actualizamos el file fisico que lo representa y devolvemos la ruta 
+		if ( !is_null( $template_group_id = $this->CI->administracion_frr->grupo_template_exists_by_name($grupo_template)) ) {
+			if ( $this->CI->administracion_frr->template_exists_by_name($template, $template_group_id) ) {
+				
+				$template_extension = $this->CI->administracion_frr->get_extension_template($template);
+				
+				//Si llegamos hasta este punto quiere decir que tenemos que actualizar el file correspondiente al template
+				$this->obtener_y_parsear($grupo_template, $template, $template_extension, TRUE);
+				
+				return $basepath . $grupo_template . "/" . $template . "." . $template_extension;
+			}
+			
+		}
+		
 	}
 	
 	/**
@@ -572,9 +595,9 @@ class Template
 		
 		//Chequeamos si existe o no el file. En caso de existir no hay sentido volver a crearlo
 		//a menos que lo estemos actualizando
-		if(file_exists($basepath . "/" . $filename) && (isset($actualizando) && $actualizando)) {
-			return $filename;
-		}
+		/*if(file_exists($basepath . "/" . $filename) && !(isset($actualizando) && $actualizando)) {
+			return $data['template_group'] . "/" . $filename;
+		}*/
 		
 		if ( ! $fp = @fopen($basepath.'/'.$filename, FOPEN_WRITE_CREATE_DESTRUCTIVE)) {
 			return FALSE;
