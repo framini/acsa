@@ -99,7 +99,7 @@ ul.sin-estilo {
 
 #editor {
         position: absolute;
-        width: 80%;
+        width: 900px;
         height: 400px;
         font-family: 'Monaco','Menlo','Ubuntu Mono','Droid Sans Mono','Consolas',monospace;
     }

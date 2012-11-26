@@ -22,10 +22,11 @@ class Extensiones extends CI_Model
         return NULL;
 	}
 	
-	function get_extensione_template($template) {
+	function get_extensione_template($template, $grupo_template_id) {
 		$this->db->select('template_extension');
         $this->db->from("templates");
 		$this->db->where('nombre', $template);
+		$this->db->where('template_group_id', $grupo_template_id);
         $query = $this->db->get();
         
         if ($query->num_rows() == 1) return $query->row();

@@ -35,7 +35,10 @@ $template_file_config = array(
 //Tags Custom disponibles
 $tags_custom_disponibles = array(
 	'form',
-	'css'
+	'css',
+	'js',
+	'incluir',
+	'extender'
 );
 
 //Paramtros validos para el tag {$form $}
@@ -57,5 +60,10 @@ $parametros_tags_js = array(
 
 //Paramtros validos para el tag {$incluir $}
 $parametros_tags_incluir = array(
+	'url',
+);
+
+//Paramtros validos para el tag {$extender $}
+$parametros_tags_extender = array(
 	'url',
 );

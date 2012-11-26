@@ -31,7 +31,7 @@ Prueba
 
 <!-- <script src=\"http://localhost/argc/index.php/js/principal\"></script> -->
 
-<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"http://localhost/argc/index.php/css/asd2\" />
+
 
 
 <ul>
@@ -87,6 +87,6 @@ Prueba
 
     public function getDebugInfo()
     {
-        return array (  68 => 23,  51 => 21,  40 => 20,  117 => 61,  111 => 60,  103 => 55,  99 => 54,  93 => 50,  90 => 49,  86 => 48,  75 => 39,  67 => 37,  62 => 36,  58 => 35,  34 => 13,  32 => 12,  19 => 1,);
+        return array (  68 => 23,  51 => 21,  40 => 20,  19 => 1,);
     }
 }

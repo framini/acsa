@@ -85,7 +85,7 @@ class __TwigTemplate_eaedaf390562f1b5be6e28fddc6888bb extends Twig_Template
                 echo "</p>
                                 <p class='center'><a href=\"";
                 // line 34
-                echo twig_escape_filter($this->env, Twig::url_sitio("articulos/item", $this->getAttribute((isset($context["entrada"]) ? $context["entrada"] : null), "entry_id")), "html", null, true);
+                echo twig_escape_filter($this->env, Twig::url_sitio("main/item", $this->getAttribute((isset($context["entrada"]) ? $context["entrada"] : null), "entry_id")), "html", null, true);
                 echo "\" class=\"btn btn-small btn-primary\">ver más</a></p>
 \t                          </div>
 \t                        </div>

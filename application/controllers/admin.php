@@ -197,8 +197,10 @@ class Admin extends MY_Controller {
 			$this->breadcrumb->append_crumb('Template Manager', site_url() . "/admin/template_manager");
 			$this->breadcrumb->append_crumb('Editar templates', site_url() . "/admin/editar_templates");
 			
+			
 			//Si existe un template con el id pasado en la URI
 			if(!is_null($template = $this->administracion_frr->get_templates_by_id($this->uri->segment(3)))) {
+				
 				$this->form_validation->set_rules('nombre', 'Nombre del Template', 'trim|required|xss_clean');
 				$this->form_validation->set_rules('codigo', 'Codigo del Template', 'required');
 				

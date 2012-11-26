@@ -92,6 +92,11 @@ class Templates extends CI_Model
 		{
 			$sql .= " AND templates.nombre = '".$this->db->escape_str($template)."' ";
 		}
+		
+		if ($template_group != '')
+		{
+			$sql .= " AND templates_groups.nombre = '".$this->db->escape_str($template_group)."' ";
+		}
 
 				
 		$query = $this->db->query($sql);
@@ -155,15 +160,27 @@ class Templates extends CI_Model
         return null;	
 	}
 	
+	function get_grupo_template_by_template_id( $template_id ) {
+		$this->db->select('template_group_id');
+		$this->db->where('template_id', $template_id);
+
+		$query = $this->db->get('templates');
+
+		return $query->row()->template_group_id;
+	}
+	
 	/**
 	 * Chequea si el nombre del template esta disponible para registro
 	 *
 	 * @param	string
 	 * @return	bool
 	 */
-	function is_nombre_template_disponible($nombre_template) {
+	function is_nombre_template_disponible($nombre_template, $grupo_template_id = NULL) {
 		$this->db->select('1', FALSE);
 		$this->db->where('LOWER(nombre)=', strtolower($nombre_template));
+		if( !is_null($grupo_template_id) ) {
+			$this->db->where('template_group_id', $grupo_template_id );
+		}
 
 		$query = $this->db->get('templates');
 		return $query->num_rows() == 0;

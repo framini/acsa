@@ -550,7 +550,7 @@ class Administracion_frr {
 			'template_extension' => $extension
 		);
 		
-		if(!$this->is_nombre_template_disponible($nombre)) {
+		if(!$this->is_nombre_template_disponible($nombre, $grupo_id)) {
 			$this->error['nombre'] = 'El nombre ya esta siendo utilizado por otro template!';
 		}
 		//Solamente creamos si los campos pasaron la validacion	
@@ -584,8 +584,8 @@ class Administracion_frr {
         return NULL;
 	}
 	
-	function get_extension_template($template) {
-		$extension = $this->ci->extensiones->get_extensione_template($template);
+	function get_extension_template($template, $grupo_template_id) {
+		$extension = $this->ci->extensiones->get_extensione_template($template, $grupo_template_id);
 		
 		if(isset($extension)) {
 			return $extension->template_extension;
@@ -626,7 +626,9 @@ class Administracion_frr {
 			'data' => $codigo,
 		);
 		
-		if(!$this->verificacion_nombre_template($id, $nombre)) {
+		$grupo_template_id = $this->ci->templates->get_grupo_template_by_template_id($id);
+		
+		if(!$this->verificacion_nombre_template($id, $nombre, $grupo_template_id)) {
 			$this->error['nombre'] = 'El nombre ya esta siendo utilizado por otro template!';
 		}
 		//Solamente creamos si los campos pasaron la validacion	
@@ -785,10 +787,10 @@ class Administracion_frr {
 		}
 	}
 
-	function verificacion_nombre_template($template_id, $nombre) {
+	function verificacion_nombre_template($template_id, $nombre, $grupo_template_id = NULL) {
 		//Si el nombre esta disponible entramos
 		//O sino chequeamos que se esten editando otros datos de un grupo que no sea su nombre
-		if($this->is_nombre_template_disponible($nombre) || $this->is_mismo_template($template_id, $nombre)) {
+		if($this->is_nombre_template_disponible($nombre, $grupo_template_id) || $this->is_mismo_template($template_id, $nombre)) {
 			return true;
 		} else {
 			return false;
@@ -1015,8 +1017,8 @@ class Administracion_frr {
 		return NULL;
 	}
 
-	function is_nombre_template_disponible($nombre_template) {
-		return $this->ci->templates->is_nombre_template_disponible($nombre_template);
+	function is_nombre_template_disponible($nombre_template, $grupo_id = NULL) {
+		return $this->ci->templates->is_nombre_template_disponible($nombre_template, $grupo_id);
 	}
 	
 	function is_nombre_grupo_fields_disponible($grupos_fields_nombre) {

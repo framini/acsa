@@ -345,6 +345,7 @@ class Template
 	}
 	
 	function run_template_engine($template_group, $template, $template_extension) {
+
 		$this->obtener_y_parsear($template_group, $template, $template_extension);
 		
 		//Paginacion
@@ -490,7 +491,7 @@ class Template
 		if ( !is_null( $template_group_id = $this->CI->administracion_frr->grupo_template_exists_by_name($grupo_template)) ) {
 			if ( $this->CI->administracion_frr->template_exists_by_name($template, $template_group_id) ) {
 				
-				$template_extension = $this->CI->administracion_frr->get_extension_template($template);
+				$template_extension = $this->CI->administracion_frr->get_extension_template($template, $template_group_id);
 				
 				//Si llegamos hasta este punto quiere decir que tenemos que actualizar el file correspondiente al template
 				$this->obtener_y_parsear($grupo_template, $template, $template_extension, TRUE);

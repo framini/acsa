@@ -1,19 +1,10 @@
-<html>
-<head>
-<title>
-HOLA
-</title>
-</head>
-<body>
-<h1>{{title}}</h1>
-{% for item in navigation %}
-            <li><a href="{{ item.href }}">{{ item.caption }}</a></li>
-        {% endfor %}
+{% extends "frr_temp/templates_base/item.html" %}
 
-{% filter upper %}
-  This text becomes uppercase
-{% endfilter %}
+{% block title %}Este es el titulo{% endblock %}
 
-{% include "welcome_message.php" %}
-</body>
-</html>
+{% block content %}
+    <h1>Index</h1>
+    <p class="important">
+        Welcome to my awesome homepage.
+    </p>
+{% endblock %}
