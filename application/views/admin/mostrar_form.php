@@ -14,18 +14,12 @@
 	//Inputs comunes a todos los forms
 	if(isset($valores_campos)) {
 		$titulo = ($valores_campos['titulo']['atributos']);
-		$url_titulo = ($valores_campos['url_titulo']['atributos']);
 	} else {
 		$titulo = array(
 		'name'              => 'titulo',
         'value'             => '',
         'class'             => 'text span5',
         'id'                => 'titulo'
-		);
-		$url_titulo = array(
-	        'value'             => '',
-	        'class'             => 'text span5',
-	        'id'                => 'url_titulo'
 		);
 	}
 	
@@ -53,12 +47,6 @@
                 		<div class="span6 control-group ">
                 			<?php echo form_label("Titulo", $titulo['id']); ?>
                 			<?php echo form_input("titulo", $titulo); ?>
-                		</div>
-                	</div>
-                	<div class="row">
-                		<div class="span6 control-group ">
-                			<?php echo form_label("URL (deberia ser igual al Titulo pero sin espacios)", $url_titulo['id']); ?>
-                			<?php echo form_input("url_titulo", $url_titulo); ?>
                 		</div>
                 	</div>
 					

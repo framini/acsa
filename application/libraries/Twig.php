@@ -13,8 +13,12 @@ class Twig
 	 */
 	function __construct($debug = false)
 	{
+		
 		$this->CI =& get_instance();
 		$this->CI->config->load('twig');
+		
+		//Cargamos el helper de CI
+		$this->CI->load->helper('text');
 		 
 		ini_set('include_path',
 		ini_get('include_path') . PATH_SEPARATOR . APPPATH . 'libraries/Twig');
@@ -33,17 +37,29 @@ class Twig
                 'cache' => $this->_cache_dir,
                 'debug' => $debug
 		));
-
-	        foreach(get_defined_functions() as $functions) {
-            		foreach($functions as $function) {
-                		$this->_twig->addFunction($function, new Twig_Function_Function($function));
-            		}
-        	}
+		
+        foreach(get_defined_functions() as $functions) {
+    		foreach($functions as $function) {
+        		$this->_twig->addFunction($function, new Twig_Function_Function($function));
+    		}
+    	}
+		
+		# Inicializacion de Filtros Custom
+		##################################
+		$this->_twig->addFilter('longitud_max', new Twig_Filter_Function('Twig::longitud_max'));
+		
+		# Fin de definicion de filtros custom
+		#####################################
+		
 	}
 
 	public function add_function($name) 
 	{
 		$this->_twig->addFunction($name, new Twig_Function_Function($name));
+	}
+	
+	public function add_filter($name) {
+		$this->_twig->addFilter($name, new Twig_Filter_Function($name));
 	}
 
 	public function render($template, $data = array()) 
@@ -61,4 +77,13 @@ class Twig
 		$data['memory_usage'] = $memory;
 		$template->display($data);
 	}
+	
+	#Definicion de Filtros Custom
+	################################
+	
+	//Filtro
+	public static function longitud_max($string, $length="500", $end_char="..." ) {
+		return (strlen($string) > $length) ? substr($string,0,$length). $end_char : $string;
+	}
+	
 }

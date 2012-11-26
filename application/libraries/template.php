@@ -44,14 +44,15 @@ class Template
             $this->data['warrantera'] = $this->CI->auth_frr->is_warrantera() ? true : null;
             $this->data['argclearing'] = $this->CI->auth_frr->is_argclearing() ? true : null;
 		}
+		
 		//Cargamos contenido default para admins	
-		if($this->CI->auth_frr->es_admin()) {
-			//Usado para filtrar contenido solo para admins en el template index.php
-			$this->CI->load->library('administracion_frr');
-			$this->data['admin'] = true;
-			$this->data['forms'] = $this->CI->administracion_frr->get_forms();
-		} 
-			
+		if($this->CI->auth_frr->es_admin()) {	
+			$this->data['admin'] = true;			
+		}
+		
+		//Usado para filtrar contenido solo para admins en el template index.php
+		$this->CI->load->library('administracion_frr');	
+		$this->data['forms'] = $this->CI->administracion_frr->get_forms();
 	}
 
 

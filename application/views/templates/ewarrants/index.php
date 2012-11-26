@@ -113,7 +113,7 @@
 				<ul class="dropdown-menu">
 					<li class="nav-header"><span class="small menu">Generar contenido:</span></li>
 					<?php foreach($forms as $form) { ?>
-						 <li><?php echo anchor('admin/form/' . $form['forms_id'], '<i class="icon-chevron-right"></i>' . format_texto($form['forms_nombre'])); ?></li>
+						 <li><?php echo anchor('admin/form/' . $form['forms_id'], '<i class="icon-chevron-right"></i>' . $form['forms_titulo'] ); ?></li>
 					<?php } ?>
 					<li class="divider"></li>
 					<li class="nav-header"><span class="small menu">Editar:</span></li>

@@ -390,11 +390,6 @@ class Administracion_frr {
 			        'class'             => 'text span5',
 			        'id'                => 'titulo'
 		);
-		$campos['url_titulo']['atributos'] = array(
-					'value'             => $entry->url_titulo,
-			        'class'             => 'text span5',
-			        'id'                => 'url_titulo'
-		);
 		
 		if(isset($campos)) {
 			return $campos;
@@ -429,13 +424,11 @@ class Administracion_frr {
 
 			//Validacion datos comunes todos los forms
 			$this->ci->form_validation->set_rules('titulo', 'Titulo', 'trim|required|xss_clean');
-			$this->ci->form_validation->set_rules('url_titulo', 'Titulo', 'trim|required|xss_clean');
 
 			if($this->ci->form_validation->run()) {
 				
 				//Datos comunes a todos los forms
 				$this->datos_entradas['titulo'] = $this->ci->form_validation->set_value('titulo');
-				$this->datos_entradas['url_titulo'] = $this->ci->form_validation->set_value('url_titulo');
 				
 				return $data;
 			} else {

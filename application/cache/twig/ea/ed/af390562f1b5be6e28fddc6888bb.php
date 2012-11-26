@@ -27,7 +27,11 @@ class __TwigTemplate_eaedaf390562f1b5be6e28fddc6888bb extends Twig_Template
         <link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"http://localhost/argc/index.php/css/custom\" />
     </head>
     <body>
-        <div class=\"container main-menu\">
+        ";
+        // line 12
+        $this->env->loadTemplate("frr_temp/noticias/prueba.html")->display($context);
+        // line 13
+        echo "        <div class=\"container main-menu\">
             <div class=\"row\">
                 <div class=\"navigation\">
                     <div class=\"navbar navbar-inverse\">
@@ -47,78 +51,70 @@ class __TwigTemplate_eaedaf390562f1b5be6e28fddc6888bb extends Twig_Template
         <div class=\"container\">
             <div id=\"wrapper\">
                 <div class=\"row-fluid\">
-    \t\t\t\t
+        \t\t\t
                     <div class=\"hero-unit\">
 \t\t\t\t\t\t";
-        // line 34
+        // line 35
         $context['_parent'] = (array) $context;
         $context['_seq'] = twig_ensure_traversable((isset($context["contenido_home"]) ? $context["contenido_home"] : null));
-        $context['loop'] = array(
-          'parent' => $context['_parent'],
-          'index0' => 0,
-          'index'  => 1,
-          'first'  => true,
-        );
         foreach ($context['_seq'] as $context["_key"] => $context["entrada"]) {
-            if (($this->getAttribute((isset($context["loop"]) ? $context["loop"] : null), "index") < 4)) {
-                // line 35
-                echo "\t\t\t\t\t\t\t<h1> ";
-                echo twig_escape_filter($this->env, $this->getAttribute((isset($context["entrada"]) ? $context["entrada"] : null), "titulo"), "html", null, true);
-                echo " </h1>
+            // line 36
+            echo "\t\t\t\t\t\t\t<h1> ";
+            echo twig_escape_filter($this->env, $this->getAttribute((isset($context["entrada"]) ? $context["entrada"] : null), "titulo"), "html", null, true);
+            echo " </h1>
 \t\t\t\t\t\t\t<p> ";
-                // line 36
-                echo twig_escape_filter($this->env, $this->getAttribute((isset($context["entrada"]) ? $context["entrada"] : null), "contenido"), "html", null, true);
-                echo " </p>
+            // line 37
+            echo twig_escape_filter($this->env, $this->getAttribute((isset($context["entrada"]) ? $context["entrada"] : null), "contenido"), "html", null, true);
+            echo " </p>
 \t\t\t\t\t\t";
-                ++$context['loop']['index0'];
-                ++$context['loop']['index'];
-                $context['loop']['first'] = false;
-            }
         }
         $_parent = $context['_parent'];
         unset($context['_seq'], $context['_iterated'], $context['_key'], $context['entrada'], $context['_parent'], $context['loop']);
         $context = array_merge($_parent, array_intersect_key($context, $_parent));
-        // line 38
+        // line 39
         echo "                      <!--<h1>Hello, world!</h1>
                       <p>This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content or information.</p>
                       <p><a class=\"btn btn-primary btn-large\">Learn more</a></p>-->
                     </div><!--hero unit-->
                     
+                    
+                    
                     <ul class=\"thumbnails\">
-                      <li class=\"span4\">
-                        <div class=\"thumbnail\">
-                          <img src=\"http://placehold.it/300x200\" alt=\"\">
-                          <div class=\"caption\">
-                            <h3>Thumbnail label</h3>
-                            <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
-                            <p><a href=\"#\" class=\"btn btn-primary\">Action</a> <a href=\"#\" class=\"btn\">Action</a></p>
-                          </div>
-                        </div>
-                      </li>
-                      
-                      <li class=\"span4\">
-                        <div class=\"thumbnail\">
-                          <img src=\"http://placehold.it/300x200\" alt=\"\">
-                          <div class=\"caption\">
-                            <h3>Thumbnail label</h3>
-                            <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
-                            <p><a href=\"#\" class=\"btn btn-primary\">Action</a> <a href=\"#\" class=\"btn\">Action</a></p>
-                          </div>
-                        </div>
-                      </li>
-                      
-                     <li class=\"span4\">
-                        <div class=\"thumbnail\">
-                          <img src=\"http://placehold.it/300x200\" alt=\"\">
-                          <div class=\"caption\">
-                            <h3>Thumbnail label</h3>
-                            <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
-                            <p><a href=\"#\" class=\"btn btn-primary\">Action</a> <a href=\"#\" class=\"btn\">Action</a></p>
-                          </div>
-                        </div>
-                      </li>
-                      
-                    </ul>
+                    \t
+                      ";
+        // line 48
+        $context['_parent'] = (array) $context;
+        $context['_seq'] = twig_ensure_traversable((isset($context["contenido_home_items"]) ? $context["contenido_home_items"] : null));
+        foreach ($context['_seq'] as $context["_key"] => $context["entrada"]) {
+            // line 49
+            echo "                      \t";
+            if ($this->getAttribute((isset($context["entrada"]) ? $context["entrada"] : null), "imagen_item")) {
+                // line 50
+                echo "\t                      <li class=\"span4\">
+\t                        <div class=\"thumbnail\">
+\t                          <img src=\"http://placehold.it/300x200\" alt=\"\">
+\t                          <div class=\"caption\">
+\t                            <h3>";
+                // line 54
+                echo twig_escape_filter($this->env, $this->getAttribute((isset($context["entrada"]) ? $context["entrada"] : null), "titulo"), "html", null, true);
+                echo "</h3>
+\t                            <p>";
+                // line 55
+                echo twig_escape_filter($this->env, Twig::longitud_max($this->getAttribute((isset($context["entrada"]) ? $context["entrada"] : null), "contenido"), 140), "html", null, true);
+                echo "</p>
+\t                          </div>
+\t                        </div>
+\t                      </li>
+                      \t";
+            }
+            // line 60
+            echo "                      ";
+        }
+        $_parent = $context['_parent'];
+        unset($context['_seq'], $context['_iterated'], $context['_key'], $context['entrada'], $context['_parent'], $context['loop']);
+        $context = array_merge($_parent, array_intersect_key($context, $_parent));
+        // line 61
+        echo "                    </ul>
                     
                 </div>
             </div><!--wrapper-->
@@ -142,6 +138,6 @@ class __TwigTemplate_eaedaf390562f1b5be6e28fddc6888bb extends Twig_Template
 
     public function getDebugInfo()
     {
-        return array (  82 => 38,  70 => 36,  65 => 35,  54 => 34,  19 => 1,);
+        return array (  117 => 61,  111 => 60,  103 => 55,  99 => 54,  93 => 50,  90 => 49,  86 => 48,  75 => 39,  67 => 37,  62 => 36,  58 => 35,  34 => 13,  32 => 12,  19 => 1,);
     }
 }

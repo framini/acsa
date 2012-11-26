@@ -694,7 +694,7 @@ class Admin extends MY_Controller {
 				$this->breadcrumb->append_crumb('Modificar Formulario', "/");			
 				
 				$this->form_validation->set_rules('forms_nombre', 'Nombre del Form', 'trim|required|xss_clean');
-				$this->form_validation->set_rules('forms_nombre_action', 'Nombre del Action', 'trim|required|xss_clean');
+				$this->form_validation->set_rules('forms_nombre_action', 'Nombre del Action', 'trim|xss_clean');
 				$this->form_validation->set_rules('grupos_fields_id', 'Nombre del Grupo de Fields', 'trim|required|xss_clean');
 				$this->form_validation->set_rules('forms_descripcion', 'Descripcion del Form', 'trim|xss_clean');
 				$this->form_validation->set_rules('forms_titulo', 'Titulo del Form', 'trim|xss_clean');

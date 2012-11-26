@@ -120,7 +120,7 @@ class Templates extends CI_Model
 			$indice++;
 		}
 		//Declaramos los campos generales a todos los forms
-		$campos_generales = FE . "entry_id, " . FE . "autor_id, " . FE . "ip_address, " . FE . "titulo, " . FE . "url_titulo, " . FE . "entry_date, " . FE . "edit_date, ";
+		$campos_generales = FE . "entry_id, " . FE . "autor_id, " . FE . "ip_address, " . FE . "titulo, " . FE . "entry_date, " . FE . "edit_date, ";
 		
 		$query = $this->db->query("SELECT {$campos_generales}{$campos} FROM forms_entradas as Fe LEFT JOIN forms_data as Fd ON Fe.entry_id = Fd.entry_id WHERE Fd.forms_id = {$form_id}");
 		
@@ -147,7 +147,7 @@ class Templates extends CI_Model
 			$indice++;
 		}
 		//Declaramos los campos generales a todos los forms
-		$campos_generales = FE . "entry_id, " . FE . "autor_id, " . FE . "ip_address, " . FE . "titulo, " . FE . "url_titulo, " . FE . "entry_date, " . FE . "edit_date, ";
+		$campos_generales = FE . "entry_id, " . FE . "autor_id, " . FE . "ip_address, " . FE . "titulo, " . FE . "entry_date, " . FE . "edit_date, ";
 		
 		$query = $this->db->query("SELECT {$campos_generales}{$campos} FROM forms_entradas as Fe LEFT JOIN forms_data as Fd ON Fe.entry_id = Fd.entry_id WHERE Fd.forms_id = {$form_id} AND Fd.entry_id = {$entry_id}");
 		

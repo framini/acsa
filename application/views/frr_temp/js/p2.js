@@ -1,1 +1,0 @@
-alert("http://localhost/argc/");
