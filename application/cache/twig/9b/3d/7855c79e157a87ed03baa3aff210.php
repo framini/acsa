@@ -34,24 +34,22 @@ class __TwigTemplate_9b3d7855c79e157a87ed03baa3aff210 extends Twig_Template
         // line 9
         $this->env->loadTemplate("frr_temp/includes/menu.html")->display($context);
         // line 10
-        echo "        
-        <div class=\"container\">
+        echo "        <div class=\"container\">
             <div id=\"wrapper\">
                 <div class=\"row-fluid\">
 
                     ";
-        // line 15
+        // line 14
         $this->displayBlock('contenido', $context, $blocks);
-        // line 16
+        // line 15
         echo "                    
                 </div>
             </div><!--wrapper-->
         </div><!--container main-->
-        
         ";
-        // line 21
+        // line 19
         $this->env->loadTemplate("frr_temp/includes/footer.html")->display($context);
-        // line 22
+        // line 20
         echo "        
         <script src=\"http://code.jquery.com/jquery-1.8.2.min.js\"></script>
         <script src=\"http://localhost/argc/index.php/js/bootstrap-min-js\"></script>
@@ -73,7 +71,7 @@ class __TwigTemplate_9b3d7855c79e157a87ed03baa3aff210 extends Twig_Template
     {
     }
 
-    // line 15
+    // line 14
     public function block_contenido($context, array $blocks = array())
     {
     }
@@ -90,6 +88,6 @@ class __TwigTemplate_9b3d7855c79e157a87ed03baa3aff210 extends Twig_Template
 
     public function getDebugInfo()
     {
-        return array (  77 => 15,  66 => 5,  63 => 4,  53 => 21,  46 => 16,  44 => 15,  35 => 9,  31 => 7,  28 => 4,  26 => 3,  22 => 1,  82 => 19,  76 => 18,  71 => 16,  67 => 15,  59 => 12,  55 => 22,  52 => 10,  49 => 9,  45 => 8,  40 => 5,  37 => 10,  29 => 2,);
+        return array (  75 => 14,  64 => 5,  61 => 4,  53 => 20,  51 => 19,  43 => 14,  35 => 9,  31 => 7,  28 => 4,  26 => 3,  22 => 1,  82 => 19,  76 => 18,  71 => 16,  67 => 15,  59 => 12,  55 => 11,  52 => 10,  49 => 9,  45 => 15,  40 => 5,  37 => 10,  29 => 2,);
     }
 }

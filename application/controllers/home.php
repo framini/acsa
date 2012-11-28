@@ -13,7 +13,7 @@ class Home extends MY_Controller {
                 
         if (!$this->auth_frr->is_logged_in()) 
         {
-            redirect('');
+            redirect('ew');
         }
 	}
     

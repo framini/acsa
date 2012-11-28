@@ -11,7 +11,7 @@ class Ewarrants extends MY_Controller {
 					 //Chequeamos que el usuario que esta tratando de dar gestionar ewarrants
 					 //sea de tipo warrantera o bien Argentina Clearing 
                      if((!$this->auth_frr->is_warrantera()  && !$this->auth_frr->is_argclearing())) {
-                         redirect('');
+                         redirect('ew');
                          die();
                      }
 

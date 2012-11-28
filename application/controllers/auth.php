@@ -37,7 +37,7 @@ class Auth extends CI_Controller
 		if ($this->auth_frr->is_logged_in()) 
                                     {
                                                       // El usuario esta logueado asi que se lo redirecciona al index
-			redirect('');
+			redirect('ew');
 
 		} 
                                     elseif ($this->auth_frr->is_logged_in(FALSE)) 
@@ -89,7 +89,7 @@ class Auth extends CI_Controller
                                                                                           }
                                                                                           else
                                                                                           {
-                                                                                              redirect('');
+                                                                                              redirect('ew');
                                                                                           }
 					
 
@@ -153,7 +153,7 @@ class Auth extends CI_Controller
                                     {
                                                       //logged in
                                                       // Si esta logueado lo redirecciona al root del sitio
-			redirect('');
+			redirect('ew');
 
 		} 
                                     elseif ($this->auth_frr->is_logged_in(FALSE)) 
@@ -304,7 +304,7 @@ class Auth extends CI_Controller
 		if ($this->auth_frr->is_logged_in()) 
                                     {
                                         // logged in
-                                        redirect('');
+                                        redirect('ew');
 		} 
                                     elseif ($this->auth_frr->is_logged_in(FALSE)) 
                                     {						

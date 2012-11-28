@@ -8,7 +8,7 @@ class General extends CI_Controller {
                      
                      if(!$this->auth_frr->is_logged_in())
                      {
-                         redirect('');
+                         redirect('ew');
                          die();
                      }
                      

@@ -38,7 +38,7 @@
 |
 */
 
-$route['default_controller'] = "ew";
+$route['default_controller'] = "sitio";
 $route['404_override'] = '';
 
 

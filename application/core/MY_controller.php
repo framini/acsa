@@ -9,14 +9,14 @@ class MY_Controller extends CI_Controller
 		 //Chequeamos que el usuario este logueado
 		 if(!$this->auth_frr->is_logged_in())
          {
-             redirect('');
+             redirect('ew');
              die();
          }
 		 
 		 //Si el usuario logueado fue eliminado, tenemos que forzar su cierre de sesion
 		 if( !$this->auth_frr->user_exists() ) {
 		 	$this->auth_frr->logout();
-			redirect('');
+			redirect('ew');
             die();
 		 } 
 		 

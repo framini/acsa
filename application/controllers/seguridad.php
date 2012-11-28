@@ -725,7 +725,7 @@ class Seguridad extends MY_Controller {
 		                        $this->template->set_content('seguridad/agregar_producto_form', $data);
 		                        $this->template->build();
 							} else {
-								redirect('');
+								redirect('ew');
 							}
 						}
 					}
@@ -977,7 +977,7 @@ class Seguridad extends MY_Controller {
 		                        $this->template->set_content('seguridad/agregar_empresa_form', $data);
 		                        $this->template->build();
 							} else {
-								redirect('');
+								redirect('ew');
 							}
 						}
 					}
@@ -1071,7 +1071,7 @@ class Seguridad extends MY_Controller {
 	                        $this->template->set_content('seguridad/agregar_cuenta_registro_form', $data);
 	                        $this->template->build();
 						} else {
-							redirect('');
+							redirect('ew');
 						}
 					}
 				}
