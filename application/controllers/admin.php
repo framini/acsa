@@ -52,7 +52,7 @@ class Admin extends MY_Controller {
 		 */
 		function template_manager() {
 			
-			$this->breadcrumb->append_crumb('Home', site_url());
+			$this->breadcrumb->append_crumb('Home', site_url('home'));
 			$this->breadcrumb->append_crumb('Admin', site_url() . "/admin/");
 			$this->breadcrumb->append_crumb('Template Manager', site_url() . "/admin/template_manager");
 			
@@ -82,7 +82,7 @@ class Admin extends MY_Controller {
 		}
 
 		function alta_grupos() {
-			$this->breadcrumb->append_crumb('Home', site_url());
+			$this->breadcrumb->append_crumb('Home', site_url('home'));
 			$this->breadcrumb->append_crumb('Admin', site_url() . "/admin/");
 			$this->breadcrumb->append_crumb('Template Manager', site_url() . "/admin/template_manager");
 			$this->breadcrumb->append_crumb('Alta grupo templates', site_url() . "/admin/alta_grupos");
@@ -115,7 +115,7 @@ class Admin extends MY_Controller {
 		 */
 		function alta_templates() {
 			
-			$this->breadcrumb->append_crumb('Home', site_url());
+			$this->breadcrumb->append_crumb('Home', site_url('home'));
 			$this->breadcrumb->append_crumb('Admin', site_url() . "/admin/");
 			$this->breadcrumb->append_crumb('Template Manager', site_url() . "/admin/template_manager");
 			$this->breadcrumb->append_crumb('Alta templates', site_url() . "/admin/alta_templates");
@@ -149,7 +149,7 @@ class Admin extends MY_Controller {
 		 */
 		function editar_grupo_templates() {
 			
-			$this->breadcrumb->append_crumb('Home', site_url());
+			$this->breadcrumb->append_crumb('Home', site_url('home'));
 			$this->breadcrumb->append_crumb('Admin', site_url() . "/admin/");
 			$this->breadcrumb->append_crumb('Template Manager', site_url() . "/admin/template_manager");
 			$this->breadcrumb->append_crumb('Editar grupo templates', site_url() . "/admin/editar_grupo_templates");
@@ -192,7 +192,7 @@ class Admin extends MY_Controller {
 		 */
 		function editar_templates() {
 			
-			$this->breadcrumb->append_crumb('Home', site_url());
+			$this->breadcrumb->append_crumb('Home', site_url('home'));
 			$this->breadcrumb->append_crumb('Admin', site_url() . "/admin/");
 			$this->breadcrumb->append_crumb('Template Manager', site_url() . "/admin/template_manager");
 			$this->breadcrumb->append_crumb('Editar templates', site_url() . "/admin/editar_templates");
@@ -248,7 +248,7 @@ class Admin extends MY_Controller {
 						//Si hay un entry_id especificado en la URI, es porque estamos tratando de editar una entrada
 						
 						if($this->uri->segment(4) && !is_null($entry = $this->administracion_frr->get_entry_by_id($this->uri->segment(4)))) {
-							$this->breadcrumb->append_crumb('Home', site_url());
+							$this->breadcrumb->append_crumb('Home', site_url('home'));
 							$this->breadcrumb->append_crumb('Publicar', site_url() . "/admin/publicar_contenido");
 							$this->breadcrumb->append_crumb('Editar entrada', site_url() . "/admin/editar_contenido");
 							
@@ -259,7 +259,7 @@ class Admin extends MY_Controller {
 								redirect('admin/editar_contenido');
 							}
 						} else {
-							$this->breadcrumb->append_crumb('Home', site_url());
+							$this->breadcrumb->append_crumb('Home', site_url('home'));
 							$this->breadcrumb->append_crumb('Publicar', site_url() . "/admin/publicar_contenido");
 							$this->breadcrumb->append_crumb('Nueva Entrada', site_url() . "/");
 							
@@ -274,7 +274,7 @@ class Admin extends MY_Controller {
 				} else {
 					//Si hay un entry_id especificado en la URI, es porque estamos tratando de editar una entrada
 					if($this->uri->segment(4) && !is_null($entry = $this->administracion_frr->get_entry_by_id($this->uri->segment(4)))) {
-						$this->breadcrumb->append_crumb('Home', site_url());
+						$this->breadcrumb->append_crumb('Home', site_url('home'));
 						$this->breadcrumb->append_crumb('Publicar', site_url() . "/admin/publicar_contenido");
 						$this->breadcrumb->append_crumb('Editar entrada', site_url() . "/admin/editar_contenido");
 						//Datos extras
@@ -282,7 +282,7 @@ class Admin extends MY_Controller {
 						//Cargamos los datos almancenados en la base de datos para luego mostrarlos en los campos del form
 						$data['valores_campos'] = $this->administracion_frr->get_entry_datos_fields($entry);
 					} else {
-						$this->breadcrumb->append_crumb('Home', site_url());
+						$this->breadcrumb->append_crumb('Home', site_url('home'));
 						$this->breadcrumb->append_crumb('Publicar', site_url() . "/admin/publicar_contenido");
 						$this->breadcrumb->append_crumb('Nueva Entrada', site_url() . "/");
 					}
@@ -333,7 +333,7 @@ class Admin extends MY_Controller {
 		 * Lista los forms disponibles para publicar contenido
 		 */
 		function publicar_contenido() {
-			$this->breadcrumb->append_crumb('Home', site_url());
+			$this->breadcrumb->append_crumb('Home', site_url('home'));
 			$this->breadcrumb->append_crumb('Publicar', site_url() . "/admin/publicar_contenido");
 			
 			$data['forms'] = $this->administracion_frr->get_forms();
@@ -349,7 +349,7 @@ class Admin extends MY_Controller {
 		 * Lista las entries del sistema
 		 */
 		function editar_contenido() {
-			$this->breadcrumb->append_crumb('Home', site_url());
+			$this->breadcrumb->append_crumb('Home', site_url('home'));
 			$this->breadcrumb->append_crumb('Editar', site_url() . "/admin/editar_contenido");
 			
 			$data['entries'] = $this->administracion_frr->get_entries();
@@ -366,7 +366,7 @@ class Admin extends MY_Controller {
 		 * Lista todos los forms del sistema
 		 */
 		function forms() {
-			$this->breadcrumb->append_crumb('Home', site_url());
+			$this->breadcrumb->append_crumb('Home', site_url('home'));
 			$this->breadcrumb->append_crumb('Admin', site_url() . "/admin");
 			$this->breadcrumb->append_crumb('Forms', site_url() . "/admin/forms");
 			//Obtenemos los permisos para poder construir el contenido de la seccion en base a ellos
@@ -389,7 +389,7 @@ class Admin extends MY_Controller {
 			$data['permisos'] = $this->roles_frr->permisos_role_controladora_grupo($this->uri->segment(1), $this->uri->segment(2));
 			$data['data_menu'] = $this->roles_frr->procesa_permisos_view($data['permisos']);
 			
-			$this->breadcrumb->append_crumb('Home', site_url());
+			$this->breadcrumb->append_crumb('Home', site_url('home'));
 			$this->breadcrumb->append_crumb('Admin', site_url() . "/admin");
 			$this->breadcrumb->append_crumb('Forms', site_url() . "/admin/forms");
 			$this->breadcrumb->append_crumb('Grupos Fields', site_url() . "/admin/grupos_fields");
@@ -419,7 +419,7 @@ class Admin extends MY_Controller {
 		function fields() {
 			//Solo hacemos algo si existe el registro del grupo que pasamos en la URI
 			if(!is_null($gf = $this->administracion_frr->get_grupo_field_by_id_row($this->uri->segment(3)))) {
-				$this->breadcrumb->append_crumb('Home', site_url());
+				$this->breadcrumb->append_crumb('Home', site_url('home'));
 				$this->breadcrumb->append_crumb('Admin', site_url() . "/admin");
 				$this->breadcrumb->append_crumb('Forms', site_url() . "/admin/forms");
 				$this->breadcrumb->append_crumb('Grupos Fields', site_url() . "/admin/grupos_fields");
@@ -581,7 +581,7 @@ class Admin extends MY_Controller {
 			//Si existe algun grupo field con el ID pasado como parametro
 			if(!is_null($gf = $this->administracion_frr->get_grupo_field_by_id($this->uri->segment(3)))) {
 				
-				$this->breadcrumb->append_crumb('Home', site_url());
+				$this->breadcrumb->append_crumb('Home', site_url('home'));
 				$this->breadcrumb->append_crumb('Admin', site_url() . "/admin");
 				$this->breadcrumb->append_crumb('Forms', site_url() . "/admin/forms");
 				$this->breadcrumb->append_crumb('Grupos Fields', site_url() . "/admin/grupos_fields");
@@ -625,7 +625,7 @@ class Admin extends MY_Controller {
 			
 			//Si existe un field con el ID pasado como parametro
 			if(!is_null($f = $this->administracion_frr->get_field_by_id($this->uri->segment(3)))) {
-				$this->breadcrumb->append_crumb('Home', site_url());
+				$this->breadcrumb->append_crumb('Home', site_url('home'));
 				$this->breadcrumb->append_crumb('Admin', site_url() . "/admin");
 				$this->breadcrumb->append_crumb('Forms', site_url() . "/admin/forms");
 				$this->breadcrumb->append_crumb('Grupos Fields', site_url() . "/admin/grupos_fields");
@@ -690,7 +690,7 @@ class Admin extends MY_Controller {
 
 		function modificar_form() {
 			if(!is_null($f = $this->administracion_frr->get_form_by_id($this->uri->segment(3)))) {
-				$this->breadcrumb->append_crumb('Home', site_url());
+				$this->breadcrumb->append_crumb('Home', site_url('home'));
 				$this->breadcrumb->append_crumb('Admin', site_url() . "/admin");
 				$this->breadcrumb->append_crumb('Forms', site_url() . "/admin/forms");
 				$this->breadcrumb->append_crumb('Modificar Formulario', "/");			

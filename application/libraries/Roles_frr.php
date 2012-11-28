@@ -234,7 +234,7 @@ class Roles_frr {
 	function gestiones_disponibles($controladora) {
 		//Si es un admin devolvemos todas las secciones
 		if($this->ci->auth_frr->es_admin()) {
-				return $this->ci->roles_model->get_gestiones();
+				return $this->ci->roles_model->get_gestiones($controladora);
 		}
 		
 		//Si el usuario no tiene permisos asociados a la controladora que esta accediendo

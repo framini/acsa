@@ -3,7 +3,7 @@
 					        <div class="span12 margin-bottom-10">
 					                	<div class="row">
 						               		<div class="span12">
-						                		<h2>Menu de Seguridad</h2>
+						                		<h2><?php if( isset( $titulo_gestion ) && !is_null($titulo_gestion) ) echo $titulo_gestion; else echo "Menu";  ?></h2>
 						                	</div>
 					                	</div>
 					        </div>	

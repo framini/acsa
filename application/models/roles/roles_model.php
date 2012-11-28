@@ -171,10 +171,10 @@ class  Roles_model extends CI_Model
 	 * Devolvemos todas las gestiones disponibles
 	 * NOTA: Usada para el caso que el usuario logueado sea Admin
 	 */
-	function get_gestiones() {
-		$gestiones = $this->db->distinct('grupos')
-							  ->where('controladora !=', 'admin')
-							  ->get('permisos');
+	function get_gestiones($controladora = NULL) {
+		$this->db->distinct('grupos');
+		( $controladora ) ? $this->db->where( 'controladora', $controladora ) : $this->db->where('controladora !=', 'admin');
+		$gestiones = $this->db->get('permisos');
 							 
 							  
 		if($gestiones->num_rows() > 0) 

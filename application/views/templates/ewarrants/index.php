@@ -46,10 +46,10 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </a>
-          <a class="brand" href="<?php echo site_url(); ?>">eWarrants</a>
+          <a class="brand" href="<?php echo site_url('home'); ?>">eWarrants</a>
           <div class="nav-collapse">
             <ul class="nav">
-              <?php if( (isset($gestiones_disponibles) && is_array($gestiones_disponibles) && ( count($gestiones_disponibles) > 0 ) ) || isset($admin) ) { ?>
+              <?php if( (isset($gestiones_disponibles_seguridad) && is_array($gestiones_disponibles_seguridad) && ( count($gestiones_disponibles_seguridad) > 0 ) ) || isset($admin) ) { ?>
               <li <?php if($this->uri->segment(1) == "seguridad") echo "class='active'" ?> ><a href="<?php echo site_url(); ?>/seguridad">Seguridad</a></li>
 			  <?php } ?>
 			  
@@ -60,6 +60,14 @@
                   echo '><a href="' . site_url() . '/ewarrants">eWarrants</a></li>';
                 }
               ?>
+              
+              <?php if( (isset($gestiones_disponibles_personas) && is_array($gestiones_disponibles_personas) && ( count($gestiones_disponibles_personas) > 0 ) ) || isset($admin) ) { ?>
+              <li <?php if($this->uri->segment(1) == "personas") echo "class='active'" ?> ><a href="<?php echo site_url(); ?>/personas">Personas</a></li>
+			  <?php } ?>
+			  
+			  <?php if( (isset($gestiones_disponibles_productos) && is_array($gestiones_disponibles_productos) && ( count($gestiones_disponibles_productos) > 0 ) ) || isset($admin) ) { ?>
+              <li <?php if($this->uri->segment(1) == "productos") echo "class='active'" ?> ><a href="<?php echo site_url(); ?>/productos/gestionar_productos">Productos</a></li>
+			  <?php } ?>
               
               <?php
               

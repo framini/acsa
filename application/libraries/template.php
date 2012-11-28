@@ -29,16 +29,15 @@ class Template
 	{
                                     
 		$this->CI =& get_instance();
-		$this->CI ->load->library('auth_frr');
                 
 		if (count($config) > 0) {
 			$this->initialize($config);
 		} else {
 			$this->_load_config_file();
 		}
-		
+		$this->CI->load->library('auth_frr');
 		$this->data['user'] = $this->CI->auth_frr->get_username();
-        $this->CI->load->library('auth_frr');
+		
         if($this->CI->auth_frr->is_logged_in()) {
             //Agregamos info al  array data sobre el tipo de empresa del usuario logueado
             $this->data['warrantera'] = $this->CI->auth_frr->is_warrantera() ? true : null;
@@ -150,7 +149,9 @@ class Template
 		//Dejamos los permisos asociados al usuario
 		$this->data['permisos'] = $this->CI->roles_frr->permisos_role();
 		$this->data['forms'] = $this->CI->administracion_frr->get_forms();
-		$data['gestiones_disponibles'] = $this->CI->roles_frr->gestiones_disponibles('seguridad');
+		$data['gestiones_disponibles_seguridad'] = $this->CI->roles_frr->gestiones_disponibles('seguridad');
+		$data['gestiones_disponibles_personas'] = $this->CI->roles_frr->gestiones_disponibles('personas');
+		$data['gestiones_disponibles_productos'] = $this->CI->roles_frr->gestiones_disponibles('productos');
 		
 		$this->data['content'] = $this->CI->load->view($view, $data, true);
         
