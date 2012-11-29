@@ -1,9 +1,21 @@
+<?php $this->load->file('includes/datatables_files.php'); ?>
+<script>
+	$(function() {
+		$objInit = $.extend( {}, objInit, { 
+			"aoColumnDefs": [ 
+								{ "bSortable": false, "aTargets": [ 0 ] } 
+							] 
+			} );
+
+	    $('#tabla').dataTable($objInit);
+	});
+</script>
+
 <script type="text/javascript">
     $(function() {
-        $('input#id_search').quicksearch('table tbody tr');
         
         var datos = {};
-        	var dire = "http://localhost/acsa/index.php" + "/general";
+        	var dire = "<?php echo site_url('general'); ?>";
 			
 			////////////////////////////////////////////////////////////
 			//BOTONES Firmar
@@ -176,7 +188,7 @@
 
                 
 
-                                                        <table class="table table-striped table-bordered">
+                                                        <table class="table display table-striped table-bordered" id="tabla">
 
                                                                 <thead>
                                                                         <tr>

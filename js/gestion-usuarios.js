@@ -136,7 +136,9 @@
 	        							$('#nombre-usuario-top').html(data.username);
 	        						})
 	        						.delay(400)
-	        						.fadeIn('slow');
+	        						.fadeIn('slow', function() {
+		    							$('input#id_search').trigger('actualizarTabla');
+		    						});
 	        					},
 	        					global:false
 	        				});
@@ -214,7 +216,9 @@
 	        							datos.elem.find('.datos-usuario').html(data.udatos);
 	        						})
 	        						.delay(400)
-	        						.fadeIn('slow');
+	        						.fadeIn('slow', function() {
+		    							$('input#id_search').trigger('actualizarTabla');
+		    						});
 	        					},
 	        					global:false
 	        				});

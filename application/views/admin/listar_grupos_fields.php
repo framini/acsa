@@ -1,3 +1,12 @@
+<?php $this->load->file('includes/datatables_files.php'); ?>
+<script>
+	$(function() {
+		$objInit = $.extend( {}, objInit );
+
+	    $('#tabla').dataTable($objInit);
+	});
+</script>
+
 <div class="row">
         <div class="span12 margin-bottom-10">
                 	<div class="row relativo">
@@ -31,7 +40,7 @@
 						$this->load->view('general/mensaje_operacion', $data); 
 					}
 	            ?>     
-                <table class="table table-striped table-bordered">
+                <table id="tabla" class="table table-striped table-bordered display">
 
                         <thead>
                                 <tr>

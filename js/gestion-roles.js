@@ -133,7 +133,9 @@ $(function() {
     							datos.elem.find('.datos-role').html(data.rdatos);
     						})
     						.delay(400)
-    						.fadeIn('slow');
+    						.fadeIn('slow', function() {
+    							$('input#id_search').trigger('actualizarTabla');
+    						});
     					},
     					global:false
     				});

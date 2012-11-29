@@ -97,7 +97,9 @@
 	        							$contenedor.html(data);
 	        						})
 	        						.delay(400)
-	        						.fadeIn('slow');
+	        						.fadeIn('slow', function() {
+	        							$('input#id_search').trigger('actualizarTabla');
+	        						});
 	        					},
 	        					global:false
 	        				});
@@ -200,7 +202,9 @@
 	        							$contenedor.html(data);
 	        						})
 	        						.delay(400)
-	        						.fadeIn('slow');
+	        						.fadeIn('slow', function() {
+	        							$('input#id_search').trigger('actualizarTabla');
+	        						});
 	        					},
 	        					global:false
 	        				});
@@ -281,7 +285,10 @@
 	        							$contenedor.html(data);
 	        						})
 	        						.delay(400)
-	        						.fadeIn('slow');
+	        						.fadeIn('slow', function() {
+	        							$('input#id_search').trigger('actualizarTabla');
+	        						});
+	        						
 	        					},
 	        					global:false
 	        				});
