@@ -100,7 +100,7 @@ $confirm_password = array(
 									</div>
 									
 									<div class="row">
-									<?php if(isset($empresas)) { ?>
+									<?php if(isset($roles)) { ?>
 											<div class="span6">
                                                     <?php echo form_label('Role', 'role_id'); ?>
 

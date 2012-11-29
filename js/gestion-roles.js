@@ -28,7 +28,7 @@ $(function() {
     	{
     		ajax: true,
     		width:"390", 
-    		height:"200",
+    		height:"250",
     		overlayClose: false,
     		escKey: false,
     		href: dire,
