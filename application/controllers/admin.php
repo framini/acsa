@@ -88,11 +88,12 @@ class Admin extends MY_Controller {
 			$this->breadcrumb->append_crumb('Alta grupo templates', site_url() . "/admin/alta_grupos");
 			
 			$this->form_validation->set_rules('nombre', 'Nombre del Template', 'trim|required|xss_clean');
+			$this->form_validation->set_rules('grupo_default', 'Grupo Default', 'trim|xss_clean');
 			
 			//Si ingresamos acà es porque se hizo el envío del formulario
 			if($this->form_validation->run()) {
 
-				if($this->administracion_frr->create_grupo($this->form_validation->set_value('nombre'))) {
+				if($this->administracion_frr->create_grupo($this->form_validation->set_value('nombre'), $this->form_validation->set_value('grupo_default'))) {
 					$message = "El grupo de templates se ha creado correctamente!";
                     $this->session->set_flashdata('message', $message);
 					redirect('admin/template_manager');
@@ -155,13 +156,17 @@ class Admin extends MY_Controller {
 			$this->breadcrumb->append_crumb('Editar grupo templates', site_url() . "/admin/editar_grupo_templates");
 			
 			//Si existe un grupo template con el id pasado en la URI
-			if(!is_null($gt = $this->administracion_frr->get_nombre_grupo_template_by_id($this->uri->segment(3)))) {
+			if(!is_null($gt = $this->administracion_frr->get_grupo_template_by_id($this->uri->segment(3)))) {
 				$this->form_validation->set_rules('nombre', 'Nombre del Grupo Template', 'trim|required|xss_clean');
+				$this->form_validation->set_rules('grupo_default', 'Grupo Default', 'trim|xss_clean');
 				
 				//Si ingresamos acà es porque se hizo el envío del formulario
 				if($this->form_validation->run()) {
 	
-					if($this->administracion_frr->modificar_grupo_templates($this->uri->segment(3), $this->form_validation->set_value('nombre'))) {
+					if($this->administracion_frr->modificar_grupo_templates($this->uri->segment(3), array( 
+													'nombre' => $this->form_validation->set_value('nombre'),
+													'grupo_default' => $this->form_validation->set_value('grupo_default') 
+					) )) {
 						$message = "El grupo de templates se ha modificado correctamente!";
 	                    $this->session->set_flashdata('message', $message);
 						redirect('admin/template_manager');

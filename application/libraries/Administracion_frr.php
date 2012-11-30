@@ -71,6 +71,17 @@ class Administracion_frr {
 	 	return NULL;
 	 }
 	 
+	 function get_grupo_template_by_id($grupo_id) {
+	 	$grupo_template = $this->ci->grupos_templates->get_grupo_template_by_id($grupo_id);
+		if($grupo_template) {
+			return array( 
+				'nombre' => $grupo_template->nombre,
+				'grupo_default' => $grupo_template->grupo_default
+			 );
+		}
+	 	return NULL;
+	 }
+	 
 	 function get_templates_by_id($template_id) {
 	 	$template = $this->ci->templates->get_template_by_id($template_id);
 		if($template) {
@@ -522,7 +533,8 @@ class Administracion_frr {
 	/**
 	 * Método utilizado para crear un grupo de templates
 	 */
-	function create_grupo($nombre) {
+	function create_grupo($nombre, $grupo_default) {
+
 		//Validaciones para los campos requeridos
 		$data = array(
 			'nombre' => $nombre,
@@ -533,12 +545,45 @@ class Administracion_frr {
 		}
 		//Solamente creamos si los campos pasaron la validacion	
 		if(empty($this->error)) {
-			if($this->ci->grupos_templates->create_grupo_templates($data)) {
-			return true;
+			
+			$crear = false;
+			
+			//Si se usa este grupo como default, antes de setearlo tenemos que buscar, en caso que exista
+			//el anterior grupo default y sacarle dicho estado
+			if( !is_null($grupo_default) ) {
+				
+				//Si existe un grupo template default
+				if( !is_null( $gtd = $this->get_grupo_template_default() ) ) {
+					//Si la modificacion del anterior grupo template se realiza exitosamente
+					if( !is_null ( $this->modificar_grupo_templates($gtd->template_group_id, array(
+							'nombre' => $gtd->nombre,
+							'grupo_default' => 'n'
+					)) ) ) {
+						
+						$crear = true;
+						$data['grupo_default'] = $grupo_default;
+					}
+				}
+				
+			} else {
+				//No se especifico que el grupo sea default, con lo cual podemos crear el grupo sin realizar mas chequeos
+				$crear = true;
+			}
+			
+			if( $crear ) {
+				if($this->ci->grupos_templates->create_grupo_templates($data)) {
+					return true;
+				} 
 			} 
+			
 		}	
 		
 		return NULL;
+	}
+	
+	//Devuelve, en caso de existir, el grupo template default
+	function get_grupo_template_default() {
+		return $this->ci->grupos_templates->get_grupo_template_default();
 	}
 	
 	/**
@@ -600,21 +645,59 @@ class Administracion_frr {
 	/**
 	 * Método utilizado para modificar un grupo template
 	 */
-	function modificar_grupo_templates($id, $nombre) {
-		//Validaciones para los campos requeridos
-		$data = array(
-			'nombre' => $nombre,
-		);
+	function modificar_grupo_templates($id, $data) {
 		
-		if(!$this->verificacion_nombre_grupo_template($id, $nombre)) {
+		//En caso de que $data['grupo_default'] no se haya pasado como parametro, significa que el grupo no sera default
+		$data['grupo_default'] = ( $data['grupo_default'] ) ? $data['grupo_default'] : 'n';
+		
+		if(!$this->verificacion_nombre_grupo_template($id, $data['nombre'])) {
 			$this->error['nombre'] = 'El nombre ya esta siendo utilizado por otro grupo!';
 		}
 		//Solamente creamos si los campos pasaron la validacion	
 		if(empty($this->error)) {
-			if($this->ci->grupos_templates->modificar_grupo_template($id, $data)) {
-				return true;
-			} 
-		}	
+			
+			$modificar = false;
+			
+			//Si se usa este grupo como default, antes de setearlo tenemos que buscar, en caso que exista
+			//el anterior grupo default y sacarle dicho estado
+			if( !is_null($data['grupo_default']) ) {
+				
+				//Si existe un grupo template default
+				if( !is_null( $gtd = $this->get_grupo_template_default() ) ) {
+					
+					if( $this->is_mismo_grupo_template($id, $gtd->nombre) ) {
+						//Si se trata del mismo template no hace falta editarlo
+						$modificar = true;
+					} else {
+						//Si la modificacion del anterior grupo template se realiza exitosamente
+						if( !is_null ( $this->modificar_grupo_templates($gtd->template_group_id, array(
+								'nombre' => $gtd->nombre,
+								'grupo_default' => 'n'
+						)) ) ) {
+							
+							$modificar = true;
+						}
+					}
+					
+					
+				} else {
+					//Si entramos aca quiere decir que no existia un grupo default anteriormente, con lo cual es seguro asignarle el estado default
+					$modificar = true;
+				}
+				
+			} else {
+				//No se especifico que el grupo sea default, con lo cual podemos crear el grupo sin realizar mas chequeos
+				$modificar = true;
+			}
+			
+			if( $modificar ) {
+				if($this->ci->grupos_templates->modificar_grupo_template($id, $data)) {
+					return true;
+				} 
+			}
+		}
+		
+			
 		
 		return NULL;
 	}
