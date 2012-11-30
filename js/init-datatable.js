@@ -3,7 +3,7 @@ var objInit = {
 	    "bLengthChange": false,
 	    "sPaginationType": "full_numbers",
 	    "bJQueryUI": true,
-	    "iDisplayLength": 10,
+	    "iDisplayLength": 2,
 	    "oLanguage" : {
 	    	"oPaginate" : {
 		    	sFirst: "Primera",

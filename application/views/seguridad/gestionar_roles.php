@@ -1,9 +1,15 @@
 <?php $this->load->file('includes/datatables_files.php'); ?>
 <script>
 	$(function() {
-		$objInit = $.extend( {}, objInit);
+		$objInit = $.extend( {}, objInit );
 
-	    $('#tabla').dataTable($objInit);
+	    var $tabla = $('#tabla').dataTable($objInit);
+	    
+	    $('#tabla').on('eliminarFila', function(event, param) {
+			if( param.fila ) {
+				$tabla.fnDeleteRow( param.fila[0] )
+			}
+		});
 	});
 </script>
 

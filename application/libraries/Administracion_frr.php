@@ -374,16 +374,19 @@ class Administracion_frr {
 		//Obtenemos el conjunto de fields asociados al grupo de fields
 		$fields = $this->get_fields_grupo_fields($grupo_fields_id);
 		
-		foreach ($fields as $field) {
-			//Buscamos los campos custom para el formulario
-			if($f = in_object("field_id_" . $field['fields_id'], $entry)) {
-				$campos[$f]['atributos'] = array(
-					'value'             => $entry->$f,
-			        'class'             => 'text span5',
-			        'id'                => $entry->$f
-				);
+		if( !is_null($fields) ) {
+			foreach ($fields as $field) {
+				//Buscamos los campos custom para el formulario
+				if($f = in_object("field_id_" . $field['fields_id'], $entry)) {
+					$campos[$f]['atributos'] = array(
+						'value'             => $entry->$f,
+				        'class'             => 'text span5',
+				        'id'                => $entry->$f
+					);
+				}
 			}
 		}
+		
 		//Seteamos los campos comunes a todos los forms
 		$campos['titulo']['atributos'] = array(
 					'value'             => $entry->titulo,

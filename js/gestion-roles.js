@@ -5,7 +5,7 @@ $(function() {
 	////////////////////////////////////////////////////////////
 	//BOTONES Eliminar
 	////////////////////////////////////////////////////////////
-	$('a.eliminar-role').click(function(event) {
+	$('#tabla').on('click', 'a.eliminar-role', function(event) {
 		//Establecemos reglas default
 		$.ajaxSetup({
     		dataFilter: function(data, type) {
@@ -56,7 +56,8 @@ $(function() {
             success: function() {
                 $.colorbox.close();
                 datos.elem.closest('tr').fadeOut('slow', function() {
-                	$(this).detach();
+                	$.event.trigger('eliminarFila', { fila: $(this) } );
+                	//$(this).detach();
                 });
                 $('#resultado-operacion p').text('Se ha eliminado el role correctamente!');
                 $('#resultado-operacion').slideDown('slow').delay(5000).slideUp('slow');
@@ -84,7 +85,8 @@ $(function() {
 		
 	});
 	
-	$('a.editar-role').click(function(event) {
+	$('#tabla').on('click', 'a.editar-role', function(event) {
+		console.log("ntro");
 		event.preventDefault();
 		
 		//Guardamos los datos del boton clickeado

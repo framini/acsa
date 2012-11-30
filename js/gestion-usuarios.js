@@ -5,7 +5,7 @@
 			////////////////////////////////////////////////////////////
 			//BOTONES Eliminar
 			////////////////////////////////////////////////////////////
-        	$('a.eliminar-usuario').click(function(event) {
+        	$('#tabla').on('click', 'a.eliminar-usuario', function(event) {
         		//Establecemos reglas default
         		$.ajaxSetup({
 	        		dataFilter: function(data, type) {
@@ -56,7 +56,8 @@
 	                success: function() {
 	                    $.colorbox.close();
 	                    datos.elem.closest('tr').fadeOut('slow', function() {
-	                    	$(this).detach();
+	                    	//$(this).detach();
+	                    	$.event.trigger('eliminarFila', { fila: $(this) } );
 	                    });
 	                    $('#resultado-operacion p').text('Se ha eliminado al usuario correctamente!');
 	                    $('#resultado-operacion').slideDown('slow').delay(5000).slideUp('slow');
@@ -83,8 +84,7 @@
 				});
 				
 			});
-			
-			$('a.editar-usuario').click(function(event) {
+			$('#tabla').on('click', 'a.editar-usuario', function(event) {
 				event.preventDefault();
 				
 				//Guardamos los datos del boton clickeado
@@ -168,7 +168,7 @@
 				
 			});
 			
-			$('a.cambiar-email-usuario').click(function(event) {
+			$('#tabla').on('click', 'a.cambiar-email-usuario', function(event) {
 				event.preventDefault();
 				
 				//Guardamos los datos del boton clickeado
@@ -237,7 +237,7 @@
 			//BOTONES Cambiar Password
 			////////////////////////////////////////////////////////////
 			
-			$('a.cambiar-password-usuario').click(function(event) {
+			$('#tabla').on('click', 'a.cambiar-password-usuario', function(event) {
 				event.preventDefault();
 				
 				//Guardamos los datos del boton clickeado
