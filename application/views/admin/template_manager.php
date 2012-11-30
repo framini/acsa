@@ -79,8 +79,11 @@
 	            				<?php 
 				            	if(isset($grupos_templates)) {
 				            		foreach ($grupos_templates as $key => $grupo) {
-										echo '<li><a href="#" class="link_grupos" id="' . $grupo['nombre'] . '">' . $grupo['nombre'] . '</a> ';
-										echo '</li>';
+										echo '<li>';
+										echo '<a href="#" class="link_grupos" id="' . $grupo['nombre'] . '">';
+										echo " " . $grupo['nombre'];
+										if ( $grupo['grupo_default'] == "y" ) echo '<abbr title="Grupo Default"><i class="icon-home pull-right"></i></abbr>';
+										echo '</a></li>';
 									}
 				            	}
 				            	?>
@@ -173,9 +176,12 @@
 																echo '">Modificar</a> ';
 															}
 															
-															if(isset($data_menu) && isset($data_menu['baja_template'])) {
-																echo '<a class="btn btn-mini" href="' . site_url() . '/admin/baja_template/' . $template['template_id'] . '" ';
-																echo '>Eliminar</a> ';
+															//Como el template index de cada grupo no se pueden eliminar, no mostramos el boton
+															if( $template['nombre'] != "index" ) {
+																if(isset($data_menu) && isset($data_menu['baja_template'])) {
+																	echo '<a class="btn btn-mini" href="' . site_url() . '/admin/baja_template/' . $template['template_id'] . '" ';
+																	echo '>Eliminar</a> ';
+																}
 															}
 															
 														echo '</td>';

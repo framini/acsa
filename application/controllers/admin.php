@@ -122,7 +122,7 @@ class Admin extends MY_Controller {
 			$this->breadcrumb->append_crumb('Alta templates', site_url() . "/admin/alta_templates");
 			
 			$this->form_validation->set_rules('nombre', 'Nombre del Template', 'trim|required|xss_clean');
-			$this->form_validation->set_rules('codigo', 'Codigo del Template', 'required');
+			$this->form_validation->set_rules('codigo', 'Codigo del Template', '');
 			$this->form_validation->set_rules('extension', 'Extension del Template', 'required');
 			//Si ingresamos acà es porque se hizo el envío del formulario
 			if($this->form_validation->run()) {

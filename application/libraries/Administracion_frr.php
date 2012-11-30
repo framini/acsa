@@ -33,7 +33,8 @@ class Administracion_frr {
           
 	           $data[] = array(
 	                'template_group_id'     => $row->template_group_id,
-	                'nombre' => $row->nombre
+	                'nombre' => $row->nombre,
+	                'grupo_default' => $row->grupo_default
 	           );
 	       }
 	
@@ -571,8 +572,11 @@ class Administracion_frr {
 			}
 			
 			if( $crear ) {
-				if($this->ci->grupos_templates->create_grupo_templates($data)) {
-					return true;
+				if(!is_null( $gid = $this->ci->grupos_templates->create_grupo_templates($data) )) {
+					//Una vez creado el grupo, tenemos que crear el template por default para cada grupo => el index
+					if ( !is_null( $this->create_template("index", "", $gid, "html") )) {
+						return true;
+					}
 				} 
 			} 
 			
@@ -635,7 +639,7 @@ class Administracion_frr {
 	function get_extension_template($template, $grupo_template_id) {
 		$extension = $this->ci->extensiones->get_extensione_template($template, $grupo_template_id);
 		
-		if(isset($extension)) {
+		if( !is_null($extension) ) {
 			return $extension->template_extension;
 		} else {
 			return NULL;
@@ -926,6 +930,12 @@ class Administracion_frr {
 		} else {
 			return false;
 		}
+	}
+	
+	//Devuelve true en caso que el nombre de template pasado como parametro sea un grupo default
+	//o bien $grupo_template es vacio. Si es vacio significa que podemos ir en busca del template default
+	function is_grupo_template_default_by_name( $grupo_template ) {
+		return $this->ci->grupos_templates->is_grupo_template_default_by_name( $grupo_template );
 	}
 	
 	/**

@@ -28,7 +28,7 @@ class __TwigTemplate_1cdb5e8d2174c58e3ae9b590b610a5e3 extends Twig_Template
                 <ul class=\"nav\">
                   <li ";
         // line 8
-        if (("item" == "home")) {
+        if (("home" == "home")) {
             echo " class=\"active\" ";
         }
         echo ">
@@ -63,6 +63,6 @@ class __TwigTemplate_1cdb5e8d2174c58e3ae9b590b610a5e3 extends Twig_Template
 
     public function getDebugInfo()
     {
-        return array (  19 => 1,  75 => 14,  64 => 5,  61 => 4,  53 => 20,  51 => 19,  43 => 14,  35 => 9,  31 => 8,  28 => 4,  26 => 6,  22 => 1,  82 => 19,  76 => 18,  71 => 16,  67 => 15,  59 => 12,  55 => 11,  52 => 10,  49 => 9,  45 => 15,  40 => 5,  37 => 9,  29 => 2,);
+        return array (  37 => 9,  26 => 6,  110 => 45,  108 => 44,  100 => 38,  94 => 37,  86 => 32,  82 => 31,  78 => 30,  72 => 26,  69 => 25,  65 => 24,  56 => 17,  48 => 15,  43 => 14,  39 => 13,  31 => 8,  29 => 6,  25 => 4,  23 => 3,  19 => 1,);
     }
 }
