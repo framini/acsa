@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Personas extends MY_Controller {
+class Adm_Personas extends MY_Controller {
                   
          public function __construct() {
              parent::__construct();
@@ -17,7 +17,7 @@ class Personas extends MY_Controller {
         	  //Cargamos el archivo que contiene la info con la que se contruye el menu
      		  $this->config->load('menu_permisos', TRUE);
 			  
-        	  $data['gestiones_disponibles'] = $this->roles_frr->gestiones_disponibles($this->uri->segment(1));
+        	  $data['gestiones_disponibles'] = $this->roles_frr->gestiones_disponibles($this->uri->segment(2));
 			  
 			  if(count($data['gestiones_disponibles']) > 0) {
 			  	foreach ($data['gestiones_disponibles'] as $key => $gestion) {
@@ -41,15 +41,15 @@ class Personas extends MY_Controller {
            *  Método que muestra la gestión de empresas
            */
           function gestionar_empresas() {
-          	  $this->breadcrumb->append_crumb('Home', site_url('home'));
-			  $this->breadcrumb->append_crumb('Personas', site_url() . "/personas/");
-			  $this->breadcrumb->append_crumb('Gestionar Empresas', site_url() . "/admin/gestionar_empresas");
+          	  $this->breadcrumb->append_crumb('Home', site_url('adm/home'));
+			  $this->breadcrumb->append_crumb('Personas', site_url() . "/adm/personas/");
+			  $this->breadcrumb->append_crumb('Gestionar Empresas', site_url() . "/adm/admin/gestionar_empresas");
 			  
           	  //Cargamos el archivo que contiene la info con la que se contruye el menu
          	  $this->config->load('menu_permisos', TRUE);
 			  
           	  //Obtenemos los permisos del usuario logueado asociados a la controladora personas y grupo gestionar_roles
-          	  $data['permisos'] = $this->roles_frr->permisos_role_controladora_grupo($this->uri->segment(1), $this->uri->segment(2));
+          	  $data['permisos'] = $this->roles_frr->permisos_role_controladora_grupo($this->uri->segment(2), $this->uri->segment(3));
           	  
 			  
 			  //Procesamos los permisos obtenidos
@@ -111,7 +111,7 @@ class Personas extends MY_Controller {
 									//La empresa se creo correctamente
 	                                $message = "La empresa se ha creado correctamente!";
 	                                $this->session->set_flashdata('message', $message);
-	                                redirect('personas/');
+	                                redirect('adm/personas');
 								}
 	                        			
 							}
@@ -162,7 +162,7 @@ class Personas extends MY_Controller {
                                     $this->form_validation->set_value('nombre'),
                                     $this->form_validation->set_value('cuit'),
                                     $this->form_validation->set_value('tipo_empresa_id'),
-                                    $this->uri->segment(3)
+                                    $this->uri->segment(4)
 									))) 
                         {
                         		//Nos fijamos si la petición se hizo via AJAX
@@ -176,7 +176,7 @@ class Personas extends MY_Controller {
 									//La empresa se creo correctamente
                                     $message = "La empresa se ha modificado correctamente!";
                                     $this->session->set_flashdata('message', $message);
-                                    redirect('personas/');
+                                    redirect('adm/personas');
 								}
                         			
 						} else {
@@ -208,12 +208,12 @@ class Personas extends MY_Controller {
                         return;
                     }
 					//Solamente hacemos algo si está presente el id de la empresa en la URI
-					if($this->uri->segment(3)) {
+					if($this->uri->segment(4)) {
 						//Solamente cargamos los datos cuando no exista una request POST
 						//Para no pisar los datos enviados por el usuarios
 						if(!$this->input->post()) {
 							//Obtenemos la empresa
-							$data['row_empresa'] = $this->empresas_frr->get_empresa_by_id($this->uri->segment(3));
+							$data['row_empresa'] = $this->empresas_frr->get_empresa_by_id($this->uri->segment(4));
 						}
 						
 						//Obtenemos los tipos de empresa disponibles
@@ -226,7 +226,7 @@ class Personas extends MY_Controller {
                         $this->template->set_content('personas/agregar_empresa_form', $data);
                         $this->template->build();
 					} else {
-						redirect('ew');
+						redirect('adm/ew');
 					}
 				}
 			}
@@ -238,13 +238,13 @@ class Personas extends MY_Controller {
 			   */
 			  function eliminar_empresa($empresa_id = NULL) {
               	    //Chequeamos que exista la confirmacion en la URI
-                    if($this->uri->segment(4) == "si")
+                    if($this->uri->segment(5) == "si")
                     {
                         if($this->empresas_frr->eliminar_empresa($empresa_id))
                         {
                             $message = "La empresa se ha eliminado correctamente!";
                             $this->session->set_flashdata('message', $message);
-							redirect('personas/');
+							redirect('adm/personas');
                         } else {
                             $errormsg = "No se ha podido eliminar la empresa!";
                             $this->session->set_flashdata('errormsg', $errormsg);
@@ -265,7 +265,7 @@ class Personas extends MY_Controller {
 			   */
 			  function activar_empresa($empresa_id = NULL) {
 			  		//Chequeamos que exista la confirmacion en la URI
-                    if($this->uri->segment(4) == "si")
+                    if($this->uri->segment(5) == "si")
                     {
 						//Solamente intentamos activar la empresa en caso que la misma se encuentra desactivada
 						if(!$this->empresas_frr->is_empresa_activada($empresa_id)) {
@@ -273,13 +273,13 @@ class Personas extends MY_Controller {
 	                        {
                                 $message = "La empresa se ha activado correctamente!";
                                 $this->session->set_flashdata('message', $message);
-								redirect('personas/');
+								redirect('adm/personas');
 	                        } else {
 	                            $errormsg = "No se ha podido activar la empresa!";
 	                            $this->session->set_flashdata('errormsg', $errormsg);
 	                        }
 						} else {
-							redirect('personas/error/3/1');
+							redirect('adm/personas/error/3/1');
 						}  
                     }
                     //Mostramos el template solo en el caso que exista un id de empresa
@@ -288,29 +288,29 @@ class Personas extends MY_Controller {
 						$this->template->set_content('general/confirma_operacion');
 						$this->template->build();
 					} else {
-						redirect('personas/error/3/1');
+						redirect('adm/personas/error/3/1');
 					}
 			  }
 
 			  
 			  
 			 #########################################
-			 # EMPRESAS
+			 # CUENTAS REGISTRO
 			 #########################################
 			  
 			  /**
                *  Método que muestra la gestión de empresas
                */
               function gestionar_cuentas_registro() {
-              	  $this->breadcrumb->append_crumb('Home', site_url('home'));
-				  $this->breadcrumb->append_crumb('Personas', site_url() . "/personas/");
-				  $this->breadcrumb->append_crumb('Gestionar Cuentas Registro', site_url() . "/personas/gestionar_cuentas_registro");
+              	  $this->breadcrumb->append_crumb('Home', site_url('adm/home'));
+				  $this->breadcrumb->append_crumb('Personas', site_url() . "/adm/personas/");
+				  $this->breadcrumb->append_crumb('Gestionar Cuentas Registro', site_url() . "/adm/personas/gestionar_cuentas_registro");
 				  
               	  //Cargamos el archivo que contiene la info con la que se contruye el menu
              	  $this->config->load('menu_permisos', TRUE);
 				  
               	  //Obtenemos los permisos del usuario logueado asociados a la controladora personas y grupo gestionar_roles
-              	  $data['permisos'] = $this->roles_frr->permisos_role_controladora_grupo($this->uri->segment(1), $this->uri->segment(2));
+              	  $data['permisos'] = $this->roles_frr->permisos_role_controladora_grupo($this->uri->segment(2), $this->uri->segment(3));
               	  
 				  
 				  //Procesamos los permisos obtenidos
@@ -376,7 +376,7 @@ class Personas extends MY_Controller {
 										//La cuenta de registro se creo correctamente
                                         $message = "La cuenta registro se ha creado correctamente!";
                                         $this->session->set_flashdata('message', $message);
-                                        redirect('personas/');
+                                        redirect('adm/personas');
 									}
                                 			
 								}
@@ -431,7 +431,7 @@ class Personas extends MY_Controller {
                                         $this->form_validation->set_value('codigo'),
                                         $this->form_validation->set_value('tipo_cuentaregistro_id'),
                                         $this->form_validation->set_value('empresa_id'),
-                                        $this->uri->segment(3)
+                                        $this->uri->segment(4)
 										))) 
                             {
                             		//Nos fijamos si la petición se hizo via AJAX
@@ -445,7 +445,7 @@ class Personas extends MY_Controller {
 										//La empresa se creo correctamente
                                         $message = "La cuenta se ha modificado correctamente!";
                                         $this->session->set_flashdata('message', $message);
-                                        redirect('personas/gestionar_cuentas_registro');
+                                        redirect('adm/personas/gestionar_cuentas_registro');
 									}
                             			
 							} else {
@@ -477,12 +477,12 @@ class Personas extends MY_Controller {
                             return;
                         }
 						//Solamente hacemos algo si está presente el id de la empresa en la URI
-						if($this->uri->segment(3)) {
+						if($this->uri->segment(4)) {
 							//Solamente cargamos los datos cuando no exista una request POST
 							//Para no pisar los datos enviados por el usuarios
 							if(!$this->input->post()) {
 								//Obtenemos la empresa
-								$data['row_empresa'] = $this->empresas_frr->get_cuenta_registro_by_id($this->uri->segment(3));
+								$data['row_empresa'] = $this->empresas_frr->get_cuenta_registro_by_id($this->uri->segment(4));
 							}
 							
 							$data['empresas'] = $this->empresas_frr->get_empresas();
@@ -496,7 +496,7 @@ class Personas extends MY_Controller {
 	                        $this->template->set_content('personas/agregar_cuenta_registro_form', $data);
 	                        $this->template->build();
 						} else {
-							redirect('ew');
+							redirect('adm/ew');
 						}
 					}
 				}
@@ -504,13 +504,13 @@ class Personas extends MY_Controller {
 				
 			  function eliminar_cuenta_registro($empresa_id = NULL) {
               	    //Chequeamos que exista la confirmacion en la URI
-                    if($this->uri->segment(4) == "si")
+                    if($this->uri->segment(5) == "si")
                     {
                         if($this->empresas_frr->eliminar_cuenta_registro($empresa_id))
                         {
                             $message = "La cuenta se ha eliminado correctamente!";
                             $this->session->set_flashdata('message', $message);
-							redirect('personas/gestionar_cuentas_registro');
+							redirect('adm/personas/gestionar_cuentas_registro');
                         } else {
                             $errormsg = "No se ha podido eliminar la cuenta!";
                             $this->session->set_flashdata('errormsg', $errormsg);
@@ -526,7 +526,7 @@ class Personas extends MY_Controller {
 			  
 			  function activar_cuenta_registro($empresa_id = NULL) {
 			  		//Chequeamos que exista la confirmacion en la URI
-                    if($this->uri->segment(4) == "si")
+                    if($this->uri->segment(5) == "si")
                     {
 						//Solamente intentamos activar la empresa en caso que la misma se encuentra desactivada
 						if(!$this->empresas_frr->is_cuenta_registro_activada($empresa_id)) {
@@ -534,22 +534,22 @@ class Personas extends MY_Controller {
 	                        {
                                 $message = "La cuenta se ha activado correctamente!";
                                 $this->session->set_flashdata('message', $message);
-								redirect('personas/');
+								redirect('adm/personas');
 	                        } else {
 	                            $errormsg = "No se ha podido activar la cuenta!";
 	                            $this->session->set_flashdata('errormsg', $errormsg);
 	                        }
 						} else {
-							redirect('personas/error/3/1');
+							redirect('adm/personas/error/3/1');
 						}  
                     }
                     //Mostramos el template solo en el caso que exista un id de empresa
                     //y que la empresa no este activada
-					if($empresa_id && !$this->empresas_frr->is_empresa_activada($empresa_id)) {
+					if($empresa_id && !$this->empresas_frr->is_cuenta_registro_activada($empresa_id)) {
 						$this->template->set_content('general/confirma_operacion');
 						$this->template->build();
 					} else {
-						redirect('personas/error/3/1');
+						redirect('adm/personas/error/3/1');
 					}
 			  }
 				
@@ -561,7 +561,7 @@ class Personas extends MY_Controller {
 			  		//Cargamos el archivo que contiene la info con la que se contruye el menu
 	         	  	$this->config->load('menu_permisos', TRUE);
 					
-					$item = $this->uri->segment(3) . "-" . $this->uri->segment(4);
+					$item = $this->uri->segment(4) . "-" . $this->uri->segment(5);
 					$data = $this->config->item($item, 'menu_permisos');
 	
 					$this->template->set_content('general/mensaje', $data);

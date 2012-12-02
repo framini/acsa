@@ -30,7 +30,7 @@
 		                                        <li>
 		                                                <?php 
 															 $contenido_menu = isset($row['icono']) ? '<i class="' . $row['icono'] . '"></i> ' . $row['texto_anchor'] : $row['texto_anchor'];
-															 echo anchor($this->uri->segment(1) . "/" . $keyp, $contenido_menu);
+															 echo anchor($this->uri->segment(1) . "/" . $this->uri->segment(2) . "/"  . $keyp, $contenido_menu);
 														?>
 		                                        </li>
 		                                    </ul>

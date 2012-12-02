@@ -2,7 +2,7 @@
 if (!defined('BASEPATH'))
 	exit('No direct script access allowed');
 
-class Productos extends MY_Controller {
+class Adm_Productos extends MY_Controller {
 
 	public function __construct() {
 		parent::__construct();
@@ -13,7 +13,7 @@ class Productos extends MY_Controller {
 		//Cargamos el archivo que contiene la info con la que se contruye el menu
  		  $this->config->load('menu_permisos', TRUE);
 		  
-    	  $data['gestiones_disponibles'] = $this->roles_frr->gestiones_disponibles($this->uri->segment(1));
+    	  $data['gestiones_disponibles'] = $this->roles_frr->gestiones_disponibles($this->uri->segment(2));
 		  
 		  if(count($data['gestiones_disponibles']) > 0) {
 		  	foreach ($data['gestiones_disponibles'] as $key => $gestion) {
@@ -37,15 +37,15 @@ class Productos extends MY_Controller {
 	 *  Muestra la pantalla con todos los productos del sistema
 	 */
 	function gestionar_productos() {
-		$this -> breadcrumb -> append_crumb('Home', site_url('home'));
-		$this -> breadcrumb -> append_crumb('Productos', site_url() . "/productos/");
+		$this -> breadcrumb -> append_crumb('Home', site_url('adm/home'));
+		$this -> breadcrumb -> append_crumb('Productos', site_url() . "adm/productos/");
 		$this -> breadcrumb -> append_crumb('Gestionar Productos', site_url() . "/productos/gestionar_productos");
 
 		//Cargamos el archivo que contiene la info con la que se contruye el menu
 		$this -> config -> load('menu_permisos', TRUE);
 
 		//Obtenemos los permisos del usuario logueado asociados a la controladora productos y grupo gestionar_roles
-		$data['permisos'] = $this -> roles_frr -> permisos_role_controladora_grupo($this -> uri -> segment(1), $this -> uri -> segment(2));
+		$data['permisos'] = $this -> roles_frr -> permisos_role_controladora_grupo($this -> uri -> segment(2), $this -> uri -> segment(3));
 
 		//Procesamos los permisos obtenidos
 		if (count($data['permisos']) > 0) {
@@ -103,7 +103,7 @@ class Productos extends MY_Controller {
 						//El producto se creo correctamente
 						$message = "El producto se ha creado correctamente!";
 						$this -> session -> set_flashdata('message', $message);
-						redirect('productos/');
+						redirect('adm/productos/gestionar_productos');
 					}
 
 				}
@@ -154,7 +154,7 @@ class Productos extends MY_Controller {
 			//Chequeamos que los datos enviados por formulario sean correctos
 			if ($this -> form_validation -> run()) {
 
-				if (!is_null($data = $this -> productos_frr -> modificar_producto($this -> uri -> segment(3), $this -> form_validation -> set_value('nombre'), $this -> form_validation -> set_value('precio'), $this -> form_validation -> set_value('calidad'), $this -> form_validation -> set_value('aforo')))) {
+				if (!is_null($data = $this -> productos_frr -> modificar_producto($this -> uri -> segment(4), $this -> form_validation -> set_value('nombre'), $this -> form_validation -> set_value('precio'), $this -> form_validation -> set_value('calidad'), $this -> form_validation -> set_value('aforo')))) {
 					//Nos fijamos si la petición se hizo via AJAX
 					if ($this -> input -> is_ajax_request()) {
 						$resultados['message'] = "Se modifico el producto correctamente!";
@@ -166,7 +166,7 @@ class Productos extends MY_Controller {
 						//La empresa se creo correctamente
 						$message = "Se modifico el producto correctamente!";
 						$this -> session -> set_flashdata('message', $message);
-						redirect('productos/');
+						redirect('adm/productos/gestionar_productos');
 					}
 
 				} else {
@@ -198,12 +198,12 @@ class Productos extends MY_Controller {
 				return;
 			}
 			//Solamente hacemos algo si está presente el id de la empresa en la URI
-			if ($this -> uri -> segment(3)) {
+			if ($this -> uri -> segment(4)) {
 				//Solamente cargamos los datos cuando no exista una request POST
 				//Para no pisar los datos enviados por el usuarios
 				if (!$this -> input -> post()) {
 					//Obtenemos la empresa
-					$data['row_producto'] = $this -> productos_frr -> get_producto_by_id($this -> uri -> segment(3));
+					$data['row_producto'] = $this -> productos_frr -> get_producto_by_id($this -> uri -> segment(4));
 				}
 
 				//Asignamos un texto al boton submit del formulario
@@ -214,7 +214,7 @@ class Productos extends MY_Controller {
 				$this -> template -> set_content('productos/agregar_producto_form', $data);
 				$this -> template -> build();
 			} else {
-				redirect('ew');
+				redirect('adm/ew');
 			}
 		}
 	}
@@ -226,12 +226,12 @@ class Productos extends MY_Controller {
 	 */
 	function eliminar_producto($producto_id = NULL) {
 		//Chequeamos que exista la confirmacion en la URI
-		if ($this -> uri -> segment(4) == "si") {
+		if ($this -> uri -> segment(5) == "si") {
 			$this -> load -> library('productos_frr');
 			if ($this -> productos_frr -> eliminar_producto($producto_id)) {
 				$message = "El producto se ha eliminado correctamente!";
 				$this -> session -> set_flashdata('message', $message);
-				redirect('productos/gestionar_productos');
+				redirect('adm/productos/gestionar_productos');
 			} else {
 				$errormsg = "No se ha podido eliminar el producto!";
 				$this -> session -> set_flashdata('errormsg', $errormsg);

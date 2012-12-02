@@ -16,7 +16,7 @@
 	                		<?php if(isset($data_menu)) { ?>
 		                		<?php foreach ($data_menu as $keyp => $row) { ?>
 		               				<?php if($row['boton_superior']) { ?>
-		               					<?php echo anchor($this->uri->segment(1) ."/". $keyp, '<i class="' . $row['icono'] . '"></i> ' . $row['texto_anchor'], 'class="' . $row['clase_boton'] . '"');  ?>
+		               					<?php echo anchor($this->uri->segment(1) ."/". $this->uri->segment(2) ."/". $keyp, '<i class="' . $row['icono'] . '"></i> ' . $row['texto_anchor'], 'class="' . $row['clase_boton'] . '"');  ?>
 		                			<?php } ?>
 		                		<?php } ?>
 		                	<?php } ?>
@@ -75,8 +75,8 @@
                                                     echo ' ' . anchor("seguridad/eliminar_user/".$user['user_id'] , '<i class="icon-trash"></i> Eliminar', array("class" => "btn btn-danger eliminar-usuario margin-bottom-5", "data-original-title" => "Confirma que desea eliminar el usuario?")) .'</td>';
                                                     echo "</tr>";*/
                                                    echo '<td>';
-                                                   	echo "<a class='btn cambiar-email-usuario btn-primary margin-bottom-5' href='" . site_url() . "/admin/form/" .  $entry['forms_id'] . "/" . $entry['entry_id'] . "'><i class='icon-pencil icon-white'></i> Modificar</a> ";
-													echo "<a class='btn cambiar-email-usuario btn-danger margin-bottom-5' href='" . site_url() . "/admin/eliminar_entry/" .  $entry['entry_id'] . "'><i class='icon-trash icon-white'></i> Eliminar</a> ";
+                                                   	echo "<a class='btn cambiar-email-usuario btn-primary btn-mini margin-bottom-5' href='" . site_url() . "/adm/admin/form/" .  $entry['forms_id'] . "/" . $entry['entry_id'] . "'><i class='icon-pencil icon-white'></i> Modificar</a> ";
+													echo "<a class='btn cambiar-email-usuario btn-danger btn-mini margin-bottom-5' href='" . site_url() . "/adm/admin/eliminar_entry/" .  $entry['entry_id'] . "'><i class='icon-trash icon-white'></i> Eliminar</a> ";
 
 													echo '</td>';
                                                     echo "</tr>";

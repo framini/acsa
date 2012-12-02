@@ -7,7 +7,13 @@
 							] 
 			} );
 
-	    $('#tabla').dataTable($objInit);
+	    var $tabla = $('#tabla').dataTable($objInit);
+	    
+	    $('#tabla').on('eliminarFila', function(event, param) {
+			if( param.fila ) {
+				$tabla.fnDeleteRow( param.fila[0] )
+			}
+		});
 	});
 </script>
 
@@ -115,13 +121,24 @@
 	                			$(this).find('#icono-mensaje').attr('class', data.icono);
 	                			$(this).find('#texto-mensaje').html(data.message);
 	                		})
-		        			$('#resultado-operacion').removeClass('alert-error').addClass('alert-success').slideDown('slow').delay(5000).slideUp('slow');
-		        			
-		        			//Actualizamos la tabla para eliminar el eWarrant firmado
+	                		
+	                		//Actualizamos la tabla para eliminar el eWarrant firmado
 		        			var inp = "input[name=ewid][value=" + data.ewid + "]";
 		        			$(inp).closest('tr').fadeOut('slow', function() {
-		                    	$(this).detach();
+		        				$.event.trigger('eliminarFila', { fila: $(this) } );
+		                    	//$(this).detach();
 		                    });
+	          
+	                		
+		        			$('#resultado-operacion').removeClass('alert-error')
+		        									 .addClass('alert-success')
+		        									 .fadeIn('slow', function() {
+						        							$('input#id_search').trigger('actualizarTabla');
+						        					  })
+		        									 .delay(5000)
+		        									 .slideUp('slow');
+		        			
+		        			
 	                	}
 	                }
 	            }); 
@@ -138,7 +155,7 @@
                             <?php echo form_open($this->uri->uri_string()); ?>
                             	<?php if(isset($data_menu)) { ?>
 			                		<?php foreach ($data_menu as $keyp => $row) { ?>
-			               				<?php if($row['boton_superior'] && ($keyp == $this->uri->segment(2))) { ?>
+			               				<?php if($row['boton_superior'] && ($keyp == $this->uri->segment(3))) { ?>
 			                				<?php echo '<input type="submit" class="'. $row['clase_boton'] . '" value="' . $row['texto_anchor'] . '" />';  ?>
 			                			<?php } ?>
 			                		<?php } ?>
@@ -159,32 +176,15 @@
 				
                             <div class="span12">
                                 <?php
-                                 if(isset($message))
-                                 {
-                                      echo "<div class='message success'>";
-                                                 echo "<p>" . $message. "</p>";
-                                      echo "</div>";
-                                 }
-                                 ?>     
-                                
-
-                                <?php
-                                if(isset($errormsg))
-                                {
-                                    echo "<div class='message errormsg'>";
-                                                 echo "<p>" . $errormsg. "</p>";
-                                      echo "</div>";
-                                }
-                                ?>
-
-                                <?php
-                                 if(isset($message))
-                                 {
-                                      echo "<div class='message success'>";
-                                                 echo "<p>" . $message. "</p>";
-                                      echo "</div>";
-                                 }
-                                 ?>
+					            	if(isset($errormsg)) {
+					            		$data['estado'] = "error";
+					            	} else if(isset($message)) {
+					            		$data['estado'] = "success";
+					            	}
+									if(isset($data)) {
+										$this->load->view('general/mensaje_operacion', $data); 
+									}
+					            ?>
 
                 
 

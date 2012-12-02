@@ -2,7 +2,7 @@
 if (!defined('BASEPATH'))
 	exit('No direct script access allowed');
 
-class Seguridad extends MY_Controller {
+class Adm_Seguridad extends MY_Controller {
 
 	public function __construct() {
 		parent::__construct();
@@ -16,7 +16,7 @@ class Seguridad extends MY_Controller {
 		//Cargamos el archivo que contiene la info con la que se contruye el menu
 		$this -> config -> load('menu_permisos', TRUE);
 
-		$data['gestiones_disponibles'] = $this -> roles_frr -> gestiones_disponibles($this -> uri -> segment(1));
+		$data['gestiones_disponibles'] = $this -> roles_frr -> gestiones_disponibles($this -> uri -> segment(2));
 
 		if (count($data['gestiones_disponibles']) > 0) {
 			foreach ($data['gestiones_disponibles'] as $key => $gestion) {
@@ -29,7 +29,7 @@ class Seguridad extends MY_Controller {
 		if ($message = $this -> session -> flashdata('message')) {
 			$data['message'] = $message;
 		}
-		
+
 		$data['titulo_gestion'] = "Menu de Seguridad";
 		$this -> template -> set_content('seguridad/main', $data);
 		$this -> template -> build();
@@ -97,7 +97,7 @@ class Seguridad extends MY_Controller {
 				$message = "El role se ha creado correctamente!";
 				//$this->session->set_flashdata('exito', $message);
 				$this -> session -> set_flashdata('message', $message);
-				redirect('seguridad/gestionar_roles');
+				redirect('adm/seguridad/gestionar_roles');
 			} else {
 				$errors = $this -> roles_frr -> get_error_message();
 			}
@@ -117,15 +117,15 @@ class Seguridad extends MY_Controller {
 	 *  Muestra la pantalla con todos los roles del sistema
 	 */
 	function gestionar_roles() {
-		$this -> breadcrumb -> append_crumb('Home', site_url('home'));
-		$this -> breadcrumb -> append_crumb('Seguridad', site_url() . "/seguridad/");
-		$this -> breadcrumb -> append_crumb('Gestionar Roles', site_url() . "/admin/gestionar_roles");
+		$this -> breadcrumb -> append_crumb('Home', site_url('adm/home'));
+		$this -> breadcrumb -> append_crumb('Seguridad', site_url() . "/adm/seguridad/");
+		$this -> breadcrumb -> append_crumb('Gestionar Roles', site_url() . "/adm/admin/gestionar_roles");
 
 		//Cargamos el archivo que contiene la info con la que se contruye el menu
 		$this -> config -> load('menu_permisos', TRUE);
 
 		//Obtenemos los permisos del usuario logueado asociados a la controladora seguridad y grupo gestionar_roles
-		$data['permisos'] = $this -> roles_frr -> permisos_role_controladora_grupo($this -> uri -> segment(1), $this -> uri -> segment(2));
+		$data['permisos'] = $this -> roles_frr -> permisos_role_controladora_grupo($this -> uri -> segment(2), $this -> uri -> segment(3));
 
 		//Procesamos los permisos obtenidos
 		if (count($data['permisos']) > 0) {
@@ -229,7 +229,7 @@ class Seguridad extends MY_Controller {
 						} else {
 							$message = "El role se ha modificado correctamente!";
 							//$this->session->set_flashdata('message', $message);
-							redirect('seguridad/main');
+							redirect('adm/seguridad/main');
 						}
 					} else {
 						//Si la peticionon se hizo por medio de ajax devolvemos el resultado via JSON
@@ -345,7 +345,7 @@ class Seguridad extends MY_Controller {
 					} else {
 						$message = "El role se ha modificado correctamente!";
 						//$this->session->set_flashdata('message', $message);
-						redirect('seguridad/main');
+						redirect('adm/seguridad/main');
 					}
 				} else {
 					//Si la peticionon se hizo por medio de ajax devolvemos el resultado via JSON
@@ -483,7 +483,7 @@ class Seguridad extends MY_Controller {
 					//$this->_show_message($this->lang->line('auth_message_registration_completed_2').' '.anchor('/auth/login/', 'Login'));
 					$message = "El usuario se ha creado correctamente!";
 					$this -> session -> set_flashdata('message', $message);
-					redirect('seguridad/gestionar_usuarios');
+					redirect('adm/seguridad/gestionar_usuarios');
 				}
 			}
 			// No se pudo crear el usuario, ya sea porque el usuario o mail existia, o algun otro problema
@@ -522,7 +522,7 @@ class Seguridad extends MY_Controller {
 
 			//Chequeamos que los datos enviados por formulario sean correctos
 			if ($this -> form_validation -> run()) {
-				if (!is_null($data = $this -> empresas_frr -> modificar_cuenta_registro($this -> form_validation -> set_value('nombre'), $this -> form_validation -> set_value('codigo'), $this -> form_validation -> set_value('tipo_cuentaregistro_id'), $this -> form_validation -> set_value('empresa_id'), $this -> uri -> segment(3)))) {
+				if (!is_null($data = $this -> empresas_frr -> modificar_cuenta_registro($this -> form_validation -> set_value('nombre'), $this -> form_validation -> set_value('codigo'), $this -> form_validation -> set_value('tipo_cuentaregistro_id'), $this -> form_validation -> set_value('empresa_id'), $this -> uri -> segment(4)))) {
 					//Nos fijamos si la petición se hizo via AJAX
 					if ($this -> input -> is_ajax_request()) {
 						$resultados['message'] = "Se modifico la cuenta correctamente!";
@@ -534,7 +534,7 @@ class Seguridad extends MY_Controller {
 						//La empresa se creo correctamente
 						$message = "La cuenta se ha modificado correctamente!";
 						$this -> session -> set_flashdata('message', $message);
-						redirect('seguridad/gestionar_cuentas_registro');
+						redirect('adm/seguridad/gestionar_cuentas_registro');
 					}
 
 				} else {
@@ -566,12 +566,12 @@ class Seguridad extends MY_Controller {
 				return;
 			}
 			//Solamente hacemos algo si está presente el id de la empresa en la URI
-			if ($this -> uri -> segment(3)) {
+			if ($this -> uri -> segment(4)) {
 				//Solamente cargamos los datos cuando no exista una request POST
 				//Para no pisar los datos enviados por el usuarios
 				if (!$this -> input -> post()) {
 					//Obtenemos la empresa
-					$data['row_empresa'] = $this -> empresas_frr -> get_cuenta_registro_by_id($this -> uri -> segment(3));
+					$data['row_empresa'] = $this -> empresas_frr -> get_cuenta_registro_by_id($this -> uri -> segment(4));
 				}
 
 				$data['empresas'] = $this -> empresas_frr -> get_empresas();
@@ -585,7 +585,7 @@ class Seguridad extends MY_Controller {
 				$this -> template -> set_content('seguridad/agregar_cuenta_registro_form', $data);
 				$this -> template -> build();
 			} else {
-				redirect('ew');
+				redirect('adm/ew');
 			}
 		}
 	}
@@ -594,15 +594,15 @@ class Seguridad extends MY_Controller {
 	 *  Muestra la pantalla con todos los usuarios del sistema
 	 */
 	function gestionar_usuarios() {
-		$this -> breadcrumb -> append_crumb('Home', site_url('home'));
-		$this -> breadcrumb -> append_crumb('Seguridad', site_url() . "/seguridad/");
-		$this -> breadcrumb -> append_crumb('Gestionar Usuarios', site_url() . "/admin/gestionar_usuarios");
+		$this -> breadcrumb -> append_crumb('Home', site_url('adm/home'));
+		$this -> breadcrumb -> append_crumb('Seguridad', site_url() . "/adm/seguridad/");
+		$this -> breadcrumb -> append_crumb('Gestionar Usuarios', site_url() . "/adm/admin/gestionar_usuarios");
 
 		//Cargamos el archivo que contiene la info con la que se contruye el menu
 		$this -> config -> load('menu_permisos', TRUE);
 
 		//Obtenemos los permisos del usuario logueado asociados a la controladora seguridad y grupo gestionar_usuarios
-		$data['permisos'] = $this -> roles_frr -> permisos_role_controladora_grupo($this -> uri -> segment(1), $this -> uri -> segment(2));
+		$data['permisos'] = $this -> roles_frr -> permisos_role_controladora_grupo($this -> uri -> segment(2), $this -> uri -> segment(3));
 
 		//Procesamos los permisos obtenidos
 		if (count($data['permisos']) > 0) {
@@ -638,7 +638,6 @@ class Seguridad extends MY_Controller {
 		if ($errormsg = $this -> session -> flashdata('errormsg')) {
 			$data['errormsg'] = $errormsg;
 		}
-			
 
 		//$this->template->set_content('seguridad/gestionar_usuarios', $data);
 		$this -> template -> set_content('seguridad/gestionar_usuarios', $data);
@@ -693,7 +692,7 @@ class Seguridad extends MY_Controller {
 					} else {
 						$message = "Se cambio el password correctamente!";
 						$this -> session -> set_flashdata('message', $message);
-						redirect('seguridad/gestionar_usuarios');
+						redirect('adm/seguridad/gestionar_usuarios');
 					}
 				}
 			} else {
@@ -718,7 +717,7 @@ class Seguridad extends MY_Controller {
 		} else {
 			$errormsg = "Debes seleccionar un usuario!";
 			$this -> session -> set_flashdata('errormsg', $errormsg);
-			redirect('seguridad/gestionar_usuarios');
+			redirect('adm/seguridad/gestionar_usuarios');
 		}
 	}
 
@@ -747,7 +746,7 @@ class Seguridad extends MY_Controller {
 				} else {
 					$message = "Se ha enviado al usuario un mail con los pasos a seguir!";
 					$this -> session -> set_flashdata('message', $message);
-					redirect('seguridad/gestionar_usuarios');
+					redirect('adm/seguridad/gestionar_usuarios');
 				}
 
 			} else {
@@ -807,8 +806,8 @@ class Seguridad extends MY_Controller {
 	 * @return void
 	 */
 	function reset_email() {
-		$user_id = $this -> uri -> segment(3);
-		$new_email_key = $this -> uri -> segment(4);
+		$user_id = $this -> uri -> segment(4);
+		$new_email_key = $this -> uri -> segment(5);
 
 		// Tratamos de restear el email
 		if ($this -> auth_frr -> activate_new_email($user_id, $new_email_key)) {
@@ -858,7 +857,7 @@ class Seguridad extends MY_Controller {
 					} else {
 						$message = "El usuario se ha modificado correctamente!";
 						$this -> session -> set_flashdata('message', $message);
-						redirect('seguridad/main');
+						redirect('adm/seguridad/main');
 					}
 				}
 				//Errores
@@ -915,7 +914,7 @@ class Seguridad extends MY_Controller {
 			if ($this -> auth_frr -> guardar_cambios_user($user_id, $this -> input -> post('username'), $this -> input -> post('empresa_id'), $this -> input -> post('role_id'))) {
 				$message = "El usuario se ha modificado correctamente!";
 				$this -> session -> set_flashdata('message', $message);
-				redirect('seguridad/main');
+				redirect('adm/seguridad/main');
 			} else {
 				$errors['usuario_existente'] = "El usuario ya existe";
 				$this -> template -> set_content('seguridad/editar_usuario/' . $user_id, $errors);
@@ -932,7 +931,7 @@ class Seguridad extends MY_Controller {
 		//Cargamos el archivo que contiene la info con la que se contruye el menu
 		$this -> config -> load('menu_permisos', TRUE);
 
-		$item = $this -> uri -> segment(3) . "-" . $this -> uri -> segment(4);
+		$item = $this -> uri -> segment(4) . "-" . $this -> uri -> segment(5);
 		$data = $this -> config -> item($item, 'menu_permisos');
 
 		$this -> template -> set_content('general/mensaje', $data);
@@ -947,7 +946,7 @@ class Seguridad extends MY_Controller {
 	 */
 	function _show_message($message) {
 		$this -> session -> set_flashdata('message', $message);
-		redirect('/ew/');
+		redirect('adm/ew');
 	}
 
 	/**

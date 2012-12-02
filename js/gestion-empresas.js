@@ -1,6 +1,7 @@
     $(document).ready(function() {
+
     		var datos = {};
-        	var dire = "http://localhost/acsa/index.php" + "/general";
+        	var dire = "http://localhost/acsa/index.php" + "/adm/general";
         	
         	////////////////////////////////////////////////////////////
 			//BOTONES NO del POP-UP

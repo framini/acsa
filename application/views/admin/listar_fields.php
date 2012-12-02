@@ -14,7 +14,7 @@
 		                        	<?php if(isset($data_menu)) { ?>
 				                		<?php foreach ($data_menu as $keyp => $row) { ?>
 				               				<?php if($row['boton_superior']) { ?>
-				                				<?php echo '<a class="'. $row['clase_boton'] . '" href="'. site_url() . "/" . $this->uri->segment(1) . "/" . $keyp . "/" . $this->uri->segment(3) . '" ><i class="'. $row['icono'] . '"></i> ' . $row['texto_anchor'] . '</a>';  ?>
+				                				<?php echo '<a class="'. $row['clase_boton'] . '" href="'. site_url() . "/" . $this->uri->segment(1) . "/" . $this->uri->segment(2) ."/". $keyp . "/" . $this->uri->segment(4) . '" ><i class="'. $row['icono'] . '"></i> ' . $row['texto_anchor'] . '</a>';  ?>
 				                			<?php } ?>
 				                		<?php } ?>
 				                	<?php } ?>
@@ -81,7 +81,7 @@
 								               					} else {
 								               						$atributos = array('class' => $row['clase_boton']);
 								               					}
-								               					echo anchor($this->uri->segment(1) ."/". $keyp . '/' . $field['fields_id'], '<i class="' . $row['icono'] . '"></i> ' . $row['texto_anchor'], $atributos);
+								               					echo anchor($this->uri->segment(1) ."/". $this->uri->segment(2) ."/". $keyp . '/' . $field['fields_id'], '<i class="' . $row['icono'] . '"></i> ' . $row['texto_anchor'], $atributos);
 								                				//Fix espacio entre botones
 								                				echo ' ';
 															}

@@ -22,8 +22,8 @@
 	                    <div style="padding: 8px 0;" class="well">
 					        <ul class="nav nav-list">
 					          <li class="nav-header">Administración Formularios</li>
-					          <li><?php echo anchor('admin/forms', '<i class="icon-th-list"></i>Formularios'); ?></li>
-						      <li><?php echo anchor('/admin/grupos_fields', '<i class="icon-folder-open"></i> Grupos Fields'); ?></li>
+					          <li><?php echo anchor('adm/admin/forms', '<i class="icon-th-list"></i>Formularios'); ?></li>
+						      <li><?php echo anchor('adm/admin/grupos_fields', '<i class="icon-folder-open"></i> Grupos Fields'); ?></li>
 					        </ul>
 					    </div>
 					 </div>

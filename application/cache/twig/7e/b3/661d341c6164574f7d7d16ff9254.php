@@ -19,7 +19,7 @@ class __TwigTemplate_7eb3661d341c6164574f7d7d16ff9254 extends Twig_Template
         echo "<head>
     <meta charset=\"utf-8\">
     <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge,chrome=1\">
-    <title></title>
+    <title>zxc</title>
     <meta name=\"description\" content=\"\">
     <link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"http://localhost/argc/index.php/css/bootstrap\" />
     <link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"http://localhost/argc/index.php/css/custom\" />

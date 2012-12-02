@@ -29,7 +29,8 @@ class __TwigTemplate_5fd55f0e0ca81df5fcba6cd6ef24adad extends Twig_Template
     public function block_title($context, array $blocks = array())
     {
         echo " ";
-        echo twig_escape_filter($this->env, $this->getAttribute($this->getAttribute((isset($context["contenido_home_items"]) ? $context["contenido_home_items"] : null), "10", array(), "array"), "titulo"), "html", null, true);
+        if (isset($context["contenido_home_items"])) { $_contenido_home_items_ = $context["contenido_home_items"]; } else { $_contenido_home_items_ = null; }
+        echo twig_escape_filter($this->env, $this->getAttribute($this->getAttribute($_contenido_home_items_, "12", array(), "array"), "titulo"), "html", null, true);
         echo " ";
     }
 
@@ -42,33 +43,40 @@ class __TwigTemplate_5fd55f0e0ca81df5fcba6cd6ef24adad extends Twig_Template
                         
       ";
         // line 8
+        if (isset($context["contenido_home_items"])) { $_contenido_home_items_ = $context["contenido_home_items"]; } else { $_contenido_home_items_ = null; }
         $context['_parent'] = (array) $context;
-        $context['_seq'] = twig_ensure_traversable((isset($context["contenido_home_items"]) ? $context["contenido_home_items"] : null));
+        $context['_seq'] = twig_ensure_traversable($_contenido_home_items_);
         foreach ($context['_seq'] as $context["_key"] => $context["entrada"]) {
             // line 9
             echo "          ";
-            if ($this->getAttribute((isset($context["entrada"]) ? $context["entrada"] : null), "imagen_item")) {
+            if (isset($context["entrada"])) { $_entrada_ = $context["entrada"]; } else { $_entrada_ = null; }
+            if ($this->getAttribute($_entrada_, "imagen_item")) {
                 // line 10
                 echo "            <div class=\"page-header\">
                 <h1>";
                 // line 11
-                echo twig_escape_filter($this->env, $this->getAttribute((isset($context["entrada"]) ? $context["entrada"] : null), "titulo"), "html", null, true);
+                if (isset($context["entrada"])) { $_entrada_ = $context["entrada"]; } else { $_entrada_ = null; }
+                echo twig_escape_filter($this->env, $this->getAttribute($_entrada_, "titulo"), "html", null, true);
                 echo "</h1>
                 <small><span class=\"label label-info\"><small>Por ";
                 // line 12
-                echo twig_escape_filter($this->env, $this->getAttribute((isset($context["entrada"]) ? $context["entrada"] : null), "autor"), "html", null, true);
+                if (isset($context["entrada"])) { $_entrada_ = $context["entrada"]; } else { $_entrada_ = null; }
+                echo twig_escape_filter($this->env, $this->getAttribute($_entrada_, "autor"), "html", null, true);
                 echo " el ";
-                echo twig_escape_filter($this->env, $this->getAttribute((isset($context["entrada"]) ? $context["entrada"] : null), "entry_date"), "html", null, true);
+                if (isset($context["entrada"])) { $_entrada_ = $context["entrada"]; } else { $_entrada_ = null; }
+                echo twig_escape_filter($this->env, $this->getAttribute($_entrada_, "entry_date"), "html", null, true);
                 echo "</small></span></small>
             </div>
             
             <img src=\"";
                 // line 15
-                echo twig_escape_filter($this->env, $this->getAttribute((isset($context["entrada"]) ? $context["entrada"] : null), "imagen_item"), "html", null, true);
+                if (isset($context["entrada"])) { $_entrada_ = $context["entrada"]; } else { $_entrada_ = null; }
+                echo twig_escape_filter($this->env, $this->getAttribute($_entrada_, "imagen_item"), "html", null, true);
                 echo "\" class=\"img-rounded pull-left margin-right-bottom-10\">
             <p> ";
                 // line 16
-                echo $this->getAttribute((isset($context["entrada"]) ? $context["entrada"] : null), "contenido");
+                if (isset($context["entrada"])) { $_entrada_ = $context["entrada"]; } else { $_entrada_ = null; }
+                echo $this->getAttribute($_entrada_, "contenido");
                 echo " </p>
           ";
             }
@@ -95,6 +103,6 @@ class __TwigTemplate_5fd55f0e0ca81df5fcba6cd6ef24adad extends Twig_Template
 
     public function getDebugInfo()
     {
-        return array (  82 => 19,  76 => 18,  71 => 16,  67 => 15,  59 => 12,  55 => 11,  52 => 10,  49 => 9,  45 => 8,  40 => 5,  37 => 4,  29 => 2,);
+        return array (  90 => 19,  84 => 18,  78 => 16,  73 => 15,  63 => 12,  58 => 11,  55 => 10,  51 => 9,  46 => 8,  41 => 5,  38 => 4,  29 => 2,);
     }
 }

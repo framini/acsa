@@ -111,7 +111,7 @@
                     	</div>
 					</div>
 					<?php } else { ?>
-						<input type="hidden" name="grupos_fields_id" value="<?php echo $this->uri->segment(3); ?>" id="grupos_fields_id" />
+						<input type="hidden" name="grupos_fields_id" value="<?php echo $this->uri->segment(4); ?>" id="grupos_fields_id" />
 					<?php } ?>
 					
 					<div class="row">

@@ -15,7 +15,7 @@
 	               			<?php //echo anchor('/seguridad/registro', "<i class='icon-user icon-white'></i> Agregar Usuario", "class='btn btn-large btn-success pull-right'");  ?>
 	                		<?php foreach ($data_menu as $keyp => $row) { ?>
 	               				<?php if($row['boton_superior']) { ?>
-	               					<?php echo anchor($this->uri->segment(1) ."/". $keyp, '<i class="' . $row['icono'] . '"></i> ' . $row['texto_anchor'], 'class="' . $row['clase_boton'] . '"');  ?>
+	               					<?php echo anchor($this->uri->segment(1) ."/". $this->uri->segment(2) ."/". $keyp, '<i class="' . $row['icono'] . '"></i> ' . $row['texto_anchor'], 'class="' . $row['clase_boton'] . '"');  ?>
 	                			<?php } ?>
 	                		<?php } ?>
 	                		<h2>Empresas</h2>
@@ -29,23 +29,16 @@
         <!-- .block_head ends -->
 
         <div class="span12">
-                 				<?php
-                                if(isset($errormsg))
-                                {
-                                    echo "<div class='message errormsg'>";
-                                                 echo "<p>" . $errormsg. "</p>";
-                                      echo "</div>";
-                                }
-                				?>
-            
-            					<?php
-                                 if(isset($message))
-                                 {
-                                      echo "<div class='message success'>";
-                                                 echo "<p>" . $message. "</p>";
-                                      echo "</div>";
-                                 }
-                                 ?>
+                 				 <?php
+					            	if(isset($errormsg)) {
+					            		$data['estado'] = "error";
+					            	} else if(isset($message)) {
+					            		$data['estado'] = "success";
+					            	}
+									if(isset($data)) {
+										$this->load->view('general/mensaje_operacion', $data); 
+									}
+					            ?> 
 
                 
 
@@ -98,14 +91,14 @@
 								               					
 								               					if($keyp == "activar_empresa") {
 								               						if($empresa['activated'] == 0) {
-								               							echo anchor($this->uri->segment(1) ."/". $keyp . '/' .$empresa['empresa_id'], '<i class="' . $row['icono'] . '"></i> ' . $row['texto_anchor'], $atributos);
+								               							echo anchor($this->uri->segment(1) ."/". $this->uri->segment(2) ."/". $keyp . '/' .$empresa['empresa_id'], '<i class="' . $row['icono'] . '"></i> ' . $row['texto_anchor'], $atributos);
 								               						}
 								               					} else if($keyp == "eliminar_empresa") {
 								               						if($empresa['activated'] == 1) {
-								               							echo anchor($this->uri->segment(1) ."/". $keyp . '/' .$empresa['empresa_id'], '<i class="' . $row['icono'] . '"></i> ' . $row['texto_anchor'], $atributos);
+								               							echo anchor($this->uri->segment(1) ."/". $this->uri->segment(2) ."/". $keyp . '/' .$empresa['empresa_id'], '<i class="' . $row['icono'] . '"></i> ' . $row['texto_anchor'], $atributos);
 								               						}
 								               					} else {
-								               						echo anchor($this->uri->segment(1) ."/". $keyp . '/' .$empresa['empresa_id'], '<i class="' . $row['icono'] . '"></i> ' . $row['texto_anchor'], $atributos);
+								               						echo anchor($this->uri->segment(1) ."/". $this->uri->segment(2) ."/". $keyp . '/' .$empresa['empresa_id'], '<i class="' . $row['icono'] . '"></i> ' . $row['texto_anchor'], $atributos);
 								               					}
 								         
 								                				//Fix espacio entre botones

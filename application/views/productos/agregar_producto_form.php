@@ -89,7 +89,7 @@ $aforo = array(
 								.addClass('alert-success')
 								.delay(2500)
 								.slideDown('slow', function() {
-									window.location = "<?php $uri = site_url() . "/" . "productos/gestionar_productos"; echo $uri; ?>";
+									window.location = "<?php $uri = site_url() . "/" . "adm/productos/gestionar_productos"; echo $uri; ?>";
 								});
 						}
 						

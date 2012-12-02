@@ -664,7 +664,7 @@ class Administracion_frr {
 			
 			//Si se usa este grupo como default, antes de setearlo tenemos que buscar, en caso que exista
 			//el anterior grupo default y sacarle dicho estado
-			if( !is_null($data['grupo_default']) ) {
+			if( $data['grupo_default'] == "y" ) {
 				
 				//Si existe un grupo template default
 				if( !is_null( $gtd = $this->get_grupo_template_default() ) ) {

@@ -9,24 +9,27 @@ class MY_Controller extends CI_Controller
 		 //Chequeamos que el usuario este logueado
 		 if(!$this->auth_frr->is_logged_in())
          {
-             redirect('ew');
+             redirect('adm/ew');
              die();
          }
 		 
 		 //Si el usuario logueado fue eliminado, tenemos que forzar su cierre de sesion
 		 if( !$this->auth_frr->user_exists() ) {
 		 	$this->auth_frr->logout();
-			redirect('ew');
+			redirect('adm/ew');
             die();
 		 } 
 		 
-		 //Chequeamos si se trata de ejecutar alguna funcion de la controladora entramos a este condicional
-		 if($permiso = $this->uri->segment(2)) {
+		 //Chequeamos si se trata de ejecutar alguna funcion administrativa
+		 if( "adm" == $this->uri->segment(1)) {
+
+			$permiso = $this->uri->segment(3) != FALSE ? $this->uri->segment(3) : 'index';
+			
 		 	//Comprobamos que el usuario tenga los permisos necesarios
 		 	//Parametros (permiso, controladora, grupo)
-		 	if(!$this->roles_frr->tiene_permisos($permiso, $this->uri->segment(1), $this->uri->segment(2))) {
+		 	if(!$this->roles_frr->tiene_permisos($permiso, $this->uri->segment(2), $this->uri->segment(3))) {
 		 		//Si no tiene permisos los redireccionamos a la web de error	 
-             	redirect('error/m');
+             	redirect('adm/error/m');
             	die();
 			}
 		 }

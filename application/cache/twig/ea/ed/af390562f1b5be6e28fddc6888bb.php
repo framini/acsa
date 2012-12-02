@@ -36,16 +36,19 @@ class __TwigTemplate_eaedaf390562f1b5be6e28fddc6888bb extends Twig_Template
                     <div class=\"hero-unit masthead\">
 \t\t\t\t\t\t";
         // line 13
+        if (isset($context["contenido_home"])) { $_contenido_home_ = $context["contenido_home"]; } else { $_contenido_home_ = null; }
         $context['_parent'] = (array) $context;
-        $context['_seq'] = twig_ensure_traversable((isset($context["contenido_home"]) ? $context["contenido_home"] : null));
+        $context['_seq'] = twig_ensure_traversable($_contenido_home_);
         foreach ($context['_seq'] as $context["_key"] => $context["entrada"]) {
             // line 14
             echo "\t\t\t\t\t\t\t<h1> ";
-            echo twig_escape_filter($this->env, $this->getAttribute((isset($context["entrada"]) ? $context["entrada"] : null), "titulo"), "html", null, true);
+            if (isset($context["entrada"])) { $_entrada_ = $context["entrada"]; } else { $_entrada_ = null; }
+            echo twig_escape_filter($this->env, $this->getAttribute($_entrada_, "titulo"), "html", null, true);
             echo " </h1>
 \t\t\t\t\t\t\t<p> ";
             // line 15
-            echo $this->getAttribute((isset($context["entrada"]) ? $context["entrada"] : null), "contenido");
+            if (isset($context["entrada"])) { $_entrada_ = $context["entrada"]; } else { $_entrada_ = null; }
+            echo $this->getAttribute($_entrada_, "contenido");
             echo " </p>
 \t\t\t\t\t\t";
         }
@@ -62,12 +65,14 @@ class __TwigTemplate_eaedaf390562f1b5be6e28fddc6888bb extends Twig_Template
                     <ul class=\"thumbnails\">
                       ";
         // line 24
+        if (isset($context["contenido_home_items"])) { $_contenido_home_items_ = $context["contenido_home_items"]; } else { $_contenido_home_items_ = null; }
         $context['_parent'] = (array) $context;
-        $context['_seq'] = twig_ensure_traversable((isset($context["contenido_home_items"]) ? $context["contenido_home_items"] : null));
+        $context['_seq'] = twig_ensure_traversable($_contenido_home_items_);
         foreach ($context['_seq'] as $context["_key"] => $context["entrada"]) {
             // line 25
             echo "                      \t";
-            if ($this->getAttribute((isset($context["entrada"]) ? $context["entrada"] : null), "imagen_item")) {
+            if (isset($context["entrada"])) { $_entrada_ = $context["entrada"]; } else { $_entrada_ = null; }
+            if ($this->getAttribute($_entrada_, "imagen_item")) {
                 // line 26
                 echo "\t                      <li class=\"span4\">
 \t                        <div class=\"thumbnail\">
@@ -75,15 +80,18 @@ class __TwigTemplate_eaedaf390562f1b5be6e28fddc6888bb extends Twig_Template
 \t                          <div class=\"caption\">
 \t                            <h3>";
                 // line 30
-                echo twig_escape_filter($this->env, $this->getAttribute((isset($context["entrada"]) ? $context["entrada"] : null), "titulo"), "html", null, true);
+                if (isset($context["entrada"])) { $_entrada_ = $context["entrada"]; } else { $_entrada_ = null; }
+                echo twig_escape_filter($this->env, $this->getAttribute($_entrada_, "titulo"), "html", null, true);
                 echo "</h3>
 \t                            <p>";
                 // line 31
-                echo twig_escape_filter($this->env, Twig::longitud_max($this->getAttribute((isset($context["entrada"]) ? $context["entrada"] : null), "contenido"), 140), "html", null, true);
+                if (isset($context["entrada"])) { $_entrada_ = $context["entrada"]; } else { $_entrada_ = null; }
+                echo twig_escape_filter($this->env, Twig::longitud_max($this->getAttribute($_entrada_, "contenido"), 140), "html", null, true);
                 echo "</p>
                                 <p class='center'><a href=\"";
                 // line 32
-                echo twig_escape_filter($this->env, Twig::url_sitio("main/item", $this->getAttribute((isset($context["entrada"]) ? $context["entrada"] : null), "entry_id")), "html", null, true);
+                if (isset($context["entrada"])) { $_entrada_ = $context["entrada"]; } else { $_entrada_ = null; }
+                echo twig_escape_filter($this->env, Twig::url_sitio("main/item", $this->getAttribute($_entrada_, "entry_id")), "html", null, true);
                 echo "\" class=\"btn btn-small btn-primary\">ver más</a></p>
 \t                          </div>
 \t                        </div>
@@ -126,6 +134,6 @@ class __TwigTemplate_eaedaf390562f1b5be6e28fddc6888bb extends Twig_Template
 
     public function getDebugInfo()
     {
-        return array (  110 => 45,  108 => 44,  100 => 38,  94 => 37,  86 => 32,  82 => 31,  78 => 30,  72 => 26,  69 => 25,  65 => 24,  56 => 17,  48 => 15,  43 => 14,  39 => 13,  31 => 7,  29 => 6,  25 => 4,  23 => 3,  19 => 1,);
+        return array (  118 => 45,  116 => 44,  108 => 38,  102 => 37,  93 => 32,  88 => 31,  83 => 30,  77 => 26,  73 => 25,  68 => 24,  59 => 17,  50 => 15,  44 => 14,  39 => 13,  31 => 7,  29 => 6,  25 => 4,  23 => 3,  19 => 1,);
     }
 }

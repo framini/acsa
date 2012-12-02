@@ -69,7 +69,7 @@
             				<?php if( isset($data_menu) ) {  ?>
 	            				<?php foreach ($data_menu as $keyp => $row) { ?>
 		               				<?php if($row['boton_superior'] && (isset($row['grupo']) && $row['grupo'] == 'grupos')) { ?>
-		               					<?php echo anchor($this->uri->segment(1) ."/". $keyp, '<i class="' . $row['icono'] . '"></i> ' . $row['texto_anchor'], 'class="' . $row['clase_boton'] . '"');  ?>
+		               					<?php echo anchor($this->uri->segment(1) ."/". $this->uri->segment(2) ."/". $keyp, '<i class="' . $row['icono'] . '"></i> ' . $row['texto_anchor'], 'class="' . $row['clase_boton'] . '"');  ?>
 		                			<?php } ?>
 		                		<?php } ?>
 		                	<?php } ?>
@@ -133,7 +133,7 @@
 												if($tn > 0) {
 													$atributos['style'] = "display:none;";
 												}
-				               					echo anchor($this->uri->segment(1) ."/". $keyp ."/". $grupo['template_group_id'], '<i class="' . $row['icono'] . '"></i> ' . $row['texto_anchor'], $atributos);
+				               					echo anchor($this->uri->segment(1) ."/". $this->uri->segment(2) ."/". $keyp ."/". $grupo['template_group_id'], '<i class="' . $row['icono'] . '"></i> ' . $row['texto_anchor'], $atributos);
 				                				//Fix espacio entre botones
 				                				echo ' ';
 											}
@@ -167,19 +167,19 @@
 													if( $template['template_group_id'] == $grupo_id ) {
 														
 														echo "<tr>";
-														echo '<td width="70%"><a href="' . site_url() . '/admin/editar_templates/' . $template['template_id'] . '">' . $template['nombre'] . '</a></td>';
+														echo '<td width="70%"><a href="' . site_url() . '/adm/admin/editar_templates/' . $template['template_id'] . '">' . $template['nombre'] . '</a></td>';
 														echo '<td width="30%">';
 															echo '<a class="btn btn-mini" href="' . site_url() . "/" . $template['template_group_nombre'] . "/" . $template['nombre'];
 															echo '" target="_blank"><i class="icon-eye-open"></i></a> ';
 															if(isset($data_menu) && isset($data_menu['editar_templates'])) {
-																echo '<a class="btn btn-mini" href="' . site_url() . '/admin/editar_templates/' . $template['template_id'];
+																echo '<a class="btn btn-mini" href="' . site_url() . '/adm/admin/editar_templates/' . $template['template_id'];
 																echo '">Modificar</a> ';
 															}
 															
 															//Como el template index de cada grupo no se pueden eliminar, no mostramos el boton
 															if( $template['nombre'] != "index" ) {
 																if(isset($data_menu) && isset($data_menu['baja_template'])) {
-																	echo '<a class="btn btn-mini" href="' . site_url() . '/admin/baja_template/' . $template['template_id'] . '" ';
+																	echo '<a class="btn btn-mini" href="' . site_url() . '/adm/admin/baja_template/' . $template['template_id'] . '" ';
 																	echo '>Eliminar</a> ';
 																}
 															}
