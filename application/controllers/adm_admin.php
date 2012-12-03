@@ -242,7 +242,7 @@ class Adm_Admin extends MY_Controller {
 		if (!is_null($form = $this -> administracion_frr -> get_form_by_id($this -> uri -> segment(4)))) {
 			//Chequeamos si existen elementos en $_POST y si hay los procesamos
 			if ($this -> input -> post()) {
-				//Pareamos los datos del $_POST, los validamos y si son correctos obtenemos el conjuto de datos a insertar
+				//Parseamos los datos del $_POST, los validamos y si son correctos obtenemos el conjuto de datos a insertar
 				if (!is_null($datos = $this -> administracion_frr -> parser_post($this -> input -> post()))) {
 					$datos['forms_id'] = $this -> uri -> segment(4);
 					

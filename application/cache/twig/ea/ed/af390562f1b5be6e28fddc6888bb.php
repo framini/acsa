@@ -78,11 +78,14 @@ class __TwigTemplate_eaedaf390562f1b5be6e28fddc6888bb extends Twig_Template
 \t                        <div class=\"thumbnail\">
 \t                          <img src=\"http://placehold.it/300x200\" alt=\"\">
 \t                          <div class=\"caption\">
-\t                            <h3>";
+\t                            <h3><a href=\"";
                 // line 30
                 if (isset($context["entrada"])) { $_entrada_ = $context["entrada"]; } else { $_entrada_ = null; }
+                echo twig_escape_filter($this->env, Twig::url_sitio("main/item", $this->getAttribute($_entrada_, "entry_id")), "html", null, true);
+                echo "\">";
+                if (isset($context["entrada"])) { $_entrada_ = $context["entrada"]; } else { $_entrada_ = null; }
                 echo twig_escape_filter($this->env, $this->getAttribute($_entrada_, "titulo"), "html", null, true);
-                echo "</h3>
+                echo "</a></h3>
 \t                            <p>";
                 // line 31
                 if (isset($context["entrada"])) { $_entrada_ = $context["entrada"]; } else { $_entrada_ = null; }
@@ -92,7 +95,7 @@ class __TwigTemplate_eaedaf390562f1b5be6e28fddc6888bb extends Twig_Template
                 // line 32
                 if (isset($context["entrada"])) { $_entrada_ = $context["entrada"]; } else { $_entrada_ = null; }
                 echo twig_escape_filter($this->env, Twig::url_sitio("main/item", $this->getAttribute($_entrada_, "entry_id")), "html", null, true);
-                echo "\" class=\"btn btn-small btn-primary\">ver más</a></p>
+                echo "\" class=\"btn btn-mini btn-info\">ver más</a></p>
 \t                          </div>
 \t                        </div>
 \t                      </li>
@@ -134,6 +137,6 @@ class __TwigTemplate_eaedaf390562f1b5be6e28fddc6888bb extends Twig_Template
 
     public function getDebugInfo()
     {
-        return array (  118 => 45,  116 => 44,  108 => 38,  102 => 37,  93 => 32,  88 => 31,  83 => 30,  77 => 26,  73 => 25,  68 => 24,  59 => 17,  50 => 15,  44 => 14,  39 => 13,  31 => 7,  29 => 6,  25 => 4,  23 => 3,  19 => 1,);
+        return array (  121 => 45,  119 => 44,  111 => 38,  105 => 37,  96 => 32,  91 => 31,  83 => 30,  77 => 26,  73 => 25,  68 => 24,  59 => 17,  50 => 15,  44 => 14,  39 => 13,  31 => 7,  29 => 6,  25 => 4,  23 => 3,  19 => 1,);
     }
 }

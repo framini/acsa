@@ -7,87 +7,88 @@ class __TwigTemplate_c6d27e4fedc80c5c0f775008de39f81a extends Twig_Template
     {
         parent::__construct($env);
 
-        $this->parent = false;
+        $this->parent = $this->env->loadTemplate("frr_temp/templates_base/item.html");
 
         $this->blocks = array(
+            'title' => array($this, 'block_title'),
+            'contenido' => array($this, 'block_contenido'),
         );
+    }
+
+    protected function doGetParent(array $context)
+    {
+        return "frr_temp/templates_base/item.html";
     }
 
     protected function doDisplay(array $context, array $blocks = array())
     {
-        // line 1
-        echo "<!DOCTYPE html>
-<html lang=\"en\">
-    ";
-        // line 3
-        $this->env->loadTemplate("frr_temp/includes/head.html")->display($context);
-        // line 4
-        echo "    <body>
-    
-        ";
-        // line 6
-        $this->env->loadTemplate("frr_temp/includes/menu.html")->display($context);
-        // line 7
-        echo "        
-        <div class=\"container\">
-            <div id=\"wrapper\">
-                <div class=\"row-fluid\">
+        $this->parent->display($context, array_merge($this->blocks, $blocks));
+    }
 
-                    
+    // line 2
+    public function block_title($context, array $blocks = array())
+    {
+        echo " ";
+        if (isset($context["contenido_home_items"])) { $_contenido_home_items_ = $context["contenido_home_items"]; } else { $_contenido_home_items_ = null; }
+        echo twig_escape_filter($this->env, $this->getAttribute($this->getAttribute($_contenido_home_items_, "14", array(), "array"), "titulo"), "html", null, true);
+        echo " ";
+    }
+
+    // line 4
+    public function block_contenido($context, array $blocks = array())
+    {
+        // line 5
+        echo "        
+      
                         
-                      ";
-        // line 14
+      ";
+        // line 8
+        if (isset($context["articulos"])) { $_articulos_ = $context["articulos"]; } else { $_articulos_ = null; }
         $context['_parent'] = (array) $context;
-        $context['_seq'] = twig_ensure_traversable((isset($context["contenido_home_items"]) ? $context["contenido_home_items"] : null));
+        $context['_seq'] = twig_ensure_traversable($_articulos_);
         foreach ($context['_seq'] as $context["_key"] => $context["entrada"]) {
-            // line 15
-            echo "                      \t";
-            if ($this->getAttribute((isset($context["entrada"]) ? $context["entrada"] : null), "imagen_item")) {
-                // line 16
-                echo "                            <div class=\"page-header\">
-                                <h1>";
-                // line 17
-                echo twig_escape_filter($this->env, $this->getAttribute((isset($context["entrada"]) ? $context["entrada"] : null), "titulo"), "html", null, true);
+            // line 9
+            echo "          ";
+            if (isset($context["entrada"])) { $_entrada_ = $context["entrada"]; } else { $_entrada_ = null; }
+            if ($this->getAttribute($_entrada_, "articulos_imagen")) {
+                // line 10
+                echo "            <div class=\"page-header\">
+                <h1>";
+                // line 11
+                if (isset($context["entrada"])) { $_entrada_ = $context["entrada"]; } else { $_entrada_ = null; }
+                echo twig_escape_filter($this->env, $this->getAttribute($_entrada_, "titulo"), "html", null, true);
                 echo "</h1>
-                                <small><span class=\"label label-info\"><small>Por ";
-                // line 18
-                echo twig_escape_filter($this->env, $this->getAttribute((isset($context["entrada"]) ? $context["entrada"] : null), "autor"), "html", null, true);
+                <small><span class=\"label label-info\"><small>Por ";
+                // line 12
+                if (isset($context["entrada"])) { $_entrada_ = $context["entrada"]; } else { $_entrada_ = null; }
+                echo twig_escape_filter($this->env, $this->getAttribute($_entrada_, "autor"), "html", null, true);
                 echo " el ";
-                echo twig_escape_filter($this->env, $this->getAttribute((isset($context["entrada"]) ? $context["entrada"] : null), "entry_date"), "html", null, true);
+                if (isset($context["entrada"])) { $_entrada_ = $context["entrada"]; } else { $_entrada_ = null; }
+                echo twig_escape_filter($this->env, $this->getAttribute($_entrada_, "entry_date"), "html", null, true);
                 echo "</small></span></small>
-                            </div>
-                            
-                            <img src=\"";
-                // line 21
-                echo twig_escape_filter($this->env, $this->getAttribute((isset($context["entrada"]) ? $context["entrada"] : null), "imagen_item"), "html", null, true);
+            </div>
+            
+            <img src=\"";
+                // line 15
+                if (isset($context["entrada"])) { $_entrada_ = $context["entrada"]; } else { $_entrada_ = null; }
+                echo twig_escape_filter($this->env, $this->getAttribute($_entrada_, "imagen_item"), "html", null, true);
                 echo "\" class=\"img-rounded pull-left margin-right-bottom-10\">
-                            <p> ";
-                // line 22
-                echo $this->getAttribute((isset($context["entrada"]) ? $context["entrada"] : null), "contenido");
+            <p> ";
+                // line 16
+                if (isset($context["entrada"])) { $_entrada_ = $context["entrada"]; } else { $_entrada_ = null; }
+                echo $this->getAttribute($_entrada_, "articulos_contenido");
                 echo " </p>
-                      \t";
+          ";
             }
-            // line 24
-            echo "                      ";
+            // line 18
+            echo "      ";
         }
         $_parent = $context['_parent'];
         unset($context['_seq'], $context['_iterated'], $context['_key'], $context['entrada'], $context['_parent'], $context['loop']);
         $context = array_merge($_parent, array_intersect_key($context, $_parent));
-        // line 25
-        echo "                    
-                </div>
-            </div><!--wrapper-->
-        </div><!--container main-->
-        
-        ";
-        // line 30
-        $this->env->loadTemplate("frr_temp/includes/footer.html")->display($context);
-        // line 31
-        echo "        
-    \t<script src=\"http://code.jquery.com/jquery-1.8.2.min.js\"></script>
-        <script src=\"http://localhost/argc/index.php/js/bootstrap-min-js\"></script>
-    </body>
-</html>";
+        // line 19
+        echo "      
+";
     }
 
     public function getTemplateName()
@@ -102,6 +103,6 @@ class __TwigTemplate_c6d27e4fedc80c5c0f775008de39f81a extends Twig_Template
 
     public function getDebugInfo()
     {
-        return array (  86 => 31,  84 => 30,  77 => 25,  71 => 24,  66 => 22,  62 => 21,  54 => 18,  50 => 17,  47 => 16,  44 => 15,  40 => 14,  31 => 7,  29 => 6,  25 => 4,  23 => 3,  19 => 1,);
+        return array (  90 => 19,  84 => 18,  78 => 16,  73 => 15,  63 => 12,  58 => 11,  55 => 10,  51 => 9,  46 => 8,  41 => 5,  38 => 4,  29 => 2,);
     }
 }
