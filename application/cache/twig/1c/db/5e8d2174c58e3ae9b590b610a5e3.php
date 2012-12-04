@@ -44,7 +44,10 @@ class __TwigTemplate_1cdb5e8d2174c58e3ae9b590b610a5e3 extends Twig_Template
         echo "\">Articulos</a>
                   </li>
                   <li>
-                    <a href=\"#\">Link</a>
+                   <a href=\"";
+        // line 15
+        echo twig_escape_filter($this->env, Twig::url_sitio("noticias/"), "html", null, true);
+        echo "\">Noticias</a>
                   </li>
                 </ul>
               </div>
@@ -66,6 +69,6 @@ class __TwigTemplate_1cdb5e8d2174c58e3ae9b590b610a5e3 extends Twig_Template
 
     public function getDebugInfo()
     {
-        return array (  19 => 1,  64 => 5,  61 => 4,  53 => 20,  51 => 19,  45 => 15,  43 => 12,  37 => 9,  31 => 8,  28 => 4,  26 => 6,  22 => 1,  105 => 35,  90 => 27,  83 => 24,  75 => 14,  71 => 21,  67 => 19,  60 => 17,  57 => 16,  52 => 13,  47 => 12,  38 => 5,  35 => 9,  29 => 2,);
+        return array (  49 => 15,  19 => 1,  75 => 14,  61 => 4,  53 => 20,  45 => 15,  43 => 12,  37 => 9,  31 => 8,  28 => 4,  26 => 6,  22 => 1,  98 => 35,  84 => 27,  78 => 24,  72 => 23,  68 => 21,  64 => 5,  58 => 17,  56 => 16,  51 => 19,  47 => 12,  38 => 5,  35 => 9,  29 => 2,);
     }
 }

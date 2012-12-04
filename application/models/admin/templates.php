@@ -103,7 +103,11 @@ class Templates extends CI_Model
 		
 		$row = $query->row_array();
 		
-		return $row['data'];
+		if( count($row) > 0 ) {
+			return $row['data'];
+		} else {
+			return NULL;
+		}
 	}
 	
 	/**
@@ -113,7 +117,7 @@ class Templates extends CI_Model
 
 		$campos = "";
 		$indice = 0;
-		
+
 		foreach($fields_grupo_fields as $field) {
 			//Fd es el alias de form_data
 			//field_id_ es el prefijo que tienen todas las columnas en forms data

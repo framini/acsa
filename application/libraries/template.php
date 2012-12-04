@@ -469,6 +469,11 @@ class Template
 		//Primero obtenemos el template
 		$this->template = $this->obtener_template($template_group, $template);
 		
+		//Si no existe el template, mostramos el 404
+		if( is_null($this->template) ) {
+			show_404();
+		}
+		
 		$this->CI->load->library('parser_frr');
 		
 		//TODO: Poder seleccionar si el parseo del PHP se hace en el input o el output.

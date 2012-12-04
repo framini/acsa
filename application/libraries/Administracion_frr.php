@@ -609,9 +609,9 @@ class Administracion_frr {
 		if(empty($this->error)) {
 			if($this->ci->templates->create_template($data, $grupo_id)) {
 				//Creamos el file fisico del template
-				$nombre_grupo = $this->ci->grupos_templates->get_nombre_grupo_template_by_id($grupo_id)->nombre;
+				//$nombre_grupo = $this->ci->grupos_templates->get_nombre_grupo_template_by_id($grupo_id)->nombre;
 				
-				$this->ci->template->obtener_y_parsear($nombre_grupo, $nombre, $extension);
+				//$this->ci->template->obtener_y_parsear($nombre_grupo, $nombre, $extension);
 					
 				return true;
 			} 

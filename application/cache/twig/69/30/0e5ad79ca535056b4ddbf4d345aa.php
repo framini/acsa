@@ -1,7 +1,7 @@
 <?php
 
-/* frr_temp/main/item.html */
-class __TwigTemplate_5fd55f0e0ca81df5fcba6cd6ef24adad extends Twig_Template
+/* frr_temp/etster/item.html */
+class __TwigTemplate_69300e5ad79ca535056b4ddbf4d345aa extends Twig_Template
 {
     public function __construct(Twig_Environment $env)
     {
@@ -29,7 +29,7 @@ class __TwigTemplate_5fd55f0e0ca81df5fcba6cd6ef24adad extends Twig_Template
     public function block_title($context, array $blocks = array())
     {
         echo " ";
-        echo twig_escape_filter($this->env, $this->getAttribute($this->getAttribute((isset($context["contenido_home_items"]) ? $context["contenido_home_items"] : null), "14", array(), "array"), "titulo"), "html", null, true);
+        echo twig_escape_filter($this->env, $this->getAttribute($this->getAttribute((isset($context["contenido_home_items"]) ? $context["contenido_home_items"] : null), "", array(), "array"), "titulo"), "html", null, true);
         echo " ";
     }
 
@@ -85,7 +85,7 @@ class __TwigTemplate_5fd55f0e0ca81df5fcba6cd6ef24adad extends Twig_Template
 
     public function getTemplateName()
     {
-        return "frr_temp/main/item.html";
+        return "frr_temp/etster/item.html";
     }
 
     public function isTraitable()
