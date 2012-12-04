@@ -1,13 +1,14 @@
 -- phpMyAdmin SQL Dump
--- version 3.3.9
+-- version 3.5.1
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Dec 03, 2012 at 12:13 AM
--- Server version: 5.1.53
--- PHP Version: 5.3.4
+-- Generation Time: Dec 04, 2012 at 04:56 PM
+-- Server version: 5.5.24-log
+-- PHP Version: 5.4.3
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
+SET time_zone = "+00:00";
 
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -40,57 +41,8 @@ CREATE TABLE IF NOT EXISTS `ci_sessions` (
 --
 
 INSERT INTO `ci_sessions` (`session_id`, `ip_address`, `user_agent`, `last_activity`, `user_data`) VALUES
-('00867a256af0aab7a961a4b5bcd63991', '127.0.0.1', 'Java/1.6.0_24', 1354492145, ''),
-('0556f751c7053152acb3f3014153a36c', '127.0.0.1', 'Java/1.6.0_24', 1354491384, ''),
-('071b2f2fb7d73dca257da2a7f4ff758d', '127.0.0.1', 'Java/1.6.0_24', 1354493454, ''),
-('0be1ff36c2c6063f5639c3080cee4591', '127.0.0.1', 'Java/1.6.0_24', 1354492240, ''),
-('0da2068463325ad07b0e82b97a073156', '127.0.0.1', 'Java/1.6.0_24', 1354491384, ''),
-('10bf636a762f9e8da052d19cec3da4f2', '127.0.0.1', 'Java/1.6.0_24', 1354493461, ''),
-('11cdc415201295d9e31d14cefeacd525', '127.0.0.1', 'Java/1.6.0_24', 1354492138, ''),
-('21e161bca145f670774e0851f15bce49', '127.0.0.1', 'Java/1.6.0_24', 1354492377, ''),
-('27f3bd9acfa3ba843f6e84abda732b13', '127.0.0.1', 'Java/1.6.0_24', 1354492037, ''),
-('29c0998f68a5ed48cdc99f60b2a61429', '127.0.0.1', 'Java/1.6.0_24', 1354492778, ''),
-('2a75e79adb24ca654aa2dad9f6a7fc3e', '127.0.0.1', 'Java/1.6.0_24', 1354492428, ''),
-('33c71fade74a3152fd3d9fbbf978dbc9', '127.0.0.1', 'Java/1.6.0_24', 1354492110, ''),
-('39f7550e0f9c39786a87a4ad3cb61eec', '127.0.0.1', 'Java/1.6.0_24', 1354492071, ''),
-('3bd047c572864ea3d58bdfdf744e4d77', '127.0.0.1', 'Java/1.6.0_24', 1354492109, ''),
-('3dd814d586c885b579607c1a876d8b7e', '127.0.0.1', 'Java/1.6.0_24', 1354492140, ''),
-('42c2f904023689a22bbfbbe0aee5de60', '127.0.0.1', 'Java/1.6.0_24', 1354493299, ''),
-('4d312aa2df0cbc63fa6b1f437661b763', '127.0.0.1', 'Java/1.6.0_24', 1354493460, ''),
-('5c72a987d7822cb66e33a9e1a067e794', '127.0.0.1', 'Java/1.6.0_24', 1354492378, ''),
-('5e30550e8b285dd71b47fa0e6a09b143', '127.0.0.1', 'Java/1.6.0_24', 1354492595, ''),
-('5e9800107e3a2a7e0c4589d59475993a', '127.0.0.1', 'Java/1.6.0_24', 1354491413, ''),
-('5f69ad80908bcdc85538b8051a03f3db', '127.0.0.1', 'Java/1.6.0_24', 1354492240, ''),
-('5f958630c283d3506f49143e112c1312', '127.0.0.1', 'Java/1.6.0_24', 1354492428, ''),
-('611a8944be447eca29580ec506d0511c', '127.0.0.1', 'Java/1.6.0_24', 1354492145, ''),
-('613e2f0425c1610072ef2e4e8722d365', '127.0.0.1', 'Java/1.6.0_24', 1354493461, ''),
-('73bfc786dc70425cf2447c01687e0456', '127.0.0.1', 'Java/1.6.0_24', 1354493460, ''),
-('755fce949a74a3e47110d9ccd0674daa', '127.0.0.1', 'Java/1.6.0_24', 1354491412, ''),
-('88e7c85de2a30e85602144c61140148a', '127.0.0.1', 'Java/1.6.0_24', 1354492072, ''),
-('8e0e402c97a17b3d7c2579f02b4eb5b9', '127.0.0.1', 'Java/1.6.0_24', 1354493453, ''),
-('8f5f5b55ce1fad26379011d88b6cbb23', '127.0.0.1', 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.91 Safari/537.11', 1354490212, 'a:7:{s:9:"user_data";s:0:"";s:7:"user_id";s:1:"1";s:8:"username";s:4:"fran";s:10:"empresa_id";s:1:"1";s:6:"status";s:1:"1";s:8:"es_admin";s:1:"1";s:7:"empresa";s:101:"O:7:"Empresa":3:{s:6:"nombre";s:18:"Argentina Clearing";s:4:"cuit";s:9:"123456789";s:2:"id";s:1:"1";}";}'),
-('9a7874e3e91b9a05418081434324a8ab', '127.0.0.1', 'Java/1.6.0_24', 1354492144, ''),
-('9b55edd800e231caa76c12bd20b186cb', '127.0.0.1', 'Java/1.6.0_24', 1354492595, ''),
-('9f8d4396c10bce2c8f6de32bccd99f2f', '127.0.0.1', 'Java/1.6.0_24', 1354492139, ''),
-('a1dad49ac10b1176b9d2b4ea2da4a46d', '127.0.0.1', 'Java/1.6.0_24', 1354491681, ''),
-('ad0c525c75e6f69bb1a685d39c2ef064', '127.0.0.1', 'Java/1.6.0_24', 1354491383, ''),
-('bc596967a94b8a2610b63563114edf3a', '127.0.0.1', 'Java/1.6.0_24', 1354492779, ''),
-('bfbf38d21094e073275f3ce7ed6784f6', '127.0.0.1', 'Java/1.6.0_24', 1354491681, ''),
-('c45bab60a0415982b6498bd87e7deb78', '127.0.0.1', 'Java/1.6.0_24', 1354492594, ''),
-('c643847ff562684dfedf45f927bcae3d', '127.0.0.1', 'Java/1.6.0_24', 1354492072, ''),
-('c896c758080e6b4bf5403bc64df63b42', '127.0.0.1', 'Java/1.6.0_24', 1354492779, ''),
-('d65dc49b77eb38b84da6c93a0aa6218a', '127.0.0.1', 'Java/1.6.0_24', 1354493453, ''),
-('d9f740451846377ac812a838337ddf0f', '127.0.0.1', 'Java/1.6.0_24', 1354492037, ''),
-('dca5d2fbbb225ba761a83dddc9a5f385', '127.0.0.1', 'Java/1.6.0_24', 1354493298, ''),
-('dd881f52605f12b6f1b896554f80fc30', '127.0.0.1', 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.91 Safari/537.11', 1354493243, 'a:7:{s:9:"user_data";s:0:"";s:7:"user_id";s:1:"1";s:8:"username";s:4:"fran";s:10:"empresa_id";s:1:"1";s:6:"status";s:1:"1";s:8:"es_admin";s:1:"1";s:7:"empresa";s:101:"O:7:"Empresa":3:{s:6:"nombre";s:18:"Argentina Clearing";s:4:"cuit";s:9:"123456789";s:2:"id";s:1:"1";}";}'),
-('e6da23e41f072116baefea2fe1522a48', '127.0.0.1', 'Java/1.6.0_24', 1354491413, ''),
-('e74a36ff3eabca2024b6315531d53a86', '127.0.0.1', 'Java/1.6.0_24', 1354492427, ''),
-('e7efe6fdf0de480c277c3c4ebab302fd', '127.0.0.1', 'Java/1.6.0_24', 1354492109, ''),
-('e8a174daf2be9640da5adb5e19815356', '127.0.0.1', 'Java/1.6.0_24', 1354492240, ''),
-('ebe9b43c173428f0451978384c3fb6fb', '127.0.0.1', 'Java/1.6.0_24', 1354492036, ''),
-('f097a23c316b9e49b399313e5cdc94cd', '127.0.0.1', 'Java/1.6.0_24', 1354493299, ''),
-('f760a364ac848d1e1653a1c55b35b945', '127.0.0.1', 'Java/1.6.0_24', 1354492377, ''),
-('f87d8196c9a0c9f540f6350ffd16f6cd', '127.0.0.1', 'Java/1.6.0_24', 1354491681, '');
+('5fe58659a319926360f20a9408d6335f', '127.0.0.1', 'Mozilla/5.0 (Windows NT 6.1; rv:16.0) Gecko/20100101 Firefox/16.0', 1354633217, 'a:7:{s:9:"user_data";s:0:"";s:7:"user_id";s:1:"2";s:8:"username";s:6:"quique";s:10:"empresa_id";s:1:"3";s:6:"status";s:1:"1";s:8:"es_admin";s:1:"0";s:7:"empresa";s:90:"O:7:"Empresa":3:{s:6:"nombre";s:12:"Warrantera 2";s:4:"cuit";s:4:"1234";s:2:"id";s:1:"3";}";}'),
+('feb3002628922a15e60ef86330a6a861', '127.0.0.1', 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.64 Safari/537.11', 1354639612, 'a:7:{s:9:"user_data";s:0:"";s:7:"user_id";s:1:"1";s:8:"username";s:4:"fran";s:10:"empresa_id";s:1:"1";s:6:"status";s:1:"1";s:8:"es_admin";s:1:"1";s:7:"empresa";s:101:"O:7:"Empresa":3:{s:6:"nombre";s:18:"Argentina Clearing";s:4:"cuit";s:9:"123456789";s:2:"id";s:1:"1";}";}');
 
 -- --------------------------------------------------------
 
@@ -180,7 +132,7 @@ CREATE TABLE IF NOT EXISTS `ewarrant` (
   `empresa_cuit` int(11) NOT NULL,
   `precio_ponderado` float NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=19 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=20 ;
 
 --
 -- Dumping data for table `ewarrant`
@@ -192,10 +144,11 @@ INSERT INTO `ewarrant` (`id`, `codigo`, `cuentaregistro_depositante_id`, `cuenta
 (14, '123456', 5, 5, 'Trigo', 123, 'asda asdas da', '2012-02-17 18:01:56', 1, 2, 0, 3, 'Warrantera 2', 1234, 35055),
 (10, '000002', 5, 5, '', 2000, 'None', '2011-10-31 20:48:53', 0, 2, 1, 3, 'Warrantera 2', 1234, 570000),
 (11, '000005', 5, 5, 'Soja', 21, 'sadasd', '2011-11-01 12:57:41', 1, 2, 1, 3, 'Warrantera 2', 1234, 26775),
-(12, '0000010', 5, 5, 'Soja', 2000, 'Ninguna', '2011-11-15 21:04:41', 0, 2, 0, 3, 'Warrantera 2', 1234, 2.55e+006),
-(13, '00000523', 5, 5, 'Soja', 78963, 'None', '2012-02-14 17:46:35', 0, 2, 0, 3, 'Warrantera 2', 1234, 1.00678e+008),
+(12, '0000010', 5, 5, 'Soja', 2000, 'Ninguna', '2011-11-15 21:04:41', 0, 2, 0, 3, 'Warrantera 2', 1234, 2550000),
+(13, '00000523', 5, 5, 'Soja', 78963, 'None', '2012-02-14 17:46:35', 0, 2, 0, 3, 'Warrantera 2', 1234, 100678000),
 (17, '456', 7, 7, 'Trigo', 78, 'tyu tyutyu ty utyuty utyu tyu tyutuytutyutyutyu', '2012-02-17 18:09:19', 0, 2, 0, 3, 'Warrantera 2', 1234, 22230),
-(18, '2222233311', 8, 8, 'Soja', 222, 'sadsadsad', '2012-12-02 15:43:03', 1, 1, 0, 1, 'Argentina Clearing', 123456789, 283050);
+(18, '2222233311', 8, 8, 'Soja', 222, 'sadsadsad', '2012-12-02 15:43:03', 1, 1, 0, 1, 'Argentina Clearing', 123456789, 283050),
+(19, '020202', 8, 8, 'Soja', 200, 'asd', '2012-12-04 16:36:59', 1, 1, 0, 1, 'Argentina Clearing', 123456789, 255000);
 
 -- --------------------------------------------------------
 
@@ -411,11 +364,6 @@ CREATE TABLE IF NOT EXISTS `login_attempts` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=4 ;
 
---
--- Dumping data for table `login_attempts`
---
-
-
 -- --------------------------------------------------------
 
 --
@@ -491,7 +439,7 @@ CREATE TABLE IF NOT EXISTS `productos` (
   `producto_id` int(11) NOT NULL AUTO_INCREMENT,
   `nombre` varchar(50) NOT NULL,
   `precio` float NOT NULL,
-  `calidad` varchar(50) NOT NULL,
+  `calidad` int(11) NOT NULL,
   `aforo` int(11) NOT NULL,
   PRIMARY KEY (`producto_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=7 ;
@@ -501,7 +449,7 @@ CREATE TABLE IF NOT EXISTS `productos` (
 --
 
 INSERT INTO `productos` (`producto_id`, `nombre`, `precio`, `calidad`, `aforo`) VALUES
-(1, 'Soja', 50, 'Fabrica', 2);
+(1, 'Soja', 50, 1, 2);
 
 -- --------------------------------------------------------
 
@@ -523,7 +471,7 @@ CREATE TABLE IF NOT EXISTS `roles` (
 --
 
 INSERT INTO `roles` (`role_id`, `nombre`, `descripcion`, `empresa_id`, `tipo_empresa_id`) VALUES
-(1, 'Admin', 'UN ADMIN MODSADASD', '1', 1),
+(1, 'Admin', 'UN ADMIN MODSADASD', '1', 2),
 (3, 'guest', 'es un guest', '1', 1),
 (51, 'moderador', 'Un Moderador', '2', 2);
 
@@ -538,24 +486,20 @@ CREATE TABLE IF NOT EXISTS `roles_permisos` (
   `role_id` int(30) NOT NULL,
   `permiso_id` int(30) NOT NULL,
   PRIMARY KEY (`role_permiso_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1098 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1156 ;
 
 --
 -- Dumping data for table `roles_permisos`
 --
 
 INSERT INTO `roles_permisos` (`role_permiso_id`, `role_id`, `permiso_id`) VALUES
-(151, 1, 6),
 (59, 3, 3),
 (60, 3, 4),
-(150, 1, 5),
-(149, 1, 4),
 (58, 3, 2),
 (57, 3, 1),
-(148, 1, 2),
-(147, 1, 1),
-(152, 1, 7),
-(153, 1, 8);
+(1155, 1, 48),
+(1154, 1, 47),
+(1153, 1, 46);
 
 -- --------------------------------------------------------
 
@@ -679,6 +623,29 @@ INSERT INTO `tipo_empresa` (`tipo_empresa_id`, `tipo_empresa`, `descripcion`) VA
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `tipo_producto`
+--
+
+CREATE TABLE IF NOT EXISTS `tipo_producto` (
+  `tipo_producto_id` int(11) NOT NULL AUTO_INCREMENT,
+  `descripcion` varchar(100) NOT NULL,
+  PRIMARY KEY (`tipo_producto_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
+
+--
+-- Dumping data for table `tipo_producto`
+--
+
+INSERT INTO `tipo_producto` (`tipo_producto_id`, `descripcion`) VALUES
+(1, 'Fabrica'),
+(2, 'Camara'),
+(3, 'Publico'),
+(4, 'Privado'),
+(5, 'Exterior');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `twitter`
 --
 
@@ -688,11 +655,6 @@ CREATE TABLE IF NOT EXISTS `twitter` (
   PRIMARY KEY (`id_cuenta`),
   UNIQUE KEY `usuario` (`usuario`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
-
---
--- Dumping data for table `twitter`
---
-
 
 -- --------------------------------------------------------
 
@@ -727,9 +689,9 @@ CREATE TABLE IF NOT EXISTS `users` (
 --
 
 INSERT INTO `users` (`user_id`, `empresa_id`, `username`, `password`, `email`, `role_id`, `activated`, `banned`, `ban_reason`, `new_password_key`, `new_password_requested`, `new_email`, `new_email_key`, `last_ip`, `last_login`, `created`, `modified`, `es_admin`) VALUES
-(1, 1, 'fran', '$P$BOd3bMRhe5jVnl7auEicOuJ.zyLunF.', 'framini@gmail.com', 1, 1, 0, NULL, NULL, NULL, NULL, NULL, '127.0.0.1', '2012-12-02 23:17:04', '2012-02-08 14:12:21', '2012-12-02 20:17:05', 1),
-(2, 3, 'quique', '$P$BWc1sneOmJCOstjNjtxJXxxucacnvU.', 'quiero_newage22@yahoo.com', 57, 1, 0, NULL, NULL, NULL, NULL, NULL, '127.0.0.1', '2012-12-02 01:17:12', '2012-02-16 14:53:20', '2012-12-01 22:17:12', 0),
-(11, 2, 'pepito_', '$P$BL0dvJs6x3m.MLhzpvvbncp951pc8R.', 'asdasd@d.com', 1, 1, 0, NULL, NULL, NULL, 'asdasdd@d.com', '28d617a7f3b1e3cedbe21c2fa567e1b8', '127.0.0.1', '2012-11-29 13:37:18', '2012-02-08 19:11:34', '2012-12-02 14:02:09', 0);
+(1, 1, 'fran', '$P$BOd3bMRhe5jVnl7auEicOuJ.zyLunF.', 'framini@gmail.com', 1, 1, 0, NULL, NULL, NULL, NULL, NULL, '127.0.0.1', '2012-12-04 13:12:15', '2012-02-08 14:12:21', '2012-12-04 13:12:15', 1),
+(2, 3, 'quique', '$P$BWc1sneOmJCOstjNjtxJXxxucacnvU.', 'quiero_newage22@yahoo.com', 1, 1, 0, NULL, NULL, NULL, NULL, NULL, '127.0.0.1', '2012-12-04 14:43:48', '2012-02-16 14:53:20', '2012-12-04 14:44:35', 0),
+(11, 2, 'pepito_', '$P$BL0dvJs6x3m.MLhzpvvbncp951pc8R.', 'asdasd@d.com', 1, 1, 0, NULL, NULL, NULL, 'asdasdd@d.com', '28d617a7f3b1e3cedbe21c2fa567e1b8', '127.0.0.1', '2012-11-29 13:37:18', '2012-02-08 19:11:34', '2012-12-02 17:02:09', 0);
 
 -- --------------------------------------------------------
 
@@ -745,11 +707,6 @@ CREATE TABLE IF NOT EXISTS `user_autologin` (
   `last_login` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`key_id`,`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
-
---
--- Dumping data for table `user_autologin`
---
-
 
 -- --------------------------------------------------------
 
@@ -776,3 +733,7 @@ INSERT INTO `user_profiles` (`id`, `user_id`, `country`, `website`) VALUES
 (22, 9, NULL, NULL),
 (24, 11, NULL, NULL),
 (29, 16, NULL, NULL);
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
