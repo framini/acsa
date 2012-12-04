@@ -32,6 +32,7 @@
     <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
     <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">-->
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="<?php echo base_url(); ?>js/modernizr.js"></script>
     <!--<script src="<?php echo base_url(); ?>bootstrap/js/jquery.js"></script>-->
   </head>
 

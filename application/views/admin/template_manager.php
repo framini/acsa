@@ -27,6 +27,7 @@
             			
             			var that = this;
             			
+            			//Objeto encargado de recordar el estado de grupoSeleccionado
             			var memento = (function() {
  
 						    var estado = "";
@@ -42,13 +43,14 @@
 						 
 						})();
             			
+            			//Objeto que indica el grupo que debe seleccionarse en la lista de grupos de template
             			var grupoSeleccionado = (function() {
- 
-						    var itemSeleccionado = $('.lista_grupos .link_grupos').first();
+ 							
+ 							//Por defecto el item seleccionado es el primero de la lista
+						    var itemSeleccionado = 0;
 						 
 						    return {
 						        setItemSeleccionado : function( item ) {
-						        	//console.log( "INICIALIZO EL VARLO DE grupoSeleccionado" );
             						this.itemSeleccionado = item;
 	            				},
 	            				getItemSeleccionado : function() {
@@ -60,12 +62,13 @@
 	            					return memento;
 	            				},
 	            				restoreMemento: function( memento ) {
-	            					this.estado = memento.getEstado();
+	            					this.setItemSeleccionado( memento.getEstado() );
 	            				}
 						    }
 						 
 						})();
             			
+            			//Objeto encargado de almacenar el memento
             			var careTaker = (function() {
  
 						    var memento = "";
@@ -73,14 +76,27 @@
 						    return {
 						        setMemento : function( m ) {
             						this.memento = m;
+            						
+            						estado = this.memento.getEstado();
+            						
+            						if( Modernizr.localstorage ) {
+            							//Almacenamos en el localStorage el memento
+            							localStorage.setItem( 'memento', estado );
+            						}
 	            				},
 	            				getMemento : function() {
-	            					return this.memento;
+	            					if( Modernizr.localstorage ) {
+            							//Obtenemos el memento del localStorage
+            							m = localStorage.getItem( 'memento' );
+            							            							
+            							return m;
+            						}
 	            				}
 						    }
 						 
 						})();
-            			
+						
+
             			//Ocultamos todos los templates a excepcion del primero y le damos la clase de activo
             			//$('.lista_templates').filter(':first').addClass('activo').end().not(':first').hide();
             			$('.lista_templates').filter(':first').addClass('activo');
@@ -95,14 +111,12 @@
             			
             			$('.lista_grupos').on('click', '.link_grupos', function(event) {
             				event.preventDefault();
-
-            				grupoSeleccionado.setItemSeleccionado( $(this) );
-            				
-            				//console.debug( grupoSeleccionado.crearMemento() );
-            				
+							
+							//Seleccionamos la posicion del elemento clickeado con respecto a la lista
+            				grupoSeleccionado.setItemSeleccionado( $(this).parent().index() );
+							
+							//Creamos el memento
             				careTaker.setMemento( grupoSeleccionado.crearMemento() );
-            				
-            				console.debug( careTaker );
 
             				//Le quitamos el focus al item del grupo activo
             				$('.active').removeClass('active');
@@ -123,6 +137,23 @@
 							$("[id='" + $(this).attr('id') + "-boton-eliminar']").addClass('bot-gt-activo').animate({opacity:'show'}, 800);
 							$("[id='" + $(this).attr('id') + "-boton-mod']").addClass('bot-mt-activo').animate({opacity:'show'}, 800);
             			});
+            			
+            			
+            			//Este codigo solo se va a ejecutar cuando la pagina cargue. En dicho caso
+						//si existe un memento, seleccionamos el estado existente en dicho memento
+						if( estadoPrevio = careTaker.getMemento() ) {
+								//Inicializamos el memento
+								memento.setEstado( estadoPrevio );
+								
+								//Hacemos el restore del estado
+            					grupoSeleccionado.restoreMemento( memento );
+            					
+            					//Hacemos la seleccion del ITEM que figure en grupoSeleccionado
+            					console.debug( $('.lista_grupos .link_grupos').eq( grupoSeleccionado.getItemSeleccionado() ) );
+            					$('.lista_grupos .link_grupos').eq( grupoSeleccionado.getItemSeleccionado() ).trigger('click');
+            					
+            			}
+            			
             		});
             	</script>
             	
