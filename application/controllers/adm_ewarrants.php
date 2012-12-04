@@ -2,6 +2,10 @@
 if (!defined('BASEPATH'))
 	exit('No direct script access allowed');
 
+
+require_once(APPPATH . 'clases/FinancieroCreatorImpl.php');
+require_once(APPPATH . 'clases/AgroCreatorImpl.php');
+
 class adm_Ewarrants extends MY_Controller {
 
 	public function __construct() {
@@ -331,18 +335,37 @@ class adm_Ewarrants extends MY_Controller {
 				$info['kilos'] = $this -> input -> post('kilos');
 				$info['precio'] = $producto -> precio;
 				$info['aforo'] = $producto -> aforo;
-
-				//Aplicamos Factory Method para crear instancias del tipo de producto
-				//y obtener el precio_ponderada para el eWarrant
-				$obj = new ProductosCreator();
-				//Obtenemos la instancia del Producto
-				//TODO: ESTO ESTA MAL, CORREGIRLO
-				$prod = new Producto();
-				$prod = $this -> productoscreator -> factory($tipo, $info);
+				
+				//Implementacion del Pattern Factory
+				if($tipo == "Fabrica" || $tipo == "Camara") {
+					$creatorAgro = new AgroCreatorImpl();
+					$prod = $creatorAgro->factory($tipo, $info );
+		
+		        } else if($tipo == "Publico" || $tipo == "Privado" || $tipo == "Exterior") {
+					$creatorFinanciero = new FinancieroCreatorImpl();
+					$prod = $creatorFinanciero->factory($tipo, $info );
+		        }
+				
 				$precio_ponderado = $prod -> get_precio_ponderado();
+
 			}//fin if producto != null
 
-			$data = array('codigo' => $this -> form_validation -> set_value('codigo'), 'cuentaregistro_depositante_id' => $this -> input -> post('cuentaregistro_id'), 'cuentaregistro_id' => $this -> input -> post('cuentaregistro_id'), 'producto' => $producto -> nombre, 'kilos' => $this -> form_validation -> set_value('kilos'), 'observaciones' => $this -> form_validation -> set_value('observaciones'), 'estado' => 1, 'emitido_por' => $user_id, 'firmado' => 0, 'empresa_id' => $empresa_id, 'empresa_nombre' => $datosEmpresa -> getNombre(), 'empresa_cuit' => $datosEmpresa -> getCuit(), 'precio_ponderado' => $precio_ponderado);
+			$data = array(
+				'codigo' => $this -> form_validation -> set_value('codigo'), 
+				'cuentaregistro_depositante_id' => $this -> input -> post('cuentaregistro_id'), 
+				'cuentaregistro_id' => $this -> input -> post('cuentaregistro_id'), 
+				'producto' => $producto -> nombre, 
+				'kilos' => $this -> form_validation -> set_value('kilos'), 
+				'observaciones' => $this -> form_validation -> set_value('observaciones'), 
+				'estado' => 1, 
+				'emitido_por' => $user_id, 
+				'firmado' => 0, 
+				'empresa_id' => $empresa_id, 
+				'empresa_nombre' => $datosEmpresa -> getNombre(), 
+				'empresa_cuit' => $datosEmpresa -> getCuit(), 
+				'precio_ponderado' => $precio_ponderado
+			);
+			
 			if ($this -> ewarrants_frr -> emitir($data)) {
 				$message = "El eWarrant se ha emitido correctamente!";
 				$this -> session -> set_flashdata('message', $message);

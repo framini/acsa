@@ -52,7 +52,7 @@ $autoload['packages'] = array();
 |	$autoload['libraries'] = array('database', 'session', 'xmlrpc');
 */
 
-$autoload['libraries'] = array('core', 'database', 'session', 'breadcrumb', 'template', 'auth_frr', 'fieldstypes_frr', 'administracion_frr', 'roles_frr', 'ewarrants_frr', 'empresas_frr', 'security', 'form_validation', 'producto', 'productoscreator');
+$autoload['libraries'] = array('core', 'database', 'session', 'breadcrumb', 'template', 'auth_frr', 'fieldstypes_frr', 'administracion_frr', 'roles_frr', 'ewarrants_frr', 'empresas_frr', 'security', 'form_validation');
 
 
 /*

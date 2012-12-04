@@ -2,18 +2,18 @@
 if (!defined('BASEPATH'))
 	exit('No direct script access allowed');
 
+//require (APPPATH . 'clases/Producto.php');
+
 /**
  * Clase Financiero
  *
  */
-class Financiero extends Producto {
+class FinancieroProductoImpl extends Producto {
+
 	private $aforo;
 	private $caso_percent;
 
 	function __construct() {
-		parent::__construct();
-
-		$ci = &get_instance();
 	}
 
 	function test() {
@@ -52,6 +52,14 @@ class Financiero extends Producto {
 		//Regla de negocio
 		//DDF = Cantidad * 100
 		return $this -> getCantidad() * 100;
+	}
+
+	function get_precio_ponderado() {
+		$this -> setCasoPercent();
+		$valor_nominal = $this -> calcular_valor_nominal();
+		$precio_ponderado = $this -> calcular_precio_ponderado($valor_nominal);
+
+		return $precio_ponderado;
 	}
 
 }

@@ -126,7 +126,8 @@ class Auth_frr
                                 $configuracion['empresa_id'] = $user->empresa_id;
                                 $configuracion['status'] = ($user->activated == 1) ? STATUS_ACTIVATED : STATUS_NOT_ACTIVATED;
                                 $configuracion['es_admin'] = $user->es_admin;
-
+								
+								//Implementacion del Pattern Prototype
                                 //Cargamos en la session el objeto con la info de la empresa a ser clonado para
                                 //ser utilizado cuando se da de alta un nuevo warrant
 
