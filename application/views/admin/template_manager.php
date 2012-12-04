@@ -21,9 +21,66 @@
 						$this->load->view('general/mensaje_operacion', $data); 
 					}
 	            ?>
-            	
+
             	<script type="text/javascript">
             		$(function() {
+            			
+            			var that = this;
+            			
+            			var memento = (function() {
+ 
+						    var estado = "";
+						 
+						    return {
+						        getEstado: function() {
+						            return this.estado;
+						        },
+						        setEstado: function( est ) {
+						            this.estado = est;
+						        }
+						    }
+						 
+						})();
+            			
+            			var grupoSeleccionado = (function() {
+ 
+						    var itemSeleccionado = $('.lista_grupos .link_grupos').first();
+						 
+						    return {
+						        setItemSeleccionado : function( item ) {
+						        	//console.log( "INICIALIZO EL VARLO DE grupoSeleccionado" );
+            						this.itemSeleccionado = item;
+	            				},
+	            				getItemSeleccionado : function() {
+	            					return this.itemSeleccionado;
+	            				},
+	            				crearMemento : function() {
+	            					memento.setEstado( this.getItemSeleccionado() );
+	            					
+	            					return memento;
+	            				},
+	            				restoreMemento: function( memento ) {
+	            					this.estado = memento.getEstado();
+	            				}
+						    }
+						 
+						})();
+            			
+            			var careTaker = (function() {
+ 
+						    var memento = "";
+						 
+						    return {
+						        setMemento : function( m ) {
+            						this.memento = m;
+	            				},
+	            				getMemento : function() {
+	            					return this.memento;
+	            				}
+						    }
+						 
+						})();
+            			
             			//Ocultamos todos los templates a excepcion del primero y le damos la clase de activo
             			//$('.lista_templates').filter(':first').addClass('activo').end().not(':first').hide();
             			$('.lista_templates').filter(':first').addClass('activo');
@@ -38,6 +95,15 @@
             			
             			$('.lista_grupos').on('click', '.link_grupos', function(event) {
             				event.preventDefault();
+
+            				grupoSeleccionado.setItemSeleccionado( $(this) );
+            				
+            				//console.debug( grupoSeleccionado.crearMemento() );
+            				
+            				careTaker.setMemento( grupoSeleccionado.crearMemento() );
+            				
+            				console.debug( careTaker );
+
             				//Le quitamos el focus al item del grupo activo
             				$('.active').removeClass('active');
             				//Se lo asignamos al item en el que se hizo click

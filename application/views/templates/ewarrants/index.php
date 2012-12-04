@@ -171,6 +171,7 @@
     <!-- Puesto en este punto por temas de performance -->
     <script src="<?php echo base_url(); ?>bootstrap/js/bootstrap-transition.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.9/jquery-ui.min.js"></script>
+    <script src="<?php echo base_url(); ?>js/underscore-min.js"></script>
     <script src="<?php echo base_url(); ?>bootstrap/js/bootstrap-alert.js"></script>
     <script src="<?php echo base_url(); ?>bootstrap/js/bootstrap-modal.js"></script>
     <script src="<?php echo base_url(); ?>bootstrap/js/bootstrap-dropdown.js"></script>
