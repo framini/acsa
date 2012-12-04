@@ -205,10 +205,16 @@ class Roles_frr {
 			if($this->ci->auth_frr->es_admin()) {
 				return true;
 			}
+			
 		 	//Si no tiene permisos relacionados a esta controladora, redireccionamos
 		 	if(is_null($permisos = $this->permisos_role_controladora($controladora))) {
              	return false;
          	} else {
+         		//Si estamos tratando de acceder al index de una controladora y el usuario tiene permisos en esta controladora
+         		//entonces tiene permiso
+         		if( $permiso == "index" && count($permisos) > 0 ) {
+         			return true;
+         		}
 				//Si el usuario no posee el permiso necesario para la accion que desea realizar redireccionamos
 				$retorno = false;
 				foreach ($permisos as $key => $value) {

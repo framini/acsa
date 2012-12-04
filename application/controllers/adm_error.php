@@ -11,8 +11,8 @@ class Adm_Error extends CI_Controller
 	}
 	
 	function m() {
-		//Con el segmento 3 especificariamos algun tipo custom de error
-		if($this->uri->segment(3)) {
+		//Con el segmento 4 especificariamos algun tipo custom de error
+		if($this->uri->segment(4)) {
 
 		} else {
 			$data['titulo'] = "No estas autorizado a ver esta página";

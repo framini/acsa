@@ -113,7 +113,7 @@
               
               ?>
               
-              <?php if( (isset($permisos) && is_array($permisos) && in_array("forms", $permisos)) || isset($admin) ) { ?>
+              <?php if( (isset($permisos) && is_array($permisos) && in_array("form", $permisos)) || isset($admin) ) { ?>
               <li class="dropdown <?php if($this->uri->segment(2) == $m_contenido['controladora'] && in_array($this->uri->segment(3), $m_contenido['submenu'], TRUE) ) echo "active" ?>">
 				<a href="#" class="dropdown-toggle" data-toggle="dropdown">
 				Contenido
@@ -124,9 +124,11 @@
 					<?php foreach($forms as $form) { ?>
 						 <li><?php echo anchor('adm/admin/form/' . $form['forms_id'], '<i class="icon-chevron-right"></i>' . $form['forms_titulo'] ); ?></li>
 					<?php } ?>
+					<?php if( (isset($permisos) && is_array($permisos) && in_array("editar_contenido", $permisos)) || isset($admin) ) { ?>
 					<li class="divider"></li>
 					<li class="nav-header"><span class="small menu">Editar:</span></li>
 					<li><?php echo anchor('adm/admin/editar_contenido', '<i class="icon-pencil"></i> Editar Contenido') ?></li>
+					<?php } ?>
 
 				</ul>
               </li>
@@ -141,7 +143,7 @@
 				<b class="caret"></b>
 				</a>
 				<ul class="dropdown-menu">
-					  <li><a href="#"><i class="icon-user"></i> Perfil</a></li>
+					  <!--<li><a href="#"><i class="icon-user"></i> Perfil</a></li>-->
 				      <li><?php echo anchor('adm/ew/logout', '<i class="icon-off"></i> Cerrar Sesión') ?></li>
 				</ul>
               </li>

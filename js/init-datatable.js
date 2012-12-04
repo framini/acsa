@@ -11,7 +11,7 @@ var objInit = {
 				sNext: "Siguiente",
 				sPrevious: "Anterior"
 		    },
-	    	sInfo: "Resultados Encontrados: <strong>_TOTAL_ </strong>",
+	    	sInfo: "Total: <strong>_TOTAL_ </strong>",
 			sInfoEmpty: "Resultados Encontrados: <strong>0 </strong>",
 			sInfoFiltered: "",
 			sLengthMenu: "Mostrar _MENU_ registros por p&aacute;gina",

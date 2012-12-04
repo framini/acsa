@@ -4,11 +4,12 @@ $precio_producto = isset($row_producto[0]['precio']) ? $row_producto[0]['precio'
 $calidad_producto = isset($row_producto[0]['calidad']) ? $row_producto[0]['calidad'] : set_value('calidad');
 $aforo_producto = isset($row_producto[0]['aforo']) ? $row_producto[0]['aforo'] : set_value('aforo');
 
+
 $nombre = array(
-                  'name'	=> 'nombre',
-                  'id'		=> 'nombre',
-                  'value'   => $nombre_producto,
-                  'class'   => 'span5',
+      'name'	=> 'nombre',
+      'id'		=> 'nombre',
+      'value'   => $nombre_producto,
+      'class'   => 'span5',
 );
 
 $precio = array(
@@ -132,15 +133,24 @@ $aforo = array(
 										</div>
 									</div>
 									
+
 									<div class="row">
-                                		<div class="span6 control-group <?php if(form_error($calidad['name']) != "") echo "error"; ?>">
-		                                    <?php echo form_label('Calidad: <i class="icon-asterisk"></i>', $calidad['id']); ?>
-		                                    <?php echo form_input($calidad); ?>
-		                                    	<?php if(form_error($calidad['name']) != "" || isset($errors[$calidad['name']])) {?>
-		                                    	<div class="alert alert-error error-gral span5"><?php echo form_error($calidad['name']); ?><?php echo isset($errors[$calidad['name']])?$errors[$calidad['name']]:''; ?></div>
-		                                    	<?php } ?>
-										</div>
-									</div>
+                                		<div class="span6 control-group">
+                                            	<?php echo form_label('Calidad', 'calidad'); ?></td>
+                                                <?php
+                                                    echo '<select name="calidad" class="listas-padding span5" id="calidad">';
+                                                    foreach($tipos_producto as $prd)
+                                                    {
+                                                       echo '<option value="' . $prd['tipo_producto_id'] . '"';
+													   if( $prd['tipo_producto_id'] == $calidad['value'] ) {
+													   	echo " selected='selected '";
+													   }
+													   echo '>' . $prd['descripcion'] . "</option>";
+                                                    }
+                                                    echo '</select>';
+                                                ?>
+                                          </div>
+                                    </div>
 									
 									<div class="row">
                                 		<div class="span6 control-group <?php if(form_error($aforo['name']) != "") echo "error"; ?>">

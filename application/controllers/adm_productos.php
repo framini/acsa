@@ -124,7 +124,8 @@ class Adm_Productos extends MY_Controller {
 			}
 
 			//$data['tipos_empresas'] = $this->empresas_frr->get_tipos_empresas();
-			$data = array();
+			$this -> load -> library('productos_frr');
+			$data['tipos_producto'] = $this->productos_frr->get_tipos_producto();
 
 			$this -> template -> set_content('productos/agregar_producto_form', $data);
 			$this -> template -> build();
@@ -210,7 +211,9 @@ class Adm_Productos extends MY_Controller {
 				$data['tb'] = "Modificar Producto";
 				//Asignamos un titulo para el encabezado del formulario
 				$data['tf'] = "Modificar Producto";
-
+				
+				$this -> load -> library('productos_frr');
+				$data['tipos_producto'] = $this->productos_frr->get_tipos_producto();
 				$this -> template -> set_content('productos/agregar_producto_form', $data);
 				$this -> template -> build();
 			} else {

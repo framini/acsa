@@ -331,7 +331,10 @@ class adm_Ewarrants extends MY_Controller {
 
 			$precio_ponderado = 0;
 			if ($producto) {
-				$tipo = $producto -> calidad;
+				
+				$this->load->library('productos_frr');
+				$tipo = $this->productos_frr->get_descripcion_producto_tipo_by_id( $producto -> calidad );
+				
 				$info['kilos'] = $this -> input -> post('kilos');
 				$info['precio'] = $producto -> precio;
 				$info['aforo'] = $producto -> aforo;

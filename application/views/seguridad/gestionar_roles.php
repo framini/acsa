@@ -68,7 +68,7 @@
 								               					} else {
 								               						$atributos = array('class' => $row['clase_boton']);
 								               					}
-								               					echo anchor($this->uri->segment(1) ."/". $this->uri->segment(1) ."/". $keyp . '/' .$role['role_id'], '<i class="' . $row['icono'] . '"></i> ' . $row['texto_anchor'], $atributos);
+								               					echo anchor($this->uri->segment(1) ."/". $this->uri->segment(2) ."/". $keyp . '/' .$role['role_id'], '<i class="' . $row['icono'] . '"></i> ' . $row['texto_anchor'], $atributos);
 								                				//Fix espacio entre botones
 								                				echo ' ';
 															}
