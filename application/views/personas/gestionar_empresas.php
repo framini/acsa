@@ -94,7 +94,7 @@
 								               							echo anchor($this->uri->segment(1) ."/". $this->uri->segment(2) ."/". $keyp . '/' .$empresa['empresa_id'], '<i class="' . $row['icono'] . '"></i> ' . $row['texto_anchor'], $atributos);
 								               						}
 								               					} else if($keyp == "eliminar_empresa") {
-								               						if($empresa['activated'] == 1) {
+								               						if( $empresa['activated'] == 1 && $empresa['owner'] == 0 ) {
 								               							echo anchor($this->uri->segment(1) ."/". $this->uri->segment(2) ."/". $keyp . '/' .$empresa['empresa_id'], '<i class="' . $row['icono'] . '"></i> ' . $row['texto_anchor'], $atributos);
 								               						}
 								               					} else {

@@ -395,6 +395,7 @@ class Empresas_frr {
                                 'cuit'      => $row->cuit,
                                 'fecha_alta'      => $row->fecha_alta,
                                 'activated'      => $row->activated,
+                                'owner'          => $row->owner
                        );
             }
 

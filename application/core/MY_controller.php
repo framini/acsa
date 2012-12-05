@@ -13,8 +13,9 @@ class MY_Controller extends CI_Controller
              die();
          }
 		 
-		 //Si el usuario logueado fue eliminado, tenemos que forzar su cierre de sesion
-		 if( !$this->auth_frr->user_exists() ) {
+		 //Si el usuario logueado fue eliminado, o la empresa a la cual pertenece fue desactivada
+		 //tenemos que forzar su cierre de sesion
+		 if( !$this->auth_frr->user_exists() || !$this->empresas_frr->is_empresa_activada( $this->auth_frr->get_empresa_id() ) ) {
 		 	$this->auth_frr->logout();
 			redirect('adm/ew');
             die();
