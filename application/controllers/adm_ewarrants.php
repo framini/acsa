@@ -191,7 +191,7 @@ class adm_Ewarrants extends MY_Controller {
 			$data['ewarrants'] = $this -> ewarrants_frr -> get_warrants_empresa_habilitados($empresa_id);
 		}
 
-		//Controlamos si el usuario tiene eWarrants para ser anular
+		//Controlamos si el usuario tiene eWarrants para anular
 		if ($data['ewarrants'] != null) {
 			if ($message = $this -> session -> flashdata('message')) {
 				$data['message'] = $message;

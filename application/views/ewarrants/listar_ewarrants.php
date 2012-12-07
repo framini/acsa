@@ -21,7 +21,7 @@
     $(function() {
         
         var datos = {};
-        	var dire = "<?php echo site_url('general'); ?>";
+        	var dire = "<?php echo site_url('adm/general'); ?>";
 			
 			////////////////////////////////////////////////////////////
 			//BOTONES Firmar
