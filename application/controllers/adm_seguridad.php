@@ -40,9 +40,15 @@ class Adm_Seguridad extends MY_Controller {
 	 * Cuando viene con datos en el post se usa para crear el role
 	 */
 	function nuevo_role() {
-		$data['permisos'] = $this -> roles_frr -> get_all_permisos();
-		if ($this -> auth_frr -> es_admin())
+
+		if ($this -> auth_frr -> es_admin()) {
 			$data['empresas'] = $this -> auth_frr -> get_empresas();
+			//En caso de ser admin buscamos todos los permisos disponibles
+			$data['permisos'] = $this -> roles_frr -> get_all_permisos();
+		} else {
+			//Solamente devolmos los permisos que no sean solo para admins
+			$data['permisos'] = $this -> roles_frr -> get_all_permisos_no_admin();
+		}
 		//titulo pagina
 		$data['t'] = 'Agregar Role';
 		//fa = form action
@@ -55,11 +61,10 @@ class Adm_Seguridad extends MY_Controller {
 
 		$this -> form_validation -> set_rules('nombre', 'Nombre de Role', 'trim|required|xss_clean');
 		$this -> form_validation -> set_rules('descripcion', 'Descripcion', 'trim|xss_clean');
-		if ($this -> auth_frr -> es_admin())
+		if ($this -> auth_frr -> es_admin()) {
 			$this -> form_validation -> set_rules('empresa_id', 'Empresa', 'required');
-
-		$data['permisos'] = $this -> roles_frr -> get_all_permisos();
-
+		}
+		
 		if ($this -> form_validation -> run()) {
 			$role = $this -> input -> post('nombre');
 			$descripcion = $this -> input -> post('descripcion');

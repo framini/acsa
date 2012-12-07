@@ -236,17 +236,15 @@ class Auth_frr
 	 }
         
         function is_warrantera() {
-            
-            $user_id = $this->get_user_id();
-            $user = $this->ci->users->get_user_by_id($user_id, true);
-            $empresa_id = $user->empresa_id;
+            $empresa_id = $this->get_empresa_id();
             
             $this->ci->load->model('auth/empresas');
+			
             $empresa = $this->ci->empresas->get_empresa_by_id($empresa_id);
             
             //Preguntamos si el id es warrantera
             // NOTA: Ver forma de implementar distinta esta comprobacion
-            if($empresa->tipo_empresa_id == 2) {
+            if(isset($empresa->tipo_empresa_id) && $empresa->tipo_empresa_id == 2) {
                 return true;
             } else {
                 return false;
@@ -255,9 +253,7 @@ class Auth_frr
         
         function is_argclearing() {
             
-            $user_id = $this->get_user_id();
-            $user = $this->ci->users->get_user_by_id($user_id, true);
-            $empresa_id = $user->empresa_id;
+            $empresa_id = $this->get_empresa_id();
             
             $this->ci->load->model('auth/empresas');
             $empresa = $this->ci->empresas->get_empresa_by_id($empresa_id);

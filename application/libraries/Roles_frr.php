@@ -285,6 +285,9 @@ class Roles_frr {
 	 * @return type
 	 */
 	function get_roles() {
+		
+		$data = array();
+		
 		//Si es invocada por un admin devolvemos todos los roles disponibles
 		if ($this -> ci -> auth_frr -> es_admin()) {
 			$roles = $this -> ci -> roles_model -> get_roles();
@@ -294,7 +297,6 @@ class Roles_frr {
 				$data[] = array('nombre' => $row -> nombre, 'descripcion' => $row -> descripcion, 'role_id' => $row -> role_id, 'empresa' => $empresa -> nombre);
 			}
 
-			return $data;
 		} else {
 			$roles = $this -> ci -> roles_model -> get_roles($this -> ci -> auth_frr -> get_empresa_id());
 			if ($roles) {
@@ -304,8 +306,9 @@ class Roles_frr {
 				}
 			}
 
-			return $data;
 		}
+		
+		return $data;
 
 	}
 
