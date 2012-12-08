@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Dec 05, 2012 at 01:09 AM
+-- Generation Time: Dec 08, 2012 at 11:42 PM
 -- Server version: 5.1.53
 -- PHP Version: 5.3.4
 
@@ -40,14 +40,8 @@ CREATE TABLE IF NOT EXISTS `ci_sessions` (
 --
 
 INSERT INTO `ci_sessions` (`session_id`, `ip_address`, `user_agent`, `last_activity`, `user_data`) VALUES
-('3a38337c3348403f80633e3d3271af7f', '127.0.0.1', 'Java/1.6.0_24', 1354669671, ''),
-('3f7dc1649a376ed185e3fcbd519422f6', '127.0.0.1', 'Java/1.6.0_24', 1354668149, ''),
-('54516dafe229f29f4fe65bf921fe4f7a', '127.0.0.1', 'Java/1.6.0_24', 1354669671, ''),
-('5ad5a968dfcde4da8f6e0a2b42bfd59d', '127.0.0.1', 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:17.0) Gecko/17.0 Firefox/17.0', 1354669663, 'a:7:{s:9:"user_data";s:0:"";s:7:"user_id";s:1:"2";s:8:"username";s:6:"quique";s:10:"empresa_id";s:1:"3";s:6:"status";s:1:"1";s:8:"es_admin";s:1:"0";s:7:"empresa";s:90:"O:7:"Empresa":3:{s:6:"nombre";s:12:"Warrantera 2";s:4:"cuit";s:4:"1234";s:2:"id";s:1:"3";}";}'),
-('6e97f5728f6c2f56dc05e299e5afaf3e', '127.0.0.1', 'Java/1.6.0_24', 1354668139, ''),
-('a8e8eadd2e4422a0503e136630d16e6a', '127.0.0.1', 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.91 Safari/537.11', 1354669722, 'a:7:{s:9:"user_data";s:0:"";s:7:"user_id";s:1:"1";s:8:"username";s:4:"fran";s:10:"empresa_id";s:1:"1";s:6:"status";s:1:"1";s:8:"es_admin";s:1:"1";s:7:"empresa";s:101:"O:7:"Empresa":3:{s:6:"nombre";s:18:"Argentina Clearing";s:4:"cuit";s:9:"123456789";s:2:"id";s:1:"1";}";}'),
-('be4f3f4fe086cf81919dedfa9deb2466', '127.0.0.1', 'Java/1.6.0_24', 1354669671, ''),
-('c749fcaf341ec3b1868b9c198d1e8b32', '127.0.0.1', 'Java/1.6.0_24', 1354668150, '');
+('19f853ebb1dd781991498fd707860d6e', '127.0.0.1', 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.91 Safari/537.11', 1355009725, 'a:7:{s:9:"user_data";s:0:"";s:7:"user_id";s:1:"1";s:8:"username";s:4:"fran";s:10:"empresa_id";s:1:"1";s:6:"status";s:1:"1";s:8:"es_admin";s:1:"1";s:7:"empresa";s:101:"O:7:"Empresa":3:{s:6:"nombre";s:18:"Argentina Clearing";s:4:"cuit";s:9:"123456789";s:2:"id";s:1:"1";}";}'),
+('e54c839d120573a0cde70e6f7547fdad', '127.0.0.1', 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:17.0) Gecko/17.0 Firefox/17.0', 1355009041, 'a:7:{s:9:"user_data";s:0:"";s:7:"user_id";s:1:"2";s:8:"username";s:6:"quique";s:10:"empresa_id";s:1:"2";s:6:"status";s:1:"1";s:8:"es_admin";s:1:"0";s:7:"empresa";s:57:"O:7:"Empresa":3:{s:6:"nombre";N;s:4:"cuit";N;s:2:"id";N;}";}');
 
 -- --------------------------------------------------------
 
@@ -71,7 +65,7 @@ CREATE TABLE IF NOT EXISTS `cuentas_registro` (
 --
 
 INSERT INTO `cuentas_registro` (`cuentaregistro_id`, `nombre`, `codigo`, `empresa_id`, `tipo_cuentaregistro_id`, `activated`, `fecha_alta`) VALUES
-(1, 'Banco 1 -', 1, 2, 1, 1, '0000-00-00 00:00:00'),
+(1, 'Banco 1', 1, 2, 1, 0, '0000-00-00 00:00:00'),
 (2, 'Banco 2', 2, 2, 2, 1, '0000-00-00 00:00:00'),
 (3, 'Financiera 1', 3, 2, 1, 1, '0000-00-00 00:00:00'),
 (4, 'Financiera 2', 4, 2, 2, 1, '0000-00-00 00:00:00'),
@@ -109,7 +103,7 @@ INSERT INTO `empresas` (`empresa_id`, `empresa_asoc_id`, `tipo_empresa_id`, `nom
 (2, 0, 2, 'Warrantera 1', '123456', '2011-06-18', 1, 0),
 (3, 0, 2, 'Warrantera 2', '1234', '2011-09-13', 1, 0),
 (4, 0, 3, 'petrolera_test_2', '11002233', '2012-02-17', 0, 0),
-(5, 0, 3, 'petrolera', '78976122', '2012-02-17', 0, 0),
+(5, 0, 3, 'petrolera', '78976122', '2012-02-17', 1, 0),
 (6, 0, 2, 'asdasd', '23232', '2012-11-22', 1, 0),
 (7, 0, 3, 'Neo', '121211', '2012-11-22', 0, 0),
 (8, 0, 2, 'GloCz', '212323', '2012-11-22', 0, 0),
@@ -387,6 +381,7 @@ CREATE TABLE IF NOT EXISTS `permisos` (
   `controladora` varchar(50) NOT NULL,
   `grupo` varchar(50) DEFAULT NULL,
   `admin_only` tinyint(4) NOT NULL DEFAULT '0',
+  `warrantera_only` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`permiso_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=49 ;
 
@@ -394,51 +389,51 @@ CREATE TABLE IF NOT EXISTS `permisos` (
 -- Dumping data for table `permisos`
 --
 
-INSERT INTO `permisos` (`permiso_id`, `permiso`, `controladora`, `grupo`, `admin_only`) VALUES
-(5, 'emitir', 'ewarrants', NULL, 0),
-(6, 'listar', 'ewarrants', NULL, 0),
-(7, 'firma', 'ewarrants', NULL, 0),
-(8, 'anular', 'ewarrants', NULL, 0),
-(9, 'editar_usuario', 'seguridad', 'gestionar_usuarios', 0),
-(10, 'cambiar_email', 'seguridad', 'gestionar_usuarios', 0),
-(11, 'cambiar_password', 'seguridad', 'gestionar_usuarios', 0),
-(12, 'eliminar_user', 'seguridad', 'gestionar_usuarios', 0),
-(13, 'registro', 'seguridad', 'gestionar_usuarios', 0),
-(14, 'nuevo_role', 'seguridad', 'gestionar_roles', 0),
-(15, 'modificar_role', 'seguridad', 'gestionar_roles', 0),
-(16, 'eliminar_role', 'seguridad', 'gestionar_roles', 0),
-(17, 'registro_empresa', 'personas', 'gestionar_empresas', 1),
-(18, 'modificar_empresa', 'personas', 'gestionar_empresas', 1),
-(19, 'eliminar_empresa', 'personas', 'gestionar_empresas', 1),
-(20, 'activar_empresa', 'personas', 'gestionar_empresas', 1),
-(21, 'alta_formulario', 'admin', 'forms', 0),
-(22, 'alta_grupos_fields', 'admin', 'grupos_fields', 0),
-(23, 'alta_fields', 'admin', 'fields', 0),
-(24, 'modificar_field', 'admin', 'fields', 0),
-(25, 'modificar_grupo_field', 'admin', 'grupos_fields', 0),
-(26, 'modificar_form', 'admin', 'forms', 0),
-(27, 'baja_formulario', 'admin', 'forms', 0),
-(28, 'baja_grupo_field', 'admin', 'grupos_fields', 0),
-(29, 'baja_field', 'admin', 'fields', 0),
-(30, 'alta_grupos', 'admin', 'template_manager', 0),
-(31, 'editar_grupo_templates', 'admin', 'template_manager', 0),
-(32, 'baja_grupo_template', 'admin', 'template_manager', 0),
-(33, 'alta_templates', 'admin', 'template_manager', 0),
-(34, 'editar_templates', 'admin', 'template_manager', 0),
-(35, 'baja_template', 'admin', 'template_manager', 0),
-(36, 'form', 'admin', 'disenio', 0),
-(37, 'editar_contenido', 'admin', 'disenio', 0),
-(38, 'template_manager', 'admin', NULL, 0),
-(39, 'registro_producto', 'productos', 'gestionar_productos', 1),
-(40, 'modificar_producto', 'productos', 'gestionar_productos', 1),
-(41, 'eliminar_producto', 'productos', 'gestionar_productos', 1),
-(42, 'registro_cuenta_registro', 'personas', 'gestionar_cuentas_registro', 1),
-(43, 'modificar_cuenta_registro', 'personas', 'gestionar_cuentas_registro', 1),
-(44, 'eliminar_cuenta_registro', 'personas', 'gestionar_cuentas_registro', 1),
-(45, 'activar_cuenta_registro', 'personas', 'gestionar_cuentas_registro', 1),
-(46, 'fields', 'admin', 'grupos_fields', 0),
-(47, 'grupos_fields', 'admin', 'forms', 0),
-(48, 'forms', 'admin', NULL, 0);
+INSERT INTO `permisos` (`permiso_id`, `permiso`, `controladora`, `grupo`, `admin_only`, `warrantera_only`) VALUES
+(5, 'emitir', 'ewarrants', NULL, 0, 1),
+(6, 'listar', 'ewarrants', NULL, 0, 1),
+(7, 'firma', 'ewarrants', NULL, 0, 1),
+(8, 'anular', 'ewarrants', NULL, 0, 1),
+(9, 'editar_usuario', 'seguridad', 'gestionar_usuarios', 0, 0),
+(10, 'cambiar_email', 'seguridad', 'gestionar_usuarios', 0, 0),
+(11, 'cambiar_password', 'seguridad', 'gestionar_usuarios', 0, 0),
+(12, 'eliminar_user', 'seguridad', 'gestionar_usuarios', 0, 0),
+(13, 'registro', 'seguridad', 'gestionar_usuarios', 0, 0),
+(14, 'nuevo_role', 'seguridad', 'gestionar_roles', 0, 0),
+(15, 'modificar_role', 'seguridad', 'gestionar_roles', 0, 0),
+(16, 'eliminar_role', 'seguridad', 'gestionar_roles', 0, 0),
+(17, 'registro_empresa', 'personas', 'gestionar_empresas', 1, 0),
+(18, 'modificar_empresa', 'personas', 'gestionar_empresas', 1, 0),
+(19, 'eliminar_empresa', 'personas', 'gestionar_empresas', 1, 0),
+(20, 'activar_empresa', 'personas', 'gestionar_empresas', 1, 0),
+(21, 'alta_formulario', 'admin', 'forms', 0, 0),
+(22, 'alta_grupos_fields', 'admin', 'grupos_fields', 0, 0),
+(23, 'alta_fields', 'admin', 'fields', 0, 0),
+(24, 'modificar_field', 'admin', 'fields', 0, 0),
+(25, 'modificar_grupo_field', 'admin', 'grupos_fields', 0, 0),
+(26, 'modificar_form', 'admin', 'forms', 0, 0),
+(27, 'baja_formulario', 'admin', 'forms', 0, 0),
+(28, 'baja_grupo_field', 'admin', 'grupos_fields', 0, 0),
+(29, 'baja_field', 'admin', 'fields', 0, 0),
+(30, 'alta_grupos', 'admin', 'template_manager', 0, 0),
+(31, 'editar_grupo_templates', 'admin', 'template_manager', 0, 0),
+(32, 'baja_grupo_template', 'admin', 'template_manager', 0, 0),
+(33, 'alta_templates', 'admin', 'template_manager', 0, 0),
+(34, 'editar_templates', 'admin', 'template_manager', 0, 0),
+(35, 'baja_template', 'admin', 'template_manager', 0, 0),
+(36, 'form', 'admin', 'disenio', 0, 0),
+(37, 'editar_contenido', 'admin', 'disenio', 0, 0),
+(38, 'template_manager', 'admin', NULL, 0, 0),
+(39, 'registro_producto', 'productos', 'gestionar_productos', 1, 0),
+(40, 'modificar_producto', 'productos', 'gestionar_productos', 1, 0),
+(41, 'eliminar_producto', 'productos', 'gestionar_productos', 1, 0),
+(42, 'registro_cuenta_registro', 'personas', 'gestionar_cuentas_registro', 0, 1),
+(43, 'modificar_cuenta_registro', 'personas', 'gestionar_cuentas_registro', 0, 1),
+(44, 'eliminar_cuenta_registro', 'personas', 'gestionar_cuentas_registro', 0, 1),
+(45, 'activar_cuenta_registro', 'personas', 'gestionar_cuentas_registro', 0, 1),
+(46, 'fields', 'admin', 'grupos_fields', 0, 0),
+(47, 'grupos_fields', 'admin', 'forms', 0, 0),
+(48, 'forms', 'admin', NULL, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -497,7 +492,7 @@ CREATE TABLE IF NOT EXISTS `roles_permisos` (
   `role_id` int(30) NOT NULL,
   `permiso_id` int(30) NOT NULL,
   PRIMARY KEY (`role_permiso_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1156 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1200 ;
 
 --
 -- Dumping data for table `roles_permisos`
@@ -508,9 +503,24 @@ INSERT INTO `roles_permisos` (`role_permiso_id`, `role_id`, `permiso_id`) VALUES
 (60, 3, 4),
 (58, 3, 2),
 (57, 3, 1),
-(1155, 1, 48),
-(1154, 1, 47),
-(1153, 1, 46);
+(1196, 1, 48),
+(1195, 1, 47),
+(1194, 1, 46),
+(1193, 1, 45),
+(1192, 1, 44),
+(1191, 1, 43),
+(1190, 1, 42),
+(1189, 1, 16),
+(1188, 1, 15),
+(1187, 1, 14),
+(1186, 1, 13),
+(1185, 1, 12),
+(1184, 1, 11),
+(1183, 1, 10),
+(1182, 1, 9),
+(1197, 51, 46),
+(1198, 51, 47),
+(1199, 51, 48);
 
 -- --------------------------------------------------------
 
@@ -696,16 +706,17 @@ CREATE TABLE IF NOT EXISTS `users` (
   `modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `es_admin` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`user_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=16 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=17 ;
 
 --
 -- Dumping data for table `users`
 --
 
 INSERT INTO `users` (`user_id`, `empresa_id`, `username`, `password`, `email`, `role_id`, `activated`, `banned`, `ban_reason`, `new_password_key`, `new_password_requested`, `new_email`, `new_email_key`, `last_ip`, `last_login`, `created`, `modified`, `es_admin`) VALUES
-(1, 1, 'fran', '$P$BOd3bMRhe5jVnl7auEicOuJ.zyLunF.', 'framini@gmail.com', 1, 1, 0, NULL, NULL, NULL, NULL, NULL, '127.0.0.1', '2012-12-05 00:42:32', '2012-02-08 14:12:21', '2012-12-04 21:42:32', 1),
-(2, 3, 'quique', '$P$BWc1sneOmJCOstjNjtxJXxxucacnvU.', 'quiero_newage22@yahoo.com', 1, 1, 0, NULL, NULL, NULL, NULL, NULL, '127.0.0.1', '2012-12-05 00:45:54', '2012-02-16 14:53:20', '2012-12-04 21:45:54', 0),
-(11, 2, 'pepito_', '$P$BL0dvJs6x3m.MLhzpvvbncp951pc8R.', 'asdasd@d.com', 1, 1, 0, NULL, NULL, NULL, 'asdasdd@d.com', '28d617a7f3b1e3cedbe21c2fa567e1b8', '127.0.0.1', '2012-11-29 13:37:18', '2012-02-08 19:11:34', '2012-12-02 14:02:09', 0);
+(1, 1, 'fran', '$P$BOd3bMRhe5jVnl7auEicOuJ.zyLunF.', 'framini@gmail.com', 1, 1, 0, NULL, NULL, NULL, NULL, NULL, '127.0.0.1', '2012-12-08 21:59:05', '2012-02-08 14:12:21', '2012-12-08 18:59:05', 1),
+(2, 2, 'quique', '$P$BWc1sneOmJCOstjNjtxJXxxucacnvU.', 'quiero_newage22@yahoo.com', 1, 1, 0, NULL, NULL, NULL, NULL, NULL, '127.0.0.1', '2012-12-08 23:24:05', '2012-02-16 14:53:20', '2012-12-08 20:24:05', 0),
+(11, 2, 'pepito_', '$P$BL0dvJs6x3m.MLhzpvvbncp951pc8R.', 'asdasd@d.com', 1, 1, 0, NULL, NULL, NULL, 'asdasdd@d.com', '28d617a7f3b1e3cedbe21c2fa567e1b8', '127.0.0.1', '2012-11-29 13:37:18', '2012-02-08 19:11:34', '2012-12-02 14:02:09', 0),
+(16, 1, 'chito', '$P$BfqbEiEM9Coxb5QTTNADrLV.Tqin/U1', 'quiero_newage@yahoo.com.ar', 1, 1, 0, NULL, NULL, NULL, NULL, NULL, '127.0.0.1', '0000-00-00 00:00:00', '2012-12-08 21:42:45', '2012-12-08 18:42:45', 0);
 
 -- --------------------------------------------------------
 
@@ -739,7 +750,7 @@ CREATE TABLE IF NOT EXISTS `user_profiles` (
   `country` varchar(20) COLLATE utf8_bin DEFAULT NULL,
   `website` varchar(255) COLLATE utf8_bin DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=34 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=35 ;
 
 --
 -- Dumping data for table `user_profiles`
@@ -751,4 +762,5 @@ INSERT INTO `user_profiles` (`id`, `user_id`, `country`, `website`) VALUES
 (16, 16, NULL, NULL),
 (22, 9, NULL, NULL),
 (24, 11, NULL, NULL),
-(29, 16, NULL, NULL);
+(29, 16, NULL, NULL),
+(34, 16, NULL, NULL);
