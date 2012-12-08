@@ -234,9 +234,9 @@ class  Roles_model extends CI_Model
     function get_all_permisos_no_admin()
     {	
 		//Nos fijamos si el usuario logueado no pertenece a una warrantera o si no es un admin, y en caso de no serlo
-		//sacamos los permisos de la controladora ewarrants
+		//sacamos los permisos que son solo para warranteras
 		if( !$this -> auth_frr -> is_warrantera() && !$this -> auth_frr -> es_admin() ) {
-			$this->db->where('controladora !=', 'ewarrants');
+			$this->db->where('warrantera_only', 0);
 		}
 		$this->db->where('admin_only', 0);
         $permisos = $this->db->get('permisos');

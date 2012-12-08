@@ -124,6 +124,8 @@ $emp_id = array(
 										</div>
 									</div>
 									
+									
+									<?php if( $this -> auth_frr -> es_admin() ) { ?>
 									<div class="row">
 										<div class="span6">
                                                 <?php echo form_label('Empresa', 'empresa'); ?>
@@ -142,6 +144,9 @@ $emp_id = array(
                                                 ?>
                                         </div>
 									</div>
+									<?php } elseif( isset($eid) ) { ?>
+										<input type="hidden" name="empresa_id" value="<?php echo $eid; ?>" />
+									<?php } ?>
 									
 									<div class="row">
 										<div class="span6">

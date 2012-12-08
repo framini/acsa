@@ -301,7 +301,12 @@ class Adm_Personas extends MY_Controller {
 		}
 
 		//Obtenemos todas las empresas cargadas en el sistema
-		$data['empresas'] = $this -> empresas_frr -> get_cuentas_registro();
+		if( $this -> auth_frr -> es_admin() ) {
+			$data['empresas'] = $this -> empresas_frr -> get_cuentas_registro();
+		} else if( $this -> auth_frr -> is_warrantera() ) {
+			$data['empresas'] = $this -> empresas_frr -> get_cuentas_registro_by_empresa_id( $this -> auth_frr -> get_empresa_id() );
+		}
+		
 
 		if ($message = $this -> session -> flashdata('message')) {
 			$data['message'] = $message;
@@ -317,12 +322,12 @@ class Adm_Personas extends MY_Controller {
 
 	/**
 	 * Da de alta una cuenta registro en el sistema
-	 * NOTA: Solo disponible para admins
+	 * NOTA: Solo disponible para admins y warranteras
 	 */
 	function registro_cuenta_registro() {
 
-		//Chequeamos que el usuario logueado sea un admin
-		if ($this -> auth_frr -> es_admin()) {
+		//Chequeamos que el usuario logueado sea un admin o warrantera
+		if ( $this -> auth_frr -> es_admin() || $this-> auth_frr -> is_warrantera() ) {
 			$this -> form_validation -> set_error_delimiters('<p><i class="icon-exclamation-sign"></i> ', '</p>');
 
 			$this -> form_validation -> set_rules('nombre', 'Nombre de la empresa', 'trim|required|xss_clean');
@@ -367,8 +372,13 @@ class Adm_Personas extends MY_Controller {
 					return;
 				}
 			}
-
-			$data['empresas'] = $this -> empresas_frr -> get_empresas();
+			
+			if( $this -> auth_frr -> es_admin() ) {
+				$data['empresas'] = $this -> empresas_frr -> get_empresas();
+			} else if ( $this -> auth_frr -> is_warrantera() ) {
+				$data['eid'] = $this -> auth_frr -> get_empresa_id();
+			}
+			
 			$data['tipos_cuenta_registro'] = $this -> empresas_frr -> get_tipos_cuentas_registro();
 
 			$this -> template -> set_content('personas/agregar_cuenta_registro_form', $data);
@@ -379,11 +389,11 @@ class Adm_Personas extends MY_Controller {
 
 	/**
 	 * Modifica una cuenta registro registrada en el sistema
-	 * NOTA: Solo disponible para admins
+	 * NOTA: Solo disponible para admins y warranteras
 	 */
 	function modificar_cuenta_registro() {
-		//Chequeamos que el usuario logueado sea admin
-		if ($this -> auth_frr -> es_admin()) {
+		//Chequeamos que el usuario logueado sea admin o warrantera
+		if ( $this -> auth_frr -> es_admin() || $this-> auth_frr -> is_warrantera() ) {
 			$this -> form_validation -> set_error_delimiters('<p><i class="icon-exclamation-sign"></i> ', '</p>');
 
 			$this -> form_validation -> set_rules('nombre', 'Nombre de la empresa', 'trim|required|xss_clean');

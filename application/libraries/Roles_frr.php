@@ -9,8 +9,7 @@ class Roles_frr {
 
 	public function __construct() {
 		$this -> ci = &get_instance();
-
-		$this -> ci -> load -> library('auth_frr');
+		
 		$this -> ci -> load -> model('auth/users');
 		$this -> ci -> load -> model('auth/empresas');
 		$this -> ci -> load -> model('roles/roles_model');
@@ -20,7 +19,7 @@ class Roles_frr {
 		//Se chequea que el username no sea vacio y que este disponible en el sistema
 		//Es decir, que no exista un role con el mismo nombre
 		if (!$this -> ci -> roles_model -> role_name_disponible($role)) {
-			$this -> error = array('nombre_role' => 'Este nombre ya está siendo utilizado por otro role');
+			$this -> error = array('nombre_role' => 'Este nombre ya esta siendo utilizado por otro role');
 			return false;
 		} else {
 			$data = array('nombre' => strtolower($role), 'descripcion' => $descripcion, 'empresa_id' => $empresa_id, 'tipo_empresa_id' => $tipo_empresa_id, );
@@ -285,9 +284,6 @@ class Roles_frr {
 	 * @return type
 	 */
 	function get_roles() {
-		
-		$data = array();
-		
 		//Si es invocada por un admin devolvemos todos los roles disponibles
 		if ($this -> ci -> auth_frr -> es_admin()) {
 			$roles = $this -> ci -> roles_model -> get_roles();
@@ -297,6 +293,7 @@ class Roles_frr {
 				$data[] = array('nombre' => $row -> nombre, 'descripcion' => $row -> descripcion, 'role_id' => $row -> role_id, 'empresa' => $empresa -> nombre);
 			}
 
+			return $data;
 		} else {
 			$roles = $this -> ci -> roles_model -> get_roles($this -> ci -> auth_frr -> get_empresa_id());
 			if ($roles) {
@@ -306,9 +303,8 @@ class Roles_frr {
 				}
 			}
 
+			return $data;
 		}
-		
-		return $data;
 
 	}
 

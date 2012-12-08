@@ -42,7 +42,7 @@ class Adm_Seguridad extends MY_Controller {
 	function nuevo_role() {
 
 		if ($this -> auth_frr -> es_admin()) {
-			$data['empresas'] = $this -> auth_frr -> get_empresas();
+			$data['empresas'] = $this -> empresas_frr -> get_empresas();
 			//En caso de ser admin buscamos todos los permisos disponibles
 			$data['permisos'] = $this -> roles_frr -> get_all_permisos();
 		} else {
@@ -110,11 +110,10 @@ class Adm_Seguridad extends MY_Controller {
 
 		if (isset($errors)) {
 			$data['errors'] = $errors;
-			$this -> template -> set_content('seguridad/modificar_role_form', $data);
-		} else {
-			$this -> template -> set_content('seguridad/modificar_role_form', $data);
-		}
-
+			
+		} 
+		
+		$this -> template -> set_content('seguridad/modificar_role_form', $data);
 		$this -> template -> build();
 	}
 
