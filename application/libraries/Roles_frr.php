@@ -13,6 +13,7 @@ class Roles_frr {
 		$this -> ci -> load -> model('auth/users');
 		$this -> ci -> load -> model('auth/empresas');
 		$this -> ci -> load -> model('roles/roles_model');
+		$this -> ci -> load -> model('roles/permisos');
 	}
 
 	function agregar_role($role, $descripcion, $empresa_id, $tipo_empresa_id) {
@@ -121,7 +122,7 @@ class Roles_frr {
 			$user_id = $this -> ci -> auth_frr -> get_user_id();
 
 			$role_id = $this -> get_role_id($user_id);
-			$permisos = $this -> ci -> roles_model -> get_permisos($role_id);
+			$permisos = $this -> ci -> permisos -> get_permisos($role_id);
 
 			return $permisos;
 		}
@@ -139,9 +140,9 @@ class Roles_frr {
 			$role_id = $this -> get_role_id($user_id);
 			//Si el usuario es un admin, devolvemos todos los permisos asociados a la controladora en cuestion
 			if ($this -> ci -> auth_frr -> es_admin()) {
-				$permisos = $this -> ci -> roles_model -> get_permisos_controladora_admin($role_id, $controladora);
+				$permisos = $this -> ci -> permisos -> get_permisos_controladora_admin($role_id, $controladora);
 			} else {
-				$permisos = $this -> ci -> roles_model -> get_permisos_controladora($role_id, $controladora);
+				$permisos = $this -> ci -> permisos -> get_permisos_controladora($role_id, $controladora);
 			}
 			return $permisos;
 		}
@@ -156,12 +157,12 @@ class Roles_frr {
 
 			//Si el usuario es un admin, devolvemos todos los permisos asociados a la controladora en cuestion
 			if ($this -> ci -> auth_frr -> es_admin()) {
-				return $this -> ci -> roles_model -> get_permisos_controladora_grupo_admin($controladora, $grupo);
+				return $this -> ci -> permisos -> get_permisos_controladora_grupo_admin($controladora, $grupo);
 			} else {
 
 				$user_id = $this -> ci -> auth_frr -> get_user_id();
 				$role_id = $this -> get_role_id($user_id);
-				$permisos = $this -> ci -> roles_model -> get_permisos_controladora_grupo($role_id, $controladora, $grupo);
+				$permisos = $this -> ci -> permisos -> get_permisos_controladora_grupo($role_id, $controladora, $grupo);
 
 				return $permisos;
 			}
@@ -247,7 +248,7 @@ class Roles_frr {
 	 * @return type
 	 */
 	function get_all_permisos() {
-		$permisos = $this -> ci -> roles_model -> get_all_permisos();
+		$permisos = $this -> ci -> permisos -> get_all_permisos();
 
 		return $permisos;
 	}
@@ -257,7 +258,7 @@ class Roles_frr {
 	 * @return type
 	 */
 	function get_all_permisos_no_admin() {
-		$permisos = $this -> ci -> roles_model -> get_all_permisos_no_admin();
+		$permisos = $this -> ci -> permisos -> get_all_permisos_no_admin();
 
 		return $permisos;
 	}

@@ -41,7 +41,7 @@ class Auth_frr
 		if ((strlen($login) > 0) AND (strlen($password) > 0)) 
                                     {
 
-                                                      // Determina que funcion usar para el login segun el archivo de configuracion  
+            // Determina que funcion usar para el login segun el archivo de configuracion  
 			if ($login_by_username AND $login_by_email) 
                                                       {
 				$get_user_func = 'get_user_by_login';
@@ -132,7 +132,7 @@ class Auth_frr
                                 //ser utilizado cuando se da de alta un nuevo warrant
 
                                 //Obtenemos la empresa
-                                $emp = $this->ci->empresas->get_empresa_by_id($user->empresa_id);
+                                $emp = $this->ci->empresas_frr->get_empresa_by_id($user->empresa_id);
                                 /*SOLUCION CON JSON
                                 //Creamos el array con la info a ser guardada en la sesion
                                 $empresaJSON['nombre'] = $emp->nombre;
@@ -145,9 +145,9 @@ class Auth_frr
                                  * FIN SOLUCION JSON
                                  */
                                 $empresa = new Empresa();
-                                $empresa->setCuit($emp->cuit);
-                                $empresa->setId($emp->empresa_id);
-                                $empresa->setNombre($emp->nombre);
+                                $empresa->setCuit($emp[0]->cuit);
+                                $empresa->setId($emp[0]->empresa_id);
+                                $empresa->setNombre($emp[0]->nombre);
                                 $configuracion['empresa'] = serialize($empresa);
 
                                 //Guardamos la info del usuario logueado en la session

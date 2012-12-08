@@ -44,10 +44,10 @@ class Adm_Seguridad extends MY_Controller {
 		if ($this -> auth_frr -> es_admin()) {
 			$data['empresas'] = $this -> empresas_frr -> get_empresas();
 			//En caso de ser admin buscamos todos los permisos disponibles
-			$data['permisos'] = $this -> roles_frr -> get_all_permisos();
+			$data['permisos'] = $this -> permisos -> get_all_permisos();
 		} else {
 			//Solamente devolmos los permisos que no sean solo para admins
-			$data['permisos'] = $this -> roles_frr -> get_all_permisos_no_admin();
+			$data['permisos'] = $this -> permisos -> get_all_permisos_no_admin();
 		}
 		//titulo pagina
 		$data['t'] = 'Agregar Role';
@@ -81,7 +81,7 @@ class Adm_Seguridad extends MY_Controller {
 
 			if ($this -> roles_frr -> agregar_role($role, $descripcion, $empresa_id, $tipo_empresa_id)) {
 				// Una vez aca ya se agrego el role, ahora se tienen que agregar los permisos al role
-				$permisos = $this -> roles_frr -> get_all_permisos();
+				$permisos = $this -> permisos -> get_all_permisos();
 				$role = $this -> roles_frr -> get_role_by_name($role);
 				$role_id = $role -> role_id;
 
@@ -202,7 +202,7 @@ class Adm_Seguridad extends MY_Controller {
 
 					if ($this -> roles_frr -> modificar_role($role_id, $data)) {
 
-						$permisos = ($this -> auth_frr -> es_admin()) ? $this -> roles_frr -> get_all_permisos() : $data['permisos'] = $this -> roles_frr -> get_all_permisos_no_admin();
+						$permisos = ($this -> auth_frr -> es_admin()) ? $this -> permisos -> get_all_permisos() : $data['permisos'] = $this -> permisos -> get_all_permisos_no_admin();
 						$role = $this -> roles_frr -> get_role_by_name($this -> input -> post('nombre'));
 						$role_id = $role -> role_id;
 
@@ -281,9 +281,9 @@ class Adm_Seguridad extends MY_Controller {
 				$data = $this -> roles_frr -> get_error_message();
 
 				//Cargamos en data los permisos del role
-				$data['permisosRole'] = $this -> roles_frr -> get_permisos_role($role_id);
+				$data['permisosRole'] = $this -> roles_model -> get_permisos_role($role_id);
 				//Cargamos en data los permisos del sistema
-				$data['permisos'] = ($this -> auth_frr -> es_admin()) ? $this -> roles_frr -> get_all_permisos() : $data['permisos'] = $this -> roles_frr -> get_all_permisos_no_admin();
+				$data['permisos'] = ($this -> auth_frr -> es_admin()) ? $this -> permisos -> get_all_permisos() : $data['permisos'] = $this -> permisos -> get_all_permisos_no_admin();
 				//Cargamos en data la info cargada en el role
 				$data['roleRow'] = $this -> roles_frr -> get_role_by_id($role_id);
 				if ($this -> auth_frr -> es_admin())
@@ -318,7 +318,7 @@ class Adm_Seguridad extends MY_Controller {
 
 				if ($this -> roles_frr -> modificar_role($role_id, $data)) {
 
-					$permisos = $this -> roles_frr -> get_all_permisos();
+					$permisos = $this -> permisos -> get_all_permisos();
 					$role = $this -> roles_frr -> get_role_by_name($this -> input -> post('nombre'));
 					$role_id = $role -> role_id;
 
@@ -399,7 +399,7 @@ class Adm_Seguridad extends MY_Controller {
 			//Cargamos en data los permisos del role
 			$data['permisosRole'] = $this -> roles_frr -> get_permisos_role($role_id);
 			//Cargamos en data los permisos del sistema
-			$data['permisos'] = $this -> roles_frr -> get_all_permisos();
+			$data['permisos'] = $this -> permisos -> get_all_permisos();
 			//Cargamos en data la info cargada en el role
 			$data['roleRow'] = $this -> roles_frr -> get_role_by_id($role_id);
 			if ($this -> auth_frr -> es_admin())
