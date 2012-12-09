@@ -136,6 +136,10 @@
 	                                            }
 	                                            echo '</select>';
 	                                        ?>
+	                                <?php } else { ?>
+	                                	<select name="role_id" class="styled span5" id="role_id">
+	                                			<option value="0">--Sin role--</option>
+	                                	</select>
 	                                <?php } ?>
                                     <?php //echo form_submit('register', 'Crear Cuenta'); ?>
                                     <p><input type="submit" class="btn btn-primary btn-large" value="Guardar" name="register" /></p>

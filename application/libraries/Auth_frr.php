@@ -418,6 +418,14 @@ class Auth_frr
 	{
 		return $this->ci->session->userdata('empresa_id');
 	}
+	
+	function get_empresa_by_user_id( $uid ) {
+		if( !is_null( $emp = $this->ci->users->get_empresa_by_user_id( $uid ) ) ) {
+			return $emp->empresa_id;
+		} else {
+			return NULL;
+		}
+	}
 
 	/**
 	 * Devuelve el username

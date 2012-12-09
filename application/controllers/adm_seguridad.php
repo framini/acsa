@@ -890,8 +890,13 @@ class Adm_Seguridad extends MY_Controller {
 						$data['empresas'] = $this -> auth_frr -> get_empresas();
 						$data['es_admin'] = true;
 					}
-					$data['roles'] = $this -> roles_frr -> get_roles();
 
+					if( !is_null( $emp_id = $this -> auth_frr -> get_empresa_by_user_id( $user_id ) ) ) {
+						$data['roles'] = $this -> roles_frr -> get_roles_empresa( $emp_id );
+					} else {
+						$data['roles'] = array();
+					}
+					
 					$this -> template -> set_content('seguridad/editar_usuarios', $data);
 					$this -> template -> build();
 				}
