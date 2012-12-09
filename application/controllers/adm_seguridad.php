@@ -166,23 +166,9 @@ class Adm_Seguridad extends MY_Controller {
 	 */
 	function modificar_role($role_id = NULL) {
 		if ($role_id) {
-			/*//Cargamos en data los permisos del role
-			 $data['permisosRole'] = $this->roles_frr->get_permisos_role($role_id);
-			 //Cargamos en data los permisos del sistema
-			 if($this->auth_frr->es_admin()) {
-			 $data['permisos'] = $this->roles_frr->get_all_permisos();
-			 } else {
-			 $data['permisos'] = $this->roles_frr->get_all_permisos_no_admin();
-			 }*/
 
-			//Cargamos en data la info cargada en el role
-			$data['roleRow'] = $this -> roles_frr -> get_role_by_id($role_id);
 			if ($this -> auth_frr -> es_admin())
-				$data['empresas'] = $this -> auth_frr -> get_empresas();
-
-			//print_r($role);
-			/*$this->template->set_content('seguridad/modificar_role_form', $data);
-			 $this->template->build();*/
+				$data['empresas'] = $this -> empresas_frr -> get_empresas();
 
 			$this -> form_validation -> set_rules('nombre', 'Nombre de Role', 'trim|required|xss_clean');
 			$this -> form_validation -> set_rules('descripcion', 'Descripcion', 'trim|required|xss_clean');
@@ -281,9 +267,9 @@ class Adm_Seguridad extends MY_Controller {
 				$data = $this -> roles_frr -> get_error_message();
 
 				//Cargamos en data los permisos del role
-				$data['permisosRole'] = $this -> roles_model -> get_permisos_role($role_id);
+				$data['permisosRole'] = $this -> roles_frr -> get_permisos_role($role_id);
 				//Cargamos en data los permisos del sistema
-				$data['permisos'] = ($this -> auth_frr -> es_admin()) ? $this -> permisos -> get_all_permisos() : $data['permisos'] = $this -> permisos -> get_all_permisos_no_admin();
+				$data['permisos'] = ($this -> auth_frr -> es_admin()) ? $this -> roles_frr -> get_all_permisos() : $data['permisos'] = $this -> roles_frr -> get_all_permisos_no_admin();
 				//Cargamos en data la info cargada en el role
 				$data['roleRow'] = $this -> roles_frr -> get_role_by_id($role_id);
 				if ($this -> auth_frr -> es_admin())
