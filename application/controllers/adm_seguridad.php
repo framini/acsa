@@ -488,7 +488,12 @@ class Adm_Seguridad extends MY_Controller {
 		//Si es admin le mostramos la lista de empresas
 		if ($this -> auth_frr -> es_admin())
 			$data['empresas'] = $this -> auth_frr -> get_empresas();
-		$data['roles'] = $this -> roles_frr -> get_roles();
+		
+		if( $this->auth_frr->es_admin() ) {
+			$data['roles'] = $this -> roles_frr -> get_roles_empresa( 1 );
+		} else {
+			$data['roles'] = $this -> roles_frr -> get_roles_empresa( $this->auth_frr->get_empresa_id() );
+		}
 
 		$this -> template -> set_content('auth/register_form', $data);
 		$this -> template -> build();
@@ -916,6 +921,15 @@ class Adm_Seguridad extends MY_Controller {
 			}
 
 			$this -> template -> build();
+		}
+	}
+	
+	function get_roles_empresa($emp_id = NULL) {
+		if( $this -> input -> is_ajax_request() && !is_null( $emp_id ) ) {
+			$data['roles'] = $this -> roles_frr -> get_roles_empresa($emp_id);
+			print_r( json_encode( $data['roles'] ) );
+		} else {
+			print_r( json_encode(array('error' => 'La empresa no tiene roles')) );
 		}
 	}
 

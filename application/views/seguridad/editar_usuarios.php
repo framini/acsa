@@ -48,6 +48,33 @@
 					}
 				});
 			});
+			
+			$('#empresas_id').on('change', function(){
+				$emp_id = $(this).val();
+				
+				uri = "<?php echo site_url('adm/seguridad/get_roles_empresa'); ?>" + "/" + $emp_id;
+				
+				$.ajax({
+					url: uri,
+					type: 'json',
+					dataType: 'json',
+					type: 'POST',
+					success: function(data, textStatus, jqXHR) {
+						$('#role_id').children().remove();
+						$('#role_id').append('<option value="0">--Sin role--</option>');
+						
+						if(data) {
+							$.each(data, function(index, val) {
+								$opt = $('<option>');
+								$opt.attr('val', val.role_id );
+								$opt.text( val.nombre );
+								$('#role_id').append($opt);
+							});
+						}	
+					}
+				});
+				
+			} );
 		});
 	</script>
 	
