@@ -17,9 +17,13 @@ class Productos_frr {
 
 	function get_productos() {
 		$productos = $this -> ci -> productos_model -> get_productos();
-
-		foreach ($productos->result() as $row) {
-			$data[] = array('producto_id' => $row -> producto_id, 'nombre' => $row -> nombre, 'precio' => $row -> precio, 'calidad' => $this->get_descripcion_producto_tipo_by_id( $row -> calidad ), 'aforo' => $row -> aforo);
+		
+		if( !is_null($productos) ) {
+			foreach ($productos->result() as $row) {
+				$data[] = array('producto_id' => $row -> producto_id, 'nombre' => $row -> nombre, 'precio' => $row -> precio, 'calidad' => $this->get_descripcion_producto_tipo_by_id( $row -> calidad ), 'aforo' => $row -> aforo);
+			}
+		} else {
+			$data = NULL;
 		}
 
 		return $data;

@@ -57,6 +57,7 @@
 
                                 <tbody>
                                         <?php 
+                                        	if( !is_null($productos) ) { 
                                                 foreach($productos as $producto)
                                                 {
                                                     echo "<tr id=producto-" . $producto['producto_id'];
@@ -102,6 +103,7 @@
 													echo '</td>';
                                                     echo "</tr>";
                                                 }
+                                              }
                                         ?>
                                 </tbody>
 
