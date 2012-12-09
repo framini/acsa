@@ -119,7 +119,7 @@
             				careTaker.setMemento( grupoSeleccionado.crearMemento() );
 
             				//Le quitamos el focus al item del grupo activo
-            				$('.active').removeClass('active');
+            				$('.lista_grupos .active').removeClass('active');
             				//Se lo asignamos al item en el que se hizo click
             				$(this).closest('li').addClass('active');
 							
