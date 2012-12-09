@@ -44,8 +44,9 @@ class __TwigTemplate_5cea0943a17bbaa4157aea29bb8f2ad1 extends Twig_Template
                         
       ";
         // line 12
+        if (isset($context["noticias"])) { $_noticias_ = $context["noticias"]; } else { $_noticias_ = null; }
         $context['_parent'] = (array) $context;
-        $context['_seq'] = twig_ensure_traversable((isset($context["noticias"]) ? $context["noticias"] : null));
+        $context['_seq'] = twig_ensure_traversable($_noticias_);
         foreach ($context['_seq'] as $context["_key"] => $context["entrada"]) {
             // line 13
             echo "          
@@ -53,10 +54,12 @@ class __TwigTemplate_5cea0943a17bbaa4157aea29bb8f2ad1 extends Twig_Template
               <a class=\"pull-left\" href=\"#\">
                 ";
             // line 16
-            if ($this->getAttribute((isset($context["entrada"]) ? $context["entrada"] : null), "imagen_noticias")) {
+            if (isset($context["entrada"])) { $_entrada_ = $context["entrada"]; } else { $_entrada_ = null; }
+            if ($this->getAttribute($_entrada_, "imagen_noticias")) {
                 // line 17
                 echo "                <img class=\"media-object\" src=\"";
-                echo twig_escape_filter($this->env, $this->getAttribute((isset($context["entrada"]) ? $context["entrada"] : null), "imagen_noticias"), "html", null, true);
+                if (isset($context["entrada"])) { $_entrada_ = $context["entrada"]; } else { $_entrada_ = null; }
+                echo twig_escape_filter($this->env, $this->getAttribute($_entrada_, "imagen_noticias"), "html", null, true);
                 echo "\" width=\"120\" height=\"120\" />
                 ";
             } else {
@@ -69,19 +72,23 @@ class __TwigTemplate_5cea0943a17bbaa4157aea29bb8f2ad1 extends Twig_Template
               <div class=\"media-body\">
                 <h4 class=\"media-heading\"><a href=\"";
             // line 23
-            echo twig_escape_filter($this->env, Twig::url_sitio("noticias/item", $this->getAttribute((isset($context["entrada"]) ? $context["entrada"] : null), "entry_id")), "html", null, true);
+            if (isset($context["entrada"])) { $_entrada_ = $context["entrada"]; } else { $_entrada_ = null; }
+            echo twig_escape_filter($this->env, Twig::url_sitio("noticias/item", $this->getAttribute($_entrada_, "entry_id")), "html", null, true);
             echo "\">";
-            echo twig_escape_filter($this->env, $this->getAttribute((isset($context["entrada"]) ? $context["entrada"] : null), "titulo"), "html", null, true);
+            if (isset($context["entrada"])) { $_entrada_ = $context["entrada"]; } else { $_entrada_ = null; }
+            echo twig_escape_filter($this->env, $this->getAttribute($_entrada_, "titulo"), "html", null, true);
             echo "</a></h4>
                 ";
             // line 24
-            echo twig_escape_filter($this->env, Twig::longitud_max($this->getAttribute((isset($context["entrada"]) ? $context["entrada"] : null), "cuerpo_noticia"), 140), "html", null, true);
+            if (isset($context["entrada"])) { $_entrada_ = $context["entrada"]; } else { $_entrada_ = null; }
+            echo twig_escape_filter($this->env, Twig::longitud_max($this->getAttribute($_entrada_, "cuerpo_noticia"), 140), "html", null, true);
             echo "
                 <div class=\"row\">
                     <div class=\"span12\">
                         <a class=\"btn btn-mini btn-info pull-right\" href=\"";
             // line 27
-            echo twig_escape_filter($this->env, Twig::url_sitio("noticias/item", $this->getAttribute((isset($context["entrada"]) ? $context["entrada"] : null), "entry_id")), "html", null, true);
+            if (isset($context["entrada"])) { $_entrada_ = $context["entrada"]; } else { $_entrada_ = null; }
+            echo twig_escape_filter($this->env, Twig::url_sitio("noticias/item", $this->getAttribute($_entrada_, "entry_id")), "html", null, true);
             echo "\">ver más</a>
                     </div>
                 </div>
@@ -111,6 +118,6 @@ class __TwigTemplate_5cea0943a17bbaa4157aea29bb8f2ad1 extends Twig_Template
 
     public function getDebugInfo()
     {
-        return array (  98 => 35,  84 => 27,  78 => 24,  72 => 23,  68 => 21,  64 => 19,  58 => 17,  56 => 16,  51 => 13,  47 => 12,  38 => 5,  35 => 4,  29 => 2,);
+        return array (  105 => 35,  90 => 27,  83 => 24,  75 => 23,  71 => 21,  67 => 19,  60 => 17,  57 => 16,  52 => 13,  47 => 12,  38 => 5,  35 => 4,  29 => 2,);
     }
 }

@@ -26,6 +26,8 @@ class Ws_frr
 																			'screen_name' => $de,
 																			'count' => $cantidad ));
 																			
+			print_r($tweets); die();
+																			
 			if(isset($tweets->errors) || count($tweets) == 0) {
 				return NULL;
 			} else {
