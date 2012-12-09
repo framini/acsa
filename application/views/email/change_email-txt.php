@@ -1,16 +1,14 @@
 Hi<?php if (strlen($username) > 0) { ?> <?php echo $username; ?><?php } ?>,
 
-You have changed your email address for <?php echo $site_name; ?>.
-Follow this link to confirm your new email address:
+Cambiaste tu direccion de correo en <?php echo $site_name; ?>.
+Sigue el siguiente enlace para confirmar el cambio de correo:
 
-<?php echo site_url('/auth/reset_email/'.$user_id.'/'.$new_email_key); ?>
-
-
-Your new email: <?php echo $new_email; ?>
+<?php echo site_url('/adm/ew/reset_email/'.$user_id.'/'.$new_email_key); ?>
 
 
-You received this email, because it was requested by a <?php echo $site_name; ?> user. If you have received this by mistake, please DO NOT click the confirmation link, and simply delete this email. After a short time, the request will be removed from the system.
+Tu nueva direccion de correo es: <?php echo $new_email; ?>
 
+Recibiste este correo porque solicitaste un cambio de correo en <?php echo $site_name; ?>. Si solicitaste por error un cambio de email, simplemente ignora este mensaje.
 
-Thank you,
-The <?php echo $site_name; ?> Team
+Gracias,
+Equipo <?php echo $site_name; ?>

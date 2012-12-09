@@ -112,6 +112,26 @@ class Adm_Ew extends CI_Controller {
 		$this->auth_frr->logout();
         $this->_show_message($this->lang->line('auth_message_logged_out'));
 	}
+	
+	/**
+	 * Reemplaza el email viejo del usuario por el nuevo
+	 * Se verifica al usuario por el ID y la Key enviada por email
+	 *
+	 * @return void
+	 */
+	function reset_email() {
+		$user_id = $this -> uri -> segment(4);
+		$new_email_key = $this -> uri -> segment(5);
+
+		// Tratamos de restear el email
+		if ($this -> auth_frr -> activate_new_email($user_id, $new_email_key)) {
+			$this -> auth_frr -> logout();
+			$this -> _show_message($this -> lang -> line('auth_message_new_email_activated') . ' ' . anchor('/adm/ew/login/', 'Login'));
+
+		} else {// fail
+			$this -> _show_message($this -> lang -> line('auth_message_new_email_failed'));
+		}
+	}
         
         
                   /**

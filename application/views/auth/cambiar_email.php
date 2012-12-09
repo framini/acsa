@@ -1,7 +1,44 @@
+<style>
+	.modal {
+	    display:    none;
+	    position:   fixed;
+	    z-index:    1000;
+	    top:        0;
+	    left:       0;
+	    height:     100%;
+	    width:      100%;
+	    background: rgba( 255, 255, 255, .8 ) 
+	                url('<?php echo base_url() . "images/FhHRx.gif" ?>') 
+	                50% 50% 
+	                no-repeat;
+	}
+
+	body.loading {
+	    overflow: hidden;   
+	}
+	
+
+	body.loading .modal {
+	    display: block;
+	}
+</style>
+<script>
+	$("body").on({
+	    ajaxStart: function() { 
+	        $(this).addClass("loading"); 
+	    },
+	    ajaxStop: function() { 
+	        $(this).removeClass("loading"); 
+	    }    
+	});
+</script>
 <div class="row" id="contenido">
 	
 	<script type="text/javascript">
 		$(function() {
+			
+			
+			
 			$('#cambiarEmail').click(function(event) {
 				event.preventDefault();
 				
@@ -78,7 +115,7 @@
 	                                  <div class="alert span5 alert-error margin-top-10" id="resultado-operacion" style="display: none;"></div>
 	                                </div>
 	                                <div class="row margin-bottom-10">
-	                                <?php echo '<div class="alert span5 alert-info margin-top-10" id="info-operacion" ><span class="info-usuario"> <span id="info-nombre">Se cambiara el password al usuario</span>: <strong>' . $username . '</strong></span><br/><span class="info-mail" style="display:none;">En caso de confirmarlo su nuevo email sera: <i class="icon-envelope"></i> <strong id="nuevo_email"></strong></span></div>' ?>
+	                                <?php echo '<div class="alert span5 alert-info margin-top-10" id="info-operacion" ><span class="info-usuario"> <span id="info-nombre">Se cambiara el email al usuario</span>: <strong>' . $username . '</strong></span><br/><span class="info-mail" style="display:none;">En caso de confirmarlo su nuevo email sera: <i class="icon-envelope"></i> <strong id="nuevo_email"></strong></span></div>' ?>
 	                                </div>
                                 
                                     <?php echo form_open($this->uri->uri_string()); ?>
@@ -96,4 +133,5 @@
 
 					
 </div>		
+<div class="modal"></div>
 <!-- .block ends -->

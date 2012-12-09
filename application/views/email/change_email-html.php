@@ -11,10 +11,10 @@
 Cambiaste tu direccion de correo en <?php echo $site_name; ?>.<br />
 Sigue el siguiente enlace para confirmar el cambio de correo:<br />
 <br />
-<big style="font: 16px/18px Arial, Helvetica, sans-serif;"><b><a href="<?php echo site_url('/seguridad/reset_email/'.$user_id.'/'.$new_email_key); ?>" style="color: #3366cc;">Confirma tu correo!</a></b></big><br />
+<big style="font: 16px/18px Arial, Helvetica, sans-serif;"><b><a href="<?php echo site_url('/adm/ew/reset_email/'.$user_id.'/'.$new_email_key); ?>" style="color: #3366cc;">Confirma tu correo!</a></b></big><br />
 <br />
 Si el link no funciona copia y pega el siguiente enlace en tu browser:<br />
-<nobr><a href="<?php echo site_url('/auth/reset_email/'.$user_id.'/'.$new_email_key); ?>" style="color: #3366cc;"><?php echo site_url('/auth/reset_email/'.$user_id.'/'.$new_email_key); ?></a></nobr><br />
+<nobr><a href="<?php echo site_url('/adm/ew/reset_email/'.$user_id.'/'.$new_email_key); ?>" style="color: #3366cc;"><?php echo site_url('/adm/ew/reset_email/'.$user_id.'/'.$new_email_key); ?></a></nobr><br />
 <br />
 <br />
 Tu nueva direccion de correo es: <?php echo $new_email; ?><br />
