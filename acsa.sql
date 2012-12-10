@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Dec 08, 2012 at 11:42 PM
+-- Generation Time: Dec 10, 2012 at 01:50 AM
 -- Server version: 5.1.53
 -- PHP Version: 5.3.4
 
@@ -40,8 +40,8 @@ CREATE TABLE IF NOT EXISTS `ci_sessions` (
 --
 
 INSERT INTO `ci_sessions` (`session_id`, `ip_address`, `user_agent`, `last_activity`, `user_data`) VALUES
-('19f853ebb1dd781991498fd707860d6e', '127.0.0.1', 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.91 Safari/537.11', 1355009725, 'a:7:{s:9:"user_data";s:0:"";s:7:"user_id";s:1:"1";s:8:"username";s:4:"fran";s:10:"empresa_id";s:1:"1";s:6:"status";s:1:"1";s:8:"es_admin";s:1:"1";s:7:"empresa";s:101:"O:7:"Empresa":3:{s:6:"nombre";s:18:"Argentina Clearing";s:4:"cuit";s:9:"123456789";s:2:"id";s:1:"1";}";}'),
-('e54c839d120573a0cde70e6f7547fdad', '127.0.0.1', 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:17.0) Gecko/17.0 Firefox/17.0', 1355009041, 'a:7:{s:9:"user_data";s:0:"";s:7:"user_id";s:1:"2";s:8:"username";s:6:"quique";s:10:"empresa_id";s:1:"2";s:6:"status";s:1:"1";s:8:"es_admin";s:1:"0";s:7:"empresa";s:57:"O:7:"Empresa":3:{s:6:"nombre";N;s:4:"cuit";N;s:2:"id";N;}";}');
+('32e95f80e1cd31fa93de6925eb8dcbd3', '127.0.0.1', 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:17.0) Gecko/17.0 Firefox/17.0', 1355098131, 'a:7:{s:9:"user_data";s:0:"";s:7:"user_id";s:1:"2";s:8:"username";s:6:"quique";s:10:"empresa_id";s:1:"2";s:6:"status";s:1:"1";s:8:"es_admin";s:1:"0";s:7:"empresa";s:57:"O:7:"Empresa":3:{s:6:"nombre";N;s:4:"cuit";N;s:2:"id";N;}";}'),
+('d2f0ddf19be4d6f3ae0561b92b07d853', '127.0.0.1', 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.91 Safari/537.11', 1355098049, 'a:7:{s:7:"user_id";s:1:"1";s:8:"username";s:4:"fran";s:10:"empresa_id";s:1:"1";s:6:"status";s:1:"1";s:8:"es_admin";s:1:"1";s:7:"empresa";s:57:"O:7:"Empresa":3:{s:6:"nombre";N;s:4:"cuit";N;s:2:"id";N;}";s:17:"flash:old:message";s:38:"El role se ha eliminado correctamente!";}');
 
 -- --------------------------------------------------------
 
@@ -102,9 +102,6 @@ INSERT INTO `empresas` (`empresa_id`, `empresa_asoc_id`, `tipo_empresa_id`, `nom
 (1, 0, 2, 'Argentina Clearing', '123456789', '2011-06-09', 1, 1),
 (2, 0, 2, 'Warrantera 1', '123456', '2011-06-18', 1, 0),
 (3, 0, 2, 'Warrantera 2', '1234', '2011-09-13', 1, 0),
-(4, 0, 3, 'petrolera_test_2', '11002233', '2012-02-17', 0, 0),
-(5, 0, 3, 'petrolera', '78976122', '2012-02-17', 1, 0),
-(6, 0, 2, 'asdasd', '23232', '2012-11-22', 1, 0),
 (7, 0, 3, 'Neo', '121211', '2012-11-22', 0, 0),
 (8, 0, 2, 'GloCz', '212323', '2012-11-22', 0, 0),
 (9, 0, 3, 'ONG', '1023392223', '2012-12-02', 1, 0);
@@ -362,7 +359,7 @@ CREATE TABLE IF NOT EXISTS `login_attempts` (
   `login` varchar(50) COLLATE utf8_bin NOT NULL,
   `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=6 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=8 ;
 
 --
 -- Dumping data for table `login_attempts`
@@ -454,8 +451,6 @@ CREATE TABLE IF NOT EXISTS `productos` (
 -- Dumping data for table `productos`
 --
 
-INSERT INTO `productos` (`producto_id`, `nombre`, `precio`, `calidad`, `aforo`) VALUES
-(1, 'Soja', 50, 1, 2);
 
 -- --------------------------------------------------------
 
@@ -470,16 +465,16 @@ CREATE TABLE IF NOT EXISTS `roles` (
   `empresa_id` varchar(50) NOT NULL,
   `tipo_empresa_id` int(30) NOT NULL,
   PRIMARY KEY (`role_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=80 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=81 ;
 
 --
 -- Dumping data for table `roles`
 --
 
 INSERT INTO `roles` (`role_id`, `nombre`, `descripcion`, `empresa_id`, `tipo_empresa_id`) VALUES
-(1, 'Admin', 'UN ADMIN MODSADASD', '1', 2),
-(3, 'guest', 'es un guest', '1', 1),
-(51, 'moderador', 'Un Moderador', '2', 2);
+(1, 'Admin', 'Administrador del Sitio', '1', 2),
+(51, 'moderadors', 'Un Moderador', '2', 2),
+(80, 'coordinador', 'Coordinador del sitio.', '2', 2);
 
 -- --------------------------------------------------------
 
@@ -492,35 +487,43 @@ CREATE TABLE IF NOT EXISTS `roles_permisos` (
   `role_id` int(30) NOT NULL,
   `permiso_id` int(30) NOT NULL,
   PRIMARY KEY (`role_permiso_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1200 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1239 ;
 
 --
 -- Dumping data for table `roles_permisos`
 --
 
 INSERT INTO `roles_permisos` (`role_permiso_id`, `role_id`, `permiso_id`) VALUES
-(59, 3, 3),
-(60, 3, 4),
-(58, 3, 2),
-(57, 3, 1),
-(1196, 1, 48),
-(1195, 1, 47),
-(1194, 1, 46),
-(1193, 1, 45),
-(1192, 1, 44),
-(1191, 1, 43),
-(1190, 1, 42),
-(1189, 1, 16),
-(1188, 1, 15),
-(1187, 1, 14),
-(1186, 1, 13),
-(1185, 1, 12),
-(1184, 1, 11),
-(1183, 1, 10),
-(1182, 1, 9),
-(1197, 51, 46),
-(1198, 51, 47),
-(1199, 51, 48);
+(1238, 1, 48),
+(1237, 1, 47),
+(1236, 1, 46),
+(1235, 1, 45),
+(1234, 1, 44),
+(1233, 1, 43),
+(1232, 1, 42),
+(1231, 1, 16),
+(1230, 1, 15),
+(1229, 1, 14),
+(1228, 1, 13),
+(1227, 1, 12),
+(1226, 1, 11),
+(1225, 1, 10),
+(1224, 1, 9),
+(1211, 51, 11),
+(1210, 51, 10),
+(1209, 51, 9),
+(1212, 51, 12),
+(1213, 51, 13),
+(1214, 51, 14),
+(1215, 51, 15),
+(1216, 51, 16),
+(1217, 51, 46),
+(1218, 51, 47),
+(1219, 51, 48),
+(1220, 80, 38),
+(1221, 80, 46),
+(1222, 80, 47),
+(1223, 80, 48);
 
 -- --------------------------------------------------------
 
@@ -706,17 +709,16 @@ CREATE TABLE IF NOT EXISTS `users` (
   `modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `es_admin` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`user_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=17 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=19 ;
 
 --
 -- Dumping data for table `users`
 --
 
 INSERT INTO `users` (`user_id`, `empresa_id`, `username`, `password`, `email`, `role_id`, `activated`, `banned`, `ban_reason`, `new_password_key`, `new_password_requested`, `new_email`, `new_email_key`, `last_ip`, `last_login`, `created`, `modified`, `es_admin`) VALUES
-(1, 1, 'fran', '$P$BOd3bMRhe5jVnl7auEicOuJ.zyLunF.', 'framini@gmail.com', 1, 1, 0, NULL, NULL, NULL, NULL, NULL, '127.0.0.1', '2012-12-08 21:59:05', '2012-02-08 14:12:21', '2012-12-08 18:59:05', 1),
-(2, 2, 'quique', '$P$BWc1sneOmJCOstjNjtxJXxxucacnvU.', 'quiero_newage22@yahoo.com', 1, 1, 0, NULL, NULL, NULL, NULL, NULL, '127.0.0.1', '2012-12-08 23:24:05', '2012-02-16 14:53:20', '2012-12-08 20:24:05', 0),
-(11, 2, 'pepito_', '$P$BL0dvJs6x3m.MLhzpvvbncp951pc8R.', 'asdasd@d.com', 1, 1, 0, NULL, NULL, NULL, 'asdasdd@d.com', '28d617a7f3b1e3cedbe21c2fa567e1b8', '127.0.0.1', '2012-11-29 13:37:18', '2012-02-08 19:11:34', '2012-12-02 14:02:09', 0),
-(16, 1, 'chito', '$P$BfqbEiEM9Coxb5QTTNADrLV.Tqin/U1', 'quiero_newage@yahoo.com.ar', 1, 1, 0, NULL, NULL, NULL, NULL, NULL, '127.0.0.1', '0000-00-00 00:00:00', '2012-12-08 21:42:45', '2012-12-08 18:42:45', 0);
+(1, 1, 'fran', '$P$BOd3bMRhe5jVnl7auEicOuJ.zyLunF.', 'framini@gmail.com', 1, 1, 0, NULL, NULL, NULL, NULL, NULL, '127.0.0.1', '2012-12-09 20:13:23', '2012-02-08 14:12:21', '2012-12-09 17:13:23', 1),
+(2, 2, 'quique', '$P$B2PCEk.vP8zF9XXJHMm4vicxUacUFT0', 'quiero_newage22@yahoo.com.ar', 51, 1, 0, NULL, NULL, NULL, NULL, NULL, '127.0.0.1', '2012-12-10 00:08:57', '2012-02-16 14:53:20', '2012-12-09 21:09:24', 0),
+(11, 3, 'pepito', '$P$BL0dvJs6x3m.MLhzpvvbncp951pc8R.', 'asdasd@d.com', 0, 1, 0, NULL, NULL, NULL, 'asdasdd@d.com', '28d617a7f3b1e3cedbe21c2fa567e1b8', '127.0.0.1', '2012-11-29 13:37:18', '2012-02-08 19:11:34', '2012-12-09 20:04:04', 0);
 
 -- --------------------------------------------------------
 
@@ -750,7 +752,7 @@ CREATE TABLE IF NOT EXISTS `user_profiles` (
   `country` varchar(20) COLLATE utf8_bin DEFAULT NULL,
   `website` varchar(255) COLLATE utf8_bin DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=35 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=37 ;
 
 --
 -- Dumping data for table `user_profiles`
@@ -759,8 +761,5 @@ CREATE TABLE IF NOT EXISTS `user_profiles` (
 INSERT INTO `user_profiles` (`id`, `user_id`, `country`, `website`) VALUES
 (9, 9, NULL, NULL),
 (11, 11, NULL, NULL),
-(16, 16, NULL, NULL),
 (22, 9, NULL, NULL),
-(24, 11, NULL, NULL),
-(29, 16, NULL, NULL),
-(34, 16, NULL, NULL);
+(24, 11, NULL, NULL);
