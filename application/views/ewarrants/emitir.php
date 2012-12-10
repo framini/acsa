@@ -35,7 +35,7 @@ $observaciones = array(
 <script type="text/javascript">
     $(function() {
         $("#empresas_dd").change(function() {
-            var site_root = <?php echo '"' . site_url('ewarrants/get_cuentas_registro') . '"'; ?>;
+            var site_root = <?php echo '"' . site_url('adm/ewarrants/get_cuentas_registro') . '"'; ?>;
             var dire = site_root + "/" + $(this).val();
             $.ajax({ 
             cache: false,

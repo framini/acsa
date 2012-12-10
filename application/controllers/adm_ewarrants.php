@@ -382,7 +382,7 @@ class adm_Ewarrants extends MY_Controller {
 
 		$empresa = $this -> empresas -> get_empresa_by_id($empresa_id);
 
-		//Cargamos las cuentas de registro asociadas a Argentina Clearing
+		//Cargamos las cuentas de registro asociadas 
 		$data['cuentasregistro'] = $this -> auth_frr -> get_cuentas_registro_depositante($empresa_id);
 
 		/// print_r( $data['cuentasregistro']) ;

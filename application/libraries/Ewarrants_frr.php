@@ -125,6 +125,7 @@ class Ewarrants_frr {
             foreach ($ew->result() as $row)
             {
                $crd = $this->get_cuenta_registro_by_id($row->cuentaregistro_depositante_id);
+
                $cr_nombre_dep = $crd->nombre;
                $cr = $this->get_cuenta_registro_by_id($row->cuentaregistro_id);
                $cr_nombre = $cr->nombre;

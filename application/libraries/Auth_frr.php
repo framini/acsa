@@ -144,14 +144,17 @@ class Auth_frr
                                 $configuracion['empresa'] = json_encode($empresaJSON);
                                  * FIN SOLUCION JSON
                                  */
-                                $empresa = new Empresa();
-                                $empresa->setCuit($emp[0]->cuit);
-                                $empresa->setId($emp[0]->empresa_id);
-                                $empresa->setNombre($emp[0]->nombre);
-                                $configuracion['empresa'] = serialize($empresa);
-
-                                //Guardamos la info del usuario logueado en la session
-                                $this->ci->session->set_userdata($configuracion);
+                                if( !is_null($emp) ) {
+                                	$empresa = new Empresa();
+	                                $empresa->setCuit($emp[0]['cuit']);
+	                                $empresa->setId($emp[0]['empresa_id']);
+	                                $empresa->setNombre($emp[0]['nombre']);
+	                                $configuracion['empresa'] = serialize($empresa);
+	
+	                                //Guardamos la info del usuario logueado en la session
+	                                $this->ci->session->set_userdata($configuracion);
+                                }
+                                
 
 						if ($user->activated == 0) 
                         {	
