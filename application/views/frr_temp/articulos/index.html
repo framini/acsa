@@ -20,7 +20,7 @@
                 {% endif %}
               </a>
               <div class="media-body">
-                <h4 class="media-heading"><a href="{{ "main/item"|url_sitio(entrada.entry_id) }}">{{ entrada.titulo }}</a></h4>
+                <h4 class="media-heading"><a href="{{ "articulos/item"|url_sitio(entrada.entry_id) }}">{{ entrada.titulo }}</a></h4>
                 {{ entrada.articulos_contenido | longitud_max(140) }}
                 <div class="row">
                     <div class="span12">

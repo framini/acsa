@@ -73,7 +73,7 @@ class __TwigTemplate_88091383b135342e76f4304e99dc94da extends Twig_Template
                 <h4 class=\"media-heading\"><a href=\"";
             // line 23
             if (isset($context["entrada"])) { $_entrada_ = $context["entrada"]; } else { $_entrada_ = null; }
-            echo twig_escape_filter($this->env, Twig::url_sitio("main/item", $this->getAttribute($_entrada_, "entry_id")), "html", null, true);
+            echo twig_escape_filter($this->env, Twig::url_sitio("articulos/item", $this->getAttribute($_entrada_, "entry_id")), "html", null, true);
             echo "\">";
             if (isset($context["entrada"])) { $_entrada_ = $context["entrada"]; } else { $_entrada_ = null; }
             echo twig_escape_filter($this->env, $this->getAttribute($_entrada_, "titulo"), "html", null, true);
