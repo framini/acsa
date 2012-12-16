@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Dec 16, 2012 at 09:58 PM
+-- Generation Time: Dec 16, 2012 at 10:58 PM
 -- Server version: 5.1.53
 -- PHP Version: 5.3.4
 
@@ -40,10 +40,8 @@ CREATE TABLE IF NOT EXISTS `ci_sessions` (
 --
 
 INSERT INTO `ci_sessions` (`session_id`, `ip_address`, `user_agent`, `last_activity`, `user_data`) VALUES
-('17484a6e21067b3d40073fe837575791', '127.0.0.1', 'Java/1.6.0_24', 1355352446, ''),
-('38ce8c8a86d907116293a3e4045b69d2', '127.0.0.1', 'Java/1.6.0_24', 1355352443, ''),
-('404e7455f3521f66e5895dcb19340f94', '127.0.0.1', 'Java/1.6.0_24', 1355352445, ''),
-('f185bd57bc3a98cd6a9585471e30d3fc', '127.0.0.1', 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.95 Safari/537.11', 1355352123, '');
+('377ef97adac89ea336bd194c75b7f31d', '127.0.0.1', 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.97 Safari/537.11', 1355698498, 'a:7:{s:9:"user_data";s:0:"";s:7:"user_id";s:1:"1";s:8:"username";s:4:"fran";s:10:"empresa_id";s:1:"1";s:6:"status";s:1:"1";s:8:"es_admin";s:1:"1";s:7:"empresa";s:101:"O:7:"Empresa":3:{s:6:"nombre";s:18:"Argentina Clearing";s:4:"cuit";s:9:"123456789";s:2:"id";s:1:"1";}";}'),
+('7db407a0c40c1d4807d6681811dcc4ae', '127.0.0.1', 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:17.0) Gecko/20100101 Firefox/17.0', 1355698560, 'a:8:{s:9:"user_data";s:0:"";s:7:"user_id";s:1:"2";s:8:"username";s:6:"quique";s:10:"empresa_id";s:1:"3";s:6:"status";s:1:"1";s:8:"es_admin";s:1:"0";s:7:"empresa";s:90:"O:7:"Empresa":3:{s:6:"nombre";s:12:"Warrantera 2";s:4:"cuit";s:4:"1234";s:2:"id";s:1:"3";}";s:17:"flash:old:message";s:40:"El eWarrant se ha emitido correctamente!";}');
 
 -- --------------------------------------------------------
 
@@ -132,34 +130,26 @@ CREATE TABLE IF NOT EXISTS `ewarrant` (
   `observaciones` varchar(100) NOT NULL,
   `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `estado` tinyint(1) NOT NULL,
-  `emitido_por` int(11) NOT NULL,
+  `emitido_por` varchar(50) NOT NULL,
   `firmado` tinyint(1) NOT NULL DEFAULT '0',
   `empresa_id` int(11) NOT NULL,
   `empresa_nombre` varchar(50) NOT NULL,
   `empresa_cuit` int(11) NOT NULL,
-  `precio_ponderado` float NOT NULL DEFAULT '0',
+  `precio_ponderado` decimal(10,0) NOT NULL DEFAULT '0',
+  `usuario_ultima_accion` varchar(50) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `FK_depositante_idx` (`cuentaregistro_depositante_id`),
   KEY `FK_cuentaregistro_idx` (`cuentaregistro_id`),
   KEY `FK__idx` (`empresa_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=27 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
 
 --
 -- Dumping data for table `ewarrant`
 --
 
-INSERT INTO `ewarrant` (`id`, `codigo`, `cuentaregistro_depositante_id`, `cuentaregistro_id`, `producto`, `kilos`, `observaciones`, `created`, `estado`, `emitido_por`, `firmado`, `empresa_id`, `empresa_nombre`, `empresa_cuit`, `precio_ponderado`) VALUES
-(11, '25', 5, 5, 'Soja', 21, 'sadasd', '2011-11-01 12:57:41', 0, 2, 0, 3, 'Warrantera 2', 1234, 26775),
-(14, '123456', 5, 5, 'Trigo', 123, 'asda asdas da', '2012-02-17 18:01:56', 1, 2, 1, 3, 'Warrantera 2', 1234, 35055),
-(15, '789', 5, 5, 'Trigo', 789, 'trigo nota', '2012-02-17 18:05:09', 1, 2, 1, 3, 'Warrantera 2', 1234, 224865),
-(16, '789999666333', 5, 5, 'Soja', 456, 'ffdsd fsdfsdf sf sfsd fsdf sdfsdfsd', '2012-02-17 18:07:58', 0, 2, 1, 3, 'Warrantera 2', 1234, 581400),
-(17, '456', 7, 7, 'Trigo', 78, 'tyu tyutyu ty utyuty utyu tyu tyutuytutyutyutyu', '2012-02-17 18:09:19', 0, 2, 0, 3, 'Warrantera 2', 1234, 22230),
-(18, '2222233311', 8, 8, 'Soja', 222, 'sadsadsad', '2012-12-02 15:43:03', 1, 1, 0, 1, 'Argentina Clearing', 123456789, 283050),
-(19, '020202', 8, 8, 'Soja', 200, 'asd', '2012-12-04 16:36:59', 1, 1, 0, 1, 'Argentina Clearing', 123456789, 255000),
-(23, '2313', 8, 8, 'Soja', 23423, 'dfsdf', '2012-01-01 00:00:00', 0, 1, 0, 1, 'dsfsf', 0, 4),
-(24, '2313', 8, 8, 'Soja', 23423, 'dfsdf', '2012-01-01 00:00:00', 0, 1, 0, 1, '4', 0, 4),
-(25, '2313', 8, 8, 'Soja', 23423, 'dfsdf', '2012-01-01 00:00:00', 0, 1, 0, 1, '4', 3242, 4),
-(26, '213123', 8, 8, 'Soja', 10, 'werewr', '2012-12-11 19:30:25', 1, 1, 0, 1, 'Argentina Clearing', 123456789, 76500);
+INSERT INTO `ewarrant` (`id`, `codigo`, `cuentaregistro_depositante_id`, `cuentaregistro_id`, `producto`, `kilos`, `observaciones`, `created`, `estado`, `emitido_por`, `firmado`, `empresa_id`, `empresa_nombre`, `empresa_cuit`, `precio_ponderado`, `usuario_ultima_accion`) VALUES
+(3, '2222233311', 8, 8, 'Soja', 200, 'asd', '2012-12-16 22:55:06', 1, 'fran', 0, 1, 'Argentina Clearing', 123456789, '1530000', 'fran'),
+(4, '12121211', 7, 7, 'Soja', 100, 'asd', '2012-12-16 22:56:09', 1, 'quique', 0, 3, 'Warrantera 2', 1234, '765000', 'quique');
 
 --
 -- Triggers `ewarrant`
@@ -295,22 +285,20 @@ CREATE TABLE IF NOT EXISTS `ewarrant_audit` (
   `action` varchar(45) NOT NULL,
   `fecha` datetime NOT NULL,
   PRIMARY KEY (`ewarrant_audit_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=28 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=42 ;
 
 --
 -- Dumping data for table `ewarrant_audit`
 --
 
 INSERT INTO `ewarrant_audit` (`ewarrant_audit_id`, `id`, `codigo`, `cuentaregistro_depositante_id`, `cuentaregistro_id`, `producto`, `kilos`, `observaciones`, `created`, `estado`, `emitido_por`, `firmado`, `empresa_id`, `empresa_nombre`, `empresa_cuit`, `precio_ponderado`, `action`, `fecha`) VALUES
-(0, 11, '25', 5, 5, 'Soja', 21, 'sadasd', '2011-11-01 12:57:41', 0, 2, 1, 3, 'Warrantera 2', 1234, 26775, 'M', '2012-12-11 17:48:26'),
-(20, 23, '2313', 8, 8, 'Soja', 23423, 'dfsdf', '2012-01-01 00:00:00', 0, 1, 0, 1, 'dsfsf', 0, 4, 'A', '2012-12-07 12:23:50'),
-(21, 24, '2313', 8, 8, 'Soja', 23423, 'dfsdf', '2012-01-01 00:00:00', 0, 1, 0, 1, '4', 0, 4, 'A', '2012-12-07 12:24:11'),
-(22, 25, '2313', 8, 8, 'Soja', 23423, 'dfsdf', '2012-01-01 00:00:00', 0, 1, 0, 1, '4', 3242, 4, 'A', '2012-12-07 12:24:26'),
-(23, 12, '0000010', 5, 5, 'Soja', 2000, 'Ninguna', '2011-11-15 21:04:41', 0, 2, 0, 3, 'Warrantera 2', 1234, 2.55e+006, 'B', '2012-12-07 19:53:13'),
-(24, 11, '000005', 5, 5, 'Soja', 21, 'sadasd', '2011-11-01 12:57:41', 1, 2, 1, 3, 'Warrantera 2', 1234, 26775, 'M', '2012-12-07 19:56:50'),
-(25, 26, '213123', 8, 8, 'Soja', 10, 'werewr', '2012-12-11 19:30:25', 1, 1, 0, 1, 'Argentina Clearing', 123456789, 76500, 'A', '2012-12-11 17:30:25'),
-(26, 14, '123456', 5, 5, 'Trigo', 123, 'asda asdas da', '2012-02-17 18:01:56', 1, 2, 0, 3, 'Warrantera 2', 1234, 35055, 'M', '2012-12-11 17:31:15'),
-(27, 11, '25', 5, 5, 'Soja', 21, 'sadasd', '2011-11-01 12:57:41', 1, 2, 1, 3, 'Warrantera 2', 1234, 26775, 'M', '2012-12-11 17:32:03');
+(35, 3, '2222233311', 8, 8, 'Soja', 200, 'asd', '2012-12-16 22:55:06', 1, 0, 0, 1, 'Argentina Clearing', 123456789, 1.53e+006, 'A', '2012-12-16 19:55:06'),
+(36, 4, '12121211', 7, 7, 'Soja', 100, 'asd', '2012-12-16 22:56:09', 1, 0, 0, 3, 'Warrantera 2', 1234, 765000, 'A', '2012-12-16 19:56:09'),
+(37, 4, '12121211', 7, 7, 'Soja', 100, 'asd', '2012-12-16 22:56:09', 1, 0, 0, 3, 'Warrantera 2', 1234, 765000, 'M', '2012-12-16 19:56:47'),
+(38, 4, '12121211', 7, 7, 'Soja', 100, 'asd', '2012-12-16 22:56:09', 1, 0, 1, 3, 'Warrantera 2', 1234, 765000, 'M', '2012-12-16 19:57:01'),
+(39, 4, '12121211', 7, 7, 'Soja', 100, 'asd', '2012-12-16 22:56:09', 0, 0, 1, 3, 'Warrantera 2', 1234, 765000, 'M', '2012-12-16 19:57:25'),
+(40, 4, '12121211', 7, 7, 'Soja', 100, 'asd', '2012-12-16 22:56:09', 1, 0, 0, 3, 'Warrantera 2', 1234, 765000, 'M', '2012-12-16 19:57:35'),
+(41, 4, '12121211', 7, 7, 'Soja', 100, 'asd', '2012-12-16 22:56:09', 0, 0, 0, 3, 'Warrantera 2', 1234, 765000, 'M', '2012-12-16 19:57:54');
 
 -- --------------------------------------------------------
 
@@ -669,16 +657,13 @@ CREATE TABLE IF NOT EXISTS `roles_permisos` (
   `permiso_id` int(30) NOT NULL,
   PRIMARY KEY (`role_permiso_id`),
   KEY `FK_role_idx` (`role_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1181 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1188 ;
 
 --
 -- Dumping data for table `roles_permisos`
 --
 
 INSERT INTO `roles_permisos` (`role_permiso_id`, `role_id`, `permiso_id`) VALUES
-(1153, 1, 46),
-(1154, 1, 47),
-(1155, 1, 48),
 (1156, 51, 9),
 (1157, 51, 12),
 (1160, 3, 9),
@@ -701,7 +686,14 @@ INSERT INTO `roles_permisos` (`role_permiso_id`, `role_id`, `permiso_id`) VALUES
 (1177, 52, 42),
 (1178, 52, 43),
 (1179, 52, 44),
-(1180, 52, 45);
+(1180, 52, 45),
+(1181, 1, 5),
+(1182, 1, 6),
+(1183, 1, 7),
+(1184, 1, 8),
+(1185, 1, 46),
+(1186, 1, 47),
+(1187, 1, 48);
 
 -- --------------------------------------------------------
 
@@ -897,8 +889,8 @@ CREATE TABLE IF NOT EXISTS `users` (
 --
 
 INSERT INTO `users` (`user_id`, `empresa_id`, `username`, `password`, `email`, `role_id`, `activated`, `banned`, `ban_reason`, `new_password_key`, `new_password_requested`, `new_email`, `new_email_key`, `last_ip`, `last_login`, `created`, `modified`, `es_admin`) VALUES
-(1, 1, 'fran', '$P$BOd3bMRhe5jVnl7auEicOuJ.zyLunF.', 'framini@gmail.com', 1, 1, 0, NULL, NULL, NULL, NULL, NULL, '127.0.0.1', '2012-12-11 20:36:52', '2012-02-08 14:12:21', '2012-12-11 17:36:52', 1),
-(2, 3, 'quique', '$P$BWc1sneOmJCOstjNjtxJXxxucacnvU.', 'quiero_newage22@yahoo.com', 1, 1, 0, NULL, NULL, NULL, NULL, NULL, '127.0.0.1', '2012-12-05 00:45:54', '2012-02-16 14:53:20', '2012-12-04 20:45:54', 0),
+(1, 1, 'fran', '$P$BOd3bMRhe5jVnl7auEicOuJ.zyLunF.', 'framini@gmail.com', 1, 1, 0, NULL, NULL, NULL, NULL, NULL, '127.0.0.1', '2012-12-16 22:15:44', '2012-02-08 14:12:21', '2012-12-16 19:15:44', 1),
+(2, 3, 'quique', '$P$BWc1sneOmJCOstjNjtxJXxxucacnvU.', 'quiero_newage22@yahoo.com', 1, 1, 0, NULL, NULL, NULL, NULL, NULL, '127.0.0.1', '2012-12-16 22:37:26', '2012-02-16 14:53:20', '2012-12-16 19:37:26', 0),
 (11, 2, 'pepito_', '$P$B9mL5bLQPD.kVm149ZLfe3lIq3VfeG/', 'asdasd@d.com', 52, 1, 0, NULL, NULL, NULL, 'asdasdd@d.com', '28d617a7f3b1e3cedbe21c2fa567e1b8', '127.0.0.1', '2012-12-07 22:18:00', '2012-02-08 19:11:34', '2012-12-07 19:18:00', 0);
 
 -- --------------------------------------------------------

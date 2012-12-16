@@ -361,12 +361,13 @@ class adm_Ewarrants extends MY_Controller {
 				'kilos' => $this -> form_validation -> set_value('kilos'), 
 				'observaciones' => $this -> form_validation -> set_value('observaciones'), 
 				'estado' => 1, 
-				'emitido_por' => $user_id, 
+				'emitido_por' => $this -> auth_frr -> get_username(), 
 				'firmado' => 0, 
 				'empresa_id' => $empresa_id, 
 				'empresa_nombre' => $datosEmpresa -> getNombre(), 
 				'empresa_cuit' => $datosEmpresa -> getCuit(), 
-				'precio_ponderado' => $precio_ponderado
+				'precio_ponderado' => $precio_ponderado,
+				'usuario_ultima_accion' => $this -> auth_frr -> get_username()
 			);
 			
 			if ($this -> ewarrants_frr -> emitir($data)) {
