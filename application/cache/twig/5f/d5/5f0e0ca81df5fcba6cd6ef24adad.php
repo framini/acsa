@@ -29,7 +29,7 @@ class __TwigTemplate_5fd55f0e0ca81df5fcba6cd6ef24adad extends Twig_Template
     public function block_title($context, array $blocks = array())
     {
         echo " ";
-        echo twig_escape_filter($this->env, $this->getAttribute($this->getAttribute((isset($context["contenido_home_items"]) ? $context["contenido_home_items"] : null), "14", array(), "array"), "titulo"), "html", null, true);
+        echo twig_escape_filter($this->env, $this->getAttribute($this->getAttribute((isset($context["contenido_home_items"]) ? $context["contenido_home_items"] : null), "10", array(), "array"), "titulo"), "html", null, true);
         echo " ";
     }
 
