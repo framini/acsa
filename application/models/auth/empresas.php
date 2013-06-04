@@ -51,6 +51,7 @@ class Empresas extends CI_Model
         function get_all_empresas() {
             $this->db->select();
             $this->db->from("empresas");
+            $this->db->where('tipo_empresa_id !=', 4); //SE FILTRAN LAS ASEGURADORAS
             $query = $this->db->get();
             
             if ($query->num_rows() > 0) return $query;
@@ -67,6 +68,23 @@ class Empresas extends CI_Model
             
             if ($query->num_rows() > 0) return $query;
             return NULL;
+        }
+        
+        /**
+         * Devuelve las empresas aseguradoras
+         */
+        function get_aseguradoras() {
+        	$aseguradoras = $this->db->select('empresas.empresa_id, empresas.nombre, tp.tipo_empresa_id, tp.tipo_empresa, tp.descripcion')
+                                           ->where('tp.tipo_empresa_id', 4) //ASEGURADORAS TIENE ID 4
+                                           ->join('tipo_empresa AS tp', 'tp.tipo_empresa_id = empresas.tipo_empresa_id')
+                                           ->get('empresas');
+	       if($aseguradoras->num_rows() > 0) 
+	       {
+	          	return $aseguradoras;
+	       }
+	       
+	        
+	        return false;
         }
         
 		/**

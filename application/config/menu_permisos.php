@@ -36,6 +36,7 @@ $config['emitir'] = array('texto_anchor' => 'Emitir', 'icono' => 'icon-plus-sign
 $config['listar'] = array('texto_anchor' => 'Listar', 'icono' => 'icon-info-sign', 'boton_superior' => false);
 $config['firma']  = array('texto_anchor' => 'Firmar', 'icono' => 'icon-ok-sign', 'boton_superior' => true, 'clase_boton' => 'btn btn-large btn-success enviar absoluto-r0-b0 margin-bot-none pull-right');
 $config['anular'] = array('texto_anchor' => 'Anular', 'icono' => 'icon-remove-sign', 'boton_superior' => true, 'clase_boton' => 'btn btn-large btn-danger enviar absoluto-r0-b0 margin-bot-none pull-right');
+$config['ver_pendientes'] = array('texto_anchor' => 'Ver Pendientes', 'icono' => 'icon-remove-sign', 'boton_superior' => true, 'clase_boton' => 'btn btn-large btn-danger enviar absoluto-r0-b0 margin-bot-none pull-right');
 
 # Menu gestion Seguridad
 # Notas:

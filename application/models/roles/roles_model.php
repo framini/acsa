@@ -15,7 +15,7 @@ class  Roles_model extends CI_Model
     
     function get_role($user_id)
     {
-        $roles = $this->db->select('users.username, roles.nombre, roles.descripcion, roles.empresa_id')
+        $roles = $this->db->select('roles.role_id, users.username, roles.nombre, roles.descripcion, roles.empresa_id')
                 ->where('users.user_id', $user_id)
                 ->join('roles', 'roles.role_id = users.role_id')
                 ->get('users');

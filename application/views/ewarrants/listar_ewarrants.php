@@ -3,7 +3,7 @@
         $('input#id_search').quicksearch('table tbody tr');
         
         var datos = {};
-        	var dire = "http://localhost/acsa/index.php" + "/general";
+        	var dire = "http://localhost/argc/index.php" + "/general";
 			
 			////////////////////////////////////////////////////////////
 			//BOTONES Firmar
@@ -191,6 +191,9 @@
                                                                                 <th>Estado</th>
                                                                                 <th>Firmado</th>
                                                                                 <th>Creado por</th>
+                                                                                <?php if(isset($operacion_estado)) { ?>
+                                                                                <th>Accion</th>
+                                                                                <?php } ?>
                                                                         </tr>
                                                                 </thead>
 
@@ -210,6 +213,7 @@
                                                                                     if($ew['estado'] == 1) echo '<td>Activo</td>'; else echo '<td>Anulado</td>';
                                                                                     if($ew['firmado'] == 1) echo '<td>Firmado</td>'; else echo '<td>Sin firmar</td>';
                                                                                     echo '<td>' . $ew['emitido_por'] .'</td>';
+                                                                                    if(isset($operacion_estado)) echo '<td><a class="btn">Accion</a></td>';
                                                                                     echo "</tr>";
                                                                                 }
                                                                         ?>

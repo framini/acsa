@@ -46,6 +46,34 @@ class Ewarrants_model extends CI_Model
                 return NULL;
         }
         
+        function get_warrants_habilitados_pendientes() {
+        	$query = $this->db->select()
+        	->from('ewarrant')
+        	->where('estado', 1)
+        	->get();
+        
+        	if($query->num_rows() > 0)
+        	{
+        		return $query;
+        	} else
+        		return NULL;
+        }
+        
+		function get_warrants_empresa_pendientes($empresa_id, $estado = NULL) {
+			$est = isset($estado) ? $estado : 1;
+            $query = $this->db->select()
+                               ->from('ewarrant')
+                               ->where('empresa_id', $empresa_id)
+                               ->where('estado', $est)
+                               ->get();
+        
+            if($query->num_rows() > 0)
+            {
+                return $query;
+            } else
+                return NULL;
+        }
+        
          function get_warrants_habilitados_sin_firmar() {
             $query = $this->db->select()
                                ->from('ewarrant')

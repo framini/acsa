@@ -252,6 +252,38 @@ class Auth_frr
             }
         }
         
+        function has_role_warrantera() {
+        	$role = $this->ci->roles_frr->role_usuario_logueado();
+        	//var_dump($role); die();
+        	//TODO: Ver de que forma chequear mejor esto
+        	
+        	if( $this->es_admin() ) {
+        		return true;
+        	}
+        	
+        	if( $role->nombre == "Warrantera" ) {
+        		return TRUE;
+        	} else {
+        		return FALSE;
+        	}
+        }
+        
+        function has_role_aseguradora() {
+        	$role = $this->ci->roles_frr->role_usuario_logueado();
+        	//var_dump($role); die();
+        	//TODO: Ver de que forma chequear mejor esto
+        	 
+        	if( $this->es_admin() ) {
+        		return true;
+        	}
+        	 
+        	if( $role->nombre == "Aseguradora" ) {
+        		return TRUE;
+        	} else {
+        		return FALSE;
+        	}
+        }
+        
         function is_argclearing() {
             
             $user_id = $this->get_user_id();

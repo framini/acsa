@@ -1,36 +1,32 @@
 <?php
 $codigo= array(
         'name'             => 'codigo',
-        'value'             => set_value('codigo'),
+        'value'             => (isset($codigo_id)) ? $codigo_id : set_value('codigo'),
         'class'             => 'text span5'
 );
 
 $depositante = array(
         'name'             => 'cuentaregistro_id',
-        'value'             => set_value('cuentaregistro_id'),
+        'value'             => (isset($cuentaregistro_id)) ? $cuentaregistro_id : set_value('cuentaregistro_id'),
         'class'             => 'textarea-mid span5',
 );
 
 $producto = array(
         'name'             => 'producto',
-        'value'             => set_value('producto'),
+        'value'             => (isset($producto_id)) ? $producto_id : set_value('producto'),
         'class'             => 'text span5'
 );
 $kilos = array(
         'name'             => 'kilos',
-        'value'             => set_value('kilos'),
+        'value'             => (isset($kilos_id)) ? $kilos_id : set_value('kilos'),
         'class'             => 'text span5'
 );
 $observaciones = array(
         'name'             => 'observaciones',
-        'value'             => set_value('observaciones'),
+        'value'             => (isset($observaciones_id)) ? $observaciones_id : set_value('observaciones'),
         'class'             => 'text span5'
 );
-$observaciones = array(
-        'name'             => 'observaciones',
-        'value'             => set_value('observaciones'),
-        'class'             => 'text span5'
-);
+
 ?>
 <script type="text/javascript">
     $(function() {
@@ -69,6 +65,113 @@ $observaciones = array(
                                 </div>
                                 
                                 <?php echo form_open($this->uri->uri_string()); ?>
+                                	
+                                	<?php if( isset($aseguradoras) ) { ?>
+                                	<div class="row">
+                                		<div class="span6 control-group">
+                                			<?php if( isset($tipo_empresa_id) && $tipo_empresa_id == 4 ) { ?>
+                                                <?php echo form_label('Estado de poliza'); ?>
+                                                <label class="radio">
+												  <input type="radio" name="estado" id="estado1" value="5">
+												  Aceptar Poliza
+												</label>
+												<label class="radio">
+												  <input type="radio" name="estado" id="estad2" value="6">
+												 Rechazar Poliza
+												</label>
+                             				<?php } elseif( isset($tipo_empresa_id) && $tipo_empresa_id == 2 ) { ?>
+                             					<?php echo form_label('Estado'); ?>
+                                                <label class="radio">
+												  <input type="radio" name="estado" id="estado1" value="2">
+												  Aceptado
+												</label>
+												<label class="radio">
+												  <input type="radio" name="estado" id="estad2" value="4">
+												 Rechazado
+												</label>
+                             				<?php } ?>
+                                        </div>
+                                    </div>
+                                	<?php } ?>
+                                	
+                                	<?php if( isset($tipo_empresa_id) && $tipo_empresa_id == 2 ) { //Chequeamos que sea una warrantera ?>
+                                	<div class="well">
+                                	<h2>Poliza</h2>
+                                	
+                                	<?php if( isset($aseguradoras) ) { ?>
+                                	<div class="row">
+                                		<div class="span6 control-group">
+                                                <?php echo form_label('Aseguradora', 'aseguradora_id'); ?></td>
+                                                <?php
+                                                	if(count($aseguradoras) > 0) {
+                                                		echo '<select name="aseguradora_id" class="listas-padding span5" id="aseguradora_id">';
+	                                                    foreach($aseguradoras as $crd)
+	                                                    {
+	                                                       $opt = '<option value="' . $crd['empresa_id'] . '"';
+	                                                       //if( isset($cuentaregistro_id) && $cuentaregistro_id == $crd['cuentaregistro_id'] )
+	                                                       //$opt .= ' selected="selected" ';
+	                                                       $opt .= '>' .  $crd['nombre'] . "</option>";
+	                                                       echo $opt;
+	                                                    }
+	                                                    echo '</select>';
+                                                	} else {
+                                                		echo '<select name="aseguradora_id" class="listas-padding span5" id="aseguradora_id">';
+															echo '<option value="0">No hay Aseguradoras cargadas</option>'; 
+														echo '</select>';
+                                                	}
+                                                ?>
+                             
+                                        </div>
+                                    </div>
+                                	<?php } ?>
+                                	
+                                	<div class="row">
+                                		<div class="span6 control-group <?php if(form_error('poliza_nombre') != "") echo "error"; ?>">            
+                                                    <?php echo form_label('Nombre'); ?>
+                                                    <?php echo form_input(array( "name" => "poliza_nombre", "id" => "poliza_nombre" )); ?>
+                                                    <?php if(form_error('poliza_nombre') != "" || isset($errors['poliza_nombre']) ) {?>
+                                                    <div class="row">
+					                                    <div class="alert span4 alert-error">
+													        <?php echo form_error($errors['poliza_nombre']); ?><?php echo isset($errors['poliza_nombre'])?$errors['poliza_nombre']:''; ?>
+													    </div>
+													</div>
+												    <?php } ?>
+										</div>
+                                    </div>
+                                    
+                                    <div class="row">
+                                		<div class="span6 control-group <?php if(form_error('poliza_comision') != "") echo "error"; ?>">            
+                                                    <?php echo form_label('Comision'); ?>
+                                                    <?php echo form_input(array( "name" => "poliza_comision", "id" => "poliza_comision" )); ?>
+                                                    <?php if(form_error('poliza_comision') != "" || isset($errors['poliza_comision']) ) {?>
+                                                    <div class="row">
+					                                    <div class="alert span4 alert-error">
+													        <?php echo form_error($errors['poliza_comision']); ?><?php echo isset($errors['poliza_comision'])?$errors['poliza_comision']:''; ?>
+													    </div>
+													</div>
+												    <?php } ?>
+										</div>
+                                    </div>
+                                    
+                                    <div class="row">
+                                		<div class="span6 control-group <?php if(form_error('poliza_descripcion') != "") echo "error"; ?>">            
+                                                    <?php echo form_label('Descripcion poliza'); ?>
+                                                    <textarea name="poliza_descripcion" id="poliza_descripcion">
+                                                    </textarea>
+                                                    <?php if(form_error('poliza_descripcion') != "" || isset($errors['poliza_descripcion']) ) {?>
+                                                    <div class="row">
+					                                    <div class="alert span4 alert-error">
+													        <?php echo form_error($errors['poliza_descripcion']); ?><?php echo isset($errors['poliza_descripcion'])?$errors['poliza_descripcion']:''; ?>
+													    </div>
+													</div>
+												    <?php } ?>
+										</div>
+                                    </div>
+                                    </div><!-- hero -->
+                                	<?php } ?>
+                                	
+                                	<?php if( $this->uri->segment(3) == FALSE ) {  ?>
+                                	
 									<div class="row">
                                 		<div class="span6 control-group <?php if(form_error($codigo['name']) != "") echo "error"; ?>">
 		                                    <?php echo form_label('Codigo', $codigo['name']); ?>
@@ -93,7 +196,12 @@ $observaciones = array(
 		                                                echo '<select name="empresa_id" class="listas-padding span5" id="empresas_dd">';
 		                                                foreach($empresas as $empresa)
 		                                                {
-		                                                   echo '<option value="' . $empresa['empresa_id'] . '">' . $empresa['nombre'] . "</option>";
+		                                                   //echo '<option value="' . $empresa['empresa_id'] . '">' . $empresa['nombre'] . "</option>";
+		                                                   $opt = '<option value="' . $empresa['empresa_id'] . '"';
+		                                                   if( isset($empresa_id) && $empresa_id == $empresa['empresa_id'] )
+		                                                   	$opt .= ' selected="selected" ';
+		                                                   $opt .= '>' .  $empresa['nombre'] . "</option>";
+		                                                   echo $opt;
 		                                                }
 		                                                echo '</select>';
 		                                            ?>
@@ -109,7 +217,11 @@ $observaciones = array(
                                                 		echo '<select name="cuentaregistro_id" class="listas-padding span5" id="cuentas_registro">';
 	                                                    foreach($cuentasregistro as $crd)
 	                                                    {
-	                                                       echo '<option value="' . $crd['cuentaregistro_id'] . '">' . $crd['nombre'] . "</option>";
+	                                                       $opt = '<option value="' . $crd['cuentaregistro_id'] . '"';
+	                                                       if( isset($cuentaregistro_id) && $cuentaregistro_id == $crd['cuentaregistro_id'] )
+	                                                       	$opt .= ' selected="selected" ';
+	                                                       $opt .= '>' .  $crd['nombre'] . "</option>";
+	                                                       echo $opt;
 	                                                    }
 	                                                    echo '</select>';
                                                 	} else {
@@ -128,7 +240,12 @@ $observaciones = array(
                                                     echo '<select name="producto" class="listas-padding span5" id="productos">';
                                                     foreach($productos as $prd)
                                                     {
-                                                       echo '<option value="' . $prd['producto_id'] . '">' . $prd['nombre'] . "</option>";
+                                                       //echo '<option value="' . $prd['producto_id'] . '">' . $prd['nombre'] . "</option>";
+                                                       $opt = '<option value="' . $prd['producto_id'] . '"';
+                                                       if( isset($producto_id) && $producto_id == $prd['nombre'] )
+                                                       	$opt .= ' selected="selected" ';
+                                                       $opt .= '>' .  $prd['nombre'] . "</option>";
+                                                       echo $opt;
                                                     }
                                                     echo '</select>';
                                                 ?>
@@ -160,6 +277,26 @@ $observaciones = array(
 												    <?php } ?>
 								    	</div>
                                     </div>
+                                    
+                                    <?php } else { //FIN IF NOT SEGMENT(3) ?>
+                                    <div class="controls controls-row">
+                                    	<span class="input-xlarge uneditable-input"><?php echo $codigo_id; ?></span>
+                                    </div>
+                                    <div class="controls controls-row">
+                                    	<span class="input-xlarge uneditable-input"><?php echo $empresa_id; ?></span>
+                                    </div>
+                                    <div class="controls controls-row">
+                                    	<span class="input-xlarge uneditable-input"><?php echo $cuentaregistro_id; ?></span>
+                                    </div>
+                                    <div class="controls controls-row">
+                                    	<span class="input-xlarge uneditable-input"><?php echo $producto_id; ?></span>
+                                    </div>
+                                    <div class="controls controls-row">
+                                    	<span class="input-xlarge uneditable-input"><?php echo $kilos_id; ?></span>
+                                    </div>
+                                    
+                                    <?php } ?>
+                                    
                                     <?php //echo form_submit('register', 'Crear Cuenta'); ?>
                                     <p><input type="submit" class="btn btn-primary btn-large" value="Emitir eWarrant" name="register" /></p>
                                     <?php echo form_close(); ?>

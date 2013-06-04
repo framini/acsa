@@ -248,6 +248,32 @@ class Empresas_frr {
         return $data;
 	}
 	
+	
+	/**
+	 * Devuelve los tipos de cuenta de registro
+	 */
+	function get_aseguradoras() {
+		
+		$aseguradoras = $this->ci->empresas->get_aseguradoras();
+		if( $aseguradoras ) {
+			foreach ($aseguradoras->result() as $row)
+			{
+				$data[] = array(
+						'empresa_id'    			=> $row->empresa_id,
+						'tipo_empresa'				=> $row->tipo_empresa,
+						'tipo_empresa_id'			=> $row->tipo_empresa_id,
+						'descripcion'				=> $row->descripcion,
+						'nombre'					=> $row->nombre
+				);
+			}
+			
+			return $data;
+		} else {
+			return false;
+		}
+		
+	}
+	
 	/**
 	 * Devuelve los tipos de cuenta de registro
 	 */
@@ -298,6 +324,17 @@ class Empresas_frr {
 			
 	}
 	
+	function get_tipo_empresa_usario_logueado() {
+		$emp_id = $this->ci->auth_frr->get_empresa_id();
+		$emp = $this->get_empresa_by_id($emp_id);
+		
+		if( $emp ) {
+			return $emp[0]['tipo_empresa_id'];
+		} else {
+			return false;
+		}
+	}
+	
 	function get_empresa_by_id($emp_id = NULL) {
 		if($emp_id) {
 			//Obtenemos la empresa en base al id enviado como parametro
@@ -316,6 +353,8 @@ class Empresas_frr {
 			}
 	
 	        return $data;
+		} else {
+			return false;
 		}
 			
 	}

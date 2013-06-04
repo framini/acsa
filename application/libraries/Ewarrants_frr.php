@@ -16,6 +16,7 @@ class Ewarrants_frr {
         $this->ci->load->model('roles/roles_model');
         $this->ci->load->model('ewarrants/ewarrants_model');
         $this->ci->load->model('productos/productos_model');
+        $this->ci->load->model('polizas/polizas_model');
     }
 
     /**
@@ -54,6 +55,43 @@ class Ewarrants_frr {
             return false;
     }
     
+    /**
+     * Se confirma la firma de un eWarrant
+     * @param type $ewid
+     * @return type
+     */
+    function confirmar_operacion($ewid, $aseguradora_id, $estado, $poliza_nombre = NULL, $poliza_descripcion = NULL, $poliza_comision = NULL) {
+    	
+    	$ew = $this->ci->ewarrants_model->get_warrant_by_id($ewid);
+    	$data = array(
+    			'codigo' => $ew->codigo,
+    			'cuentaregistro_depositante_id' => $ew->cuentaregistro_depositante_id,
+    			'cuentaregistro_id' => $ew->cuentaregistro_id,
+    			'producto' => $ew->producto,
+    			'kilos' => $ew->kilos,
+    			'observaciones' => $ew->observaciones,
+    			'estado'        => $estado,
+    			'emitido_por' => $ew->emitido_por,
+    			'firmado'     => 0,
+    			'aseguradora_id'	=> $aseguradora_id
+    	);
+    	
+    	if( isset($poliza_nombre) && isset($poliza_descripcion) && isset($poliza_comision) ) {
+    		$poli_id = $this->ci->polizas_model->emitir_poliza(array(
+    					'nombre'			=> $poliza_nombre,
+	    				'descripcion'	=> $poliza_descripcion,
+	    				'comision'		=> $poliza_comision
+    		));
+    		
+    		$data['poliza_id'] = $poli_id;
+    	}
+    	
+    	if($this->ci->ewarrants_model->modificar($ewid, $data))
+    		return true;
+    	else
+    		return false;
+    }
+    
     function can_anular($ewid) {
         $user_id = $this->ci->auth_frr->get_user_id();
         $ew = $this->ci->ewarrants_model->get_warrant_by_id($ewid);
@@ -61,6 +99,25 @@ class Ewarrants_frr {
             return true;
         else
             return false;
+    }
+    
+    function get_poliza_by_id($p_id = NULL) {
+    	if($p_id) {
+    		
+    		$poliza = $this->ci->polizas_model->get_poliza_by_id($p_id);
+    
+    		if($poliza) {
+    
+    			$data[] = array(
+    					'poliza_id'    						=> $poliza->poliza_id,
+    					'poliza_nombre'       				=> $poliza->nombre,
+    					'poliza_descripcion'       			=> $poliza->descripcion,
+    					'poliza_comision'       			=> $poliza->comision
+    			);
+    		}
+    
+    		return $data;
+    	}	
     }
     
     function confirmar_anulacion($ewid) {
@@ -98,6 +155,22 @@ class Ewarrants_frr {
         } else {
             return false;
         }
+    }
+    
+    /**
+     * Devuelve un booleando para determinar si el eWarrant esta pendiente
+     * @param type $ewid
+     * @return type
+     */
+    function esta_pendiente($ewid) {
+    	$ew = $this->ci->ewarrants_model->get_warrant_by_id($ewid);
+    	if($ew->estado == 1) {
+    		
+    		return true;
+    	} else {
+    		
+    		return false;
+    	}
     }
     
     /**
@@ -143,6 +216,129 @@ class Ewarrants_frr {
                                 'estado'  => $row->estado,
                                 'emitido_por' => $username,
                                 'firmado'     => $row->firmado
+               );
+
+            }
+            
+            return $data;
+        }  else {
+            return NULL;
+        }
+    }
+    
+    /**
+     * Devuelve todos los eWarrants emitidos por una determinada empresa
+     * @param type $empresa_id
+     * @return type
+     */
+    function get_warrants_habilitados_pendientes() {
+    	$ew = $this->ci->ewarrants_model->get_warrants_habilitados();
+    	if($ew != NULL) {
+    		foreach ($ew->result() as $row)
+    		{
+    			$crd = $this->get_cuenta_registro_by_id($row->cuentaregistro_depositante_id);
+    			$cr_nombre_dep = $crd->nombre;
+    			$cr = $this->get_cuenta_registro_by_id($row->cuentaregistro_id);
+    			$cr_nombre = $cr->nombre;
+    			$username = $this->ci->auth_frr->get_username_by_id($row->emitido_por);
+    			$data[] = array(
+    					'id'       => $row->id,
+    					'codigo'       => $row->codigo,
+    					'cuentaregistro_depositante_id' => $row->cuentaregistro_depositante_id,
+    					'cuentaregistro_id'        => $row->cuentaregistro_id,
+    					'nombre_cuenta_registro_depositante'   => $cr_nombre_dep,
+    					'nombre_cuenta_registro'   => $cr_nombre,
+    					'producto'     => $row->producto,
+    					'kilos'        => $row->kilos,
+    					'observaciones' => $row->observaciones,
+    					'created' => $row->created,
+    					'estado'  => $row->estado,
+    					'emitido_por' => $username,
+    					'firmado'     => $row->firmado
+    			);
+    
+    		}
+    
+    		return $data;
+    	}  else {
+    		return NULL;
+    	}
+    }
+    
+    /**
+     * Devuelve todos los eWarrants pendientes por confirmar
+     * @param type $empresa_id
+     * @return type
+     */
+    function get_warrants_por_confirmar($empresa_id, $estado) {
+    	$ew = $this->ci->ewarrants_model->get_warrants_empresa_pendientes($empresa_id, $estado);
+        if($ew != NULL) {
+            foreach ($ew->result() as $row)
+            {
+               $crd = $this->get_cuenta_registro_by_id($row->cuentaregistro_depositante_id);
+               $cr_nombre_dep = $crd->nombre;
+               $cr = $this->get_cuenta_registro_by_id($row->cuentaregistro_id);
+               $cr_nombre = $cr->nombre;
+               $username = $this->ci->auth_frr->get_username_by_id($row->emitido_por);
+               $data[] = array(
+                                'id'       => $row->id,
+                                'codigo'       => $row->codigo,
+                                'cuentaregistro_depositante_id' => $row->cuentaregistro_depositante_id,
+                                'cuentaregistro_id'        => $row->cuentaregistro_id,
+                                'nombre_cuenta_registro_depositante'   => $cr_nombre_dep,
+                                'nombre_cuenta_registro'   => $cr_nombre,
+                                'producto'     => $row->producto,
+                                'kilos'        => $row->kilos,
+                                'observaciones' => $row->observaciones,
+                                'created' => $row->created,
+                                'estado'  => $row->estado,
+                                'emitido_por' => $username,
+                                'firmado'     => $row->firmado,
+                                'empresa_nombre' => $row->empresa_nombre,
+                                'empresa_cuit' => $row->empresa_cuit,
+                                'valor_ponderado' => $row->precio_ponderado
+               );
+
+            }
+            
+            return $data;
+        }  else {
+            return NULL;
+        }
+    }
+    
+    /**
+     * Devuelve todos los eWarrants emitidos por una determinada empresa con estado pendiente
+     * @param type $empresa_id
+     * @return type
+     */
+	function get_warrants_empresa_pendientes($empresa_id) {
+        $ew = $this->ci->ewarrants_model->get_warrants_empresa_pendientes($empresa_id);
+        if($ew != NULL) {
+            foreach ($ew->result() as $row)
+            {
+               $crd = $this->get_cuenta_registro_by_id($row->cuentaregistro_depositante_id);
+               $cr_nombre_dep = $crd->nombre;
+               $cr = $this->get_cuenta_registro_by_id($row->cuentaregistro_id);
+               $cr_nombre = $cr->nombre;
+               $username = $this->ci->auth_frr->get_username_by_id($row->emitido_por);
+               $data[] = array(
+                                'id'       => $row->id,
+                                'codigo'       => $row->codigo,
+                                'cuentaregistro_depositante_id' => $row->cuentaregistro_depositante_id,
+                                'cuentaregistro_id'        => $row->cuentaregistro_id,
+                                'nombre_cuenta_registro_depositante'   => $cr_nombre_dep,
+                                'nombre_cuenta_registro'   => $cr_nombre,
+                                'producto'     => $row->producto,
+                                'kilos'        => $row->kilos,
+                                'observaciones' => $row->observaciones,
+                                'created' => $row->created,
+                                'estado'  => $row->estado,
+                                'emitido_por' => $username,
+                                'firmado'     => $row->firmado,
+                                'empresa_nombre' => $row->empresa_nombre,
+                                'empresa_cuit' => $row->empresa_cuit,
+                                'valor_ponderado' => $row->precio_ponderado
                );
 
             }
@@ -330,6 +526,37 @@ class Ewarrants_frr {
         } else {
             return false;
         }
+    }
+    
+    function get_warrant_by_id($ewid) {
+    	return $this->ci->ewarrants_model->get_warrant_by_id($ewid);
+    }
+    
+    /**
+     * Devuelve un booleando que indica si el usuario que esta tratando de habilitar tiene los permisos suficientes
+     * @param unknown_type $ew_id
+     * @return boolean
+     */
+    function can_habilitar($ew_id, $aseg_id = NULL) {
+    	
+		
+    	if( $this->ci->auth_frr->has_role_warrantera() ) {
+    		$ewarrant = $this->ci->ewarrants_model->get_warrant_by_id($ew_id);
+    		$user_id = $this->ci->auth_frr->get_user_id();
+    		
+    		if($ewarrant) {
+    			return TRUE;
+    		} else {
+    			return false;
+    		}
+    		
+    	} elseif( $this->ci->auth_frr->has_role_aseguradora() ) {
+    		return TRUE;
+    	} 
+    	else {
+    		return FALSE;
+    	}
+    
     }
     
     function get_producto_by_id($producto_id) {
