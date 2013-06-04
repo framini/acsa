@@ -1,11 +1,11 @@
 $(function() {    
     var datos = {};
-	var dire = "http://localhost/argc/index.php" + "/general";
+	var dire = "http://localhost/argc/index.php" + "/adm/general";
 	
 	////////////////////////////////////////////////////////////
 	//BOTONES Eliminar
 	////////////////////////////////////////////////////////////
-	$('a.eliminar-role').click(function(event) {
+	$('#tabla').on('click', 'a.eliminar-role', function(event) {
 		//Establecemos reglas default
 		$.ajaxSetup({
     		dataFilter: function(data, type) {
@@ -28,7 +28,7 @@ $(function() {
     	{
     		ajax: true,
     		width:"390", 
-    		height:"200",
+    		height:"250",
     		overlayClose: false,
     		escKey: false,
     		href: dire,
@@ -56,7 +56,8 @@ $(function() {
             success: function() {
                 $.colorbox.close();
                 datos.elem.closest('tr').fadeOut('slow', function() {
-                	$(this).detach();
+                	$.event.trigger('eliminarFila', { fila: $(this) } );
+                	//$(this).detach();
                 });
                 $('#resultado-operacion p').text('Se ha eliminado el role correctamente!');
                 $('#resultado-operacion').slideDown('slow').delay(5000).slideUp('slow');
@@ -84,7 +85,8 @@ $(function() {
 		
 	});
 	
-	$('a.editar-role').click(function(event) {
+	$('#tabla').on('click', 'a.editar-role', function(event) {
+		console.log("ntro");
 		event.preventDefault();
 		
 		//Guardamos los datos del boton clickeado
@@ -133,7 +135,9 @@ $(function() {
     							datos.elem.find('.datos-role').html(data.rdatos);
     						})
     						.delay(400)
-    						.fadeIn('slow');
+    						.fadeIn('slow', function() {
+    							$('input#id_search').trigger('actualizarTabla');
+    						});
     					},
     					global:false
     				});

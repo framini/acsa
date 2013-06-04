@@ -29,16 +29,15 @@ class Template
 	{
                                     
 		$this->CI =& get_instance();
-		$this->CI ->load->library('auth_frr');
                 
 		if (count($config) > 0) {
 			$this->initialize($config);
 		} else {
 			$this->_load_config_file();
 		}
-		
+		$this->CI->load->library('auth_frr');
 		$this->data['user'] = $this->CI->auth_frr->get_username();
-        $this->CI->load->library('auth_frr');
+		
         if($this->CI->auth_frr->is_logged_in()) {
             //Agregamos info al  array data sobre el tipo de empresa del usuario logueado
             $this->data['warrantera'] = $this->CI->auth_frr->is_warrantera() ? true : null;
@@ -150,7 +149,9 @@ class Template
 		//Dejamos los permisos asociados al usuario
 		$this->data['permisos'] = $this->CI->roles_frr->permisos_role();
 		$this->data['forms'] = $this->CI->administracion_frr->get_forms();
-		$data['gestiones_disponibles'] = $this->CI->roles_frr->gestiones_disponibles('seguridad');
+		$data['gestiones_disponibles_seguridad'] = $this->CI->roles_frr->gestiones_disponibles('seguridad');
+		$data['gestiones_disponibles_personas'] = $this->CI->roles_frr->gestiones_disponibles('personas');
+		$data['gestiones_disponibles_productos'] = $this->CI->roles_frr->gestiones_disponibles('productos');
 		
 		$this->data['content'] = $this->CI->load->view($view, $data, true);
         
@@ -345,8 +346,47 @@ class Template
 	}
 	
 	function run_template_engine($template_group, $template, $template_extension) {
+		
+		//Si la extension del template es distinto de NULL quiere decir que el template existe
+		if( is_null($template_extension) ) {
+			//Como no se especifico una extension, vemos si estamos tratando de acceder al home ( ie. grupo default )
+			
+			//En primer lugar nos fijamos si el template_group pasado como parametro es grupo default
+			//En caso de que $template_group sea vacio el metodo va a devolver true y podemos ir en busca del grupo default en caso que exista uno
+			if( $this->CI->administracion_frr->is_grupo_template_default_by_name($template_group) ) {
+				//En caso que $template_group sea vacio, obtenemos los datos. Caso contrario usamos el que vino como parametro
+				if( empty($template_group) ) {
+					$template_group = $this->CI->administracion_frr->get_grupo_template_default();
+					
+					//TODO: Hacer esto en una config file
+					$template = 'index';
+					$template_extension = 'html';
+					
+					if( !is_null($template_group) ) {
+						$template_group = $template_group->nombre;
+					}
+				} else {
+					//Como el template group no es vacio, intentamos obtener todos los datos relacionados a ese grupo
+					$template = !empty($template) ? $template : 'index';
+					$template_group_id = $this->CI->administracion_frr->grupo_template_exists_by_name($template_group);
+
+					//$template_extension = ( $template != "index" ) ? $this->CI->administracion_frr->get_extension_template($template, $template_group_id) : 'html';
+					
+					//Si el template se especifico y no podemos encontrar su extension es porque no existe
+					if( $template != "index" && is_null( $this->CI->administracion_frr->get_extension_template($template, $template_group_id) ) ) {
+						//Si entramos aca no tenemos mas nada que hacer, mostramos el mensaje de error
+						show_404();
+					} else if ( $template == "index" ) {
+						//Como se trata del index su extension es html. 
+						$template_extension = "html";
+					}
+				}
+			}
+		}
+
 
 		$this->obtener_y_parsear($template_group, $template, $template_extension);
+		
 		
 		//Paginacion
 		
@@ -426,9 +466,13 @@ class Template
 	}
 	
 	function obtener_y_parsear($template_group, $template, $extension = NULL, $actualizando = NULL) {
-		
 		//Primero obtenemos el template
 		$this->template = $this->obtener_template($template_group, $template);
+		
+		//Si no existe el template, mostramos el 404
+		if( is_null($this->template) ) {
+			show_404();
+		}
 		
 		$this->CI->load->library('parser_frr');
 		

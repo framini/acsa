@@ -79,6 +79,7 @@ class MY_Router extends CI_Router {
 
 			return $segments;
 		}
+
 		
 		//-----------------------------------------------------------------------
 		//Chequeamos que el primer segmento corresponda con algun template group
@@ -92,7 +93,7 @@ class MY_Router extends CI_Router {
 
 		//Si obtenemos una coincidencia devolvemos
 		if($res = $this->db->query($query)->num_rows()) {
-			$clase = "sitio";
+			$clase = "adm_sitio";
 			$metodo = "index";
 
 			$segments[0] = $clase;

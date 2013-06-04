@@ -1,0 +1,836 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"bo",
+				"border-bottom"
+			],
+			[
+				"pad",
+				"padding-top"
+			],
+			[
+				"pa",
+				"padding-right"
+			],
+			[
+				"ma",
+				"margin-left"
+			],
+			[
+				"mar",
+				"margin-bottom"
+			],
+			[
+				"tex",
+				"text-align"
+			],
+			[
+				"padd",
+				"padding"
+			],
+			[
+				"wid",
+				"width"
+			],
+			[
+				"back",
+				"background"
+			],
+			[
+				"marg",
+				"margin-top"
+			],
+			[
+				"max",
+				"max-height"
+			],
+			[
+				"te",
+				"text-align"
+			],
+			[
+				"min-",
+				"min-height"
+			],
+			[
+				"exp",
+				"explode"
+			],
+			[
+				"func",
+				"funcionalidades"
+			],
+			[
+				"unse",
+				"unset"
+			],
+			[
+				"var",
+				"var_dump"
+			],
+			[
+				"mini",
+				"min-height"
+			],
+			[
+				"feature",
+				"feature-img"
+			],
+			[
+				"margi",
+				"margin-right"
+			],
+			[
+				"di",
+				"display"
+			],
+			[
+				"bor",
+				"border"
+			],
+			[
+				"r",
+				"right"
+			],
+			[
+				"font",
+				"font-size"
+			],
+			[
+				"re",
+				"repeat-x"
+			],
+			[
+				"bg",
+				"bg-header"
+			],
+			[
+				"bac",
+				"background"
+			],
+			[
+				"background-i",
+				"background-image"
+			],
+			[
+				"inl",
+				"inline-block"
+			],
+			[
+				"margin",
+				"margin-bottom"
+			],
+			[
+				"pass",
+				"password_confirm"
+			],
+			[
+				"in",
+				"inline-block"
+			],
+			[
+				"member",
+				"member_id"
+			],
+			[
+				"ur",
+				"uri"
+			],
+			[
+				"ba",
+				"background"
+			],
+			[
+				"Memb",
+				"Member_ajax"
+			],
+			[
+				"para",
+				"parametro"
+			],
+			[
+				"meh",
+				"method"
+			],
+			[
+				"for",
+				"foreach	foreach …"
+			],
+			[
+				"user",
+				"user_data"
+			],
+			[
+				"result",
+				"result_array"
+			],
+			[
+				"print",
+				"print_r"
+			],
+			[
+				"git_",
+				"git_flow_command"
+			],
+			[
+				"text",
+				"text-decoration"
+			],
+			[
+				"val",
+				"value"
+			],
+			[
+				"valida",
+				"validarRequeridos"
+			],
+			[
+				"_g",
+				"_GET"
+			],
+			[
+				"background",
+				"background-color"
+			]
+		]
+	},
+	"buffers":
+	[
+	],
+	"build_system": "",
+	"command_palette":
+	{
+		"height": 58.0,
+		"selected_items":
+		[
+			[
+				"install",
+				"Package Control: Install Package"
+			],
+			[
+				"remove",
+				"Package Control: Remove Package"
+			],
+			[
+				"instal",
+				"Package Control: Install Package"
+			],
+			[
+				"insta",
+				"Package Control: Install Package"
+			],
+			[
+				"express",
+				"Set Syntax: ExpressionEngine"
+			],
+			[
+				"expre",
+				"Set Syntax: ExpressionEngine"
+			],
+			[
+				"git co",
+				"Git: Commit"
+			],
+			[
+				"git ad",
+				"Git: Add..."
+			],
+			[
+				"comm",
+				"Git: Commit"
+			],
+			[
+				"git add",
+				"Git: Add..."
+			],
+			[
+				"git flow",
+				"Git Flow: Release Start"
+			],
+			[
+				"git comm",
+				"Git: Commit"
+			],
+			[
+				"com",
+				"Git: Commit"
+			],
+			[
+				"git com",
+				"Git: Commit"
+			],
+			[
+				"branch",
+				"Git: Change Branch"
+			],
+			[
+				"git flow ",
+				"Git Flow: Feature Start"
+			],
+			[
+				"commit",
+				"Git: Commit"
+			],
+			[
+				"commi",
+				"Git: Commit"
+			],
+			[
+				"git commi",
+				"Git: Commit"
+			],
+			[
+				"gist",
+				"Gist: Open Gist"
+			],
+			[
+				"git sta",
+				"Git: Status"
+			],
+			[
+				"sta",
+				"Git: Status"
+			],
+			[
+				"push",
+				"Git: Push"
+			],
+			[
+				"git push",
+				"Git: Push"
+			],
+			[
+				"git commit",
+				"Git: Commit"
+			],
+			[
+				"open",
+				"Gist: Open Gist"
+			],
+			[
+				"gist cre",
+				"Gist: Create Public Gist"
+			],
+			[
+				"create",
+				"Gist: Create Public Gist"
+			],
+			[
+				"sidebar",
+				"View: Toggle Side Bar"
+			],
+			[
+				"add",
+				"Git: Add..."
+			],
+			[
+				"prety",
+				"HTMLPrettify: Prettify"
+			],
+			[
+				"html",
+				"HTMLPrettify: Prettify"
+			],
+			[
+				"reind",
+				"Indentation: Reindent Lines"
+			],
+			[
+				"side",
+				"View: Toggle Side Bar"
+			],
+			[
+				"scss",
+				"Set Syntax: SCSS"
+			],
+			[
+				"gitignore",
+				"Gitignore: New gitingore"
+			],
+			[
+				"git pull",
+				"Git: Pull Current Branch"
+			],
+			[
+				"git pus",
+				"Git: Push Current Branch"
+			],
+			[
+				"git stat",
+				"Git: Status"
+			],
+			[
+				"set syntax php",
+				"Set Syntax: PHP"
+			],
+			[
+				"lint",
+				"SublimeLinter: Extract Annotations"
+			],
+			[
+				"css",
+				"Set Syntax: CSS"
+			],
+			[
+				"syntax css",
+				"Set Syntax: CSS"
+			],
+			[
+				"inst",
+				"Package Control: Install Package"
+			],
+			[
+				"status",
+				"View: Toggle Status Bar"
+			],
+			[
+				"sideba",
+				"View: Toggle Side Bar"
+			],
+			[
+				"git",
+				"Git: Pull"
+			]
+		],
+		"width": 712.0
+	},
+	"console":
+	{
+		"height": 125.0
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/C/wamp/www/argc/application/controllers/ewarrants.php",
+		"/C/Users/Fran/Desktop/Sublime Text 2.0/Data/Packages/User/Preferences.sublime-settings",
+		"/C/Users/Fran/Desktop/Sublime Text 2.0/Data/Packages/Default/Preferences.sublime-settings",
+		"/C/wamp/www/apartments/results.html",
+		"/C/wamp/www/apartments/sass/modules/_top_bar.scss",
+		"/C/wamp/www/Dropbox/rf/system/expressionengine/third_party/seguridad/seguridad.php",
+		"/C/wamp/www/appt.com/config.rb",
+		"/C/Users/Fran/Downloads/Easy-HTML5-Template-master/Easy-HTML5-Template-master/index.html",
+		"/C/Users/Fran/Downloads/h5bp-html5-boilerplate-v4.2.0-0-g0adda79 (1)/h5bp-html5-boilerplate-defe483/index.html",
+		"/C/wamp/www/appt.com/sass/config.rb",
+		"/C/wamp/www/appt-2/sass/app.scss",
+		"/C/wamp/www/appt-2/sass/app.css",
+		"/C/wamp/www/appt-2/css/app.css",
+		"/C/wamp/www/Dropbox/rf/system/expressionengine/third_party/ee_debug_toolbar/ext.ee_debug_toolbar.php",
+		"/C/wamp/www/Dropbox/rf/system/expressionengine/third_party/user/ext.user.php",
+		"/C/wamp/www/Dropbox/rf/system/expressionengine/third_party/low_variables/ext.low_variables.php",
+		"/C/wamp/www/Dropbox/rf/system/expressionengine/third_party/user/mod.user.php",
+		"/C/wamp/www/Dropbox/rf/system/expressionengine/libraries/Session.php",
+		"/C/wamp/www/Dropbox/rf/system/expressionengine/controllers/cp/admin_content.php",
+		"/C/wamp/www/Dropbox/rf/system/codeigniter/system/core/Loader.php",
+		"/C/wamp/www/Dropbox/rf/system/expressionengine/libraries/Auth.php",
+		"/C/wamp/www/Dropbox/rf/system/expressionengine/third_party/member_ajax/libraries/Auth_ajax.php",
+		"/C/wamp/www/Dropbox/rf/system/expressionengine/third_party/draggable/ext.draggable.php",
+		"/C/wamp/www/Dropbox/rf/system/expressionengine/third_party/seguridad/ext.seguridad.php",
+		"/C/wamp/www/Dropbox/rf/system/expressionengine/third_party/ext.permisos_sesion.php",
+		"/C/wamp/www/Dropbox/rf/system/expressionengine/third_party/permisos_sesion",
+		"/C/wamp/www/Dropbox/rf/system/expressionengine/third_party/member_ajax/ext.member_ajax.php",
+		"/C/wamp/www/Dropbox/rf/system/index.php",
+		"/C/wamp/www/Dropbox/rf/admin.php",
+		"/C/wamp/www/Dropbox/rf/system/expressionengine/third_party/member_ajax/mcp.member_ajax.php",
+		"/C/wamp/www/Dropbox/toor/labomet/low_variables/ramini/lv_header.html",
+		"/C/Users/Fran/Downloads/codecanyon-922100-layerslider-responsive-jquery-slider-plugin/LayerSlider-4.5.5-standalone/examples/example1.html",
+		"/C/Users/Fran/Downloads/codecanyon-922100-layerslider-responsive-jquery-slider-plugin/LayerSlider-4.5.5-standalone/examples/example5.html",
+		"/C/Users/Fran/Downloads/codecanyon-922100-layerslider-responsive-jquery-slider-plugin/LayerSlider-4.5.5-standalone/assets/css/style.css",
+		"/C/Users/Fran/Downloads/codecanyon-922100-layerslider-responsive-jquery-slider-plugin/LayerSlider-4.5.5-standalone/examples/example6.html",
+		"/C/wamp/www/Dropbox/toor/labomet/sass/pages/_main_layout.scss",
+		"/C/wamp/www/Dropbox/toor/labomet/sass/main.scss",
+		"/C/wamp/www/Dropbox/toor/labomet/sass/pages/includes/_header.scss",
+		"/C/wamp/www/Dropbox/toor/labomet/sass/main.css",
+		"/C/wamp/www/Dropbox/toor/labomet/css/main.css",
+		"/C/wamp/www/Dropbox/toor/labomet/sass/screen.scss",
+		"/C/wamp/www/Dropbox/toor/labomet/sass/screen.css",
+		"/C/wamp/www/Dropbox/toor/grupo_metal/sass/partials/_botones (Copia conflictiva de Francisco Ramini 2013-03-11).scss",
+		"/C/wamp/www/Dropbox/toor/grupo_metal/sass/partials/_botones.scss",
+		"/C/Users/Fran/Downloads/_botones.scss",
+		"/C/wamp/www/Dropbox/toor/grupo_metal/templates/default_site/contacto.group/index.html",
+		"/C/wamp/www/Dropbox/toor/grupo_metal/sass/partials/secciones/_contacto.scss",
+		"/C/wamp/www/Dropbox/toor/grupo_metal/sass/partials/secciones/_clientes.scss",
+		"/C/wamp/www/Dropbox/toor/grupo_metal/templates/default_site/registro.group/index.html",
+		"/C/wamp/www/Dropbox/toor/grupo_metal/sass/partials/secciones/_servicios.scss",
+		"/C/wamp/www/Dropbox/toor/grupo_metal/templates/default_site/error.group/index.html",
+		"/C/wamp/www/Dropbox/toor/grupo_metal/templates/default_site/m.group/bienvenido.html",
+		"/C/wamp/www/Dropbox/toor/grupo_metal/templates/default_site/partials.group/_contenido.html",
+		"/C/wamp/www/Dropbox/toor/grupo_metal/sass/partials/_generales.scss",
+		"/C/wamp/www/Dropbox/toor/grupo_metal/low_variables/default_site/lv_header_menu.html",
+		"/C/wamp/www/Dropbox/toor/grupo_metal/sass/partials/secciones/_registro.scss",
+		"/C/wamp/www/Dropbox/toor/grupo_metal/js/plugins/placeholder.js",
+		"/C/wamp/www/Dropbox/toor/grupo_metal/templates/default_site/servicios.group/index.html",
+		"/C/wamp/www/Dropbox/toor/grupo_metal/templates/default_site/clientes.group/index.html",
+		"/C/wamp/www/Dropbox/toor/grupo_metal/sass/main.scss",
+		"/C/wamp/www/Dropbox/toor/grupo_metal/sass/partials/secciones/clientes.scss",
+		"/C/wamp/www/Dropbox/toor/grupo_metal/index.html",
+		"/C/wamp/www/Dropbox/toor/grupo_metal/sass/partials/secciones/_home.scss",
+		"/C/wamp/www/Dropbox/toor/grupo_metal/js/main.js",
+		"/C/wamp/www/Dropbox/toor/grupo_metal/templates/default_site/sitio.group/index.html",
+		"/C/wamp/www/Dropbox/toor/grupo_metal/low_variables/default_site/lv_js_home.html",
+		"/C/wamp/www/Dropbox/toor/grupo_metal/sass/partials/_header.scss",
+		"/C/wamp/www/Dropbox/toor/grupo_metal/sass/partials/secciones/_about.scss",
+		"/C/wamp/www/Dropbox/toor/grupo_metal/js/about.js",
+		"/C/wamp/www/Dropbox/toor/grupo_metal/sass/partials/secciones/_empresas.scss",
+		"/C/wamp/www/Dropbox/toor/grupo_metal/low_variables/default_site/lv_header.html",
+		"/C/wamp/www/Dropbox/toor/grupo_metal/sass/blueprint/screen.scss",
+		"/C/wamp/www/Dropbox/toor/grupo_metal/templates/default_site/nosotros.group/index.html",
+		"/C/wamp/www/Dropbox/toor/grupo_metal/nosotros.html",
+		"/C/wamp/www/Dropbox/toor/grupo_metal/low_variables/default_site/lv_js_globales.html",
+		"/C/wamp/www/Dropbox/toor/grupo_metal/js/plugins/jquery.btnhover.js",
+		"/C/wamp/www/Dropbox/toor/grupo_metal/low_variables/default_site/lv_footer.html",
+		"/C/wamp/www/Dropbox/toor/grupo_metal/about.html",
+		"/C/wamp/www/Dropbox/toor/grupo_metal/css/main.css",
+		"/C/wamp/www/Dropbox/toor/grupo_metal/js/plugins/jquery.tinycarousel.js",
+		"/C/wamp/www/Dropbox/rf/templates/default_site/utils.group/avatar.html",
+		"/C/wamp/www/Dropbox/rf/templates/default_site/sitio.group/login.html",
+		"/C/wamp/www/Dropbox/toor/grupo_metal/config.rb",
+		"/C/wamp/www/Dropbox/rf/templates/default_site/perfil.group/index.html",
+		"/C/wamp/www/Dropbox/rf/templates/default_site/perfil.group/cambiar_password.html",
+		"/C/wamp/www/Dropbox/rf/system/expressionengine/third_party/paises/pi.paises.php",
+		"/C/wamp/www/Dropbox/rf/system/expressionengine/third_party/flashdata/pi.flashdata.php",
+		"/C/wamp/www/Dropbox/rf/templates/default_site/perfil.group/olvide_password.html",
+		"/C/wamp/www/Dropbox/rf/system/expressionengine/libraries/Validate.php",
+		"/C/wamp/www/Dropbox/rf/system/expressionengine/third_party/user_activacion/ext.user_activacion.php",
+		"/C/wamp/www/Dropbox/rf/assets/sass/partials/_forms.scss",
+		"/C/wamp/www/Dropbox/rf/system/expressionengine/modules/member/mod.member.php",
+		"/C/wamp/www/Dropbox/rf/system/expressionengine/modules/member/mod.member_auth.php",
+		"/C/wamp/www/Dropbox/rf/system/expressionengine/language/english/email_data.php",
+		"/C/wamp/www/Dropbox/rf/toor.sql",
+		"/C/wamp/www/Dropbox/rf/system/expressionengine/third_party/member_ajax/mod.member_ajax_auth.php",
+		"/C/wamp/www/Dropbox/rf/templates/default_site/registro.group/index.html",
+		"/C/wamp/www/Dropbox/rf/config_init.php",
+		"/C/wamp/www/Dropbox/rf/templates/default_site/planes.group/index.html",
+		"/C/wamp/www/Dropbox/rf/templates/default_site/utils.group/provincias.html",
+		"/C/wamp/www/Dropbox/rf/system/expressionengine/third_party/member_ajax/mod.member_ajax.php",
+		"/C/wamp/www/Dropbox/rf/templates/default_site/sitio.group/index.html",
+		"/C/wamp/www/Dropbox/rf/system/expressionengine/third_party/switchee/pi.switchee.php",
+		"/C/wamp/www/Dropbox/rf/system/expressionengine/language/english/myaccount_lang.php",
+		"/C/wamp/www/Dropbox/rf/templates/default_site/confirmacion.group/reenvio.html",
+		"/C/wamp/www/Dropbox/rf/templates/default_site/confirmacion.group/registro.html",
+		"/C/wamp/www/Dropbox/rf/templates/default_site/_templates.group/layout_dev_1_col.html",
+		"/C/wamp/www/Dropbox/rf/system/expressionengine/third_party/member_ajax/upd.member_ajax.php",
+		"/C/wamp/www/Dropbox/rf/system/expressionengine/third_party/member_ajax/libraries/authcaca.php",
+		"/C/wamp/www/Dropbox/rf/system/expressionengine/third_party/member_ajax/libraries/authcaca",
+		"/C/wamp/www/Dropbox/rf/system/expressionengine/third_party/member_ajax/libraries/Auth_ajax",
+		"/C/wamp/www/Dropbox/rf/system/expressionengine/modules/member/mod.member_settings.php",
+		"/C/wamp/www/Dropbox/rf/system/expressionengine/controllers/cp/members.php",
+		"/C/wamp/www/Dropbox/rf/assets/sass/partials/_base.scss",
+		"/C/wamp/www/Dropbox/rf/system/expressionengine/third_party/user_ajax/pi.user_ajax.php",
+		"/C/wamp/www/Dropbox/rf/system/expressionengine/controllers/cp/addons_plugins.php",
+		"/C/wamp/www/Dropbox/rf/cli_eliminar_usuarios_sin_activar.php",
+		"/C/wamp/www/Dropbox/rf/system/expressionengine/third_party/user/ext.user.base.php",
+		"/C/wamp/www/Dropbox/rf/system/expressionengine/models/member_model.php",
+		"/C/wamp/www/Dropbox/rf/system/expressionengine/modules/member/mod.member_register.php",
+		"/C/wamp/www/Dropbox/rf/system/expressionengine/third_party/minimee/pi.minimee.php",
+		"/C/wamp/www/Dropbox/rf/system/expressionengine/libraries/Cp.php",
+		"/C/wamp/www/Dropbox/rf/system/expressionengine/third_party/health_check/acc.health_check.php",
+		"/C/wamp/www/Dropbox/rf/ee_cli_sql.php",
+		"/C/wamp/www/Dropbox/rf/system/ee_cli_sql.php",
+		"/C/wamp/www/Dropbox/rf/system/expressionengine/views/members/login_as_member.php",
+		"/C/wamp/www/Dropbox/rf/system/expressionengine/libraries/Members.php",
+		"/C/Users/Fran/Desktop/Sublime Text 2.0/Data/Packages/User/Git.sublime-settings"
+	],
+	"find":
+	{
+		"height": 34.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+			""
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"i-",
+			"divid",
+			"general-content-top-border-center",
+			"-general-content",
+			"-right",
+			"border-right",
+			"-right",
+			"right",
+			"home-features-container-adds",
+			"home-features-container-adds-item",
+			"home-features-container-adds",
+			"span",
+			"1.3",
+			"home-feature-compartment-item",
+			"home-features-item",
+			"home-feature-compartment-item",
+			"content-2",
+			"70",
+			"{\n",
+			"row search-box-container",
+			"22",
+			";\n",
+			"search-box-title",
+			"search-location",
+			"shado",
+			"top-bar-hamburger-style",
+			"img",
+			"white",
+			"die(",
+			"die",
+			"db->update(",
+			"update(",
+			"implode",
+			"get_empresa_after_login",
+			"sessions",
+			"logged_in",
+			"userdata",
+			"hook",
+			"hoo",
+			"do_logout",
+			"do_log",
+			"sessions_start",
+			"userdata",
+			"update_session(",
+			"update_",
+			"member_login",
+			"daylight_savings",
+			"kevin",
+			"sess_destroy",
+			"do_logout",
+			"username",
+			"set_userdata",
+			"set_user",
+			"data",
+			"set_flashdata",
+			"set_userdata",
+			"set_userda",
+			"$this->EE->session->userdata(",
+			"session",
+			"set_userdata",
+			"result()",
+			"->result()",
+			"->results()",
+			"db",
+			"_authenticate",
+			"_do_auth",
+			"$this->EE->session",
+			"APPPATH",
+			"EE_APPPATH",
+			"member_login",
+			"member_lo",
+			"third_party",
+			"EE_APPPATH",
+			"third",
+			"EE_APPPATH",
+			"APPPATH",
+			"member_login",
+			"login_form",
+			"sidebar",
+			"dd-menu",
+			"content",
+			"content-le",
+			"content-left",
+			"content-right",
+			"famil",
+			"font",
+			"vimeo",
+			"object",
+			"tn",
+			"90",
+			".page-wrap",
+			"h1#logo",
+			"page-wrap",
+			"h3",
+			"era_password",
+			"resetForm",
+			"&:hover",
+			"h3:hover",
+			"errores",
+			"user_pais",
+			"errores",
+			".contacto",
+			"contacto",
+			"about",
+			"slow",
+			"fadeOut",
+			"fadeIn",
+			"not_secure_password",
+			"Password must contain at least one uppercase character, one lowercase character and one number",
+			"botones-idioma",
+			"idiomas-",
+			"botones-idioma",
+			"The form you submitted contained the following errors",
+			"retrieve_password",
+			"reset_",
+			"forgot_password_instructions",
+			"forgot_",
+			"window",
+			"<div class=\"input\">\n			  <input class=\"span4\" type=\"text\" placeholder=\"Nombre\" name=\"requerido_nombre\" value=\"{requerido_nombre}\">\n			</div>\n			<div class=\"input\">\n			  <input class=\"span4\" type=\"text\" placeholder=\"Apellido\" name=\"requerido_apellido\" value=\"{requerido_apellido}\">\n			</div>",
+			"user",
+			"confirmacion_edicion_perfil",
+			"invalid_password",
+			"The password you submitted was not correct",
+			"validate_password",
+			"require_secure_passwords",
+			"Require Secure Passwords?",
+			"not_secure_password",
+			"Password must contain at least one uppercase character, one lowercase character and one number"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"nosotros",
+			"hide",
+			"show"
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"sheets":
+			[
+			]
+		},
+		{
+			"sheets":
+			[
+			]
+		},
+		{
+			"sheets":
+			[
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 0.0
+	},
+	"input":
+	{
+		"height": 31.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				2,
+				1
+			],
+			[
+				0,
+				1,
+				1,
+				2
+			],
+			[
+				1,
+				1,
+				2,
+				2
+			]
+		],
+		"cols":
+		[
+			0.0,
+			0.5,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			0.7,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.git":
+	{
+		"height": 165.0
+	},
+	"replace":
+	{
+		"height": 62.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+			[
+				"member_auth",
+				"system/expressionengine/modules/member/mod.member_auth.php"
+			],
+			[
+				"mod.user.php",
+				"system/expressionengine/third_party/user/mod.user.php"
+			],
+			[
+				"mod.member_ajax_auth",
+				"system/expressionengine/third_party/member_ajax/mod.member_ajax_auth.php"
+			],
+			[
+				"member_a",
+				"system/expressionengine/third_party/member_ajax/mod.member_ajax.php"
+			],
+			[
+				"cli",
+				"ee_cli_sql.php"
+			],
+			[
+				"member_mo",
+				"system/expressionengine/models/member_model.php"
+			],
+			[
+				"member.php",
+				"system/expressionengine/views/members/login_as_member.php"
+			],
+			[
+				"member",
+				"system/expressionengine/libraries/Members.php"
+			],
+			[
+				"member_register",
+				"system/expressionengine/modules/member/mod.member_register.php"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 500.0,
+		"selected_items":
+		[
+		],
+		"width": 380.0
+	},
+	"show_minimap": true,
+	"show_open_files": true,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 312.0,
+	"status_bar_visible": true
+}

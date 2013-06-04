@@ -46,9 +46,16 @@ $config['ver_pendientes'] = array('texto_anchor' => 'Ver Pendientes', 'icono' =>
 ####################################################################################
 $config['gestionar_roles'] = array('texto_anchor' => 'Gestionar Roles', 'icono' => 'icon-tag', 'titulo_gestion' => 'Roles');
 $config['gestionar_usuarios'] = array('texto_anchor' => 'Gestionar Usuarios', 'icono' => 'icon-user', 'titulo_gestion' => 'Usuarios');
-$config['gestionar_empresas'] = array('texto_anchor' => 'Gestionar Empresas', 'icono' => 'icon-home', 'titulo_gestion' => 'Empresas');
 $config['gestionar_productos'] = array('texto_anchor' => 'Gestionar Productos', 'icono' => 'icon-barcode', 'titulo_gestion' => 'Productos');
 $config['gestionar_cuentas_registro'] = array('texto_anchor' => 'Gestionar Cuentas Registro', 'icono' => 'icon-briefcase', 'titulo_gestion' => 'Cuentas Registro');
+
+# Menu gestion Personas
+# Notas:
+# texto_anchor: Es el texto a mostrar en pantalla para el boton
+# icono: Es la imagen que va a la izquierda del texto_anchor
+# titulo_gestion: El titulo que va arriba del box que especifica la gestion
+####################################################################################
+$config['gestionar_empresas'] = array('texto_anchor' => 'Gestionar Empresas', 'icono' => 'icon-home', 'titulo_gestion' => 'Empresas');
 
 # Menu gestion Seguridad => Gestionar Roles
 # Notas:

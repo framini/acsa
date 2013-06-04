@@ -1,3 +1,18 @@
+<?php $this->load->file('includes/datatables_files.php'); ?>
+<script>
+	$(function() {
+		$objInit = $.extend( {}, objInit );
+
+	    var $tabla = $('#tabla').dataTable($objInit);
+	    
+	    $('#tabla').on('eliminarFila', function(event, param) {
+			if( param.fila ) {
+				$tabla.fnDeleteRow( param.fila[0] )
+			}
+		});
+	});
+</script>
+
 <div class="row">
 
         <div class="span12 margin-bottom-10">
@@ -6,7 +21,7 @@
 	               			<?php //echo anchor('/seguridad/registro', "<i class='icon-user icon-white'></i> Agregar Usuario", "class='btn btn-large btn-success pull-right'");  ?>
 	                		<?php foreach ($data_menu as $keyp => $row) { ?>
 	               				<?php if($row['boton_superior']) { ?>
-	               					<?php echo anchor($this->uri->segment(1) ."/". $keyp, '<i class="' . $row['icono'] . '"></i> ' . $row['texto_anchor'], 'class="' . $row['clase_boton'] . '"');  ?>
+	               					<?php echo anchor($this->uri->segment(1) ."/". $this->uri->segment(2) ."/". $keyp, '<i class="' . $row['icono'] . '"></i> ' . $row['texto_anchor'], 'class="' . $row['clase_boton'] . '"');  ?>
 	                			<?php } ?>
 	                		<?php } ?>
 	                		<h2>Usuarios</h2>
@@ -20,28 +35,20 @@
         <!-- .block_head ends -->
 
         <div class="span12">
-                 				<?php
-                                if(isset($errormsg))
-                                {
-                                    echo "<div class='message errormsg'>";
-                                                 echo "<p>" . $errormsg. "</p>";
-                                      echo "</div>";
-                                }
-                				?>
-            
-            					<?php
-                                 if(isset($message))
-                                 {
-                                      echo "<div class='message success'>";
-                                                 echo "<p>" . $message. "</p>";
-                                      echo "</div>";
-                                 }
-                                 ?>
-
+         				<?php
+			            	if(isset($errormsg)) {
+			            		$data['estado'] = "error";
+			            	} else if(isset($message)) {
+			            		$data['estado'] = "success";
+			            	}
+							if(isset($data)) {
+								$this->load->view('general/mensaje_operacion', $data); 
+							}
+			            ?> 
                 
 
 
-                        <table class="table table-striped table-bordered">
+                        <table id="tabla" class="table table-striped table-bordered display">
 
                                 <thead>
                                         <tr>
@@ -82,7 +89,7 @@
 								               					} else {
 								               						$atributos = array('class' => $row['clase_boton']);
 								               					}
-								               					echo anchor($this->uri->segment(1) ."/". $keyp . '/' .$user['user_id'], '<i class="' . $row['icono'] . '"></i> ' . $row['texto_anchor'], $atributos);
+								               					echo anchor($this->uri->segment(1) ."/". $this->uri->segment(2) ."/". $keyp . '/' .$user['user_id'], '<i class="' . $row['icono'] . '"></i> ' . $row['texto_anchor'], $atributos);
 								                				//Fix espacio entre botones
 								                				echo ' ';
 															}

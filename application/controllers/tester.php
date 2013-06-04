@@ -12,7 +12,7 @@ class Tester extends CI_Controller
         //Si no esta logueado lo redirecciona al root
         if(!$this->auth_frr->is_logged_in())
         {
-            redirect('');
+            redirect('ew');
         }
     }
 

@@ -1,3 +1,18 @@
+<?php $this->load->file('includes/datatables_files.php'); ?>
+<script>
+	$(function() {
+		$objInit = $.extend( {}, objInit );
+
+	    var $tabla = $('#tabla').dataTable($objInit);
+	    
+	    $('#tabla').on('eliminarFila', function(event, param) {
+			if( param.fila ) {
+				$tabla.fnDeleteRow( param.fila[0] )
+			}
+		});
+	});
+</script>
+
 <div class="row">
 
         <div class="span12 margin-bottom-10">
@@ -5,7 +20,7 @@
 	               		<div class="span12">
 	               			<?php foreach ($data_menu as $keyp => $row) { ?>
 	               				<?php if($row['boton_superior']) { ?>
-	               					<?php echo anchor($this->uri->segment(1) ."/". $keyp, '<i class="' . $row['icono'] . '"></i> Agregar Role', 'class="' . $row['clase_boton'] . '"');  ?>
+	               					<?php echo anchor($this->uri->segment(1) ."/". $this->uri->segment(2) ."/". $keyp, '<i class="' . $row['icono'] . '"></i> Agregar Role', 'class="' . $row['clase_boton'] . '"');  ?>
 	                			<?php } ?>
 	                		<?php } ?>
 	                		<h2>Gestión Roles</h2>
@@ -18,30 +33,9 @@
         </div>
 
         <div class="span12">
-                 				<?php
-                                /*if(isset($errormsg))
-                                {
-                                    echo "<div class='message errormsg'>";
-                                                 echo "<p>" . $errormsg. "</p>";
-                                      echo "</div>";
-                                }*/
-                				?>
-            
-            					<?php
-                                 /*if(isset($message))
-                                 {
-                                 	echo '<div class="row">';
-                                      echo "<div class='alert alert-success span12 mensajes margin-top-10'>";
-                                                 echo "<p>" . $message. "</p>";
-                                      echo "</div>";
-									echo '</div>';
-                                 }*/
-                                 ?>
-
-                
 
 						<?php if(!isset($sin_roles)) { ?>
-                        <table class="table table-striped table-bordered">
+                        <table id="tabla" class="table table-striped table-bordered display">
 
                                 <thead>
                                         <tr>
@@ -74,7 +68,7 @@
 								               					} else {
 								               						$atributos = array('class' => $row['clase_boton']);
 								               					}
-								               					echo anchor($this->uri->segment(1) ."/". $keyp . '/' .$role['role_id'], '<i class="' . $row['icono'] . '"></i> ' . $row['texto_anchor'], $atributos);
+								               					echo anchor($this->uri->segment(1) ."/". $this->uri->segment(2) ."/". $keyp . '/' .$role['role_id'], '<i class="' . $row['icono'] . '"></i> ' . $row['texto_anchor'], $atributos);
 								                				//Fix espacio entre botones
 								                				echo ' ';
 															}

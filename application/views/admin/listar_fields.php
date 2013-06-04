@@ -1,3 +1,12 @@
+<?php $this->load->file('includes/datatables_files.php'); ?>
+<script>
+	$(function() {
+		$objInit = $.extend( {}, objInit );
+
+	    $('#tabla').dataTable($objInit);
+	});
+</script>
+
 <div class="row">
         <div class="span12 margin-bottom-10">
                 	<div class="row relativo">
@@ -5,7 +14,7 @@
 		                        	<?php if(isset($data_menu)) { ?>
 				                		<?php foreach ($data_menu as $keyp => $row) { ?>
 				               				<?php if($row['boton_superior']) { ?>
-				                				<?php echo '<a class="'. $row['clase_boton'] . '" href="'. site_url() . "/" . $this->uri->segment(1) . "/" . $keyp . "/" . $this->uri->segment(3) . '" ><i class="'. $row['icono'] . '"></i> ' . $row['texto_anchor'] . '</a>';  ?>
+				                				<?php echo '<a class="'. $row['clase_boton'] . '" href="'. site_url() . "/" . $this->uri->segment(1) . "/" . $this->uri->segment(2) ."/". $keyp . "/" . $this->uri->segment(4) . '" ><i class="'. $row['icono'] . '"></i> ' . $row['texto_anchor'] . '</a>';  ?>
 				                			<?php } ?>
 				                		<?php } ?>
 				                	<?php } ?>
@@ -33,7 +42,7 @@
 						$this->load->view('general/mensaje_operacion', $data); 
 					}
 	            ?>     
-                <table class="table table-striped table-bordered">
+                <table id="tabla" class="table table-striped table-bordered display">
 
                         <thead>
                                 <tr>
@@ -72,7 +81,7 @@
 								               					} else {
 								               						$atributos = array('class' => $row['clase_boton']);
 								               					}
-								               					echo anchor($this->uri->segment(1) ."/". $keyp . '/' . $field['fields_id'], '<i class="' . $row['icono'] . '"></i> ' . $row['texto_anchor'], $atributos);
+								               					echo anchor($this->uri->segment(1) ."/". $this->uri->segment(2) ."/". $keyp . '/' . $field['fields_id'], '<i class="' . $row['icono'] . '"></i> ' . $row['texto_anchor'], $atributos);
 								                				//Fix espacio entre botones
 								                				echo ' ';
 															}

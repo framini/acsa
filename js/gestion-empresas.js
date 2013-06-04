@@ -1,6 +1,8 @@
     $(document).ready(function() {
+
     		var datos = {};
-        	var dire = "http://localhost/argc/index.php" + "/general";
+        	var dire = "http://localhost/argc/index.php" + "/adm/general";
+        	//var dire = "http://localhost/acsa/index.php" + "/adm/general";
         	
         	////////////////////////////////////////////////////////////
 			//BOTONES NO del POP-UP
@@ -97,7 +99,9 @@
 	        							$contenedor.html(data);
 	        						})
 	        						.delay(400)
-	        						.fadeIn('slow');
+	        						.fadeIn('slow', function() {
+	        							$('input#id_search').trigger('actualizarTabla');
+	        						});
 	        					},
 	        					global:false
 	        				});
@@ -200,7 +204,9 @@
 	        							$contenedor.html(data);
 	        						})
 	        						.delay(400)
-	        						.fadeIn('slow');
+	        						.fadeIn('slow', function() {
+	        							$('input#id_search').trigger('actualizarTabla');
+	        						});
 	        					},
 	        					global:false
 	        				});
@@ -281,7 +287,10 @@
 	        							$contenedor.html(data);
 	        						})
 	        						.delay(400)
-	        						.fadeIn('slow');
+	        						.fadeIn('slow', function() {
+	        							$('input#id_search').trigger('actualizarTabla');
+	        						});
+	        						
 	        					},
 	        					global:false
 	        				});

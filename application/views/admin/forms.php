@@ -32,7 +32,6 @@
 	<script type="text/javascript">
 		$(function() {
 			$('.btn-large.btn-primary').on('click', function(event) {
-				alert("ASDASDASD");
 				event.preventDefault();
 				
 				//url para la peticion AJAX

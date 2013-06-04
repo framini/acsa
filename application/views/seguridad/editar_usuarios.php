@@ -48,6 +48,33 @@
 					}
 				});
 			});
+			
+			$('#empresas_id').on('change', function(){
+				$emp_id = $(this).val();
+				
+				uri = "<?php echo site_url('adm/seguridad/get_roles_empresa'); ?>" + "/" + $emp_id;
+				
+				$.ajax({
+					url: uri,
+					type: 'json',
+					dataType: 'json',
+					type: 'POST',
+					success: function(data, textStatus, jqXHR) {
+						$('#role_id').children().remove();
+						$('#role_id').append('<option value="0">--Sin role--</option>');
+						
+						if(data) {
+							$.each(data, function(index, val) {
+								$opt = $('<option>');
+								$opt.attr('val', val.role_id );
+								$opt.text( val.nombre );
+								$('#role_id').append($opt);
+							});
+						}	
+					}
+				});
+				
+			} );
 		});
 	</script>
 	
@@ -113,28 +140,34 @@
 	                                        echo '</select>';
 	                                    ?>
                                     <?php } ?>
-                                    <?php echo form_label('Role', 'role_id'); ?></td>
-                                        <?php
-                                            echo '<select name="role_id" class="styled span5" id="role_id">';
-											echo '<option value="0">--Sin role--</option>';
-                                            foreach($roles as $role)
-                                            {
-                                               if($role['role_id'] != $usuario->role_id) {
-                                               		//Chequeamos para no mostrar el rol admin a usuarios que no sean superadmins
-                                               		if($role['role_id'] == 1) {
-                                               			if(isset($es_admin)) {
-                                               				echo '<option value="' . $role['role_id'] . '">' . $role['nombre'] . "</option>";
-                                               			}
-                                               		} else {
-                                               			echo '<option value="' . $role['role_id'] . '">' . $role['nombre'] . "</option>";
-                                               		}
-                                               }
-                                               else {
-                                               		echo '<option value="' . $role['role_id'] . '" selected="selected">' . $role['nombre'] . "</option>";
-                                               }
-                                            }
-                                            echo '</select>';
-                                        ?>
+                                    <?php if(count($roles) > 0) { ?>
+	                                    	<?php echo form_label('Role', 'role_id'); ?></td>
+	                                        <?php
+	                                            echo '<select name="role_id" class="styled span5" id="role_id">';
+												echo '<option value="0">--Sin role--</option>';
+	                                            foreach($roles as $role)
+	                                            {
+	                                               if($role['role_id'] != $usuario->role_id) {
+	                                               		//Chequeamos para no mostrar el rol admin a usuarios que no sean superadmins
+	                                               		if($role['role_id'] == 1) {
+	                                               			if(isset($es_admin)) {
+	                                               				echo '<option value="' . $role['role_id'] . '">' . $role['nombre'] . "</option>";
+	                                               			}
+	                                               		} else {
+	                                               			echo '<option value="' . $role['role_id'] . '">' . $role['nombre'] . "</option>";
+	                                               		}
+	                                               }
+	                                               else {
+	                                               		echo '<option value="' . $role['role_id'] . '" selected="selected">' . $role['nombre'] . "</option>";
+	                                               }
+	                                            }
+	                                            echo '</select>';
+	                                        ?>
+	                                <?php } else { ?>
+	                                	<select name="role_id" class="styled span5" id="role_id">
+	                                			<option value="0">--Sin role--</option>
+	                                	</select>
+	                                <?php } ?>
                                     <?php //echo form_submit('register', 'Crear Cuenta'); ?>
                                     <p><input type="submit" class="btn btn-primary btn-large" value="Guardar" name="register" /></p>
                                     <?php echo form_close(); ?>

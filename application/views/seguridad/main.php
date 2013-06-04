@@ -3,7 +3,7 @@
 					        <div class="span12 margin-bottom-10">
 					                	<div class="row">
 						               		<div class="span12">
-						                		<h2>Menu de Seguridad</h2>
+						                		<h2><?php if( isset( $titulo_gestion ) && !is_null($titulo_gestion) ) echo $titulo_gestion; else echo "Menu";  ?></h2>
 						                	</div>
 					                	</div>
 					        </div>	
@@ -30,7 +30,7 @@
 		                                        <li>
 		                                                <?php 
 															 $contenido_menu = isset($row['icono']) ? '<i class="' . $row['icono'] . '"></i> ' . $row['texto_anchor'] : $row['texto_anchor'];
-															 echo anchor($this->uri->segment(1) . "/" . $keyp, $contenido_menu);
+															 echo anchor($this->uri->segment(1) . "/" . $this->uri->segment(2) . "/"  . $keyp, $contenido_menu);
 														?>
 		                                        </li>
 		                                    </ul>

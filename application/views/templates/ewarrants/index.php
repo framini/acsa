@@ -32,6 +32,7 @@
     <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
     <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">-->
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="<?php echo base_url(); ?>js/modernizr.js"></script>
     <!--<script src="<?php echo base_url(); ?>bootstrap/js/jquery.js"></script>-->
   </head>
 
@@ -46,20 +47,28 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </a>
-          <a class="brand" href="<?php echo site_url(); ?>">eWarrants</a>
+          <a class="brand" href="<?php echo site_url('adm/home'); ?>">eWarrants</a>
           <div class="nav-collapse">
             <ul class="nav">
-              <?php if( (isset($gestiones_disponibles) && is_array($gestiones_disponibles) && ( count($gestiones_disponibles) > 0 ) ) || isset($admin) ) { ?>
-              <li <?php if($this->uri->segment(1) == "seguridad") echo "class='active'" ?> ><a href="<?php echo site_url(); ?>/seguridad">Seguridad</a></li>
+              <?php if( (isset($gestiones_disponibles_seguridad) && is_array($gestiones_disponibles_seguridad) && ( count($gestiones_disponibles_seguridad) > 0 ) ) || isset($admin) ) { ?>
+              <li <?php if($this->uri->segment(2) == "seguridad") echo "class='active'" ?> ><a href="<?php echo site_url(); ?>/adm/seguridad">Seguridad</a></li>
 			  <?php } ?>
 			  
               <?php 
                 if(isset($warrantera) || isset($argclearing)) {
                   echo '<li ';
-                  if($this->uri->segment(1) == "ewarrants") echo "class='active'";
-                  echo '><a href="' . site_url() . '/ewarrants">eWarrants</a></li>';
+                  if($this->uri->segment(2) == "ewarrants") echo "class='active'";
+                  echo '><a href="' . site_url() . '/adm/ewarrants">eWarrants</a></li>';
                 }
               ?>
+              
+              <?php if( (isset($gestiones_disponibles_personas) && is_array($gestiones_disponibles_personas) && ( count($gestiones_disponibles_personas) > 0 ) ) || isset($admin) ) { ?>
+              <li <?php if($this->uri->segment(2) == "personas") echo "class='active'" ?> ><a href="<?php echo site_url(); ?>/adm/personas">Personas</a></li>
+			  <?php } ?>
+			  
+			  <?php if( (isset($gestiones_disponibles_productos) && is_array($gestiones_disponibles_productos) && ( count($gestiones_disponibles_productos) > 0 ) ) || isset($admin) ) { ?>
+              <li <?php if($this->uri->segment(2) == "productos") echo "class='active'" ?> ><a href="<?php echo site_url(); ?>/adm/productos/gestionar_productos">Productos</a></li>
+			  <?php } ?>
               
               <?php
               
@@ -74,21 +83,21 @@
               ?>
               
               <?php if( (isset($permisos) && is_array($permisos) && (in_array("forms", $permisos) || in_array("grupos_fields", $permisos)) ) || isset($admin) ) { ?>
-              <li class="dropdown <?php if($this->uri->segment(1) == $m_contenido['controladora'] && in_array($this->uri->segment(2), $m_contenido['submenu'], TRUE) ) echo "active" ?>">
+              <li class="dropdown <?php if($this->uri->segment(2) == $m_contenido['controladora'] && in_array($this->uri->segment(3), $m_contenido['submenu'], TRUE) ) echo "active" ?>">
 				<a href="#" class="dropdown-toggle" data-toggle="dropdown">
 				Admin
 				<b class="caret"></b>
 				</a>
 				<ul class="dropdown-menu">
-					  <li><?php if( ( isset($permisos) && is_array($permisos) && (in_array("forms", $permisos)) ) || isset($admin) ) echo anchor('admin/forms', '<i class="icon-th-list"></i> Formularios'); ?></li>
-				      <li><?php if( ( isset($permisos) && is_array($permisos) && (in_array("grupos_fields", $permisos)) ) || isset($admin) ) echo anchor('admin/grupos_fields', '<i class="icon-folder-open"></i> Grupos Fields'); ?></li>
+					  <li><?php if( ( isset($permisos) && is_array($permisos) && (in_array("forms", $permisos)) ) || isset($admin) ) echo anchor('adm/admin/forms', '<i class="icon-th-list"></i> Formularios'); ?></li>
+				      <li><?php if( ( isset($permisos) && is_array($permisos) && (in_array("grupos_fields", $permisos)) ) || isset($admin) ) echo anchor('adm/admin/grupos_fields', '<i class="icon-folder-open"></i> Grupos Fields'); ?></li>
 				</ul>
               </li>
               <?php } ?>
               
               <?php if( (isset($permisos) && is_array($permisos) && in_array("template_manager", $permisos)) || isset($admin) ) { ?>
-              <li <?php if($this->uri->segment(2) == "template_manager") echo "class='active'" ?>>
-				<?php echo anchor('admin/template_manager', '<i class=""></i>Template Manager'); ?>
+              <li <?php if($this->uri->segment(3) == "template_manager") echo "class='active'" ?>>
+				<?php echo anchor('adm/admin/template_manager', '<i class=""></i>Template Manager'); ?>
               </li>
               <?php } ?>
               
@@ -104,8 +113,8 @@
               
               ?>
               
-              <?php if( (isset($permisos) && is_array($permisos) && in_array("forms", $permisos)) || isset($admin) ) { ?>
-              <li class="dropdown <?php if($this->uri->segment(1) == $m_contenido['controladora'] && in_array($this->uri->segment(2), $m_contenido['submenu'], TRUE) ) echo "active" ?>">
+              <?php if( (isset($permisos) && is_array($permisos) && in_array("form", $permisos)) || isset($admin) ) { ?>
+              <li class="dropdown <?php if($this->uri->segment(2) == $m_contenido['controladora'] && in_array($this->uri->segment(3), $m_contenido['submenu'], TRUE) ) echo "active" ?>">
 				<a href="#" class="dropdown-toggle" data-toggle="dropdown">
 				Contenido
 				<b class="caret"></b>
@@ -113,11 +122,13 @@
 				<ul class="dropdown-menu">
 					<li class="nav-header"><span class="small menu">Generar contenido:</span></li>
 					<?php foreach($forms as $form) { ?>
-						 <li><?php echo anchor('admin/form/' . $form['forms_id'], '<i class="icon-chevron-right"></i>' . $form['forms_titulo'] ); ?></li>
+						 <li><?php echo anchor('adm/admin/form/' . $form['forms_id'], '<i class="icon-chevron-right"></i>' . $form['forms_titulo'] ); ?></li>
 					<?php } ?>
+					<?php if( (isset($permisos) && is_array($permisos) && in_array("editar_contenido", $permisos)) || isset($admin) ) { ?>
 					<li class="divider"></li>
 					<li class="nav-header"><span class="small menu">Editar:</span></li>
-					<li><?php echo anchor('admin/editar_contenido', '<i class="icon-pencil"></i> Editar Contenido') ?></li>
+					<li><?php echo anchor('adm/admin/editar_contenido', '<i class="icon-pencil"></i> Editar Contenido') ?></li>
+					<?php } ?>
 
 				</ul>
               </li>
@@ -132,8 +143,8 @@
 				<b class="caret"></b>
 				</a>
 				<ul class="dropdown-menu">
-					  <li><a href="#"><i class="icon-user"></i> Perfil</a></li>
-				      <li><?php echo anchor('ew/logout', '<i class="icon-off"></i> Cerrar Sesión') ?></li>
+					  <!--<li><a href="#"><i class="icon-user"></i> Perfil</a></li>-->
+				      <li><?php echo anchor('adm/ew/logout', '<i class="icon-off"></i> Cerrar Sesión') ?></li>
 				</ul>
               </li>
             </ul>
@@ -163,6 +174,7 @@
     <!-- Puesto en este punto por temas de performance -->
     <script src="<?php echo base_url(); ?>bootstrap/js/bootstrap-transition.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.9/jquery-ui.min.js"></script>
+    <script src="<?php echo base_url(); ?>js/underscore-min.js"></script>
     <script src="<?php echo base_url(); ?>bootstrap/js/bootstrap-alert.js"></script>
     <script src="<?php echo base_url(); ?>bootstrap/js/bootstrap-modal.js"></script>
     <script src="<?php echo base_url(); ?>bootstrap/js/bootstrap-dropdown.js"></script>
@@ -180,10 +192,10 @@
     
     <script type="text/javascript" src="<?php echo base_url(); ?>js/jquery.blockUI.js"></script>
     <script type="text/javascript" src="<?php echo base_url(); ?>js/jquery.quicksearch.js"></script>
-    <?php if($this->uri->segment(2) == "gestionar_usuarios") { echo '<script type="text/javascript" src="' . base_url() . 'js/gestion-usuarios.js"></script>'; } ?>
-    <?php if($this->uri->segment(2) == "gestionar_roles") { echo '<script type="text/javascript" src="' . base_url() . 'js/gestion-roles.js"></script>'; } ?>
-    <?php if($this->uri->segment(2) == "gestionar_empresas" || $this->uri->segment(2) == "gestionar_cuentas_registro") { echo '<script type="text/javascript" src="' . base_url() . 'js/gestion-empresas.js"></script>'; } ?>
-    <?php if($this->uri->segment(2) == "alta_fields") { echo '<script type="text/javascript" src="' . base_url() . 'js/fields_form.js"></script>'; } ?>
+    <?php if($this->uri->segment(3) == "gestionar_usuarios") { echo '<script type="text/javascript" src="' . base_url() . 'js/gestion-usuarios.js"></script>'; } ?>
+    <?php if($this->uri->segment(3) == "gestionar_roles") { echo '<script type="text/javascript" src="' . base_url() . 'js/gestion-roles.js"></script>'; } ?>
+    <?php if($this->uri->segment(3) == "gestionar_empresas" || $this->uri->segment(3) == "gestionar_cuentas_registro") { echo '<script type="text/javascript" src="' . base_url() . 'js/gestion-empresas.js"></script>'; } ?>
+    <?php if($this->uri->segment(3) == "alta_fields") { echo '<script type="text/javascript" src="' . base_url() . 'js/fields_form.js"></script>'; } ?>
     <script type="text/javascript" src="<?php echo base_url(); ?>js/jquery.colorbox.js"></script>
     <br/>
     <script src="<?php echo base_url(); ?>bootstrap/js/custom.js"></script>

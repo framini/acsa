@@ -226,7 +226,7 @@ class Empresas_frr {
     }
 	
 	/**
-	 * Devuelve los tipos de cuenta de registro
+	 * Devuelve las cuenta de registro
 	 */
 	function get_cuentas_registro() {
 		$cuentas_registro = $this->ci->empresas->get_cuentas_registro_all();
@@ -272,6 +272,29 @@ class Empresas_frr {
 			return false;
 		}
 		
+	}
+	
+	/**
+	 * Devuelve las cuenta de registro de una warrantera
+	 */
+	function get_cuentas_registro_by_empresa_id( $emp_id ) {
+		$cuentas_registro = $this->ci->empresas->get_cuentas_registro( $emp_id );
+
+        foreach ($cuentas_registro->result() as $row)
+        {
+           $data[] = array(
+                            'cuentaregistro_id'    		=> $row->cuentaregistro_id,
+                            'nombre'       				=> $row->nombre,
+                            'codigo'        			=> $row->codigo,
+                            'empresa_id'        		=> $row->empresa_id,
+                            'tipo_cuentaregistro_id'    => $row->tipo_cuentaregistro_id,
+                            'tipo_cuentaregistro'       => $this->get_name_tipo_cuenta_registro_by_id( $row->tipo_cuentaregistro_id ),
+                            'activated'        			=> $row->activated,
+                            'empresa'                   => $this->get_empresa_name_by_id( $row->empresa_id )
+                   );
+        }
+
+        return $data;
 	}
 	
 	/**
@@ -434,6 +457,7 @@ class Empresas_frr {
                                 'cuit'      => $row->cuit,
                                 'fecha_alta'      => $row->fecha_alta,
                                 'activated'      => $row->activated,
+                                'owner'          => $row->owner
                        );
             }
 

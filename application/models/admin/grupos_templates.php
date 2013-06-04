@@ -32,9 +32,31 @@ class Grupos_templates extends CI_Model
 		return NULL;
 	}
 	
+	function get_grupo_template_by_id($grupo_id) {
+		$this->db->select();
+		$this->db->where('template_group_id', $grupo_id);
+		$query = $this->db->get('templates_groups');
+		
+		if($query->num_rows() == 1) {
+			return $query->row();
+		}
+		return NULL;
+	}
+	
 	function get_nombre_grupo_template_by_name($grupo_template) {
 		$this->db->select('template_group_id');
 		$this->db->where('nombre', $grupo_template);
+		$query = $this->db->get('templates_groups');
+		
+		if($query->num_rows() == 1) {
+			return $query->row();
+		}
+		return NULL;
+	}
+	
+	function get_grupo_template_default() {
+		$this->db->select('');
+		$this->db->where('grupo_default', "y");
 		$query = $this->db->get('templates_groups');
 		
 		if($query->num_rows() == 1) {
@@ -51,12 +73,27 @@ class Grupos_templates extends CI_Model
 		return $query->num_rows() == 0;
 	}
 	
+	function is_grupo_template_default_by_name( $grupo_template ) {
+		if( !empty($grupo_template) ) {
+			$this->db->select('1', FALSE);
+			$this->db->where('LOWER(nombre)=', strtolower($grupo_template));
+			$this->db->where('grupo_default', 'y');
+	
+			$query = $this->db->get('templates_groups');
+			return $query->num_rows() == 1;
+		} else {
+						
+			return true;
+		}
+		
+	}
+	
 	function create_grupo_templates($data) {
 		$this->db->insert('templates_groups', $data);
 		if($this->db->affected_rows() > 0) {
-			return true;
+			return $this->db->insert_id();
 		} else {
-			return false;
+			return NULL;
 		}
 	}
 	

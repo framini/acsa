@@ -26,14 +26,7 @@
 								.removeClass('alert-success')
 								.addClass('alert-error')
 								.delay(200)
-								.slideDown('slow', function() {
-									if( parent.$.colorbox ) {
-										parent.$.colorbox.resize({
-										        innerWidth:$('body').width(),
-										        innerHeight:$('body').height()
-										    });
-									}
-								});
+								.slideDown('slow');
 						} else {
 							$('#resultado-operacion').text("");
 							$('#resultado-operacion').slideUp('fast', function() {
@@ -41,14 +34,7 @@
 								.removeClass('alert-error')
 								.addClass('alert-success')
 								.delay(200)
-								.slideDown('slow', function() {
-									if( parent.$.colorbox ) {
-										parent.$.colorbox.resize({
-										        innerWidth:$('body').width(),
-										        innerHeight:$('body').height()
-										});
-									}
-								});
+								.slideDown('slow');
 							//Mostramos en pantalla el nuevo mail que le sera asignado al usuario
 							//en caso de que confirme el email que se le fue enviado
 							$('#info-nombre').text("Se ha cambiado el password de")
@@ -97,14 +83,3 @@
 					
 </div>		
 <!-- .block ends -->
-
-<script>
-	$(function(){
-    	if( parent.$.colorbox ) {
-			parent.$.colorbox.resize({
-			        innerWidth:$('body').width(),
-			        innerHeight:$('body').height()
-			});
-		}
-	});
-</script>

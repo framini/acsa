@@ -41,7 +41,7 @@ class Auth_frr
 		if ((strlen($login) > 0) AND (strlen($password) > 0)) 
                                     {
 
-                                                      // Determina que funcion usar para el login segun el archivo de configuracion  
+            // Determina que funcion usar para el login segun el archivo de configuracion  
 			if ($login_by_username AND $login_by_email) 
                                                       {
 				$get_user_func = 'get_user_by_login';
@@ -126,12 +126,13 @@ class Auth_frr
                                 $configuracion['empresa_id'] = $user->empresa_id;
                                 $configuracion['status'] = ($user->activated == 1) ? STATUS_ACTIVATED : STATUS_NOT_ACTIVATED;
                                 $configuracion['es_admin'] = $user->es_admin;
-
+								
+								//Implementacion del Pattern Prototype
                                 //Cargamos en la session el objeto con la info de la empresa a ser clonado para
                                 //ser utilizado cuando se da de alta un nuevo warrant
 
                                 //Obtenemos la empresa
-                                $emp = $this->ci->empresas->get_empresa_by_id($user->empresa_id);
+                                $emp = $this->ci->empresas_frr->get_empresa_by_id($user->empresa_id);
                                 /*SOLUCION CON JSON
                                 //Creamos el array con la info a ser guardada en la sesion
                                 $empresaJSON['nombre'] = $emp->nombre;
@@ -143,14 +144,17 @@ class Auth_frr
                                 $configuracion['empresa'] = json_encode($empresaJSON);
                                  * FIN SOLUCION JSON
                                  */
-                                $empresa = new Empresa();
-                                $empresa->setCuit($emp->cuit);
-                                $empresa->setId($emp->empresa_id);
-                                $empresa->setNombre($emp->nombre);
-                                $configuracion['empresa'] = serialize($empresa);
-
-                                //Guardamos la info del usuario logueado en la session
-                                $this->ci->session->set_userdata($configuracion);
+                                if( !is_null($emp) ) {
+                                	$empresa = new Empresa();
+	                                $empresa->setCuit($emp[0]['cuit']);
+	                                $empresa->setId($emp[0]['empresa_id']);
+	                                $empresa->setNombre($emp[0]['nombre']);
+	                                $configuracion['empresa'] = serialize($empresa);
+	
+	                                //Guardamos la info del usuario logueado en la session
+	                                $this->ci->session->set_userdata($configuracion);
+                                }
+                                
 
 						if ($user->activated == 0) 
                         {	
@@ -235,17 +239,15 @@ class Auth_frr
 	 }
         
         function is_warrantera() {
-            
-            $user_id = $this->get_user_id();
-            $user = $this->ci->users->get_user_by_id($user_id, true);
-            $empresa_id = $user->empresa_id;
+            $empresa_id = $this->get_empresa_id();
             
             $this->ci->load->model('auth/empresas');
+			
             $empresa = $this->ci->empresas->get_empresa_by_id($empresa_id);
             
             //Preguntamos si el id es warrantera
             // NOTA: Ver forma de implementar distinta esta comprobacion
-            if($empresa->tipo_empresa_id == 2) {
+            if(isset($empresa->tipo_empresa_id) && $empresa->tipo_empresa_id == 2) {
                 return true;
             } else {
                 return false;
@@ -286,9 +288,7 @@ class Auth_frr
         
         function is_argclearing() {
             
-            $user_id = $this->get_user_id();
-            $user = $this->ci->users->get_user_by_id($user_id, true);
-            $empresa_id = $user->empresa_id;
+            $empresa_id = $this->get_empresa_id();
             
             $this->ci->load->model('auth/empresas');
             $empresa = $this->ci->empresas->get_empresa_by_id($empresa_id);
@@ -452,6 +452,14 @@ class Auth_frr
 	function get_empresa_id()
 	{
 		return $this->ci->session->userdata('empresa_id');
+	}
+	
+	function get_empresa_by_user_id( $uid ) {
+		if( !is_null( $emp = $this->ci->users->get_empresa_by_user_id( $uid ) ) ) {
+			return $emp->empresa_id;
+		} else {
+			return NULL;
+		}
 	}
 
 	/**

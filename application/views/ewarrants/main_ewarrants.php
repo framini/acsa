@@ -10,15 +10,16 @@
 				
 				
                             <div class="span12">
-                            	<?php if(isset($message)) { ?>
-	                            	<div class="row">
-	                            		<div class="alert alert-success span12 mensajes margin-top-10" id="resultado-operacion" style="margin-bottom: 10px !important;">
-	                                <?php
-	                                         echo $message;
-	                                 ?>
-	                                 </div> 
-	                                </div>
-                                <?php } ?>
+                            	<?php
+					            	if(isset($errormsg)) {
+					            		$data['estado'] = "error";
+					            	} else if(isset($message)) {
+					            		$data['estado'] = "success";
+					            	}
+									if(isset($data)) {
+										$this->load->view('general/mensaje_operacion', $data); 
+									}
+					            ?>
      							<?php if(count($permisos) > 0) { ?>
                                  <ul class="nav nav-tabs nav-stacked">
                                  	<?php 
@@ -26,7 +27,7 @@
 									foreach ($data_menu as $keyp => $row) {
 										 echo "<li>";
 										 $contenido_menu = isset($row['icono']) ? '<i class="' . $row['icono'] . '"></i> ' . $row['texto_anchor'] : $row['texto_anchor'];
-										 echo anchor($this->uri->segment(1) . "/" . $keyp, $contenido_menu);
+										 echo anchor($this->uri->segment(1) . "/" . $this->uri->segment(2) . "/" . $keyp, $contenido_menu);
 										 echo "</li>";
 									 }
 									?>

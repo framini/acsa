@@ -21,9 +21,82 @@
 						$this->load->view('general/mensaje_operacion', $data); 
 					}
 	            ?>
-            	
+
             	<script type="text/javascript">
             		$(function() {
+            			
+            			var that = this;
+            			
+            			//Objeto encargado de recordar el estado de grupoSeleccionado
+            			var memento = (function() {
+ 
+						    var estado = "";
+						 
+						    return {
+						        getEstado: function() {
+						            return this.estado;
+						        },
+						        setEstado: function( est ) {
+						            this.estado = est;
+						        }
+						    }
+						 
+						})();
+            			
+            			//Objeto que indica el grupo que debe seleccionarse en la lista de grupos de template
+            			var grupoSeleccionado = (function() {
+ 							
+ 							//Por defecto el item seleccionado es el primero de la lista
+						    var itemSeleccionado = 0;
+						 
+						    return {
+						        setItemSeleccionado : function( item ) {
+            						this.itemSeleccionado = item;
+	            				},
+	            				getItemSeleccionado : function() {
+	            					return this.itemSeleccionado;
+	            				},
+	            				crearMemento : function() {
+	            					memento.setEstado( this.getItemSeleccionado() );
+	            					
+	            					return memento;
+	            				},
+	            				restoreMemento: function( memento ) {
+	            					this.setItemSeleccionado( memento.getEstado() );
+	            				}
+						    }
+						 
+						})();
+            			
+            			//Objeto encargado de almacenar el memento
+            			var careTaker = (function() {
+ 
+						    var memento = "";
+						 
+						    return {
+						        setMemento : function( m ) {
+            						this.memento = m;
+            						
+            						estado = this.memento.getEstado();
+            						
+            						if( Modernizr.localstorage ) {
+            							//Almacenamos en el localStorage el memento
+            							localStorage.setItem( 'memento', estado );
+            						}
+	            				},
+	            				getMemento : function() {
+	            					if( Modernizr.localstorage ) {
+            							//Obtenemos el memento del localStorage
+            							m = localStorage.getItem( 'memento' );
+            							            							
+            							return m;
+            						}
+	            				}
+						    }
+						 
+						})();
+						
+
             			//Ocultamos todos los templates a excepcion del primero y le damos la clase de activo
             			//$('.lista_templates').filter(':first').addClass('activo').end().not(':first').hide();
             			$('.lista_templates').filter(':first').addClass('activo');
@@ -38,8 +111,15 @@
             			
             			$('.lista_grupos').on('click', '.link_grupos', function(event) {
             				event.preventDefault();
+							
+							//Seleccionamos la posicion del elemento clickeado con respecto a la lista
+            				grupoSeleccionado.setItemSeleccionado( $(this).parent().index() );
+							
+							//Creamos el memento
+            				careTaker.setMemento( grupoSeleccionado.crearMemento() );
+
             				//Le quitamos el focus al item del grupo activo
-            				$('.active').removeClass('active');
+            				$('.lista_grupos .active').removeClass('active');
             				//Se lo asignamos al item en el que se hizo click
             				$(this).closest('li').addClass('active');
 							
@@ -57,6 +137,23 @@
 							$("[id='" + $(this).attr('id') + "-boton-eliminar']").addClass('bot-gt-activo').animate({opacity:'show'}, 800);
 							$("[id='" + $(this).attr('id') + "-boton-mod']").addClass('bot-mt-activo').animate({opacity:'show'}, 800);
             			});
+            			
+            			
+            			//Este codigo solo se va a ejecutar cuando la pagina cargue. En dicho caso
+						//si existe un memento, seleccionamos el estado existente en dicho memento
+						if( estadoPrevio = careTaker.getMemento() ) {
+								//Inicializamos el memento
+								memento.setEstado( estadoPrevio );
+								
+								//Hacemos el restore del estado
+            					grupoSeleccionado.restoreMemento( memento );
+            					
+            					//Hacemos la seleccion del ITEM que figure en grupoSeleccionado
+            					console.debug( $('.lista_grupos .link_grupos').eq( grupoSeleccionado.getItemSeleccionado() ) );
+            					$('.lista_grupos .link_grupos').eq( grupoSeleccionado.getItemSeleccionado() ).trigger('click');
+            					
+            			}
+            			
             		});
             	</script>
             	
@@ -69,7 +166,7 @@
             				<?php if( isset($data_menu) ) {  ?>
 	            				<?php foreach ($data_menu as $keyp => $row) { ?>
 		               				<?php if($row['boton_superior'] && (isset($row['grupo']) && $row['grupo'] == 'grupos')) { ?>
-		               					<?php echo anchor($this->uri->segment(1) ."/". $keyp, '<i class="' . $row['icono'] . '"></i> ' . $row['texto_anchor'], 'class="' . $row['clase_boton'] . '"');  ?>
+		               					<?php echo anchor($this->uri->segment(1) ."/". $this->uri->segment(2) ."/". $keyp, '<i class="' . $row['icono'] . '"></i> ' . $row['texto_anchor'], 'class="' . $row['clase_boton'] . '"');  ?>
 		                			<?php } ?>
 		                		<?php } ?>
 		                	<?php } ?>
@@ -79,8 +176,11 @@
 	            				<?php 
 				            	if(isset($grupos_templates)) {
 				            		foreach ($grupos_templates as $key => $grupo) {
-										echo '<li><a href="#" class="link_grupos" id="' . $grupo['nombre'] . '">' . $grupo['nombre'] . '</a> ';
-										echo '</li>';
+										echo '<li>';
+										echo '<a href="#" class="link_grupos" id="' . $grupo['nombre'] . '">';
+										echo " " . $grupo['nombre'];
+										if ( $grupo['grupo_default'] == "y" ) echo '<abbr title="Grupo Default"><i class="icon-home pull-right"></i></abbr>';
+										echo '</a></li>';
 									}
 				            	}
 				            	?>
@@ -130,7 +230,7 @@
 												if($tn > 0) {
 													$atributos['style'] = "display:none;";
 												}
-				               					echo anchor($this->uri->segment(1) ."/". $keyp ."/". $grupo['template_group_id'], '<i class="' . $row['icono'] . '"></i> ' . $row['texto_anchor'], $atributos);
+				               					echo anchor($this->uri->segment(1) ."/". $this->uri->segment(2) ."/". $keyp ."/". $grupo['template_group_id'], '<i class="' . $row['icono'] . '"></i> ' . $row['texto_anchor'], $atributos);
 				                				//Fix espacio entre botones
 				                				echo ' ';
 											}
@@ -164,18 +264,21 @@
 													if( $template['template_group_id'] == $grupo_id ) {
 														
 														echo "<tr>";
-														echo '<td width="70%"><a href="' . site_url() . '/admin/editar_templates/' . $template['template_id'] . '">' . $template['nombre'] . '</a></td>';
+														echo '<td width="70%"><a href="' . site_url() . '/adm/admin/editar_templates/' . $template['template_id'] . '">' . $template['nombre'] . '</a></td>';
 														echo '<td width="30%">';
 															echo '<a class="btn btn-mini" href="' . site_url() . "/" . $template['template_group_nombre'] . "/" . $template['nombre'];
 															echo '" target="_blank"><i class="icon-eye-open"></i></a> ';
 															if(isset($data_menu) && isset($data_menu['editar_templates'])) {
-																echo '<a class="btn btn-mini" href="' . site_url() . '/admin/editar_templates/' . $template['template_id'];
+																echo '<a class="btn btn-mini" href="' . site_url() . '/adm/admin/editar_templates/' . $template['template_id'];
 																echo '">Modificar</a> ';
 															}
 															
-															if(isset($data_menu) && isset($data_menu['baja_template'])) {
-																echo '<a class="btn btn-mini" href="' . site_url() . '/admin/baja_template/' . $template['template_id'] . '" ';
-																echo '>Eliminar</a> ';
+															//Como el template index de cada grupo no se pueden eliminar, no mostramos el boton
+															if( $template['nombre'] != "index" ) {
+																if(isset($data_menu) && isset($data_menu['baja_template'])) {
+																	echo '<a class="btn btn-mini" href="' . site_url() . '/adm/admin/baja_template/' . $template['template_id'] . '" ';
+																	echo '>Eliminar</a> ';
+																}
 															}
 															
 														echo '</td>';

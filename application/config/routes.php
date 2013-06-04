@@ -38,9 +38,15 @@
 |
 */
 
-$route['default_controller'] = "ew";
+$route['default_controller'] = "adm_sitio";
 $route['404_override'] = '';
 
+$route['adm'] = "adm_ew/login";
+
+$route['adm/([a-z]+)'] = "adm_$1";
+$route['adm/(\w+)/(\w+)'] = "adm_$1/$2";
+$route['adm/(\w+)/(\w+)/(\d+)'] = "adm_$1/$2/$3";
+$route['adm/(\w+)/(\w+)/(\d+)/(\w+)'] = "adm_$1/$2/$3/$4";
 
 /* End of file routes.php */
 /* Location: ./application/config/routes.php */

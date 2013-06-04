@@ -152,7 +152,7 @@
 					
 					<div class="row">
                 		<div class="span6 control-group <?php if(form_error($def_forms_nombre_action['name']) != "") echo "error"; ?>">
-                            <?php echo form_label('Nombre del Action: <small>(Método dentro del controller)</small><i class="icon-asterisk"></i>', $def_forms_nombre_action['name']); ?>
+                            <?php echo form_label('Nombre del Action: <small>(Método dentro del controller)</small>', $def_forms_nombre_action['name']); ?>
                             <?php echo form_input($def_forms_nombre_action); ?>
                             
 							<?php if(form_error($def_forms_nombre_action['name']) != "" || isset($errors[$def_forms_nombre_action['name']])) {?>

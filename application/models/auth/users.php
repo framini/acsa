@@ -153,6 +153,15 @@ class Users extends CI_Model
                 return $query;
             }
         }
+		
+		function get_empresa_by_user_id($user_id) {
+			$this->db->select('empresa_id');
+			$this->db->where('user_id', $user_id);
+	
+			$query = $this->db->get($this->table_name);
+			if ($query->num_rows() == 1) return $query->row();
+			return NULL;
+		}
 
 	/**
 	 * Chequea si el username esta disponible para registro

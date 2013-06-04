@@ -1,0 +1,18 @@
+{% extends "frr_temp/templates_base/item.html" %}
+{% block title %} {{ noticias['19'].titulo }} {% endblock %}
+
+{% block contenido %}
+        
+      
+                        
+      {% for entrada in noticias %}
+            <div class="page-header">
+                <h1>{{ entrada.titulo }}</h1>
+                <small><span class="label label-info"><small>Por {{ entrada.autor }} el {{ entrada.entry_date }}</small></span></small>
+            </div>
+            
+            <img src="{{ entrada.imagen_item }}" class="img-rounded pull-left margin-right-bottom-10">
+            <p> {{ entrada.cuerpo_noticia | raw }} </p>
+      {% endfor %}
+      
+{% endblock %}

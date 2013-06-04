@@ -1,0 +1,36 @@
+{% extends "frr_temp/templates_base/item.html" %}
+{% block title %} Listado de Noticias {% endblock %}
+
+{% block contenido %}
+          
+      
+      
+      <div class="page-header">
+        <h1>Noticias</h1>
+      </div>
+                        
+      {% for entrada in noticias %}
+          
+            <div class="media well well-small">
+              <a class="pull-left" href="#">
+                {% if entrada.imagen_noticias %}
+                <img class="media-object" src="{{ entrada.imagen_noticias }}" width="120" height="120" />
+                {% else %}
+                <img class="media-object" src="http://placehold.it/120x120">
+                {% endif %}
+              </a>
+              <div class="media-body">
+                <h4 class="media-heading"><a href="{{ "main/item"|url_sitio(entrada.entry_id) }}">{{ entrada.titulo }}</a></h4>
+                {{ entrada.cuerpo_noticia | longitud_max(140) }}
+                <div class="row">
+                    <div class="span12">
+                        <a class="btn btn-mini btn-info pull-right" href="{{ "articulos/item"|url_sitio(entrada.entry_id) }}">ver más</a>
+                    </div>
+                </div>
+                  
+              </div>
+            </div>
+          
+      {% endfor %}
+      
+{% endblock %}

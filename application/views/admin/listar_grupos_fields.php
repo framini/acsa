@@ -1,3 +1,12 @@
+<?php $this->load->file('includes/datatables_files.php'); ?>
+<script>
+	$(function() {
+		$objInit = $.extend( {}, objInit );
+
+	    $('#tabla').dataTable($objInit);
+	});
+</script>
+
 <div class="row">
         <div class="span12 margin-bottom-10">
                 	<div class="row relativo">
@@ -5,7 +14,7 @@
 		                        	<?php if(isset($data_menu)) { ?>
 				                		<?php foreach ($data_menu as $keyp => $row) { ?>
 				               				<?php if($row['boton_superior']) { ?>
-				                				<?php echo '<a class="'. $row['clase_boton'] . '" href="'. site_url() . "/" . $this->uri->segment(1) . "/" . $keyp . '"><i class="'. $row['icono'] . '"></i> ' . $row['texto_anchor'] . '</a>';  ?>
+				                				<?php echo '<a class="'. $row['clase_boton'] . '" href="'. site_url() . "/" . $this->uri->segment(1) . "/" . $this->uri->segment(2) ."/".  $keyp . '"><i class="'. $row['icono'] . '"></i> ' . $row['texto_anchor'] . '</a>';  ?>
 				                			<?php } ?>
 				                		<?php } ?>
 				                	<?php } ?>
@@ -31,7 +40,7 @@
 						$this->load->view('general/mensaje_operacion', $data); 
 					}
 	            ?>     
-                <table class="table table-striped table-bordered">
+                <table id="tabla" class="table table-striped table-bordered display">
 
                         <thead>
                                 <tr>
@@ -56,9 +65,7 @@
 												echo "</td>";
 												
 												echo "<td>";
-														//echo "<a class='btn cambiar-email-usuario btn-primary margin-bottom-5' href='" . site_url() . "/admin/modificar_grupo_field/" .  $grupo_field['grupos_fields_id'] . "'><i class='icon-pencil icon-white'></i> Modificar</a> ";
-														//echo "<a class='btn cambiar-email-usuario btn-danger margin-bottom-5' href='" . site_url() . "/admin/baja_grupo_fields/" .  $grupo_field['grupos_fields_id'] . "'><i class='icon-trash icon-white'></i> Eliminar</a> ";
-														//echo "<a class='btn cambiar-email-usuario btn-info margin-bottom-5' href='" . site_url() . "/admin/fields/" .  $grupo_field['grupos_fields_id'] . "'><i class='icon-align-justify icon-white'></i> Ver Fields</a> ";
+														
 														if(count($data_menu) > 0) {
 															$band = 0;
 		                                                    foreach ($data_menu as $keyp => $row) {
@@ -69,7 +76,7 @@
 									               					} else {
 									               						$atributos = array('class' => $row['clase_boton']);
 									               					}
-									               					echo anchor($this->uri->segment(1) ."/". $keyp . '/' . $grupo_field['grupos_fields_id'], '<i class="' . $row['icono'] . '"></i> ' . $row['texto_anchor'], $atributos);
+									               					echo anchor($this->uri->segment(1) ."/". $this->uri->segment(2) ."/". $keyp . '/' . $grupo_field['grupos_fields_id'], '<i class="' . $row['icono'] . '"></i> ' . $row['texto_anchor'], $atributos);
 									                				//Fix espacio entre botones
 									                				echo ' ';
 																}

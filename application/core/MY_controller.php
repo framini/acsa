@@ -9,24 +9,28 @@ class MY_Controller extends CI_Controller
 		 //Chequeamos que el usuario este logueado
 		 if(!$this->auth_frr->is_logged_in())
          {
-             redirect('');
+             redirect('adm/ew');
              die();
          }
 		 
-		 //Si el usuario logueado fue eliminado, tenemos que forzar su cierre de sesion
-		 if( !$this->auth_frr->user_exists() ) {
+		 //Si el usuario logueado fue eliminado, o la empresa a la cual pertenece fue desactivada
+		 //tenemos que forzar su cierre de sesion
+		 if( !$this->auth_frr->user_exists() || !$this->empresas_frr->is_empresa_activada( $this->auth_frr->get_empresa_id() ) ) {
 		 	$this->auth_frr->logout();
-			redirect('');
+			redirect('adm/ew');
             die();
 		 } 
 		 
-		 //Chequeamos si se trata de ejecutar alguna funcion de la controladora entramos a este condicional
-		 if($permiso = $this->uri->segment(2)) {
+		 //Chequeamos si se trata de ejecutar alguna funcion administrativa
+		 if( "adm" == $this->uri->segment(1)) {
+
+			$permiso = $this->uri->segment(3) != FALSE ? $this->uri->segment(3) : 'index';
+			
 		 	//Comprobamos que el usuario tenga los permisos necesarios
 		 	//Parametros (permiso, controladora, grupo)
-		 	if(!$this->roles_frr->tiene_permisos($permiso, $this->uri->segment(1), $this->uri->segment(2))) {
-		 		//Si no tiene permisos los redireccionamos a la web de error	 
-             	redirect('error/m');
+		 	if(!$this->roles_frr->tiene_permisos($permiso, $this->uri->segment(2), $this->uri->segment(3))) {
+		 		//Si no tiene permisos los redireccionamos a la web de error 
+             	redirect('adm/error/m');
             	die();
 			}
 		 }

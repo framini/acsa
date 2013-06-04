@@ -1,0 +1,12 @@
+{
+	"folders":
+	[
+		{
+			"path": "/C/wamp/www/argc"
+		}
+	],
+	
+	"settings": {
+        "xdebug": { "url": "http://localhost/argc" }
+    }
+}

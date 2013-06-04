@@ -1,35 +1,20 @@
-<!DOCTYPE html>
-<html lang="en">
-    {% include "frr_temp/includes/head.html" %}
-    <body>
-    
-        {% include "frr_temp/includes/menu.html" %}
-        
-        <div class="container">
-            <div id="wrapper">
-                <div class="row-fluid">
+{% extends "frr_temp/templates_base/item.html" %}
+{% block title %} {{ articulos['14'].titulo }} {% endblock %}
 
-                    
+{% block contenido %}
+        
+      
                         
-                      {% for entrada in contenido_home_items %}
-                      	{% if entrada.imagen_item %}
-                            <div class="page-header">
-                                <h1>{{ entrada.titulo }}</h1>
-                                <small><span class="label label-info"><small>Por {{ entrada.autor }} el {{ entrada.entry_date }}</small></span></small>
-                            </div>
-                            
-                            <img src="{{ entrada.imagen_item }}" class="img-rounded pull-left margin-right-bottom-10">
-                            <p> {{ entrada.contenido |raw }} </p>
-                      	{% endif %}
-                      {% endfor %}
-                    
-                </div>
-            </div><!--wrapper-->
-        </div><!--container main-->
-        
-        {% include "frr_temp/includes/footer.html" %}
-        
-    	<script src="http://code.jquery.com/jquery-1.8.2.min.js"></script>
-        <script src="http://localhost/argc/index.php/js/bootstrap-min-js"></script>
-    </body>
-</html>
+      {% for entrada in articulos %}
+          {% if entrada.articulos_imagen %}
+            <div class="page-header">
+                <h1>{{ entrada.titulo }}</h1>
+                <small><span class="label label-info"><small>Por {{ entrada.autor }} el {{ entrada.entry_date }}</small></span></small>
+            </div>
+            
+            <img src="{{ entrada.imagen_item }}" class="img-rounded pull-left margin-right-bottom-10">
+            <p> {{ entrada.articulos_contenido | raw }} </p>
+          {% endif %}
+      {% endfor %}
+      
+{% endblock %}

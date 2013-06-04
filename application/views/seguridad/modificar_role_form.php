@@ -104,6 +104,17 @@
 				
 				
                             <div class="span12">
+                            	<?php
+					            	if(isset($errors)) {
+					            		$data['estado'] = "error";
+										$data['message'] = $errors['nombre_role'];
+					            	} else if(isset($message)) {
+					            		$data['estado'] = "success";
+					            	}
+									if(isset($data)) {
+										$this->load->view('general/mensaje_operacion', $data); 
+									}
+					            ?>
                                 <?php
                                
                                   $errorLogueo = '';//isset($errors[$login['name']]) ? $errors[$login['name']]:'';
@@ -151,7 +162,7 @@
                                 						<div class="span6 control-group">
                                                 	<?php if(isset($empresas)) { ?>
 
-                                                    	<?php echo form_label('Empresa ID', $empresa_id['name']); ?>
+                                                    	<?php echo form_label('Empresa', $empresa_id['name']); ?>
 
 	                                                    <?php
 	      
