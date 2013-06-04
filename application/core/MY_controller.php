@@ -20,7 +20,7 @@ class MY_Controller extends CI_Controller
 			redirect('adm/ew');
             die();
 		 } 
-		 
+
 		 //Chequeamos si se trata de ejecutar alguna funcion administrativa
 		 if( "adm" == $this->uri->segment(1)) {
 

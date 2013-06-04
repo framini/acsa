@@ -15,7 +15,7 @@ class adm_Ewarrants extends MY_Controller {
 
 		//Chequeamos que el usuario que esta tratando de dar gestionar ewarrants
 		//sea de tipo warrantera o bien Argentina Clearing
-		if ((!$this -> auth_frr -> is_warrantera() && !$this -> auth_frr -> is_argclearing())) {
+		if ((!$this -> auth_frr -> has_role_warrantera() && !$this -> auth_frr -> has_role_cliente() && !$this -> auth_frr -> has_role_aseguradora() && !$this -> auth_frr -> is_argclearing())) {
 			redirect('adm/ew');
 			die();
 		}
@@ -66,6 +66,147 @@ class adm_Ewarrants extends MY_Controller {
 			$this -> template -> build();
 		}
 	}
+	
+	
+	function ver_pendientes($ewid = null) {
+		$empresa_id = $this->auth_frr->get_empresa_id();
+	
+		if ($this->auth_frr->es_admin()) {
+			$data['ewarrants'] = $this->ewarrants_frr
+			->get_warrants_habilitados_pendientes();
+		} else {
+			if( $this->auth_frr->has_role_warrantera() ) {
+				$data['ewarrants'] = $this->ewarrants_frr
+				->get_warrants_empresa_pendientes($empresa_id);
+			} elseif( $this->auth_frr->has_role_aseguradora() ) {
+				$data['ewarrants'] = $this->ewarrants_frr
+				->get_warrants_empresa_pendientes_aseguradora($empresa_id);
+			}
+			
+		}
+	
+		if ($data['ewarrants'] != null) {
+	
+			if ($message = $this->session->flashdata('message')) {
+				$data['message'] = $message;
+			}
+	
+			//Si entramos aca es porque se esta tratando de firmar un ewarrant
+			if ($ewid) {
+				if ($this->uri->segment(4)) {
+					//Cargamos el archivo que contiene la info con la que se contruye el menu
+					$this->config->load('menu_permisos', TRUE);
+			
+					//Chequeamos que el warrant no este pendiente
+					if ($this->ewarrants_frr->esta_pendiente($ewid) || $this->ewarrants_frr->esta_habilitado($ewid) ) {
+						//Chequeamos que el usuario que esta tratando de habilitar pueda hacerlo
+						if ($this->ewarrants_frr->can_habilitar($ewid)) {
+								
+							//redirect('ewarrants/emitir/'.$ewid);
+							
+							//Si la peticionon se hizo por medio de ajax devolvemos el resultado via JSON
+							if ($this->input->is_ajax_request()) {
+								$resultados['error'] = false;
+								$resultados['message'] = "redireccion";
+								$resultados['redireccion'] = site_url('adm/ewarrants/emitir/'.$ewid);
+							
+								//Devolvemos los resultados en JSON
+								echo json_encode($resultados);
+								//Ya no tenemos nada que hacer en esta funcion
+								return;
+							}
+								
+							die();
+						}
+						//No tiene los permisos suficientes para firmar el eWarrant
+						else {
+							//Cargamos el item que contiene la info del mensaje
+							$datos_mensaje = $this->config
+							->item('ewarrant_error_not_owner',
+									'menu_permisos');
+	
+							//Si la peticionon se hizo por medio de ajax devolvemos el resultado via JSON
+							if ($this->input->is_ajax_request()) {
+	
+								$resultados['error'] = true;
+								$resultados['message'] = $datos_mensaje['texto'];
+								$resultados['icono'] = $datos_mensaje['icono'];
+	
+								//Devolvemos los resultados en JSON
+								echo json_encode($resultados);
+								//Ya no tenemos nada que hacer en esta funcion
+								return;
+							} else {
+								$this->template
+								->set_content('ewarrants/sin_permiso',
+										array(
+												'msg' => $datos_mensaje['texto']));
+								$this->template->build();
+							}
+						}
+					}
+						
+					//El eWarrant esta pendiente
+					else {
+						//Nos fijamos si el usuario logueado tiene role de aseguradora
+						if($this->auth_frr->has_role_aseguradora()) {
+							redirect('adm/ewarrants/emitir/'.$ewid);
+						}
+					 	
+						//Cargamos el item que contiene la info del mensaje
+						$datos_mensaje = $this->config
+						->item('ewarrant_error_firmado',
+								'menu_permisos');
+						//Si la peticionon se hizo por medio de ajax devolvemos el resultado via JSON
+						if ($this->input->is_ajax_request()) {
+							$resultados['error'] = true;
+							$resultados['message'] = $datos_mensaje['texto'];
+							$resultados['icono'] = $datos_mensaje['icono'];
+	
+							//Devolvemos los resultados en JSON
+							echo json_encode($resultados);
+							//Ya no tenemos nada que hacer en esta funcion
+							return;
+						} else {
+							$this->template
+							->set_content('ewarrants/sin_permiso',
+									array(
+											'msg' => $datos_mensaje['texto']));
+							$this->template->build();
+						}
+					}
+				}
+			}
+	
+			#Entramos aca cuando el usuario entra en la seccion
+			#####################################################
+			//Cargamos el archivo que contiene la info con la que se contruye el menu
+			$this->config->load('menu_permisos', TRUE);
+	
+			//Obtenemos los permisos del usuario logueado asociados a la controladora seguridad y grupo gestionar_roles
+			$data['permisos'] = $this->roles_frr
+			->permisos_role_controladora_grupo($this->uri->segment(2));
+	
+			//Procesamos los permisos obtenidos
+			if (count($data['permisos']) > 0) {
+			foreach ($data['permisos'] as $key => $row) {
+			$data['data_menu'][$row['permiso']] = $this->config
+			->item($row['permiso'], 'menu_permisos');
+			}
+			}
+	
+			$this->template->set_content('ewarrants/listar_ewarrants', $data);
+			$this->template->build();
+		} else {
+		$this->template
+		->set_content('ewarrants/sin_permiso',
+		array(
+		'msg' => 'Tu empresa no tiene eWarrants emitidos'));
+			$this->template->build();
+		}
+	}
+	
+	
 
 	function firma($ewid = null) {
 		$empresa_id = $this -> auth_frr -> get_empresa_id();
@@ -300,105 +441,220 @@ class adm_Ewarrants extends MY_Controller {
 		}
 	}
 
-	function emitir() {
-		$this -> form_validation -> set_rules('codigo', 'Codigo', 'trim|required|xss_clean');
-		$this -> form_validation -> set_rules('kilos', 'Kilos', 'trim|required|xss_clean');
-		$this -> form_validation -> set_rules('observaciones', 'Observaciones', 'trim|required|xss_clean');
+                 function emitir() {
+                     
+                     if( $this->uri->segment(4) ) {
+                     	$this->form_validation->set_rules('estado', 'Estado', 'required|xss_clean');
+                     	//En caso que sea una warrantera estos datos van a ser requeridos
+                     	if( $es_warrantera = $this->auth_frr->has_role_warrantera()  ) {
+	                     	/*$this->form_validation->set_rules('poliza_nombre', 'Nombre de poliza', 'trim|required|xss_clean');
+	                     	$this->form_validation->set_rules('poliza_descripcion', 'Descripcion de poliza', 'trim|required|xss_clean');
+	                     	$this->form_validation->set_rules('poliza_comision', 'Comision de pliza', 'trim|required|xss_clean');*/
+                     	}
+                     } else {
+                     	$this->form_validation->set_rules('codigo', 'Codigo', 'trim|required|xss_clean');
+                     	$this->form_validation->set_rules('kilos', 'Kilos', 'trim|required|xss_clean');
+                     	$this->form_validation->set_rules('observaciones', 'Observaciones', 'trim|required|xss_clean');
+                     }
+                     
+                     if($this->auth_frr->es_admin()) {
+                         $this->form_validation->set_rules('cuentaregistro_id', 'Cuentas de registro', 'required');
+                     }
 
-		if ($this -> auth_frr -> es_admin()) {
-			$this -> form_validation -> set_rules('cuentaregistro_id', 'Cuentas de registro', 'required');
-		}
+                     //Info del usuario/empresa
+                     $user_id = $this->session->userdata('user_id');
+                     //Clona el objeto empresa cargado con los datos de la empresa
+                     //a la que pertenece el usuario logueado
+                     $datosEmpresa =  $this->session->deserializar('empresa');
+                     
+                     $empresa_id = $datosEmpresa->getId();
 
-		//Info del usuario/empresa
-		$user_id = $this -> session -> userdata('user_id');
-		//Clona el objeto empresa cargado con los datos de la empresa
-		//a la que pertenece el usuario logueado
-		$datosEmpresa = $this -> session -> deserializar('empresa');
+                     if($this->form_validation->run()) {
 
-		$empresa_id = $datosEmpresa -> getId();
+                     	if( $this->uri->segment(4) ) {
+                     			$resultado_operacion = false;
+                     			
+	                     		//Si entramos aca estamos confirmando la habilitacion del ewarrant
+	                     		if( $es_warrantera ) {
+	                     			$resultado_operacion = $this->ewarrants_frr->confirmar_operacion($this->uri->segment(4),
+	                     					$this->input->post('aseguradora_id'),
+	                     					$this->input->post('estado'),
+	                     					$this->input->post('poliza_nombre'),
+	                     					$this->input->post('poliza_descripcion'),
+	                     					$this->input->post('poliza_comision')
+	                     			);
+	                     		} else {
+	                     			$resultado_operacion = $this->ewarrants_frr->confirmar_operacion($this->uri->segment(4),
+	                     					$this->input->post('aseguradora_id'),
+	                     					$this->input->post('estado')
+	                     			);
+	                     		}
+	                     		
+	                     		if( $resultado_operacion ) {
+	                     			//Si la peticionon se hizo por medio de ajax devolvemos el resultado via JSON
+	                     			 
+	                     			//Cargamos el item que contiene la info del mensaje
+	                     			$datos_mensaje = $this->config
+	                     			->item('ewarrant_confirmacion_firma',
+	                     					'menu_permisos');
+	                     			if ($this->input->is_ajax_request()) {
+	                     				$resultados['ewid'] = $ewid;
+	                     				$resultados['message'] = $datos_mensaje['texto'];
+	                     				$resultados['icono'] = $datos_mensaje['icono'];
+	                     				 
+	                     				//Devolvemos los resultados en JSON
+	                     				echo json_encode($resultados);
+	                     				//Ya no tenemos nada que hacer en esta funcion
+	                     				return;
+	                     			} else {
+	                     				$message = "La operacion fue completada con exito!";
+	                     				$this->session
+	                     				->set_flashdata('message', $message);
+	                     				redirect('adm/ewarrants/');
+	                     			}
+	                     		} else {
+	                     			//Se produjo un error y no se pudo actualizar
+	                     			$message = "Ocurrio un error al tratar de actualizar el warrant";
+	                     			$this->session->set_flashdata('errormsg', $message);
+	                     			redirect('adm/ewarrants/');
+	                     		}
+                     			
+                     	}
+                     	
+                     	else {
+                     		//Si el usuario que esta dando de alta es un admin
+                     		//empresa_id puede variar porque los admins pueden
+                     		//dar de alta warrants para cualquier empresa
+                     		if($this->auth_frr->es_admin())
+                     			$empresa_id = $this->input->post('empresa_id');
+                     		 
+                     		//Obtenemos el tipo del producto del form
+                     		$producto_id = $this->input->post('producto');
+                     		//Obtenemos el registro del producto
+                     		$producto = $this->productos_model->get_producto_by_id($producto_id);
+                     		//print_r($producto->calidad);
+                     		// die();
+                     		 
+                     		$precio_ponderado = 0;
+                     		/*if($producto) {
+                     			$tipo = $producto->calidad;
+                     			$info['kilos'] = $this->input->post('kilos');
+                     			$info['precio'] = $producto->precio;
+                     			$info['aforo'] =  $producto->aforo;
+                     			 
+                     			//Aplicamos Factory Method para crear instancias del tipo de producto
+                     			//y obtener el precio_ponderada para el eWarrant
+                     			$obj = new ProductosCreator();
+                     			//Obtenemos la instancia del Producto
+                     			$prod = new Producto();
+                     			$prod = $this->productoscreator->factory($tipo, $info);
+                     			$precio_ponderado = $prod->get_precio_ponderado();
+                     		}//fin if producto != null*/
+                     		 
+                     		$data = array(
+                     				'codigo' => $this->form_validation->set_value('codigo'),
+                     				'cuentaregistro_depositante_id' => $this->input->post('cuentaregistro_id'),
+                     				'cuentaregistro_id' => $this->input->post('cuentaregistro_id'),
+                     				'producto' => $producto->nombre,
+                     				'kilos' => $this->form_validation->set_value('kilos'),
+                     				'observaciones' => $this->form_validation->set_value('observaciones'),
+                     				'estado'        => 1,
+                     				'emitido_por' => $user_id,
+                     				'firmado'     => 0,
+                     				'empresa_id'  => $empresa_id,
+                     				'empresa_nombre'  => $datosEmpresa->getNombre(),
+                     				'empresa_cuit' => $datosEmpresa->getCuit(),
+                     				'precio_ponderado' => $producto->precio,
+                     				'usuario_ultima_accion' => $this->auth_frr->get_username()
+                     		);
+                     		if($this->ewarrants_frr->emitir($data)) {
+                     			$message = "El eWarrant se ha emitido correctamente!";
+                     			$this->session->set_flashdata('message', $message);
+                     			redirect('adm/ewarrants/');
+                     		} else {
+                     			$message = "No se pudo crear!";
+                     			$this->session->set_flashdata('errormsg', $message);
+                     			redirect('adm/ewarrants/');
+                     		}
+                     	}
+                         
+                     }
+                     
+                     if( $this->uri->segment(4) ) {
+                     	//Solamente hacemos algo acá en caso que se trate de una warrantera o una aseguradora
+                     	if( $this->auth_frr->has_role_warrantera() || $this->auth_frr->has_role_aseguradora() ) {
 
-		if ($this -> form_validation -> run()) {
-			//Si el usuario que esta dando de alta es un admin
-			//empresa_id puede variar porque los admins pueden
-			//dar de alta warrants para cualquier empresa
-			if ($this -> auth_frr -> es_admin())
-				$empresa_id = $this -> input -> post('empresa_id');
+	                     	$data['cuentasregistro'] = $this->auth_frr->get_cuentas_registro_depositante($empresa_id);
+	                     	
+	                     	$ew = $this->ewarrants_frr->get_warrant_by_id($this->uri->segment(4));
+	                     	$data['aseguradoras'] = $this->empresas_frr->get_aseguradoras();
+	                     	
+	                     	if( $ew ) {
+	                     		$data['codigo_id'] = $ew->codigo;
+	                     		$data['empresa_id'] = $ew->empresa_id;
+	                     		$data['cuentaregistro_id'] = $ew->cuentaregistro_id;
+	                     		$data['producto_id'] = $ew->producto;
+	                     		$data['kilos_id'] = $ew->kilos;
+	                     		$data['observaciones_id'] = $ew->observaciones;
+	                     		$data['estado'] = $ew->estado;
+	                     		
+	                     		//Empezamos a hacer distincion entre warrantera y aseguradora
+	                     		if( $data['estado'] == 1 && $this->auth_frr->has_role_warrantera() ) {
+	                     			$data['mostrar_pantalla'] = true;
+	                     			$data['show_estado_warrantera'] = true;
+	                     		} 
+	                     		
+	                     		elseif( $data['estado'] == 2 && $this->auth_frr->has_role_aseguradora() ) {
+	                     			$data['mostrar_pantalla'] = true;
+	                     			$data['show_estado_aseguradora'] = true;
+	                     		}
+	                     		 
+	                     		$role_user = $this->roles_frr->role_usuario_logueado();
+	                     		$data['tipo_empresa_id'] = $this->empresas_frr->get_tipo_empresa_usario_logueado();
+	                     		 
+	                     		//Para el caso concreto de una aseguradora, tenemos que cargar los datos de la poliza
+	                     		if( $this->auth_frr->has_role_aseguradora() ) {
+	                     			$poliza = $this->ewarrants_frr->get_poliza_by_id($ew->poliza_id);
+	                     			if( $poliza ) {
+	                     				$data['poliza_id'] = $poliza[0]['poliza_id'];
+	                     				$data['poliza_nombre'] = $poliza[0]['poliza_nombre'];
+	                     				$data['poliza_descripcion'] = $poliza[0]['poliza_descripcion'];
+	                     				$data['poliza_comision'] = $poliza[0]['poliza_comision'];
+	                     			}
+	                     		}
+	                     	} else {
+	                     		$this->template->set_content('ewarrants/sin_permiso', array('msg' => 'No puedes acceder a esta seccion'));
+                     			$this->template->build();
+                     			return;
+	                     	}
+	                     	
+	                     	
+	                     	
+                     	} else {
+                     		$this->template->set_content('ewarrants/sin_permiso', array('msg' => 'No puedes acceder a esta seccion'));
+                     		$this->template->build();
+                     		return;
+                     	}
+                     }
 
-			//Obtenemos el tipo del producto del form
-			$producto_id = $this -> input -> post('producto');
-			//Obtenemos el registro del producto
-			$producto = $this -> productos_model -> get_producto_by_id($producto_id);
+                     $empresa = $this->empresas->get_empresa_by_id($empresa_id);
+                     
+                     //Cargamos las cuentas de registro asociadas a Argentina Clearing
+                     $data['cuentasregistro'] = $this->auth_frr->get_cuentas_registro_depositante($empresa_id);
+                     
+                    /// print_r( $data['cuentasregistro']) ;
+                     //die();
+                     
+                     if ($message = $this->session->flashdata('message')) {
+                         $data['message'] = $message;
 
-			$precio_ponderado = 0;
-			if ($producto) {
-				
-				$this->load->library('productos_frr');
-				$tipo = $this->productos_frr->get_descripcion_producto_tipo_by_id( $producto -> calidad );
-				
-				$info['kilos'] = $this -> input -> post('kilos');
-				$info['precio'] = $producto -> precio;
-				$info['aforo'] = $producto -> aforo;
-				
-				//Implementacion del Pattern Factory
-				if($tipo == "Fabrica" || $tipo == "Camara") {
-					$creatorAgro = new AgroCreatorImpl();
-					$prod = $creatorAgro->factory($tipo, $info );
-		
-		        } else if($tipo == "Publico" || $tipo == "Privado" || $tipo == "Exterior") {
-					$creatorFinanciero = new FinancieroCreatorImpl();
-					$prod = $creatorFinanciero->factory($tipo, $info );
-		        }
-				
-				$precio_ponderado = $prod -> get_precio_ponderado();
-
-			}//fin if producto != null
-
-			$data = array(
-				'codigo' => $this -> form_validation -> set_value('codigo'), 
-				'cuentaregistro_depositante_id' => $this -> input -> post('cuentaregistro_id'), 
-				'cuentaregistro_id' => $this -> input -> post('cuentaregistro_id'), 
-				'producto' => $producto -> nombre, 
-				'kilos' => $this -> form_validation -> set_value('kilos'), 
-				'observaciones' => $this -> form_validation -> set_value('observaciones'), 
-				'estado' => 1, 
-				'emitido_por' => $this -> auth_frr -> get_username(), 
-				'firmado' => 0, 
-				'empresa_id' => $empresa_id, 
-				'empresa_nombre' => $datosEmpresa -> getNombre(), 
-				'empresa_cuit' => $datosEmpresa -> getCuit(), 
-				'precio_ponderado' => $precio_ponderado,
-				'usuario_ultima_accion' => $this -> auth_frr -> get_username()
-			);
-			
-			if ($this -> ewarrants_frr -> emitir($data)) {
-				$message = "El eWarrant se ha emitido correctamente!";
-				$this -> session -> set_flashdata('message', $message);
-				redirect('adm/ewarrants/');
-			} else {
-				$message = "No se pudo crear!";
-				$this -> session -> set_flashdata('errormsg', $message);
-				redirect('adm/ewarrants/');
-			}
-		}
-
-		$empresa = $this -> empresas -> get_empresa_by_id($empresa_id);
-
-		//Cargamos las cuentas de registro asociadas 
-		$data['cuentasregistro'] = $this -> auth_frr -> get_cuentas_registro_depositante($empresa_id);
-
-		/// print_r( $data['cuentasregistro']) ;
-		//die();
-
-		if ($message = $this -> session -> flashdata('message')) {
-			$data['message'] = $message;
-
-		}
-		if ($this -> auth_frr -> es_admin())
-			$data['empresas'] = $this -> auth_frr -> get_empresas();
-		$data['productos'] = $this -> ewarrants_frr -> get_productos();
-		$this -> template -> set_content('ewarrants/emitir', $data);
-		$this -> template -> build();
-	}
+                     }
+                     if($this->auth_frr->es_admin())
+                        $data['empresas'] = $this->auth_frr->get_empresas();
+                     $data['productos'] = $this->ewarrants_frr->get_productos();
+                     $this->template->set_content('ewarrants/emitir', $data);
+                     $this->template->build();
+                 }
 
 	function get_cuentas_registro($emp_id) {
 		$data['cuentasregistro'] = $this -> auth_frr -> get_cuentas_registro_depositante($emp_id);

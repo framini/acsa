@@ -165,6 +165,8 @@ class Ewarrants extends MY_Controller {
 							//Obtenemos los permisos del usuario logueado asociados a la controladora seguridad y grupo gestionar_roles
 							$data['permisos'] = $this->roles_frr
 									->permisos_role_controladora_grupo($this->uri->segment(1));
+							
+							print_r($data['permisos']); die();
 				
 							//Procesamos los permisos obtenidos
 							if (count($data['permisos']) > 0) {

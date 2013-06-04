@@ -59,46 +59,46 @@ class __TwigTemplate_eaedaf390562f1b5be6e28fddc6888bb extends Twig_Template
                     </div><!--hero unit-->
                     
                     
-                    
                     <ul class=\"thumbnails\">
-                    \t
                       ";
-        // line 26
+        // line 24
         $context['_parent'] = (array) $context;
         $context['_seq'] = twig_ensure_traversable((isset($context["contenido_home_items"]) ? $context["contenido_home_items"] : null));
         foreach ($context['_seq'] as $context["_key"] => $context["entrada"]) {
-            // line 27
+            // line 25
             echo "                      \t";
             if ($this->getAttribute((isset($context["entrada"]) ? $context["entrada"] : null), "imagen_item")) {
-                // line 28
+                // line 26
                 echo "\t                      <li class=\"span4\">
 \t                        <div class=\"thumbnail\">
 \t                          <img src=\"http://placehold.it/300x200\" alt=\"\">
 \t                          <div class=\"caption\">
-\t                            <h3>";
-                // line 32
+\t                            <h3><a href=\"";
+                // line 30
+                echo twig_escape_filter($this->env, Twig::url_sitio("main/item", $this->getAttribute((isset($context["entrada"]) ? $context["entrada"] : null), "entry_id")), "html", null, true);
+                echo "\">";
                 echo twig_escape_filter($this->env, $this->getAttribute((isset($context["entrada"]) ? $context["entrada"] : null), "titulo"), "html", null, true);
-                echo "</h3>
+                echo "</a></h3>
 \t                            <p>";
-                // line 33
+                // line 31
                 echo twig_escape_filter($this->env, Twig::longitud_max($this->getAttribute((isset($context["entrada"]) ? $context["entrada"] : null), "contenido"), 140), "html", null, true);
                 echo "</p>
                                 <p class='center'><a href=\"";
-                // line 34
+                // line 32
                 echo twig_escape_filter($this->env, Twig::url_sitio("main/item", $this->getAttribute((isset($context["entrada"]) ? $context["entrada"] : null), "entry_id")), "html", null, true);
-                echo "\" class=\"btn btn-small btn-primary\">ver más</a></p>
+                echo "\" class=\"btn btn-mini btn-info\">ver más</a></p>
 \t                          </div>
 \t                        </div>
 \t                      </li>
                       \t";
             }
-            // line 39
+            // line 37
             echo "                      ";
         }
         $_parent = $context['_parent'];
         unset($context['_seq'], $context['_iterated'], $context['_key'], $context['entrada'], $context['_parent'], $context['loop']);
         $context = array_merge($_parent, array_intersect_key($context, $_parent));
-        // line 40
+        // line 38
         echo "                    </ul>
                     
                 </div>
@@ -106,9 +106,9 @@ class __TwigTemplate_eaedaf390562f1b5be6e28fddc6888bb extends Twig_Template
         </div><!--container main-->
         
         ";
-        // line 46
+        // line 44
         $this->env->loadTemplate("frr_temp/includes/footer.html")->display($context);
-        // line 47
+        // line 45
         echo "        
     \t<script src=\"http://code.jquery.com/jquery-1.8.2.min.js\"></script>
         <script src=\"http://localhost/argc/index.php/js/bootstrap-min-js\"></script>
@@ -128,6 +128,6 @@ class __TwigTemplate_eaedaf390562f1b5be6e28fddc6888bb extends Twig_Template
 
     public function getDebugInfo()
     {
-        return array (  112 => 47,  110 => 46,  102 => 40,  96 => 39,  88 => 34,  84 => 33,  80 => 32,  74 => 28,  71 => 27,  67 => 26,  56 => 17,  48 => 15,  43 => 14,  39 => 13,  31 => 7,  29 => 6,  25 => 4,  23 => 3,  19 => 1,);
+        return array (  112 => 45,  110 => 44,  102 => 38,  96 => 37,  88 => 32,  84 => 31,  78 => 30,  72 => 26,  69 => 25,  65 => 24,  56 => 17,  48 => 15,  43 => 14,  39 => 13,  31 => 7,  29 => 6,  25 => 4,  23 => 3,  19 => 1,);
     }
 }

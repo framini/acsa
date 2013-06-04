@@ -17,12 +17,14 @@ class Adm_Home extends MY_Controller {
 	function index() {
 		$this -> load -> library('ws_frr');
 
-		$data['cotizacion'] = $this -> ws_frr -> obtener_cotizacion(array('ARS', 'EUR'));
+		//$data['cotizacion'] = $this -> ws_frr -> obtener_cotizacion(array('ARS', 'EUR'));
 		
 		if( $this -> auth_frr -> es_admin() ) {
 			$data['estadisticas_usuarios'] = count( $this -> auth_frr -> get_users() );
 			$data['estadisticas_empresas'] = count( $this -> empresas_frr -> get_empresas() );
 			$data['estadisticas_ewarrants'] = count( $this -> ewarrants_frr -> get_warrants_habilitados() );
+		} else {
+			$data = array();
 		}
 		
 		$this -> template -> set_content('home', $data);

@@ -65,112 +65,8 @@ $observaciones = array(
                                 </div>
                                 
                                 <?php echo form_open($this->uri->uri_string()); ?>
-                                	
-                                	<?php if( isset($aseguradoras) ) { ?>
-                                	<div class="row">
-                                		<div class="span6 control-group">
-                                			<?php if( isset($tipo_empresa_id) && $tipo_empresa_id == 4 ) { ?>
-                                                <?php echo form_label('Estado de poliza'); ?>
-                                                <label class="radio">
-												  <input type="radio" name="estado" id="estado1" value="5">
-												  Aceptar Poliza
-												</label>
-												<label class="radio">
-												  <input type="radio" name="estado" id="estad2" value="6">
-												 Rechazar Poliza
-												</label>
-                             				<?php } elseif( isset($tipo_empresa_id) && $tipo_empresa_id == 2 ) { ?>
-                             					<?php echo form_label('Estado'); ?>
-                                                <label class="radio">
-												  <input type="radio" name="estado" id="estado1" value="2">
-												  Aceptado
-												</label>
-												<label class="radio">
-												  <input type="radio" name="estado" id="estad2" value="4">
-												 Rechazado
-												</label>
-                             				<?php } ?>
-                                        </div>
-                                    </div>
-                                	<?php } ?>
-                                	
-                                	<?php if( isset($tipo_empresa_id) && $tipo_empresa_id == 2 ) { //Chequeamos que sea una warrantera ?>
-                                	<div class="well">
-                                	<h2>Poliza</h2>
-                                	
-                                	<?php if( isset($aseguradoras) ) { ?>
-                                	<div class="row">
-                                		<div class="span6 control-group">
-                                                <?php echo form_label('Aseguradora', 'aseguradora_id'); ?></td>
-                                                <?php
-                                                	if(count($aseguradoras) > 0) {
-                                                		echo '<select name="aseguradora_id" class="listas-padding span5" id="aseguradora_id">';
-	                                                    foreach($aseguradoras as $crd)
-	                                                    {
-	                                                       $opt = '<option value="' . $crd['empresa_id'] . '"';
-	                                                       //if( isset($cuentaregistro_id) && $cuentaregistro_id == $crd['cuentaregistro_id'] )
-	                                                       //$opt .= ' selected="selected" ';
-	                                                       $opt .= '>' .  $crd['nombre'] . "</option>";
-	                                                       echo $opt;
-	                                                    }
-	                                                    echo '</select>';
-                                                	} else {
-                                                		echo '<select name="aseguradora_id" class="listas-padding span5" id="aseguradora_id">';
-															echo '<option value="0">No hay Aseguradoras cargadas</option>'; 
-														echo '</select>';
-                                                	}
-                                                ?>
-                             
-                                        </div>
-                                    </div>
-                                	<?php } ?>
-                                	
-                                	<div class="row">
-                                		<div class="span6 control-group <?php if(form_error('poliza_nombre') != "") echo "error"; ?>">            
-                                                    <?php echo form_label('Nombre'); ?>
-                                                    <?php echo form_input(array( "name" => "poliza_nombre", "id" => "poliza_nombre" )); ?>
-                                                    <?php if(form_error('poliza_nombre') != "" || isset($errors['poliza_nombre']) ) {?>
-                                                    <div class="row">
-					                                    <div class="alert span4 alert-error">
-													        <?php echo form_error($errors['poliza_nombre']); ?><?php echo isset($errors['poliza_nombre'])?$errors['poliza_nombre']:''; ?>
-													    </div>
-													</div>
-												    <?php } ?>
-										</div>
-                                    </div>
-                                    
-                                    <div class="row">
-                                		<div class="span6 control-group <?php if(form_error('poliza_comision') != "") echo "error"; ?>">            
-                                                    <?php echo form_label('Comision'); ?>
-                                                    <?php echo form_input(array( "name" => "poliza_comision", "id" => "poliza_comision" )); ?>
-                                                    <?php if(form_error('poliza_comision') != "" || isset($errors['poliza_comision']) ) {?>
-                                                    <div class="row">
-					                                    <div class="alert span4 alert-error">
-													        <?php echo form_error($errors['poliza_comision']); ?><?php echo isset($errors['poliza_comision'])?$errors['poliza_comision']:''; ?>
-													    </div>
-													</div>
-												    <?php } ?>
-										</div>
-                                    </div>
-                                    
-                                    <div class="row">
-                                		<div class="span6 control-group <?php if(form_error('poliza_descripcion') != "") echo "error"; ?>">            
-                                                    <?php echo form_label('Descripcion poliza'); ?>
-                                                    <textarea name="poliza_descripcion" id="poliza_descripcion">
-                                                    </textarea>
-                                                    <?php if(form_error('poliza_descripcion') != "" || isset($errors['poliza_descripcion']) ) {?>
-                                                    <div class="row">
-					                                    <div class="alert span4 alert-error">
-													        <?php echo form_error($errors['poliza_descripcion']); ?><?php echo isset($errors['poliza_descripcion'])?$errors['poliza_descripcion']:''; ?>
-													    </div>
-													</div>
-												    <?php } ?>
-										</div>
-                                    </div>
-                                    </div><!-- hero -->
-                                	<?php } ?>
-                                	
-                                	<?php if( $this->uri->segment(3) == FALSE ) {  ?>
+
+                                	<?php if( $this->uri->segment(4) == FALSE ) {  ?>
                                 	
 									<div class="row">
                                 		<div class="span6 control-group <?php if(form_error($codigo['name']) != "") echo "error"; ?>">
@@ -278,27 +174,149 @@ $observaciones = array(
 								    	</div>
                                     </div>
                                     
-                                    <?php } else { //FIN IF NOT SEGMENT(3) ?>
-                                    <div class="controls controls-row">
-                                    	<span class="input-xlarge uneditable-input"><?php echo $codigo_id; ?></span>
-                                    </div>
-                                    <div class="controls controls-row">
-                                    	<span class="input-xlarge uneditable-input"><?php echo $empresa_id; ?></span>
-                                    </div>
-                                    <div class="controls controls-row">
-                                    	<span class="input-xlarge uneditable-input"><?php echo $cuentaregistro_id; ?></span>
-                                    </div>
-                                    <div class="controls controls-row">
-                                    	<span class="input-xlarge uneditable-input"><?php echo $producto_id; ?></span>
-                                    </div>
-                                    <div class="controls controls-row">
-                                    	<span class="input-xlarge uneditable-input"><?php echo $kilos_id; ?></span>
-                                    </div>
+                                    <?php } else { //FIN IF NOT SEGMENT(4) ?>
                                     
-                                    <?php } ?>
+                                    <?php if( isset($mostrar_pantalla) && $mostrar_pantalla == TRUE ) { ?>
+                                    
+	                                    <?php if( isset($show_estado_aseguradora) || isset($show_estado_warrantera) ) { ?>
+	                                	<div class="row">
+	                                		<div class="span6 control-group">
+	                                			<?php if( isset($show_estado_aseguradora) && $show_estado_aseguradora == true ) { ?>
+	                                                <?php echo form_label('Estado de poliza'); ?>
+	                                                <label class="radio">
+													  <input type="radio" name="estado" id="estado1" value="5">
+													  Aceptar Poliza
+													</label>
+													<label class="radio">
+													  <input type="radio" name="estado" id="estad2" value="6">
+													 Rechazar Poliza
+													</label>
+	                             				<?php } elseif( isset($show_estado_warrantera) && $show_estado_warrantera == true ) { ?>
+	                             					<?php echo form_label('Estado'); ?>
+	                                                <label class="radio">
+													  <input type="radio" name="estado" id="estado1" value="2">
+													  Aceptado
+													</label>
+													<label class="radio">
+													  <input type="radio" name="estado" id="estad2" value="4">
+													 Rechazado
+													</label>
+	                             				<?php } ?>
+	                                        </div>
+	                                    </div>
+	                                	<?php } ?>
+	                                	
+	                                	<?php if( isset($tipo_empresa_id) && ( $tipo_empresa_id == 2 || $tipo_empresa_id == 4 ) ) { //Chequeamos que sea una warrantera o aseguradora ?>
+	                                	
+	                                	<div class="well">
+	                                	<h2>Poliza</h2>
+	                                	<?php if( isset($show_estado_warrantera) && $show_estado_warrantera == true ) { ?>
+			                                	<?php if( isset($aseguradoras) ) { ?>
+			                                	<div class="row">
+			                                		<div class="span6 control-group">
+			                                                <?php echo form_label('Aseguradora', 'aseguradora_id'); ?></td>
+			                                                <?php
+			                                                	if(count($aseguradoras) > 0) {
+			                                                		echo '<select name="aseguradora_id" class="listas-padding span5" id="aseguradora_id">';
+				                                                    foreach($aseguradoras as $crd)
+				                                                    {
+				                                                       $opt = '<option value="' . $crd['empresa_id'] . '"';
+				                                                       //if( isset($cuentaregistro_id) && $cuentaregistro_id == $crd['cuentaregistro_id'] )
+				                                                       //$opt .= ' selected="selected" ';
+				                                                       $opt .= '>' .  $crd['nombre'] . "</option>";
+				                                                       echo $opt;
+				                                                    }
+				                                                    echo '</select>';
+			                                                	} else {
+			                                                		echo '<select name="aseguradora_id" class="listas-padding span5" id="aseguradora_id">';
+																		echo '<option value="0">No hay Aseguradoras cargadas</option>'; 
+																	echo '</select>';
+			                                                	}
+			                                                ?>
+			                             
+			                                        </div>
+			                                    </div>
+			                                	<?php } ?>
+			                                	
+			                                	<div class="row">
+			                                		<div class="span6 control-group <?php if(form_error('poliza_nombre') != "") echo "error"; ?>">            
+			                                                    <?php echo form_label('Nombre'); ?>
+			                                                    <?php echo form_input(array( "name" => "poliza_nombre", "id" => "poliza_nombre" )); ?>
+			                                                    <?php if(form_error('poliza_nombre') != "" || isset($errors['poliza_nombre']) ) {?>
+			                                                    <div class="row">
+								                                    <div class="alert span4 alert-error">
+																        <?php echo form_error($errors['poliza_nombre']); ?><?php echo isset($errors['poliza_nombre'])?$errors['poliza_nombre']:''; ?>
+																    </div>
+																</div>
+															    <?php } ?>
+													</div>
+			                                    </div>
+			                                    
+			                                    <div class="row">
+			                                		<div class="span6 control-group <?php if(form_error('poliza_comision') != "") echo "error"; ?>">            
+			                                                    <?php echo form_label('Comision'); ?>
+			                                                    <?php echo form_input(array( "name" => "poliza_comision", "id" => "poliza_comision" )); ?>
+			                                                    <?php if(form_error('poliza_comision') != "" || isset($errors['poliza_comision']) ) {?>
+			                                                    <div class="row">
+								                                    <div class="alert span4 alert-error">
+																        <?php echo form_error($errors['poliza_comision']); ?><?php echo isset($errors['poliza_comision'])?$errors['poliza_comision']:''; ?>
+																    </div>
+																</div>
+															    <?php } ?>
+													</div>
+			                                    </div>
+			                                    
+			                                    <div class="row">
+			                                		<div class="span6 control-group <?php if(form_error('poliza_descripcion') != "") echo "error"; ?>">            
+			                                                    <?php echo form_label('Descripcion poliza'); ?>
+			                                                    <textarea name="poliza_descripcion" id="poliza_descripcion">
+			                                                    </textarea>
+			                                                    <?php if(form_error('poliza_descripcion') != "" || isset($errors['poliza_descripcion']) ) {?>
+			                                                    <div class="row">
+								                                    <div class="alert span4 alert-error">
+																        <?php echo form_error($errors['poliza_descripcion']); ?><?php echo isset($errors['poliza_descripcion'])?$errors['poliza_descripcion']:''; ?>
+																    </div>
+																</div>
+															    <?php } ?>
+													</div>
+			                                    </div>
+			                                  <?php } elseif( isset($show_estado_aseguradora) && $show_estado_aseguradora == true ) { ?>
+				                                    <div class="controls controls-row">
+				                                    	<span class="input-xlarge uneditable-input"><?php echo $poliza_nombre; ?></span>
+				                                    </div>
+				                                    <div class="controls controls-row">
+				                                    	<span class="input-xlarge uneditable-input"><?php echo $poliza_descripcion; ?></span>
+				                                    </div>
+				                                    <div class="controls controls-row">
+				                                    	<span class="input-xlarge uneditable-input"><?php echo $poliza_comision; ?></span>
+				                                    </div>
+			                                  <?php } ?>
+	                                    </div><!-- hero -->
+	                                	<?php } ?>
+	                                    
+	                                    
+	                                    <div class="controls controls-row">
+	                                    	<span class="input-xlarge uneditable-input"><?php echo $codigo_id; ?></span>
+	                                    </div>
+	                                    <div class="controls controls-row">
+	                                    	<span class="input-xlarge uneditable-input"><?php echo $empresa_id; ?></span>
+	                                    </div>
+	                                    <div class="controls controls-row">
+	                                    	<span class="input-xlarge uneditable-input"><?php echo $cuentaregistro_id; ?></span>
+	                                    </div>
+	                                    <div class="controls controls-row">
+	                                    	<span class="input-xlarge uneditable-input"><?php echo $producto_id; ?></span>
+	                                    </div>
+	                                    <div class="controls controls-row">
+	                                    	<span class="input-xlarge uneditable-input"><?php echo $kilos_id; ?></span>
+	                                    </div>
+	                                    
+	                                    <?php } ?>
+                                    
+                                    <?php } //mostrar pantalla ?>
                                     
                                     <?php //echo form_submit('register', 'Crear Cuenta'); ?>
-                                    <p><input type="submit" class="btn btn-primary btn-large" value="Emitir eWarrant" name="register" /></p>
+                                    <p><input type="submit" class="btn btn-primary btn-large" value="Enviar" name="register" /></p>
                                     <?php echo form_close(); ?>
                                                                               
                             </div>		

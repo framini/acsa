@@ -41,12 +41,12 @@
 				</div> <!-- widget cotizacion -->
 				
 				
-				<div class="widget widget-table action-table span6 last">
+				<!--  <div class="widget widget-table action-table span6 last">
 						
 					<div class="widget-header">
 						<i class="icon-globe"></i>
 						<h3>Cotizaciones</h3>
-					</div> <!-- /widget-header -->
+					</div>
 					
 					<div class="widget-content">
 						
@@ -70,7 +70,7 @@
 						
 					</div>
 				
-				</div> <!-- widget cotizacion -->
+				</div>--> <!-- widget cotizacion -->
 				<?php if( $this-> auth_frr -> es_admin() ) { ?>
 				<div class="widget widget-table action-table span6 last">
 						

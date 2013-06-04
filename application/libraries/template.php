@@ -40,8 +40,10 @@ class Template
 		
         if($this->CI->auth_frr->is_logged_in()) {
             //Agregamos info al  array data sobre el tipo de empresa del usuario logueado
-            $this->data['warrantera'] = $this->CI->auth_frr->is_warrantera() ? true : null;
+            $this->data['warrantera'] = $this->CI->auth_frr->has_role_warrantera() ? true : null;
             $this->data['argclearing'] = $this->CI->auth_frr->is_argclearing() ? true : null;
+            $this->data['aseguradora'] = $this->CI->auth_frr->has_role_aseguradora() ? true : null;
+            $this->data['cliente'] = $this->CI->auth_frr->has_role_cliente() ? true : null;
 		}
 		
 		//Cargamos contenido default para admins	

@@ -7,11 +7,6 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <!-- Soporte para IE6-8 support de elementos HTML -->
-    <!--[if lt IE 9]>
-      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-
     <link href="<?php echo base_url(); ?>bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css" />
     <link href="<?php echo base_url(); ?>bootstrap/css/custom.css" rel="stylesheet" type="text/css" />
     <link href="<?php echo base_url(); ?>colorbox/colorbox.css" rel="stylesheet" type="text/css"  />
@@ -31,7 +26,7 @@
 
     <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
     <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">-->
-    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="<?php echo base_url(); ?>js/jquery.min.js"></script>
     <script src="<?php echo base_url(); ?>js/modernizr.js"></script>
     <!--<script src="<?php echo base_url(); ?>bootstrap/js/jquery.js"></script>-->
   </head>
@@ -55,7 +50,7 @@
 			  <?php } ?>
 			  
               <?php 
-                if(isset($warrantera) || isset($argclearing)) {
+                if(isset($warrantera) || isset($argclearing) || isset($aseguradora) || isset($cliente) ) {
                   echo '<li ';
                   if($this->uri->segment(2) == "ewarrants") echo "class='active'";
                   echo '><a href="' . site_url() . '/adm/ewarrants">eWarrants</a></li>';
@@ -173,7 +168,7 @@
 
     <!-- Puesto en este punto por temas de performance -->
     <script src="<?php echo base_url(); ?>bootstrap/js/bootstrap-transition.js"></script>
-    <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.9/jquery-ui.min.js"></script>
+    <script src="<?php echo base_url(); ?>js/jquery-ui.min.js"></script>
     <script src="<?php echo base_url(); ?>js/underscore-min.js"></script>
     <script src="<?php echo base_url(); ?>bootstrap/js/bootstrap-alert.js"></script>
     <script src="<?php echo base_url(); ?>bootstrap/js/bootstrap-modal.js"></script>

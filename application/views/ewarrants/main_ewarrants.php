@@ -25,10 +25,14 @@
                                  	<?php 
                                  	
 									foreach ($data_menu as $keyp => $row) {
-										 echo "<li>";
-										 $contenido_menu = isset($row['icono']) ? '<i class="' . $row['icono'] . '"></i> ' . $row['texto_anchor'] : $row['texto_anchor'];
-										 echo anchor($this->uri->segment(1) . "/" . $this->uri->segment(2) . "/" . $keyp, $contenido_menu);
-										 echo "</li>";
+										if( $this->auth_frr->has_role_aseguradora() && $keyp == "emitir" ) {
+										 
+										} else {
+											echo "<li>";
+											$contenido_menu = isset($row['icono']) ? '<i class="' . $row['icono'] . '"></i> ' . $row['texto_anchor'] : $row['texto_anchor'];
+											echo anchor($this->uri->segment(1) . "/" . $this->uri->segment(2) . "/" . $keyp, $contenido_menu);
+											echo "</li>";
+										}
 									 }
 									?>
                                 </ul>

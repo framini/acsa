@@ -255,13 +255,18 @@ class Auth_frr
         }
         
         function has_role_warrantera() {
-        	$role = $this->ci->roles_frr->role_usuario_logueado();
+        	//$role = $this->ci->roles_frr->role_usuario_logueado();
         	//var_dump($role); die();
         	//TODO: Ver de que forma chequear mejor esto
         	
-        	if( $this->es_admin() ) {
+        	/*if( $this->es_admin() ) {
         		return true;
-        	}
+        	}*/
+        	
+        	$user_id = $this -> get_user_id();
+        	
+        	$this->ci->load->model('roles/roles_model');
+        	$role = $this -> ci -> roles_model -> get_role($user_id);
         	
         	if( $role->nombre == "Warrantera" ) {
         		return TRUE;
@@ -270,15 +275,39 @@ class Auth_frr
         	}
         }
         
-        function has_role_aseguradora() {
-        	$role = $this->ci->roles_frr->role_usuario_logueado();
+        function has_role_cliente() {
+        	//$role = $this->ci->roles_frr->role_usuario_logueado();
         	//var_dump($role); die();
         	//TODO: Ver de que forma chequear mejor esto
         	 
-        	if( $this->es_admin() ) {
-        		return true;
-        	}
+        	/*if( $this->es_admin() ) {
+        	 return true;
+        	}*/
         	 
+        	$user_id = $this -> get_user_id();
+        	 
+        	$this->ci->load->model('roles/roles_model');
+        	$role = $this -> ci -> roles_model -> get_role($user_id);
+        	 
+        	if( $role->nombre == "Cliente" ) {
+        		return TRUE;
+        	} else {
+        		return FALSE;
+        	}
+        }
+        
+        function has_role_aseguradora() {
+        	//$role = $this->ci->roles_frr->role_usuario_logueado();
+        	//var_dump($role); die();
+        	//TODO: Ver de que forma chequear mejor esto
+        	 
+        	/*if( $this->es_admin() ) {
+        		return true;
+        	}*/
+        	
+        	$user_id = $this -> get_user_id();
+        	$this->ci->load->model('roles/roles_model');
+        	$role = $this -> ci -> roles_model -> get_role($user_id);
         	if( $role->nombre == "Aseguradora" ) {
         		return TRUE;
         	} else {
@@ -354,9 +383,9 @@ class Auth_frr
            * Devuelve todas las empresas cargadas en el sistema
            * @return type 
            */
-          function get_empresas() {
+          function get_empresas($filtrar_aseguradoras = false) {
               
-              $empresas = $this->ci->empresas->get_all_empresas();
+              $empresas = $this->ci->empresas->get_all_empresas($filtrar_aseguradoras);
               
               foreach ($empresas->result() as $row){
                   

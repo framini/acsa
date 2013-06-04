@@ -49,93 +49,6 @@ class Empresas extends CI_Model {
 	}
 
 	/**
-	 * Devuelve todas las empresas cargadas en el sistema
-	 */
-	function get_all_empresas() {
-		$this -> db -> select();
-		$this -> db -> from("empresas");
-		$query = $this -> db -> get();
-
-		if ($query -> num_rows() > 0)
-			return $query;
-		return NULL;
-	}
-
-	/**
-	 * Devuelve las cuentas registro asociadas a una empresa
-	 */
-	function get_cuentas_registro_all() {
-		$this -> db -> select();
-		$this -> db -> from("cuentas_registro");
-		$query = $this -> db -> get();
-
-		if ($query -> num_rows() > 0)
-			return $query;
-		return NULL;
-	}
-
-	/**
-	 * Devuelve las cuentas registro asociadas a una empresa
-	 */
-	function get_cuentas_registro($empresa_id) {
-		$this -> db -> select();
-		$this -> db -> from("cuentas_registro");
-		$this -> db -> where('empresa_id', $empresa_id);
-		$query = $this -> db -> get();
-
-		if ($query -> num_rows() > 0)
-			return $query;
-		return NULL;
-	}
-
-	/**
-	 * Devuelve los tipos de las cuentas registro
-	 */
-	function get_tipos_cuentas_registro() {
-		$this -> db -> select();
-		$this -> db -> from("tipo_cuenta_registro");
-		$query = $this -> db -> get();
-
-		if ($query -> num_rows() > 0)
-			return $query;
-		return NULL;
-	}
-
-	/**
-	 * Devuelve las cuentas depositante asociadas a una empresa
-	 */
-	function get_cuentas_registro_depositante($empresa_id) {
-		$this -> db -> select();
-		$this -> db -> from("cuentas_registro");
-		$this -> db -> where('empresa_id', $empresa_id);
-		$this -> db -> join("tipo_cuenta_registro", "tipo_cuenta_registro.tipo_cuentaregistro_id = cuentas_registro.tipo_cuentaregistro_id");
-		$this -> db -> having("tipo_cuenta_registro.tipo_cuentaregistro_id = 1");
-		$query = $this -> db -> get();
-
-		if ($query -> num_rows() > 0)
-			return $query;
-		return NULL;
-	}
-
-	/**
-	 * Chequea si el nomnbre de la empresa esta disponible
-	 *
-	 * @param	string
-	 * @return	bool
-	 */
-	function is_nombre_empresa_available($nombre, $tabla) {
-		$this -> db -> select('1', FALSE);
-		$this -> db -> where('LOWER(nombre)=', strtolower($nombre));
-		if (!is_null($tabla)) {
-			$query = $this -> db -> get($tabla);
-		} else {
-			$query = $this -> db -> get('empresas');
-		}
-
-		return $query -> num_rows() == 0;
-	}
-
-	/**
 	 * Chequea si el cuit esta disponible
 	 *
 	 * @param	string
@@ -227,15 +140,17 @@ class Empresas extends CI_Model {
 			$empresa_id = $this -> db -> insert_id();
 			return array('empresa_id' => $empresa_id);
 		}
-<<<<<<< HEAD
+	}
 		
 		/**
 		 * Devuelve todas las empresas cargadas en el sistema
 		 */
-        function get_all_empresas() {
+        function get_all_empresas($filtrar_aseguradoras = TRUE) {
             $this->db->select();
             $this->db->from("empresas");
-            $this->db->where('tipo_empresa_id !=', 4); //SE FILTRAN LAS ASEGURADORAS
+            if( $filtrar_aseguradoras ) {
+            	$this->db->where('tipo_empresa_id !=', 4); //SE FILTRAN LAS ASEGURADORAS
+        	}
             $query = $this->db->get();
             
             if ($query->num_rows() > 0) return $query;
@@ -328,7 +243,7 @@ class Empresas extends CI_Model {
 			}
 			
 			return $query->num_rows() == 0;
-=======
+
 		return NULL;
 	}
 
@@ -345,7 +260,6 @@ class Empresas extends CI_Model {
 		if ($this -> db -> insert('cuentas_registro', $data)) {
 			$cr_id = $this -> db -> insert_id();
 			return array('cuentaregistro_id' => $cr_id);
->>>>>>> ee9529292c19df5a8db1d810419df49552c5a69d
 		}
 		return NULL;
 	}

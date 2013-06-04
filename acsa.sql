@@ -1,13 +1,14 @@
 -- phpMyAdmin SQL Dump
--- version 3.3.9
+-- version 3.5.1
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Dec 16, 2012 at 10:58 PM
--- Server version: 5.1.53
--- PHP Version: 5.3.4
+-- Generation Time: Jun 04, 2013 at 08:29 PM
+-- Server version: 5.5.24-log
+-- PHP Version: 5.4.3
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
+SET time_zone = "+00:00";
 
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -40,8 +41,11 @@ CREATE TABLE IF NOT EXISTS `ci_sessions` (
 --
 
 INSERT INTO `ci_sessions` (`session_id`, `ip_address`, `user_agent`, `last_activity`, `user_data`) VALUES
-('377ef97adac89ea336bd194c75b7f31d', '127.0.0.1', 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.97 Safari/537.11', 1355698498, 'a:7:{s:9:"user_data";s:0:"";s:7:"user_id";s:1:"1";s:8:"username";s:4:"fran";s:10:"empresa_id";s:1:"1";s:6:"status";s:1:"1";s:8:"es_admin";s:1:"1";s:7:"empresa";s:101:"O:7:"Empresa":3:{s:6:"nombre";s:18:"Argentina Clearing";s:4:"cuit";s:9:"123456789";s:2:"id";s:1:"1";}";}'),
-('7db407a0c40c1d4807d6681811dcc4ae', '127.0.0.1', 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:17.0) Gecko/20100101 Firefox/17.0', 1355698560, 'a:8:{s:9:"user_data";s:0:"";s:7:"user_id";s:1:"2";s:8:"username";s:6:"quique";s:10:"empresa_id";s:1:"3";s:6:"status";s:1:"1";s:8:"es_admin";s:1:"0";s:7:"empresa";s:90:"O:7:"Empresa":3:{s:6:"nombre";s:12:"Warrantera 2";s:4:"cuit";s:4:"1234";s:2:"id";s:1:"3";}";s:17:"flash:old:message";s:40:"El eWarrant se ha emitido correctamente!";}');
+('3ef451ef20c8def047eab1c5dce14c93', '127.0.0.1', 'Java/1.6.0_24', 1370373835, ''),
+('6337fc6c99bd8a43633c927ffb2701ef', '127.0.0.1', 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/29.0.1527.4 Safari/537.36', 1370377608, 'a:7:{s:9:"user_data";s:0:"";s:7:"user_id";s:2:"11";s:8:"username";s:7:"pepito_";s:10:"empresa_id";s:1:"4";s:6:"status";s:1:"1";s:8:"es_admin";s:1:"0";s:7:"empresa";s:100:"O:7:"Empresa":3:{s:6:"nombre";s:18:"Aseguradora Fuerte";s:4:"cuit";s:8:"11002233";s:2:"id";s:1:"4";}";}'),
+('aeebb977b8795b1b1dac4af643b18f44', '127.0.0.1', 'Java/1.6.0_24', 1370373836, ''),
+('c629e75978b16a359045fe7a091f9d47', '127.0.0.1', 'Java/1.6.0_24', 1370373834, ''),
+('e4f70c9ee5176d54107d5deba1590c0e', '127.0.0.1', 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:21.0) Gecko/20100101 Firefox/21.0', 1370375949, 'a:7:{s:9:"user_data";s:0:"";s:7:"user_id";s:1:"1";s:8:"username";s:4:"fran";s:10:"empresa_id";s:1:"1";s:6:"status";s:1:"1";s:8:"es_admin";s:1:"1";s:7:"empresa";s:101:"O:7:"Empresa":3:{s:6:"nombre";s:18:"Argentina Clearing";s:4:"cuit";s:9:"123456789";s:2:"id";s:1:"1";}";}');
 
 -- --------------------------------------------------------
 
@@ -107,12 +111,36 @@ INSERT INTO `empresas` (`empresa_id`, `empresa_asoc_id`, `tipo_empresa_id`, `nom
 (1, 0, 2, 'Argentina Clearing', '123456789', '2011-06-09', 1, 1, NULL),
 (2, 0, 2, 'Warrantera 1', '123456', '2011-06-18', 1, 0, NULL),
 (3, 0, 2, 'Warrantera 2', '1234', '2011-09-13', 1, 0, NULL),
-(4, 0, 3, 'petrolera_test_2', '11002233', '2012-02-17', 1, 0, NULL),
+(4, 0, 4, 'Aseguradora Fuerte', '11002233', '2012-02-17', 1, 0, NULL),
 (5, 0, 3, 'petrolera', '78976122', '2012-02-17', 0, 0, NULL),
 (6, 0, 2, 'asdasd', '23232', '2012-11-22', 0, 0, NULL),
 (7, 0, 3, 'Neo', '1212112', '2012-11-22', 1, 0, NULL),
 (8, 0, 2, 'GloCz', '212323', '2012-11-22', 0, 0, NULL),
 (9, 0, 3, 'ONG', '1023392223', '2012-12-02', 1, 0, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `estados`
+--
+
+CREATE TABLE IF NOT EXISTS `estados` (
+  `id_estados` int(11) NOT NULL AUTO_INCREMENT,
+  `nombre_estado` varchar(45) DEFAULT NULL,
+  `descripcion_estado` text,
+  PRIMARY KEY (`id_estados`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=7 ;
+
+--
+-- Dumping data for table `estados`
+--
+
+INSERT INTO `estados` (`id_estados`, `nombre_estado`, `descripcion_estado`) VALUES
+(1, 'pendiente', 'Estado Pendiente'),
+(2, 'habilitado', 'Ewarrant Habilitado'),
+(4, 'rechazado', 'EW rechazada'),
+(5, 'poliza_aceptada', 'Poliza Aceptada'),
+(6, 'poliza_rechazada', 'Poliza Rechazada');
 
 -- --------------------------------------------------------
 
@@ -129,7 +157,7 @@ CREATE TABLE IF NOT EXISTS `ewarrant` (
   `kilos` int(11) NOT NULL,
   `observaciones` varchar(100) NOT NULL,
   `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `estado` tinyint(1) NOT NULL,
+  `estado` int(11) NOT NULL,
   `emitido_por` varchar(50) NOT NULL,
   `firmado` tinyint(1) NOT NULL DEFAULT '0',
   `empresa_id` int(11) NOT NULL,
@@ -137,168 +165,22 @@ CREATE TABLE IF NOT EXISTS `ewarrant` (
   `empresa_cuit` int(11) NOT NULL,
   `precio_ponderado` decimal(10,0) NOT NULL DEFAULT '0',
   `usuario_ultima_accion` varchar(50) NOT NULL,
+  `aseguradora_id` int(11) NOT NULL DEFAULT '0',
+  `poliza_id` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
-  KEY `FK_depositante_idx` (`cuentaregistro_depositante_id`),
   KEY `FK_cuentaregistro_idx` (`cuentaregistro_id`),
   KEY `FK__idx` (`empresa_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=10 ;
 
 --
 -- Dumping data for table `ewarrant`
 --
 
-INSERT INTO `ewarrant` (`id`, `codigo`, `cuentaregistro_depositante_id`, `cuentaregistro_id`, `producto`, `kilos`, `observaciones`, `created`, `estado`, `emitido_por`, `firmado`, `empresa_id`, `empresa_nombre`, `empresa_cuit`, `precio_ponderado`, `usuario_ultima_accion`) VALUES
-(3, '2222233311', 8, 8, 'Soja', 200, 'asd', '2012-12-16 22:55:06', 1, 'fran', 0, 1, 'Argentina Clearing', 123456789, '1530000', 'fran'),
-(4, '12121211', 7, 7, 'Soja', 100, 'asd', '2012-12-16 22:56:09', 1, 'quique', 0, 3, 'Warrantera 2', 1234, '765000', 'quique');
-
---
--- Triggers `ewarrant`
---
-DROP TRIGGER IF EXISTS `ai_ewarrant`;
-DELIMITER //
-CREATE TRIGGER `ai_ewarrant` AFTER INSERT ON `ewarrant`
- FOR EACH ROW BEGIN
-INSERT INTO `acsa`.`ewarrant_audit`
-(`id`,
-`codigo`,
-`cuentaregistro_depositante_id`,
-`cuentaregistro_id`,
-`producto`,
-`kilos`,
-`observaciones`,
-`created`,
-`estado`,
-`emitido_por`,
-`firmado`,
-`empresa_id`,
-`empresa_nombre`,
-`empresa_cuit`,
-`precio_ponderado`,
-`action`,
-`fecha`)
-VALUES
-(
-NEW.`id`,
-NEW.`codigo`,
-NEW.`cuentaregistro_depositante_id`,
-NEW.`cuentaregistro_id`,
-NEW.`producto`,
-NEW.`kilos`,
-NEW.`observaciones`,
-NEW.`created`,
-NEW.`estado`,
-NEW.`emitido_por`,
-NEW.`firmado`,
-NEW.`empresa_id`,
-NEW.`empresa_nombre`,
-NEW.`empresa_cuit`,
-NEW.`precio_ponderado`,
-'A',
-now()
-);
-
-	END
-//
-DELIMITER ;
-DROP TRIGGER IF EXISTS `au_ewarrant`;
-DELIMITER //
-CREATE TRIGGER `au_ewarrant` BEFORE UPDATE ON `ewarrant`
- FOR EACH ROW BEGIN
-INSERT INTO `acsa`.`ewarrant_audit` 
-values (
-'',
-OLD.id,
-OLD.`codigo`,
-OLD.`cuentaregistro_depositante_id`,
-OLD.`cuentaregistro_id`,
-OLD.`producto`,
-OLD.`kilos`,
-OLD.`observaciones`,
-OLD.`created`,
-OLD.`estado`,
-OLD.`emitido_por`,
-OLD.`firmado`,
-OLD.`empresa_id`,
-OLD.`empresa_nombre`,
-OLD.`empresa_cuit`,
-OLD.`precio_ponderado`,
-'M',
-now()
-);
-
-	END
-//
-DELIMITER ;
-DROP TRIGGER IF EXISTS `ad_ewarrant`;
-DELIMITER //
-CREATE TRIGGER `ad_ewarrant` BEFORE DELETE ON `ewarrant`
- FOR EACH ROW BEGIN
-INSERT INTO `acsa`.`ewarrant_audit` 
-values (
-'',
-OLD.id,
-OLD.`codigo`,
-OLD.`cuentaregistro_depositante_id`,
-OLD.`cuentaregistro_id`,
-OLD.`producto`,
-OLD.`kilos`,
-OLD.`observaciones`,
-OLD.`created`,
-OLD.`estado`,
-OLD.`emitido_por`,
-OLD.`firmado`,
-OLD.`empresa_id`,
-OLD.`empresa_nombre`,
-OLD.`empresa_cuit`,
-OLD.`precio_ponderado`,
-'B',
-now()
-);
-
-	END
-//
-DELIMITER ;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `ewarrant_audit`
---
-
-CREATE TABLE IF NOT EXISTS `ewarrant_audit` (
-  `ewarrant_audit_id` int(11) NOT NULL AUTO_INCREMENT,
-  `id` int(11) NOT NULL,
-  `codigo` varchar(50) NOT NULL,
-  `cuentaregistro_depositante_id` int(11) NOT NULL,
-  `cuentaregistro_id` int(11) NOT NULL,
-  `producto` varchar(50) NOT NULL,
-  `kilos` int(11) NOT NULL,
-  `observaciones` varchar(100) NOT NULL,
-  `created` datetime NOT NULL,
-  `estado` tinyint(1) NOT NULL,
-  `emitido_por` int(11) NOT NULL,
-  `firmado` tinyint(1) NOT NULL DEFAULT '0',
-  `empresa_id` int(11) NOT NULL,
-  `empresa_nombre` varchar(50) NOT NULL,
-  `empresa_cuit` int(11) NOT NULL,
-  `precio_ponderado` float NOT NULL DEFAULT '0',
-  `action` varchar(45) NOT NULL,
-  `fecha` datetime NOT NULL,
-  PRIMARY KEY (`ewarrant_audit_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=42 ;
-
---
--- Dumping data for table `ewarrant_audit`
---
-
-INSERT INTO `ewarrant_audit` (`ewarrant_audit_id`, `id`, `codigo`, `cuentaregistro_depositante_id`, `cuentaregistro_id`, `producto`, `kilos`, `observaciones`, `created`, `estado`, `emitido_por`, `firmado`, `empresa_id`, `empresa_nombre`, `empresa_cuit`, `precio_ponderado`, `action`, `fecha`) VALUES
-(35, 3, '2222233311', 8, 8, 'Soja', 200, 'asd', '2012-12-16 22:55:06', 1, 0, 0, 1, 'Argentina Clearing', 123456789, 1.53e+006, 'A', '2012-12-16 19:55:06'),
-(36, 4, '12121211', 7, 7, 'Soja', 100, 'asd', '2012-12-16 22:56:09', 1, 0, 0, 3, 'Warrantera 2', 1234, 765000, 'A', '2012-12-16 19:56:09'),
-(37, 4, '12121211', 7, 7, 'Soja', 100, 'asd', '2012-12-16 22:56:09', 1, 0, 0, 3, 'Warrantera 2', 1234, 765000, 'M', '2012-12-16 19:56:47'),
-(38, 4, '12121211', 7, 7, 'Soja', 100, 'asd', '2012-12-16 22:56:09', 1, 0, 1, 3, 'Warrantera 2', 1234, 765000, 'M', '2012-12-16 19:57:01'),
-(39, 4, '12121211', 7, 7, 'Soja', 100, 'asd', '2012-12-16 22:56:09', 0, 0, 1, 3, 'Warrantera 2', 1234, 765000, 'M', '2012-12-16 19:57:25'),
-(40, 4, '12121211', 7, 7, 'Soja', 100, 'asd', '2012-12-16 22:56:09', 1, 0, 0, 3, 'Warrantera 2', 1234, 765000, 'M', '2012-12-16 19:57:35'),
-(41, 4, '12121211', 7, 7, 'Soja', 100, 'asd', '2012-12-16 22:56:09', 0, 0, 0, 3, 'Warrantera 2', 1234, 765000, 'M', '2012-12-16 19:57:54');
+INSERT INTO `ewarrant` (`id`, `codigo`, `cuentaregistro_depositante_id`, `cuentaregistro_id`, `producto`, `kilos`, `observaciones`, `created`, `estado`, `emitido_por`, `firmado`, `empresa_id`, `empresa_nombre`, `empresa_cuit`, `precio_ponderado`, `usuario_ultima_accion`, `aseguradora_id`, `poliza_id`) VALUES
+(6, '121223', 7, 7, 'Soja', 2000, 'asd', '2013-06-04 17:57:58', 5, '1', 0, 3, 'Argentina Clearing', 123456789, '300', 'fran', 4, 10),
+(7, '10000', 7, 7, 'Soja', 9999, 'Ninguna', '2013-06-04 20:08:23', 6, '12', 0, 3, 'Warrantera 2', 1234, '300', 'pedro', 4, 11),
+(8, '9090', 7, 7, 'Soja', 2000, 'asdasd', '2013-06-04 20:22:10', 5, '12', 0, 3, 'Warrantera 2', 1234, '300', 'pedro', 4, 13),
+(9, '35534345', 7, 7, 'Soja', 3434, 'adsdffds', '2013-06-04 20:22:21', 4, '12', 0, 3, 'Warrantera 2', 1234, '300', 'pedro', 4, 12);
 
 -- --------------------------------------------------------
 
@@ -523,12 +405,15 @@ CREATE TABLE IF NOT EXISTS `login_attempts` (
   `login` varchar(50) COLLATE utf8_bin NOT NULL,
   `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=3 ;
 
 --
 -- Dumping data for table `login_attempts`
 --
 
+INSERT INTO `login_attempts` (`id`, `ip_address`, `login`, `time`) VALUES
+(1, '127.0.0.1', 'pepe_', '2013-06-04 18:07:03'),
+(2, '127.0.0.1', 'pepe', '2013-06-04 20:01:39');
 
 -- --------------------------------------------------------
 
@@ -544,7 +429,7 @@ CREATE TABLE IF NOT EXISTS `permisos` (
   `admin_only` tinyint(4) NOT NULL DEFAULT '0',
   `warrantera_only` tinyint(4) DEFAULT NULL,
   PRIMARY KEY (`permiso_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=49 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=50 ;
 
 --
 -- Dumping data for table `permisos`
@@ -594,7 +479,42 @@ INSERT INTO `permisos` (`permiso_id`, `permiso`, `controladora`, `grupo`, `admin
 (45, 'activar_cuenta_registro', 'personas', 'gestionar_cuentas_registro', 1, NULL),
 (46, 'fields', 'admin', 'grupos_fields', 0, NULL),
 (47, 'grupos_fields', 'admin', 'forms', 0, NULL),
-(48, 'forms', 'admin', NULL, 0, NULL);
+(48, 'forms', 'admin', NULL, 0, NULL),
+(49, 'ver_pendientes', 'ewarrants', NULL, 0, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `polizas`
+--
+
+CREATE TABLE IF NOT EXISTS `polizas` (
+  `poliza_id` int(11) NOT NULL AUTO_INCREMENT,
+  `comision` float NOT NULL,
+  `descripcion` text NOT NULL,
+  `nombre` varchar(45) NOT NULL,
+  `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  PRIMARY KEY (`poliza_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=14 ;
+
+--
+-- Dumping data for table `polizas`
+--
+
+INSERT INTO `polizas` (`poliza_id`, `comision`, `descripcion`, `nombre`, `created`) VALUES
+(1, 121155, 'Una descripcion', 'Poliza copada', '2013-06-04 04:55:35'),
+(2, 20000, 'Propia adsadsaasdpolizaazdsdsadasadsdassad', 'Otra poliza', '2013-06-04 05:01:47'),
+(3, 2333, 'dfdsf', 'X13', '2013-06-04 15:38:25'),
+(4, 24500, 'asd', 'XX2', '2013-06-04 15:49:27'),
+(5, 2000, 'Midw', 'PolPoli', '2013-06-04 17:42:53'),
+(6, 2000, 'Midw', 'PolPoli', '2013-06-04 17:42:54'),
+(7, 200, 'asd', 'ASD', '2013-06-04 17:48:00'),
+(8, 200, 'asd', 'ASD', '2013-06-04 17:49:36'),
+(9, 89600, 'Grande', 'Polix', '2013-06-04 18:05:38'),
+(10, 45620, 'Telo', 'NuevaPoliza', '2013-06-04 19:45:27'),
+(11, 9800, 'Desc PolizaCreada', 'PolizaCreada', '2013-06-04 20:09:30'),
+(12, 0, '			                                                    ', '', '2013-06-04 20:25:59'),
+(13, 20343, 'PWEPWE			                                                    ', 'DEE', '2013-06-04 20:26:42');
 
 -- --------------------------------------------------------
 
@@ -633,7 +553,7 @@ CREATE TABLE IF NOT EXISTS `roles` (
   `empresa_id` varchar(50) NOT NULL,
   `tipo_empresa_id` int(30) NOT NULL,
   PRIMARY KEY (`role_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=53 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=56 ;
 
 --
 -- Dumping data for table `roles`
@@ -643,7 +563,10 @@ INSERT INTO `roles` (`role_id`, `nombre`, `descripcion`, `empresa_id`, `tipo_emp
 (1, 'Admin', 'UN ADMIN MODSADASD', '1', 2),
 (3, 'guest', 'es un guest', '1', 2),
 (51, 'moderador', 'Un Moderador', '2', 2),
-(52, 'warrantera1_admin', '', '2', 2);
+(52, 'warrantera1_admin', '', '2', 2),
+(53, 'Warrantera', 'Role de Warrantera', '3', 2),
+(54, 'Aseguradora', 'Empresa Aseguradora', '4', 4),
+(55, 'Cliente', 'Cliente de Warrantera', '3', 2);
 
 -- --------------------------------------------------------
 
@@ -657,7 +580,7 @@ CREATE TABLE IF NOT EXISTS `roles_permisos` (
   `permiso_id` int(30) NOT NULL,
   PRIMARY KEY (`role_permiso_id`),
   KEY `FK_role_idx` (`role_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1188 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1204 ;
 
 --
 -- Dumping data for table `roles_permisos`
@@ -693,7 +616,12 @@ INSERT INTO `roles_permisos` (`role_permiso_id`, `role_id`, `permiso_id`) VALUES
 (1184, 1, 8),
 (1185, 1, 46),
 (1186, 1, 47),
-(1187, 1, 48);
+(1187, 1, 48),
+(1194, 53, 5),
+(1195, 53, 49),
+(1200, 54, 5),
+(1201, 54, 49),
+(1203, 55, 5);
 
 -- --------------------------------------------------------
 
@@ -805,7 +733,7 @@ CREATE TABLE IF NOT EXISTS `tipo_empresa` (
   `tipo_empresa` varchar(50) NOT NULL,
   `descripcion` text NOT NULL,
   PRIMARY KEY (`tipo_empresa_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
 
 --
 -- Dumping data for table `tipo_empresa`
@@ -813,7 +741,8 @@ CREATE TABLE IF NOT EXISTS `tipo_empresa` (
 
 INSERT INTO `tipo_empresa` (`tipo_empresa_id`, `tipo_empresa`, `descripcion`) VALUES
 (2, 'warrantera', 'Una Warrantera'),
-(3, 'depositante', 'Empresa Depositante');
+(3, 'depositante', 'Empresa Depositante'),
+(4, 'aseguradora', 'Empresa Aseguradora');
 
 -- --------------------------------------------------------
 
@@ -851,11 +780,6 @@ CREATE TABLE IF NOT EXISTS `twitter` (
   UNIQUE KEY `usuario` (`usuario`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
---
--- Dumping data for table `twitter`
---
-
-
 -- --------------------------------------------------------
 
 --
@@ -882,16 +806,17 @@ CREATE TABLE IF NOT EXISTS `users` (
   `modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `es_admin` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`user_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=12 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=13 ;
 
 --
 -- Dumping data for table `users`
 --
 
 INSERT INTO `users` (`user_id`, `empresa_id`, `username`, `password`, `email`, `role_id`, `activated`, `banned`, `ban_reason`, `new_password_key`, `new_password_requested`, `new_email`, `new_email_key`, `last_ip`, `last_login`, `created`, `modified`, `es_admin`) VALUES
-(1, 1, 'fran', '$P$BOd3bMRhe5jVnl7auEicOuJ.zyLunF.', 'framini@gmail.com', 1, 1, 0, NULL, NULL, NULL, NULL, NULL, '127.0.0.1', '2012-12-16 22:15:44', '2012-02-08 14:12:21', '2012-12-16 19:15:44', 1),
-(2, 3, 'quique', '$P$BWc1sneOmJCOstjNjtxJXxxucacnvU.', 'quiero_newage22@yahoo.com', 1, 1, 0, NULL, NULL, NULL, NULL, NULL, '127.0.0.1', '2012-12-16 22:37:26', '2012-02-16 14:53:20', '2012-12-16 19:37:26', 0),
-(11, 2, 'pepito_', '$P$B9mL5bLQPD.kVm149ZLfe3lIq3VfeG/', 'asdasd@d.com', 52, 1, 0, NULL, NULL, NULL, 'asdasdd@d.com', '28d617a7f3b1e3cedbe21c2fa567e1b8', '127.0.0.1', '2012-12-07 22:18:00', '2012-02-08 19:11:34', '2012-12-07 19:18:00', 0);
+(1, 1, 'fran', '$P$BOd3bMRhe5jVnl7auEicOuJ.zyLunF.', 'framini@gmail.com', 1, 1, 0, NULL, NULL, NULL, NULL, NULL, '127.0.0.1', '2013-06-04 13:36:14', '2012-02-08 14:12:21', '2013-06-04 13:36:14', 1),
+(2, 3, 'quique', '$P$BWc1sneOmJCOstjNjtxJXxxucacnvU.', 'quiero_newage22@yahoo.com', 53, 1, 0, NULL, NULL, NULL, NULL, NULL, '127.0.0.1', '2013-06-04 20:22:51', '2012-02-16 14:53:20', '2013-06-04 20:22:51', 0),
+(11, 4, 'pepito_', '$P$BKrYb6fq7dMsOIFdz2/hTDDQQOB0Dj/', 'asdasd@d.com', 54, 1, 0, NULL, NULL, NULL, 'asdasdd@d.com', '28d617a7f3b1e3cedbe21c2fa567e1b8', '127.0.0.1', '2013-06-04 20:26:53', '2012-02-08 19:11:34', '2013-06-04 20:26:53', 0),
+(12, 3, 'pedro', '$P$BoX6NmMD70YufcTK0gZ6kqjEiTaySz.', 'pepe@sanz.com', 55, 1, 0, NULL, NULL, NULL, NULL, NULL, '127.0.0.1', '2013-06-04 20:20:48', '2013-06-04 20:01:14', '2013-06-04 20:20:48', 0);
 
 -- --------------------------------------------------------
 
@@ -908,11 +833,6 @@ CREATE TABLE IF NOT EXISTS `user_autologin` (
   PRIMARY KEY (`key_id`,`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
---
--- Dumping data for table `user_autologin`
---
-
-
 -- --------------------------------------------------------
 
 --
@@ -925,7 +845,7 @@ CREATE TABLE IF NOT EXISTS `user_profiles` (
   `country` varchar(20) COLLATE utf8_bin DEFAULT NULL,
   `website` varchar(255) COLLATE utf8_bin DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=25 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=26 ;
 
 --
 -- Dumping data for table `user_profiles`
@@ -935,7 +855,8 @@ INSERT INTO `user_profiles` (`id`, `user_id`, `country`, `website`) VALUES
 (9, 9, NULL, NULL),
 (11, 11, NULL, NULL),
 (22, 9, NULL, NULL),
-(24, 11, NULL, NULL);
+(24, 11, NULL, NULL),
+(25, 12, NULL, NULL);
 
 --
 -- Constraints for dumped tables
@@ -953,14 +874,6 @@ ALTER TABLE `cuentas_registro`
 --
 ALTER TABLE `empresas`
   ADD CONSTRAINT `FK_tipoempresaID` FOREIGN KEY (`tipo_empresa_id`) REFERENCES `tipo_empresa` (`tipo_empresa_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
---
--- Constraints for table `ewarrant`
---
-ALTER TABLE `ewarrant`
-  ADD CONSTRAINT `FK_cuentaregistro` FOREIGN KEY (`cuentaregistro_id`) REFERENCES `cuentas_registro` (`cuentaregistro_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `FK_depositante` FOREIGN KEY (`cuentaregistro_depositante_id`) REFERENCES `cuentas_registro` (`cuentaregistro_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `FK_empresa` FOREIGN KEY (`empresa_id`) REFERENCES `empresas` (`empresa_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Constraints for table `fields`
@@ -1000,3 +913,7 @@ ALTER TABLE `roles_permisos`
 ALTER TABLE `templates`
   ADD CONSTRAINT `FK_autorIDs` FOREIGN KEY (`autor_id`) REFERENCES `users` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `FK_templategrupó` FOREIGN KEY (`template_group_id`) REFERENCES `templates_groups` (`template_group_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

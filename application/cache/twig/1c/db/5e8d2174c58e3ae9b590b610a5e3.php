@@ -28,7 +28,7 @@ class __TwigTemplate_1cdb5e8d2174c58e3ae9b590b610a5e3 extends Twig_Template
                 <ul class=\"nav\">
                   <li ";
         // line 8
-        if (("home" == "home")) {
+        if (("" == "home")) {
             echo " class=\"active\" ";
         }
         echo ">
@@ -38,10 +38,16 @@ class __TwigTemplate_1cdb5e8d2174c58e3ae9b590b610a5e3 extends Twig_Template
         echo "\">Home</a>
                   </li>
                   <li>
-                    <a href=\"#\">Link</a>
+                    <a href=\"";
+        // line 12
+        echo twig_escape_filter($this->env, Twig::url_sitio("articulos/"), "html", null, true);
+        echo "\">Articulos</a>
                   </li>
                   <li>
-                    <a href=\"#\">Link</a>
+                   <a href=\"";
+        // line 15
+        echo twig_escape_filter($this->env, Twig::url_sitio("noticias/"), "html", null, true);
+        echo "\">Noticias</a>
                   </li>
                 </ul>
               </div>
@@ -63,6 +69,6 @@ class __TwigTemplate_1cdb5e8d2174c58e3ae9b590b610a5e3 extends Twig_Template
 
     public function getDebugInfo()
     {
-        return array (  37 => 9,  26 => 6,  112 => 47,  110 => 46,  102 => 40,  96 => 39,  88 => 34,  84 => 33,  80 => 32,  74 => 28,  71 => 27,  67 => 26,  56 => 17,  48 => 15,  43 => 14,  39 => 13,  31 => 8,  29 => 6,  25 => 4,  23 => 3,  19 => 1,);
+        return array (  49 => 15,  37 => 9,  26 => 6,  112 => 45,  110 => 44,  102 => 38,  96 => 37,  88 => 32,  84 => 31,  78 => 30,  72 => 26,  69 => 25,  65 => 24,  56 => 17,  48 => 15,  43 => 12,  39 => 13,  31 => 8,  29 => 6,  25 => 4,  23 => 3,  19 => 1,);
     }
 }

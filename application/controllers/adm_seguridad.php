@@ -273,7 +273,7 @@ class Adm_Seguridad extends MY_Controller {
 				//Cargamos en data la info cargada en el role
 				$data['roleRow'] = $this -> roles_frr -> get_role_by_id($role_id);
 				if ($this -> auth_frr -> es_admin())
-					$data['empresas'] = $this -> auth_frr -> get_empresas();
+					$data['empresas'] = $this -> auth_frr -> get_empresas(false);
 				$this -> template -> set_content('seguridad/modificar_role_form', $data);
 
 				$this -> template -> build();
