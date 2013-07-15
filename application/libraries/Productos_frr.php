@@ -68,6 +68,19 @@ class Productos_frr {
 	}
 
 	/**
+	 * Crea un nueva producto en el sistema
+	 */
+	function create_comision($data) {
+
+		if (!is_null($res = $this -> ci -> productos_model -> create_comisiones($data))) {
+			$data['comision_id'] = $res['comision_id'];
+			return $data;
+		}
+
+		return NULL;
+	}
+
+	/**
 	 * Modifica un producto del sistema
 	 */
 	function modificar_producto($producto_id, $nombre, $precio, $calidad, $aforo) {
@@ -78,6 +91,14 @@ class Productos_frr {
 		$data['aforo'] = $aforo;
 
 		return $this -> editar_producto($producto_id, $data);
+	}
+
+	function modificar_comision($data) {
+		if ($this -> ci -> productos_model -> modificar_comision($data)) {
+			return true;
+		} else {
+			return NULL;
+		}
 	}
 
 	/**
@@ -114,6 +135,17 @@ class Productos_frr {
 			return $data;
 		}
 
+	}
+
+	function get_datos_producto_empresa_comision($prod_id) {
+		if (!is_null($prod_id)) {
+			$emp_id = $this->ci->auth_frr->get_empresa_id();
+
+			//Obtenemos la empresa en base al id enviado como parametro
+			$relacion = $this -> ci -> productos_model -> get_comision_by_empresa($prod_id, $emp_id);
+
+			return $relacion;
+		}
 	}
 
 	/**

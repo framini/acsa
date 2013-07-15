@@ -48,6 +48,16 @@ class Productos_model extends CI_Model {
 			return $query -> row();
 		return NULL;
 	}
+
+	function get_comision_by_empresa($id, $emp_id) {
+		$this -> db -> where('producto_id', $id);
+		$this -> db -> where('empresa_id', $emp_id);
+		$this -> db -> from('productos_comisiones_empresas');
+		$query = $this -> db -> get();
+		if ($query -> num_rows() == 1)
+			return $query -> row();
+		return NULL;
+	}
 	
 	function get_descripcion_producto_tipo_by_id($id) {
 		$this -> db -> where('tipo_producto_id', $id);
@@ -68,6 +78,15 @@ class Productos_model extends CI_Model {
 
 	}
 
+	function create_comisiones($data) {
+
+		if ($this -> db -> insert('productos_comisiones_empresas', $data)) {
+			$comision_id = $this -> db -> insert_id();
+			return array('comision_id' => $comision_id);
+		}
+		return NULL;
+	}
+
 	/**
 	 * Modifica los datos de una empresa
 	 */
@@ -78,6 +97,16 @@ class Productos_model extends CI_Model {
 		else
 			return false;
 	}
+
+	function modificar_comision($data) {
+		$this -> db -> where('producto_id', $data['producto_id']);
+		$this -> db -> where('empresa_id', $data['empresa_id']);
+		if ($this -> db -> update('productos_comisiones_empresas', array('comision' => $data['comision'] )))
+			return true;
+		else
+			return false;
+	}
+
 
 	/**
 	 * Eliminamos la empresa con id = $empresa_id

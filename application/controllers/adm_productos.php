@@ -7,6 +7,7 @@ class Adm_Productos extends MY_Controller {
 	public function __construct() {
 		parent::__construct();
 		$this -> lang -> load('auth_frr');
+		$this -> load -> library('productos_frr');
 	}
 	
 	function index() {
@@ -141,7 +142,6 @@ class Adm_Productos extends MY_Controller {
 		//Solamente los admins se argentina clearing pueden crear empresas, asi que lo primero que chequeamos
 		//es que el usuario sea admin
 		if ($this -> auth_frr -> es_admin()) {
-			$this -> load -> library('productos_frr');
 
 			$this -> form_validation -> set_error_delimiters('<p><i class="icon-exclamation-sign"></i> ', '</p>');
 
@@ -243,6 +243,86 @@ class Adm_Productos extends MY_Controller {
 		//Mostramos el template solo en el caso que exista un id de empresa
 		if ($producto_id) {
 			$this -> template -> set_content('general/confirma_operacion');
+			$this -> template -> build();
+		}
+	}
+
+	//Metodo para asociar comisiones a cada producto
+	function comisiones() {
+		//Solamente ingresamos en caso de ser una warrantera
+		if( $this->auth_frr->is_warrantera() ) {
+			$data['productos'] = $this -> productos_frr -> get_productos();
+
+			
+			//En este caso entramos en modo edicion
+			if($this -> uri -> segment(4)) {
+				$this -> form_validation -> set_rules('comision', 'Comision', 'trim|required|xss_clean');
+
+				//Si entramos aca es porque tenemos que modificar el porcentaje de un producto
+				if ( $this -> form_validation -> run() ) {
+					$data = array(
+						"empresa_id" => $this->auth_frr->get_empresa_id(),
+						"comision" => $this -> form_validation -> set_value('comision'),
+						"producto_id" => $this -> input -> post('productos')
+					);
+
+					$estado = $this -> productos_frr -> modificar_comision($data);
+
+					//Nos fijamos si la petición se hizo via AJAX
+					if ($this -> input -> is_ajax_request()) {
+						$resultados['message'] = "La comision ha sido asociada correctamente";
+						//Devolvemos los resultados en JSON
+						echo json_encode($resultados);
+						//Ya no tenemos nada que hacer en esta funcion
+						return;
+					} else {
+						//El producto se creo correctamente
+						$message = "La comision ha sido asociada correctamente";
+						$this -> session -> set_flashdata('message', $message);
+						redirect('adm/productos/gestionar_productos');
+					}
+				}
+
+				$comision = $this-> productos_frr -> get_datos_producto_empresa_comision ( $this -> uri -> segment(4) );
+
+				if( $comision ) {
+					$data['comision'] = $comision;
+				} else {
+					//Mostrar mensaje de error
+				}
+
+			} else {
+				$this -> form_validation -> set_rules('comision', 'Comision', 'trim|required|xss_clean');
+				$this -> form_validation -> set_rules('productos', 'Producto', 'trim|required|xss_clean');
+
+				if ( $this -> form_validation -> run() ) {
+					$data = array(
+						"empresa_id" => $this->auth_frr->get_empresa_id(),
+						"comision" => $this -> form_validation -> set_value('comision'),
+						"producto_id" => $this -> form_validation -> set_value('productos')
+					);
+					//estamos creando la comision de la empresa
+					if (!is_null($d = $this -> productos_frr -> create_comision($data) ) ) {
+						//Nos fijamos si la petición se hizo via AJAX
+						if ($this -> input -> is_ajax_request()) {
+							$resultados['message'] = "La comision ha sido asociada correctamente";
+							//Devolvemos los resultados en JSON
+							echo json_encode($resultados);
+							//Ya no tenemos nada que hacer en esta funcion
+							return;
+						} else {
+							//El producto se creo correctamente
+							$message = "La comision ha sido asociada correctamente";
+							$this -> session -> set_flashdata('message', $message);
+							redirect('adm/productos/gestionar_productos');
+						}
+					}
+				}
+				
+			}
+			
+
+			$this -> template -> set_content('productos/comisiones', $data);
 			$this -> template -> build();
 		}
 	}
