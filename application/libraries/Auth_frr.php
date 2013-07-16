@@ -363,20 +363,25 @@ class Auth_frr
           {
                 $usuarios = $this->ci->users->get_users_empresa($empid);
 
-                foreach ($usuarios->result() as $row)
-                {
-                   $empresa = $this->ci->empresas->get_empresa_by_id($row->empresa_id);
+                if( !is_null($usuarios)) {
+                  foreach ($usuarios->result() as $row)
+                  {
+                     $empresa = $this->ci->empresas->get_empresa_by_id($row->empresa_id);
 
-                   $data[] = array(
-                                    'username'    => $row->username,
-                                    'email'            => $row->email,
-                                    'user_id'        => $row->user_id,
-                                    'es_admin'    => $row->es_admin,
-                                    'empresa'      => $empresa->nombre
-                           );
+                     $data[] = array(
+                                      'username'    => $row->username,
+                                      'email'            => $row->email,
+                                      'user_id'        => $row->user_id,
+                                      'es_admin'    => $row->es_admin,
+                                      'empresa'      => $empresa->nombre
+                             );
+                  }
+
+                  return $data;
+                } else {
+                  return null;
                 }
-
-                return $data;
+                
           }
           
           /**

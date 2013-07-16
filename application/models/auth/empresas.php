@@ -323,4 +323,43 @@ class Empresas extends CI_Model {
 		return NULL;
 	}
 
+	function create_cuenta_corriente($data) {
+
+		if ($this -> db -> insert('cuentas_corrientes', $data)) {
+			$cc_id = $this -> db -> insert_id();
+			return array('cuenta_corriente_id' => $cc_id);
+		}
+		return NULL;
+	}
+
+	function get_cuentas_corrientes() {
+		$this -> db -> select();
+		$this -> db -> from("cuentas_corrientes");
+		$query = $this -> db -> get();
+
+		if ($query -> num_rows() > 0)
+			return $query;
+		return NULL;
+	}
+
+	function modificar_cuenta_corriente($cuenta_corriente_id, $data) {
+		$this -> db -> where('cuenta_corriente_id', $cuenta_corriente_id);
+		if ($this -> db -> update('cuentas_corrientes', $data))
+			return true;
+		else
+			return false;
+	}
+
+	/**
+	 * Devuelve un registro de producto en base al id del parametro
+	 */
+	function get_cuenta_corriente_by_id($id) {
+		$this -> db -> where('cuenta_corriente_id', $id);
+		$this -> db -> from('cuentas_corrientes');
+		$query = $this -> db -> get();
+		if ($query -> num_rows() == 1)
+			return $query -> row();
+		return NULL;
+	}
+
 }

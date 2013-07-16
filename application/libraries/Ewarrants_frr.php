@@ -61,7 +61,7 @@ class Ewarrants_frr {
      * @param type $ewid
      * @return type
      */
-    function confirmar_operacion($ewid, $aseguradora_id, $estado, $poliza_nombre = NULL, $poliza_descripcion = NULL, $poliza_comision = NULL) {
+    function confirmar_operacion($ewid, $aseguradora_id, $estado, $poliza_id = NULL) {
     	
     	$ew = $this->ci->ewarrants_model->get_warrant_by_id($ewid);
     	$data = array(
@@ -80,14 +80,9 @@ class Ewarrants_frr {
     		$data['aseguradora_id'] = $aseguradora_id;
     	}
     	
-    	if( isset($poliza_nombre) && isset($poliza_descripcion) && isset($poliza_comision) ) {
-    		$poli_id = $this->ci->polizas_model->emitir_poliza(array(
-    					'nombre'			=> $poliza_nombre,
-	    				'descripcion'	=> $poliza_descripcion,
-	    				'comision'		=> $poliza_comision
-    		));
-    		
-    		$data['poliza_id'] = $poli_id;
+    	if( isset($poliza_id) ) {
+
+    		$data['poliza_id'] = $poliza_id;
     	}
     	
     	if($this->ci->ewarrants_model->modificar($ewid, $data))

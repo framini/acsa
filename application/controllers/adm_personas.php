@@ -276,6 +276,201 @@ class Adm_Personas extends MY_Controller {
 	}
 
 	#########################################
+	# CUENTAS CORRIENTES
+	#########################################
+
+	/**
+	 *  Muestra la pantalla con todos los productos del sistema
+	 */
+	function gestionar_cuentas_corrientes() {
+		$this -> breadcrumb -> append_crumb('Home', site_url('adm/home'));
+		$this -> breadcrumb -> append_crumb('Productos', site_url() . "adm/productos/");
+		$this -> breadcrumb -> append_crumb('Gestionar Cuentas Corrientes', site_url() . "/productos/gestionar_cuentas_corrientes");
+
+		//Cargamos el archivo que contiene la info con la que se contruye el menu
+		$this -> config -> load('menu_permisos', TRUE);
+
+		//Obtenemos los permisos del usuario logueado asociados a la controladora productos y grupo gestionar_roles
+		$data['permisos'] = $this -> roles_frr -> permisos_role_controladora_grupo($this -> uri -> segment(2), $this -> uri -> segment(3));
+
+		//Procesamos los permisos obtenidos
+		if (count($data['permisos']) > 0) {
+			foreach ($data['permisos'] as $key => $row) {
+				$data['data_menu'][$row['permiso']] = $this -> config -> item($row['permiso'], 'menu_permisos');
+			}
+		}
+
+		//Obtenemos todas las empresas cargadas en el sistema
+		$data['productos'] = $this -> empresas_frr -> get_cuentas_corrientes(true);
+
+		if ($message = $this -> session -> flashdata('message')) {
+			$data['message'] = $message;
+		}
+
+		if ($errormsg = $this -> session -> flashdata('errormsg')) {
+			$data['errormsg'] = $errormsg;
+		}
+
+		$this -> template -> set_content('personas/gestionar_cuentas_corrientes', $data);
+		$this -> template -> build();
+	}
+
+	/**
+	 * Da de alta una cuenta corriente en el sistema
+	 * NOTA: Solo disponible para admins
+	 */
+	function registro_cuenta_corriente() {
+
+		//Solamente los admins de argentina clearing pueden crear empresas, asi que lo primero que chequeamos
+		//es que el usuario sea admin
+		if ($this -> auth_frr -> es_admin()) {
+			$this -> form_validation -> set_error_delimiters('<p><i class="icon-exclamation-sign"></i> ', '</p>');
+
+			$this -> form_validation -> set_rules('nombre', 'Nombre', 'trim|required|xss_clean');
+			$this -> form_validation -> set_rules('saldo', 'Saldo', 'trim|required|xss_clean');
+			$this -> form_validation -> set_rules('owner', 'Propietario', 'trim|required|xss_clean');
+
+			$data['errors'] = array();
+
+			//Chequeamos que los datos enviados por formulario sean correctos
+			if ($this -> form_validation -> run()) {
+				$data = array(
+					'nombre' => $this -> form_validation -> set_value('nombre'),
+					'saldo'	=> $this -> form_validation -> set_value('saldo'),
+					'owner'	=> $this -> form_validation -> set_value('owner')
+				);
+				if (!is_null($data = $this -> empresas_frr -> create_cuenta_corriente($data))) {
+					//Nos fijamos si la petición se hizo via AJAX
+					if ($this -> input -> is_ajax_request()) {
+						$resultados['message'] = "La cuenta corriente se ha creado correctamente!";
+						//Devolvemos los resultados en JSON
+						echo json_encode($resultados);
+						//Ya no tenemos nada que hacer en esta funcion
+						return;
+					} else {
+						//El producto se creo correctamente
+						$message = "La cuenta corriente se ha creado correctamente!";
+						$this -> session -> set_flashdata('message', $message);
+						redirect('adm/productos/gestionar_cuentas_corrientes');
+					}
+
+				}
+			} else {
+				//Si la peticion se hizo via AJAX
+				if ($this -> input -> is_ajax_request()) {
+					$resultados['error'] = true;
+					//Chequeamos que alguno de los campos requeridos este vacio
+					//Si esta vacio mostramos un mensaje general
+					if (!$this -> input -> post('nombre') || !$this -> input -> post('owner') || !$this -> input -> post('saldo')) {
+						$resultados['message'] = "Todos los campos son requeridos";
+					}
+					//Devolvemos los resultados en JSON
+					echo json_encode($resultados);
+					//Ya no tenemos nada que hacer en esta funcion
+					return;
+				}
+			}
+
+			$data['empresas'] = $this->auth_frr->get_empresas();
+
+			if($this->uri->segment(4)) {
+				$users_empresa = $this->auth_frr->get_users_empresa($this->uri->segment(4));
+
+				$data['users_empresa'] = is_null($users_empresa) ? array() : $users_empresa;
+			}
+
+			$this -> template -> set_content('personas/agregar_cuenta_corriente_form', $data);
+			$this -> template -> build();
+
+		}
+	}
+
+
+	/**
+	 * Modifica una cuenta corriente registrada en el sistema
+	 * NOTA: Solo disponible para admins
+	 */
+	function modificar_cuenta_corriente() {
+		//Solamente los admins se argentina clearing pueden crear empresas, asi que lo primero que chequeamos
+		//es que el usuario sea admin
+		if ($this -> auth_frr -> es_admin()) {
+
+			$this -> form_validation -> set_error_delimiters('<p><i class="icon-exclamation-sign"></i> ', '</p>');
+
+			$this -> form_validation -> set_rules('saldo', 'Precio', 'trim|required|xss_clean');
+
+			$data['errors'] = array();
+
+			//Chequeamos que los datos enviados por formulario sean correctos
+			if ($this -> form_validation -> run()) {
+				$data = array(
+					"saldo" => $this -> form_validation -> set_value('saldo')
+				);
+				if (!is_null($data = $this -> empresas_frr -> modificar_cuenta_corriente( $this->uri->segment(4), $data ))) {
+					//Nos fijamos si la petición se hizo via AJAX
+					if ($this -> input -> is_ajax_request()) {
+						$resultados['message'] = "La cuenta corriente ha sido modificada correctamente!";
+						//Devolvemos los resultados en JSON
+						echo json_encode($resultados);
+						//Ya no tenemos nada que hacer en esta funcion
+						return;
+					} else {
+						$message = "La cuenta corriente ha sido modificada correctamente!";
+						$this -> session -> set_flashdata('message', $message);
+						redirect('adm/productos/gestionar_productos');
+					}
+
+				} else {
+					//Chequeamos si la peticion se hizo via ajax
+					if ($this -> input -> is_ajax_request()) {
+						$resultados['message'] = $this -> productos_frr -> get_error_message();
+						$resultados['error'] = true;
+						//Devolvemos los resultados en JSON
+						echo json_encode($resultados);
+						//Ya no tenemos nada que hacer en esta funcion
+						return;
+					} else {
+						$data['errors'] = $this -> productos_frr -> get_error_message();
+					}
+				}
+			}
+
+			//Si la peticion se hizo via AJAX
+			if ($this -> input -> is_ajax_request()) {
+				$resultados['error'] = true;
+				//Chequeamos que alguno de los campos requeridos este vacio
+				//Si esta vacio mostramos un mensaje general
+				if (!$this -> input -> post('saldo')) {
+					$resultados['message'] = "Los campos requeridos no pueden estar vacios";
+				}
+				//Devolvemos los resultados en JSON
+				echo json_encode($resultados);
+				//Ya no tenemos nada que hacer en esta funcion
+				return;
+			}
+			//Solamente hacemos algo si está presente el id de la CC en la URI
+			if ($this -> uri -> segment(4)) {
+				//Solamente cargamos los datos cuando no exista una request POST
+				//Para no pisar los datos enviados por el usuarios
+				if (!$this -> input -> post()) {
+					//Obtenemos la empresa
+					$data['row_producto'] = $this -> empresas_frr -> get_cuenta_corriente_by_id($this -> uri -> segment(4), true);
+				}
+
+				//Asignamos un texto al boton submit del formulario
+				$data['tb'] = "Modificar Cuenta Corriente";
+				//Asignamos un titulo para el encabezado del formulario
+				$data['tf'] = "Modificar Cuenta Corriente";
+				
+				$this -> template -> set_content('personas/modificar_cuenta_corriente', $data);
+				$this -> template -> build();
+			} else {
+				redirect('adm/ew');
+			}
+		}
+	}
+
+	#########################################
 	# CUENTAS REGISTRO
 	#########################################
 

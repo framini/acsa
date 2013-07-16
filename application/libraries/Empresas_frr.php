@@ -486,4 +486,60 @@ class Empresas_frr {
     {
             return $this->error;
     }
+
+    /**
+	 * Crea un nueva cuenta corriente en el sistema
+	 */
+	function create_cuenta_corriente($data) {
+
+		if (!is_null($res = $this -> ci -> empresas -> create_cuenta_corriente($data))) {
+			$data['cuenta_corriente'] = $res['cuenta_corriente_id'];
+			return $data;
+		}
+
+		return NULL;
+	}
+
+	function get_cuentas_corrientes($user_name = FALSE) {
+		$productos = $this -> ci -> empresas -> get_cuentas_corrientes();
+		
+		if( !is_null($productos) ) {
+			foreach ($productos->result() as $row) {
+				$data[] = array(
+					'cuenta_corriente_id' => $row -> cuenta_corriente_id, 
+					'owner' => $user_name ? $this->ci->auth_frr->get_username_by_id($row -> owner)  : $row -> owner, 
+					'nombre' => $row -> nombre, 
+					'saldo' => $row -> saldo
+				);
+			}
+		} else {
+			$data = NULL;
+		}
+
+		return $data;
+	}
+
+	function modificar_cuenta_corriente($cuenta_corriente_id, $data) {
+		return $this -> ci -> empresas -> modificar_cuenta_corriente($cuenta_corriente_id, $data);
+	}
+
+	function get_cuenta_corriente_by_id($prod_id = NULL, $user_as_name = FALSE) {
+		if (!is_null($prod_id)) {
+			//Obtenemos la empresa en base al id enviado como parametro
+			$producto = $this -> ci -> empresas -> get_cuenta_corriente_by_id($prod_id);
+
+			if (!is_null($producto)) {
+
+				$data[] = array(
+					'cuenta_corriente_id' => $producto -> cuenta_corriente_id, 
+					'nombre' => $producto -> nombre, 
+					'saldo' => $producto -> saldo, 
+					'owner' => $user_as_name ? $this->ci->auth_frr->get_username_by_id($producto -> owner) : $producto -> owner
+				);
+			}
+
+			return $data;
+		}
+
+	}
 }

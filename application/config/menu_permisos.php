@@ -49,6 +49,7 @@ $config['gestionar_roles'] = array('texto_anchor' => 'Gestionar Roles', 'icono' 
 $config['gestionar_usuarios'] = array('texto_anchor' => 'Gestionar Usuarios', 'icono' => 'icon-user', 'titulo_gestion' => 'Usuarios');
 $config['gestionar_productos'] = array('texto_anchor' => 'Gestionar Productos', 'icono' => 'icon-barcode', 'titulo_gestion' => 'Productos');
 $config['gestionar_cuentas_registro'] = array('texto_anchor' => 'Gestionar Cuentas Registro', 'icono' => 'icon-briefcase', 'titulo_gestion' => 'Cuentas Registro');
+$config['gestionar_cuentas_corrientes'] = array('texto_anchor' => 'Gestionar Cuentas Corrientes', 'icono' => 'icon-barcode', 'titulo_gestion' => 'Cuentas Corrientes');
 
 # Menu gestion Personas
 # Notas:
@@ -125,6 +126,17 @@ $config['registro_producto'] = array('texto_anchor' => 'Agregar Producto', 'icon
 $config['modificar_producto'] = array('texto_anchor' => 'Modificar', 'icono' => 'icon-pencil icon-white', 'clase_boton' => 'btn btn-info modificar-empresa margin-bottom-5 btn-mini', 'boton_superior' => false, 'titulo' => false);
 $config['eliminar_producto'] = array('texto_anchor' => 'Eliminar', 'icono' => 'icon-trash', 'clase_boton' => 'btn btn-danger eliminar-empresa margin-bottom-5 btn-mini', 'boton_superior' => false, 'titulo' => "Confirma que desea eliminar la empresa?");
 
+# Menu gestion Seguridad => Gestionar Cuentas Corrientes
+# Notas:
+# texto_anchor: Es el texto a mostrar en pantalla para el boton
+# icono: Es la imagen que va a la izquierda del texto_anchor
+# clase_boton: Especifica la clase a implementar por el boton
+# boton_superior: Especifica si el boton va en la parte superior de la pantalla
+# titulo: Mensaje para ventana Pop-up
+####################################################################################
+$config['registro_cuenta_corriente'] = array('texto_anchor' => 'Agregar Cuenta Corriente', 'icono' => 'icon-user icon-white', 'clase_boton' => 'btn btn-large btn-success pull-right', 'boton_superior' => true, 'titulo' => false);
+$config['modificar_cuenta_corriente'] = array('texto_anchor' => 'Modificar', 'icono' => 'icon-pencil icon-white', 'clase_boton' => 'btn btn-info modificar-empresa margin-bottom-5 btn-mini', 'boton_superior' => false, 'titulo' => false);
+//$config['eliminar_producto'] = array('texto_anchor' => 'Eliminar', 'icono' => 'icon-trash', 'clase_boton' => 'btn btn-danger eliminar-empresa margin-bottom-5 btn-mini', 'boton_superior' => false, 'titulo' => "Confirma que desea eliminar la empresa?");
 
 # Menu gestion Seguridad => Gestionar Polizas
 # Notas:

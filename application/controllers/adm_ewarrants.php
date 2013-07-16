@@ -479,9 +479,7 @@ class adm_Ewarrants extends MY_Controller {
 	                     			$resultado_operacion = $this->ewarrants_frr->confirmar_operacion($this->uri->segment(4),
 	                     					$this->input->post('aseguradora_id'),
 	                     					$this->input->post('estado'),
-	                     					$this->input->post('poliza_nombre'),
-	                     					$this->input->post('poliza_descripcion'),
-	                     					$this->input->post('poliza_comision')
+	                     					$this->input->post('poliza_id')
 	                     			);
 	                     		} else {
 	                     			$resultado_operacion = $this->ewarrants_frr->confirmar_operacion($this->uri->segment(4),
@@ -588,11 +586,22 @@ class adm_Ewarrants extends MY_Controller {
 	                     	
 	                     	$ew = $this->ewarrants_frr->get_warrant_by_id($this->uri->segment(4));
 	                     	$data['aseguradoras'] = $this->empresas_frr->get_aseguradoras();
+
+	                     	if($this->uri->segment(5))
+	                     		$data['aseguradoras_polizas'] = $this->ewarrants_frr->get_polizas_by_empresa($this->uri->segment(5));
 	                     	
+	                     	if($this->input->get("pdetalle"))
+	                     		$data['aseguradoras_poliza_detalle'] = $this->ewarrants_frr->get_poliza_by_id($this->input->get("pdetalle"));
+	                     	
+
 	                     	if( $ew ) {
+
+	                     		$emp = $this->empresas_frr->get_empresa_by_id($ew->empresa_id);
+	                     		$cr = $this->empresas_frr->get_cuenta_registro_by_id($ew->cuentaregistro_id);
+	                     		
 	                     		$data['codigo_id'] = $ew->codigo;
-	                     		$data['empresa_id'] = $ew->empresa_id;
-	                     		$data['cuentaregistro_id'] = $ew->cuentaregistro_id;
+	                     		$data['empresa_id'] = $emp[0]['nombre'];
+	                     		$data['cuentaregistro_id'] = $cr[0]['nombre'];
 	                     		$data['producto_id'] = $ew->producto;
 	                     		$data['kilos_id'] = $ew->kilos;
 	                     		$data['observaciones_id'] = $ew->observaciones;

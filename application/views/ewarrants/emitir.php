@@ -30,6 +30,26 @@ $observaciones = array(
 ?>
 <script type="text/javascript">
     $(function() {
+
+    	$('#aseguradora_id').change(function(e) {
+    		if( $(this).val() > 0 ) {
+    			window.location = window.location + "/" + $(this).val();
+    		}
+    		else {
+    			window.location = <?php echo '"' . site_url() . '"' ?> + "/adm/ewarrants/emitir/" + <?php echo '"' . $this->uri->segment(4) . '"' ?>;
+    		}
+    	});
+
+    	$('#poliza_id').change(function(e) {
+    		if( $(this).val() > 0 ) {
+    			$('.detalle_poliza').show();
+    			var redi = <?php echo '"' . site_url() . '"' ?> + "/adm/ewarrants/emitir/" + <?php echo '"' . $this->uri->segment(4) . '"' ?> + "/" + <?php echo '"' . $this->uri->segment(5) . '"' ?> + "/?pdetalle=" + $(this).val();
+    			window.location = redi;
+    		} else {
+    			$('.detalle_poliza').hide();
+    		}
+    	});
+
         $("#empresas_dd").change(function() {
             var site_root = <?php echo '"' . site_url('adm/ewarrants/get_cuentas_registro') . '"'; ?>;
             var dire = site_root + "/" + $(this).val();
@@ -218,11 +238,12 @@ $observaciones = array(
 			                                                <?php
 			                                                	if(count($aseguradoras) > 0) {
 			                                                		echo '<select name="aseguradora_id" class="listas-padding span5" id="aseguradora_id">';
+				                                                    echo '<option value="">-- Elegir Aseguradora</option>';
 				                                                    foreach($aseguradoras as $crd)
 				                                                    {
 				                                                       $opt = '<option value="' . $crd['empresa_id'] . '"';
-				                                                       //if( isset($cuentaregistro_id) && $cuentaregistro_id == $crd['cuentaregistro_id'] )
-				                                                       //$opt .= ' selected="selected" ';
+				                                                       if( $this->uri->segment(5) == $crd['empresa_id'] )
+				                                                       	$opt .= ' selected="selected" ';
 				                                                       $opt .= '>' .  $crd['nombre'] . "</option>";
 				                                                       echo $opt;
 				                                                    }
@@ -237,49 +258,52 @@ $observaciones = array(
 			                                        </div>
 			                                    </div>
 			                                	<?php } ?>
-			                                	
+
+			                                	<?php if( isset($aseguradoras_polizas) ) { ?>
 			                                	<div class="row">
-			                                		<div class="span6 control-group <?php if(form_error('poliza_nombre') != "") echo "error"; ?>">            
-			                                                    <?php echo form_label('Nombre'); ?>
-			                                                    <?php echo form_input(array( "name" => "poliza_nombre", "id" => "poliza_nombre" )); ?>
-			                                                    <?php if(form_error('poliza_nombre') != "" || isset($errors['poliza_nombre']) ) {?>
-			                                                    <div class="row">
-								                                    <div class="alert span4 alert-error">
-																        <?php echo form_error($errors['poliza_nombre']); ?><?php echo isset($errors['poliza_nombre'])?$errors['poliza_nombre']:''; ?>
-																    </div>
-																</div>
-															    <?php } ?>
-													</div>
+			                                		<div class="span6 control-group">
+			                                                <?php echo form_label('Polizas', 'poliza_id'); ?></td>
+			                                                <?php
+			                                                	if(count($aseguradoras_polizas) > 0) {
+			                                                		echo '<select name="poliza_id" class="listas-padding span5" id="poliza_id">';
+				                                                    echo '<option value="">-- Elegir Poliza</option>';
+				                                                    foreach($aseguradoras_polizas as $crd)
+				                                                    {
+				                                                       $opt = '<option value="' . $crd['poliza_id'] . '"';
+				                                                       if( $this->input->get("pdetalle") == $crd['poliza_id'] )
+				                                                       	$opt .= ' selected="selected" ';
+				                                                       $opt .= '>' .  $crd['nombre'] . "</option>";
+				                                                       echo $opt;
+				                                                    }
+				                                                    echo '</select>';
+			                                                	} else {
+			                                                		echo '<select name="poliza_id" class="listas-padding span5" id="poliza_id">';
+																		echo '<option value="0">No hay polizas cargadas</option>'; 
+																	echo '</select>';
+			                                                	}
+			                                                ?>
+			                             
+			                                        </div>
+			                                        
 			                                    </div>
 			                                    
-			                                    <div class="row">
-			                                		<div class="span6 control-group <?php if(form_error('poliza_comision') != "") echo "error"; ?>">            
-			                                                    <?php echo form_label('Comision'); ?>
-			                                                    <?php echo form_input(array( "name" => "poliza_comision", "id" => "poliza_comision" )); ?>
-			                                                    <?php if(form_error('poliza_comision') != "" || isset($errors['poliza_comision']) ) {?>
-			                                                    <div class="row">
-								                                    <div class="alert span4 alert-error">
-																        <?php echo form_error($errors['poliza_comision']); ?><?php echo isset($errors['poliza_comision'])?$errors['poliza_comision']:''; ?>
-																    </div>
-																</div>
-															    <?php } ?>
-													</div>
-			                                    </div>
-			                                    
-			                                    <div class="row">
-			                                		<div class="span6 control-group <?php if(form_error('poliza_descripcion') != "") echo "error"; ?>">            
-			                                                    <?php echo form_label('Descripcion poliza'); ?>
-			                                                    <textarea name="poliza_descripcion" id="poliza_descripcion">
-			                                                    </textarea>
-			                                                    <?php if(form_error('poliza_descripcion') != "" || isset($errors['poliza_descripcion']) ) {?>
-			                                                    <div class="row">
-								                                    <div class="alert span4 alert-error">
-																        <?php echo form_error($errors['poliza_descripcion']); ?><?php echo isset($errors['poliza_descripcion'])?$errors['poliza_descripcion']:''; ?>
-																    </div>
-																</div>
-															    <?php } ?>
-													</div>
-			                                    </div>
+			                                    	<?php if(isset($aseguradoras_poliza_detalle)) { ?>
+			                                    	<div class="row detalle_poliza">
+			                                    		<div class="span6 control-group">
+					                                        <div class="controls controls-row">
+					                                        	<label>Comision</label>
+						                                    	<span class="input-xlarge uneditable-input"><?php echo $aseguradoras_poliza_detalle[0]['poliza_comision']; ?></span>
+						                                    </div>
+						                                    <div class="controls controls-row">
+						                                    	<label>Descripcion</label>
+						                                    	<span class="input-xlarge uneditable-input"><?php echo $aseguradoras_poliza_detalle[0]['poliza_descripcion'] ?></span>
+						                                    </div>
+						                                </div>
+				                                    </div>
+			                                        <?php } ?>
+
+			                                	<?php } ?>
+			                                  
 			                                  <?php } elseif( isset($show_estado_aseguradora) && $show_estado_aseguradora == true ) { ?>
 				                                    <div class="controls controls-row">
 				                                    	<span class="input-xlarge uneditable-input"><?php echo $poliza_nombre; ?></span>
@@ -296,18 +320,23 @@ $observaciones = array(
 	                                    
 	                                    
 	                                    <div class="controls controls-row">
+	                                    	<label>Codigo</label>
 	                                    	<span class="input-xlarge uneditable-input"><?php echo $codigo_id; ?></span>
 	                                    </div>
 	                                    <div class="controls controls-row">
+	                                   		 <label>Empresa</label>
 	                                    	<span class="input-xlarge uneditable-input"><?php echo $empresa_id; ?></span>
 	                                    </div>
 	                                    <div class="controls controls-row">
+	                                    	<label>Cuenta Registro</label>
 	                                    	<span class="input-xlarge uneditable-input"><?php echo $cuentaregistro_id; ?></span>
 	                                    </div>
 	                                    <div class="controls controls-row">
+	                                    	<label>Producto</label>
 	                                    	<span class="input-xlarge uneditable-input"><?php echo $producto_id; ?></span>
 	                                    </div>
 	                                    <div class="controls controls-row">
+	                                    	<label>Kilos</label>
 	                                    	<span class="input-xlarge uneditable-input"><?php echo $kilos_id; ?></span>
 	                                    </div>
 	                                    
