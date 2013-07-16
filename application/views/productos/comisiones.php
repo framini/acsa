@@ -32,7 +32,7 @@ $com = array(
                                 foreach($productos as $prd)
                                 {
                                    echo '<option value="' . $prd['producto_id'] . '"';
-                                   if( isset($comision) && $comision->producto_id == $prd['producto_id'] ) echo 'selected="selected"';
+                                   if( (isset($comision) && $comision->producto_id == $prd['producto_id']) || $this->uri->segment(4) == $prd['producto_id'] ) echo 'selected="selected"';
 								   echo '>' . $prd['nombre'] . "</option>";
                                 }
                                 echo '</select>';

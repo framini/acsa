@@ -94,11 +94,23 @@ class Productos_frr {
 	}
 
 	function modificar_comision($data) {
-		if ($this -> ci -> productos_model -> modificar_comision($data)) {
-			return true;
+
+		if( $this-> ci -> productos_model -> comision_exists($this->ci->uri->segment(4), $this->ci->auth_frr->get_empresa_id()) ) {
+			if ($this -> ci -> productos_model -> modificar_comision($data)) {
+				return true;
+			} else {
+				return NULL;
+			}
 		} else {
+			if (!is_null($res = $this -> ci -> productos_model -> create_comisiones($data))) {
+				$data['comision_id'] = $res['comision_id'];
+				return $data;
+			}
+
 			return NULL;
 		}
+
+		
 	}
 
 	/**

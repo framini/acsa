@@ -27,6 +27,8 @@
 									foreach ($data_menu as $keyp => $row) {
 										if( $this->auth_frr->has_role_aseguradora() && $keyp == "emitir" ) {
 										 
+										} elseif( $this->auth_frr->has_role_aseguradora() && $keyp == "registro_poliza" ) {
+										} elseif( $this->auth_frr->has_role_aseguradora() && $keyp == "modificar_poliza") {
 										} else {
 											echo "<li>";
 											$contenido_menu = isset($row['icono']) ? '<i class="' . $row['icono'] . '"></i> ' . $row['texto_anchor'] : $row['texto_anchor'];
@@ -34,6 +36,12 @@
 											echo "</li>";
 										}
 									 }
+
+									 if( $this->auth_frr->has_role_aseguradora() ) {
+										echo "<li>"; 
+										echo anchor("/adm/ewarrants/gestionar_polizas", "Gestionar Polizas");
+										echo "</li>";
+									}
 									?>
                                 </ul>
       							<?php } else { ?>

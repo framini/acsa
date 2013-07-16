@@ -24,6 +24,16 @@ class Productos_model extends CI_Model {
 		return NULL;
 	}
 
+	function comision_exists($empresa_id, $producto_id) {
+		$this -> db -> where('producto_id', $producto_id);
+		$this -> db -> where('empresa_id', $empresa_id);
+		$this -> db -> from('productos_comisiones_empresas');
+		$query = $this -> db -> get();
+		if ($query -> num_rows() == 1)
+			return true;
+		return false;
+	}
+
 	/**
 	 * Devuelve la lista con todos los tipos de productos cargados en el sistema
 	 */

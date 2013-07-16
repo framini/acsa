@@ -37,7 +37,7 @@ $config['listar'] = array('texto_anchor' => 'Listar', 'icono' => 'icon-info-sign
 $config['firma']  = array('texto_anchor' => 'Firmar', 'icono' => 'icon-ok-sign', 'boton_superior' => true, 'clase_boton' => 'btn btn-large btn-success enviar absoluto-r0-b0 margin-bot-none pull-right');
 $config['anular'] = array('texto_anchor' => 'Anular', 'icono' => 'icon-remove-sign', 'boton_superior' => true, 'clase_boton' => 'btn btn-large btn-danger enviar absoluto-r0-b0 margin-bot-none pull-right');
 $config['ver_pendientes'] = array('texto_anchor' => 'Ver Pendientes', 'icono' => 'icon-remove-sign', 'boton_superior' => true, 'clase_boton' => 'btn btn-large btn-danger enviar absoluto-r0-b0 margin-bot-none pull-right');
-$config['polizas'] = array('texto_anchor' => 'Ver Pendientes', 'icono' => 'icon-remove-sign', 'boton_superior' => true, 'clase_boton' => 'btn btn-large btn-danger enviar absoluto-r0-b0 margin-bot-none pull-right');
+$config['gestionar_polizas'] = array('texto_anchor' => 'Gestionar Polizas', 'icono' => 'icon-remove-sign', 'boton_superior' => true, 'clase_boton' => 'btn btn-large btn-danger enviar absoluto-r0-b0 margin-bot-none pull-right');
 
 # Menu gestion Seguridad
 # Notas:
@@ -125,6 +125,7 @@ $config['eliminar_empresa'] = array('texto_anchor' => 'Eliminar', 'icono' => 'ic
 $config['registro_producto'] = array('texto_anchor' => 'Agregar Producto', 'icono' => 'icon-user icon-white', 'clase_boton' => 'btn btn-large btn-success pull-right', 'boton_superior' => true, 'titulo' => false);
 $config['modificar_producto'] = array('texto_anchor' => 'Modificar', 'icono' => 'icon-pencil icon-white', 'clase_boton' => 'btn btn-info modificar-empresa margin-bottom-5 btn-mini', 'boton_superior' => false, 'titulo' => false);
 $config['eliminar_producto'] = array('texto_anchor' => 'Eliminar', 'icono' => 'icon-trash', 'clase_boton' => 'btn btn-danger eliminar-empresa margin-bottom-5 btn-mini', 'boton_superior' => false, 'titulo' => "Confirma que desea eliminar la empresa?");
+$config['comisiones'] = array('texto_anchor' => 'Modificar Comision', 'icono' => 'icon-pencil icon-white', 'clase_boton' => 'btn btn-info modificar-empresa margin-bottom-5 btn-mini', 'boton_superior' => false, 'titulo' => false);
 
 # Menu gestion Seguridad => Gestionar Cuentas Corrientes
 # Notas:
