@@ -37,6 +37,7 @@ $config['listar'] = array('texto_anchor' => 'Listar', 'icono' => 'icon-info-sign
 $config['firma']  = array('texto_anchor' => 'Firmar', 'icono' => 'icon-ok-sign', 'boton_superior' => true, 'clase_boton' => 'btn btn-large btn-success enviar absoluto-r0-b0 margin-bot-none pull-right');
 $config['anular'] = array('texto_anchor' => 'Anular', 'icono' => 'icon-remove-sign', 'boton_superior' => true, 'clase_boton' => 'btn btn-large btn-danger enviar absoluto-r0-b0 margin-bot-none pull-right');
 $config['ver_pendientes'] = array('texto_anchor' => 'Ver Pendientes', 'icono' => 'icon-remove-sign', 'boton_superior' => true, 'clase_boton' => 'btn btn-large btn-danger enviar absoluto-r0-b0 margin-bot-none pull-right');
+$config['polizas'] = array('texto_anchor' => 'Ver Pendientes', 'icono' => 'icon-remove-sign', 'boton_superior' => true, 'clase_boton' => 'btn btn-large btn-danger enviar absoluto-r0-b0 margin-bot-none pull-right');
 
 # Menu gestion Seguridad
 # Notas:
@@ -124,6 +125,18 @@ $config['registro_producto'] = array('texto_anchor' => 'Agregar Producto', 'icon
 $config['modificar_producto'] = array('texto_anchor' => 'Modificar', 'icono' => 'icon-pencil icon-white', 'clase_boton' => 'btn btn-info modificar-empresa margin-bottom-5 btn-mini', 'boton_superior' => false, 'titulo' => false);
 $config['eliminar_producto'] = array('texto_anchor' => 'Eliminar', 'icono' => 'icon-trash', 'clase_boton' => 'btn btn-danger eliminar-empresa margin-bottom-5 btn-mini', 'boton_superior' => false, 'titulo' => "Confirma que desea eliminar la empresa?");
 
+
+# Menu gestion Seguridad => Gestionar Polizas
+# Notas:
+# texto_anchor: Es el texto a mostrar en pantalla para el boton
+# icono: Es la imagen que va a la izquierda del texto_anchor
+# clase_boton: Especifica la clase a implementar por el boton
+# boton_superior: Especifica si el boton va en la parte superior de la pantalla
+# titulo: Mensaje para ventana Pop-up
+####################################################################################
+$config['registro_poliza'] = array('texto_anchor' => 'Agregar Poliza', 'icono' => 'icon-user icon-white', 'clase_boton' => 'btn btn-large btn-success pull-right', 'boton_superior' => true, 'titulo' => false);
+$config['modificar_poliza'] = array('texto_anchor' => 'Modificar', 'icono' => 'icon-pencil icon-white', 'clase_boton' => 'btn btn-info modificar-empresa margin-bottom-5 btn-mini', 'boton_superior' => false, 'titulo' => false);
+//$config['eliminar_poliza'] = array('texto_anchor' => 'Eliminar', 'icono' => 'icon-trash', 'clase_boton' => 'btn btn-danger eliminar-empresa margin-bottom-5 btn-mini', 'boton_superior' => false, 'titulo' => "Confirma que desea eliminar la poliza?");
 
 
 # Seccion Admin => Forms

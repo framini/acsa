@@ -45,6 +45,19 @@ class Ewarrants_model extends CI_Model
             } else
                 return NULL;
         }
+
+        function get_polizas_by_empresa($emp_id) {
+            $query = $this->db->select()
+                               ->from('polizas')
+                               ->where('empresa_id', $emp_id)
+                               ->get();
+        
+            if($query->num_rows() > 0)
+            {
+                return $query;
+            } else
+                return NULL;
+        }
         
         function get_warrants_habilitados_pendientes() {
         	$query = $this->db->select()
@@ -160,5 +173,23 @@ class Ewarrants_model extends CI_Model
                 ->get('cuentas_registro');
         
             return ($cr->num_rows() > 0) ? $cr->row() : false;
+        }
+
+        function create_poliza($data) {
+          $data['created'] = date('Y-m-d H:i:s');
+          if ($this -> db -> insert('polizas', $data)) {
+            $poliza_id = $this -> db -> insert_id();
+            return array('poliza_id' => $poliza_id);
+          }
+          return NULL;
+
+        }
+
+        function modificar_poliza($poliza_id, $data) {
+          $this -> db -> where('poliza_id', $poliza_id);
+          if ($this -> db -> update('polizas', $data))
+            return true;
+          else
+            return false;
         }
 }

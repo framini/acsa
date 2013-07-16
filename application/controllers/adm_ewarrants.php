@@ -708,4 +708,105 @@ class adm_Ewarrants extends MY_Controller {
 		}
 	}
 
+	//Creacion/Edicion de Polizas
+	function gestionar_polizas() {
+		//Solamente ingresamos en caso de ser una warrantera
+		if( $this->auth_frr->has_role_aseguradora() ) {
+			$data['productos'] = $this -> ewarrants_frr -> get_polizas_by_empresa($this->auth_frr->get_empresa_id());
+
+			#Entramos aca cuando el usuario entra en la seccion
+			#####################################################
+			//Cargamos el archivo que contiene la info con la que se contruye el menu
+			$this -> config -> load('menu_permisos', TRUE);
+
+			//Obtenemos los permisos del usuario logueado asociados a la controladora seguridad y grupo gestionar_roles
+			$data['permisos'] = $this -> roles_frr -> permisos_role_controladora_grupo($this -> uri -> segment(2), $this -> uri -> segment(3));
+
+			//Procesamos los permisos obtenidos
+			if (count($data['permisos']) > 0) {
+				foreach ($data['permisos'] as $key => $row) {
+					$data['data_menu'][$row['permiso']] = $this -> config -> item($row['permiso'], 'menu_permisos');
+				}
+			}
+			
+
+			$this -> template -> set_content('ewarrants/gestionar_polizas', $data);
+			$this -> template -> build();
+		}
+	}
+
+	function registro_poliza() {
+		//En este caso entramos en modo edicion
+			
+		$this -> form_validation -> set_rules('comision', 'Comision', 'trim|required|xss_clean');
+		$this -> form_validation -> set_rules('nombre', 'Nombre', 'trim|required|xss_clean');
+		$this -> form_validation -> set_rules('descripcion', 'Descripcion', 'trim|required|xss_clean');
+
+		if ( $this -> form_validation -> run() ) {
+			$data = array(
+				"empresa_id" => $this->auth_frr->get_empresa_id(),
+				"comision" => $this -> form_validation -> set_value('comision'),
+				"nombre" => $this -> form_validation -> set_value('nombre'),
+				"descripcion" => $this -> form_validation -> set_value('descripcion')
+			);
+			//estamos creando la comision de la empresa
+			if (!is_null($d = $this -> ewarrants_frr -> create_poliza($data) ) ) {
+				//Nos fijamos si la petición se hizo via AJAX
+				if ($this -> input -> is_ajax_request()) {
+					$resultados['message'] = "La poliza ha sido asociada correctamente";
+					//Devolvemos los resultados en JSON
+					echo json_encode($resultados);
+					//Ya no tenemos nada que hacer en esta funcion
+					return;
+				} else {
+					//El producto se creo correctamente
+					$message = "La poliza ha sido asociada correctamente";
+					$this -> session -> set_flashdata('message', $message);
+					redirect('adm/productos/gestionar_productos');
+				}
+			}
+		}
+
+
+		$this -> template -> set_content('ewarrants/agregar_poliza_form');
+		$this -> template -> build();
+	}
+
+	function modificar_poliza() {
+		if( $poliza_id = $this->uri->segment(4) ) {
+			$this -> form_validation -> set_rules('comision', 'Comision', 'trim|required|xss_clean');
+			$this -> form_validation -> set_rules('nombre', 'Nombre', 'trim|required|xss_clean');
+			$this -> form_validation -> set_rules('descripcion', 'Descripcion', 'trim|required|xss_clean');
+
+			if ( $this -> form_validation -> run() ) {
+				$data = array(
+					"empresa_id" => $this->auth_frr->get_empresa_id(),
+					"comision" => $this -> form_validation -> set_value('comision'),
+					"nombre" => $this -> form_validation -> set_value('nombre'),
+					"descripcion" => $this -> form_validation -> set_value('descripcion')
+				);
+				//estamos creando la comision de la empresa
+				if (!is_null($d = $this -> ewarrants_frr -> modificar_poliza($poliza_id, $data) ) ) {
+					//Nos fijamos si la petición se hizo via AJAX
+					if ($this -> input -> is_ajax_request()) {
+						$resultados['message'] = "La poliza ha sido modificada correctamente";
+						//Devolvemos los resultados en JSON
+						echo json_encode($resultados);
+						//Ya no tenemos nada que hacer en esta funcion
+						return;
+					} else {
+						//El producto se creo correctamente
+						$message = "La poliza ha sido modificada correctamente";
+						$this -> session -> set_flashdata('message', $message);
+						redirect('adm/productos/gestionar_productos');
+					}
+				}
+			}
+
+			$data["row_producto"] = $this->ewarrants_frr->get_poliza_by_id($poliza_id);
+
+			$this -> template -> set_content('ewarrants/agregar_poliza_form', $data);
+			$this -> template -> build();
+		}
+	}
 }

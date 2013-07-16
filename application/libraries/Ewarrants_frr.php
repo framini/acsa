@@ -640,5 +640,43 @@ class Ewarrants_frr {
         } else 
             return false;
     }
+
+    function get_polizas_by_empresa($emp_id) {
+        $polizas = $this->ci->ewarrants_model->get_polizas_by_empresa($emp_id);
+        if(!is_null($polizas)) {
+              foreach ($polizas->result() as $row){
+                  
+                   $data[] = array(
+                                    'poliza_id'         => $row->poliza_id,
+                                    'nombre'            => $row->nombre,
+                                    'comision'          => $row->comision,
+                                    'empresa_id'        => $row->empresa_id,
+                                    'descripcion'       => $row->descripcion,
+                                    'created'           => $row->created
+                           );
+              }
+
+              return $data;
+        } else 
+            return false;
+    }
+
+    function create_poliza($data) {
+        if (!is_null($res = $this -> ci -> ewarrants_model -> create_poliza($data))) {
+            $data['poliza_id'] = $res['poliza_id'];
+            return $data;
+        }
+
+        return NULL;
+    }
+
+    function modificar_poliza($poliza_id, $data) {
+        if ($this -> ci -> ewarrants_model -> modificar_poliza($poliza_id, $data)) {
+            return true;
+        } else {
+            return NULL;
+        }
+    }
+
 }
 
