@@ -10,10 +10,10 @@
 <h2 style="font: normal 20px/23px Arial, Helvetica, sans-serif; margin: 0; padding: 0 0 18px; color: black;">Solicitud de cambio de Contraseña</h2>
 Para crear una nueva contraseña solo sigue el siguiente enlace:<br />
 <br />
-<big style="font: 16px/18px Arial, Helvetica, sans-serif;"><b><a href="<?php echo site_url('/auth/reset_password/'.$user_id.'/'.$new_pass_key); ?>" style="color: #3366cc;">Crear un nuevo password</a></b></big><br />
+<big style="font: 16px/18px Arial, Helvetica, sans-serif;"><b><a href="<?php echo site_url('/adm/ew/reset_password/'.$user_id.'/'.$new_pass_key); ?>" style="color: #3366cc;">Crear un nuevo password</a></b></big><br />
 <br />
 Si el link no funciona, Copia y Pega la siguiente dirección en la barra de direcciones de tu browser:<br />
-<nobr><a href="<?php echo site_url('/auth/reset_password/'.$user_id.'/'.$new_pass_key); ?>" style="color: #3366cc;"><?php echo site_url('/auth/reset_password/'.$user_id.'/'.$new_pass_key); ?></a></nobr><br />
+<nobr><a href="<?php echo site_url('/adm/ew/reset_password/'.$user_id.'/'.$new_pass_key); ?>" style="color: #3366cc;"><?php echo site_url('/auth/reset_password/'.$user_id.'/'.$new_pass_key); ?></a></nobr><br />
 <br />
 <br />
 Recibiste este email porque fue solicitado desde <a href="<?php echo site_url(''); ?>" style="color: #3366cc;"><?php echo $site_name; ?></a>. Si usted NO solicito este correo, por favor ignorelo y su contraseña permanecera igual.

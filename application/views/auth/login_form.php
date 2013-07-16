@@ -88,7 +88,7 @@ $remember = array(
 	                <?php
 	                     if(isset($message))
 	                     {
-	                          echo "<div class='message success'>";
+	                          echo "<div class='message success alert alert-success'>";
 	                                     echo "<p>" . $message. "</p>";
 	                          echo "</div>";
 	                     }
@@ -118,7 +118,10 @@ $remember = array(
 				        	<span class="add-on"><i class="icon-lock"></i></span>
 				        	<input type="password" class="input-block-level" name="password" id="password" placeholder="Password">
 				        </div>
+
 				        <button class="btn btn-large btn-primary" type="submit">Ingresar</button>
+
+				        <a href="http://localhost/argc/index.php/adm/ew/olvide_contrasena">Olvide mi contraseña</a>
 				   </form>
 		</div>
 					

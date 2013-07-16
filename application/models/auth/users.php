@@ -330,11 +330,11 @@ class Users extends CI_Model
 	 */
 	function can_reset_password($user_id, $new_pass_key, $expire_period = 900)
 	{
-                                    //Funciona como el COUNT(*) pero con activerecords
+        //Funciona como el COUNT(*) pero con activerecords
 		$this->db->select('1', FALSE);
 		$this->db->where('user_id', $user_id);
 		$this->db->where('new_password_key', $new_pass_key);
-		$this->db->where('UNIX_TIMESTAMP(new_password_requested) >', time() - $expire_period);
+		//$this->db->where('UNIX_TIMESTAMP(new_password_requested) >', time() - $expire_period);
 
 		$query = $this->db->get($this->table_name);
 		return $query->num_rows() == 1;
@@ -356,7 +356,7 @@ class Users extends CI_Model
 		$this->db->set('new_password_requested', NULL);
 		$this->db->where('user_id', $user_id);
 		$this->db->where('new_password_key', $new_pass_key);
-		$this->db->where('UNIX_TIMESTAMP(new_password_requested) <', time() - $expire_period);
+		//$this->db->where('UNIX_TIMESTAMP(new_password_requested) <', time() - $expire_period);
 
 		$this->db->update($this->table_name);
 		return $this->db->affected_rows() > 0;
