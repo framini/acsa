@@ -52,6 +52,7 @@
                                                 <th>Nombre</th>
                                                 <th>Owner</th>
                                                 <th>Saldo</th>
+                                                <th>Saldo a pagar</th>
                                                 <th>Acciones</th>
                                         </tr>
                                 </thead>
@@ -70,6 +71,8 @@
 													echo $producto['owner'] .'</td>';
 													echo "<td class='saldo-producto'>";
 													echo $producto['saldo'] .'</td>';
+													echo "<td class='saldo_a_pagar-producto'>";
+													echo $producto['saldo_a_pagar'] .'</td>';
 												   echo '<td>';
                                                    if(count($data_menu) > 0) {
 														$band = 0;

@@ -15,12 +15,19 @@ class adm_Ewarrants extends MY_Controller {
 
 		//Chequeamos que el usuario que esta tratando de dar gestionar ewarrants
 		//sea de tipo warrantera o bien Argentina Clearing
-		if ((!$this -> auth_frr -> has_role_warrantera() && !$this -> auth_frr -> has_role_cliente() && !$this -> auth_frr -> has_role_aseguradora() && !$this -> auth_frr -> is_argclearing())) {
+		if ((!$this -> auth_frr -> has_role_warrantera() && 
+			 !$this -> auth_frr -> has_role_cliente() && 
+			 !$this -> auth_frr -> has_role_aseguradora() && 
+			 !$this -> auth_frr -> is_argclearing() &&
+			 !$this -> auth_frr -> es_admin()
+			)) {
 			redirect('adm/ew');
 			die();
 		}
 
 		$this -> load -> model('ewarrants/ewarrants_model');
+
+		$this->ewarrants_frr->control_stock_warrants();
 	}
 
 	function index() {
@@ -50,7 +57,7 @@ class adm_Ewarrants extends MY_Controller {
 		$empresa_id = $this -> auth_frr -> get_empresa_id();
 
 		if ($this -> auth_frr -> es_admin())
-			$data['ewarrants'] = $this -> ewarrants_frr -> get_warrants_habilitados();
+			$data['ewarrants'] = $this -> ewarrants_frr -> get_warrants();
 		else
 			$data['ewarrants'] = $this -> ewarrants_frr -> get_warrants_empresa($empresa_id);
 
@@ -548,7 +555,9 @@ class adm_Ewarrants extends MY_Controller {
                      			$prod = $this->productoscreator->factory($tipo, $info);
                      			$precio_ponderado = $prod->get_precio_ponderado();
                      		}//fin if producto != null*/
-                     		 
+                     		
+                     		$prod_comision = $this -> productos_model -> get_comision_by_empresa($producto->producto_id, $empresa_id);
+
                      		$data = array(
                      				'codigo' => $this->form_validation->set_value('codigo'),
                      				'cuentaregistro_depositante_id' => $this->input->post('cuentaregistro_id'),
@@ -562,8 +571,9 @@ class adm_Ewarrants extends MY_Controller {
                      				'empresa_id'  => $empresa_id,
                      				'empresa_nombre'  => $datosEmpresa->getNombre(),
                      				'empresa_cuit' => $datosEmpresa->getCuit(),
-                     				'precio_ponderado' => $producto->precio,
-                     				'usuario_ultima_accion' => $this->auth_frr->get_username()
+                     				'precio_ponderado' => $producto->precio * $this->form_validation->set_value('kilos') ,
+                     				'usuario_ultima_accion' => $this->auth_frr->get_username(),
+                     				'comision_warrantera' => $prod_comision->comision
                      		);
                      		if($this->ewarrants_frr->emitir($data)) {
                      			$message = "El eWarrant se ha emitido correctamente!";

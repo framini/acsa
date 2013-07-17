@@ -30,6 +30,15 @@ class Empresas extends CI_Model {
 		return NULL;
 	}
 
+	function get_saldos_by_user_id($user_id) {
+		$this -> db -> where('owner', $user_id);
+		$this -> db -> from('cuentas_corrientes');
+		$query = $this -> db -> get();
+		if ($query -> num_rows() == 1)
+			return $query -> row();
+		return NULL;
+	}
+
 	function get_cuenta_registro_by_id($empresa_id) {
 		$this -> db -> where('cuentaregistro_id', $empresa_id);
 		$this -> db -> from('cuentas_registro');

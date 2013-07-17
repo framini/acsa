@@ -1,6 +1,9 @@
 <?php
+
 $nombre_producto = isset($row_producto[0]['nombre']) ? $row_producto[0]['nombre'] : set_value('nombre');
 $precio_producto = isset($row_producto[0]['saldo']) ? $row_producto[0]['saldo'] : set_value('saldo');
+$precio_producto2 = isset($row_producto[0]['saldo_a_pagar']) ? $row_producto[0]['saldo_a_pagar'] : set_value('saldo_a_pagar');
+
 
 $calidad_producto = isset($row_producto[0]['owner']) ? $row_producto[0]['owner'] : set_value('owner');
 $aforo_producto = isset($row_producto[0]['empresa']) ? $row_producto[0]['empresa'] : set_value('empresa');
@@ -17,6 +20,13 @@ $precio = array(
 	'name'	=> 'saldo',
 	'id'	=> 'saldo',
 	'value'	=> $precio_producto,
+    'class' => 'span5',
+);
+
+$precio2 = array(
+	'name'	=> 'saldo_a_pagar',
+	'id'	=> 'saldo_a_pagar',
+	'value'	=> $precio_producto2,
     'class' => 'span5',
 );
 
@@ -54,7 +64,8 @@ $aforo = array(
 				
 				//Seleccionamos los inputs
 				var campos = {
-					saldo: $('#saldo').val()
+					saldo: $('#saldo').val(),
+					saldo_a_pagar: $('#saldo_a_pagar').val()
 				};
 				
 				var param = $.extend({}, campos);
@@ -131,6 +142,16 @@ $aforo = array(
                     <?php echo form_input($precio); ?>
                     	<?php if(form_error($precio['name']) != "" || isset($errors[$precio['name']])) {?>
                     	<div class="alert alert-error error-gral span5"><?php echo form_error($precio['name']); ?><?php echo isset($errors[$precio['name']])?$errors[$precio['name']]:''; ?></div>
+                    	<?php } ?>
+				</div>
+			</div>
+
+			<div class="row">
+        		<div class="span6 control-group <?php if(form_error($precio2['name']) != "") echo "error"; ?>">
+                    <?php echo form_label('Saldo a pagar: <i class="icon-asterisk"></i>', $precio2['id']); ?>
+                    <?php echo form_input($precio2); ?>
+                    	<?php if(form_error($precio2['name']) != "" || isset($errors[$precio2['name']])) {?>
+                    	<div class="alert alert-error error-gral span5"><?php echo form_error($precio2['name']); ?><?php echo isset($errors[$precio2['name']])?$errors[$precio2['name']]:''; ?></div>
                     	<?php } ?>
 				</div>
 			</div>

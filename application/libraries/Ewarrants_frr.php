@@ -81,14 +81,33 @@ class Ewarrants_frr {
     	}
     	
     	if( isset($poliza_id) ) {
-
+            $comision_aseguradora = $this->get_poliza_by_id($poliza_id);
     		$data['poliza_id'] = $poliza_id;
+            $data['comision_aseguradora'] = $comision_aseguradora[0]['poliza_comision'];
     	}
     	
-    	if($this->ci->ewarrants_model->modificar($ewid, $data))
+    	if($this->ci->ewarrants_model->modificar($ewid, $data)) {
+            //En caso que la aseguradora acepte la poliza se realizan los movimientos economicos
+            if( $this-> ci -> auth_frr -> has_role_aseguradora() && $estado == 5  ) {
+                if( $this-> ci -> empresas_frr -> realizar_movimiento_cuenta_corriente(
+                    $ew->empresa_id,
+                    $ew->emitido_por,
+                    $this->ci->auth_frr->get_empresa_id(),
+                    $ew->precio_ponderado,
+                    $ew->comision_warrantera,
+                    $ew->comision_aseguradora
+                )) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+
     		return true;
-    	else
+        }
+    	else {
     		return false;
+        }
     }
     
     function can_anular($ewid) {
@@ -196,6 +215,78 @@ class Ewarrants_frr {
         } else {
             return false;
         }
+    }
+
+
+    function get_warrants() {
+        $ew = $this -> ci -> ewarrants_model -> get_warrants();
+        if ($ew != NULL) {
+            foreach ($ew->result() as $row) {
+                $crd = $this -> get_cuenta_registro_by_id($row -> cuentaregistro_depositante_id);
+
+                $cr_nombre_dep = $crd -> nombre;
+                $cr = $this -> get_cuenta_registro_by_id($row -> cuentaregistro_id);
+                $cr_nombre = $cr -> nombre;
+                
+                $data[] = array(
+                    'id' => $row -> id, 
+                    'codigo' => $row -> codigo, 
+                    'cuentaregistro_depositante_id' => $row -> cuentaregistro_depositante_id, 
+                    'cuentaregistro_id' => $row -> cuentaregistro_id, 
+                    'nombre_cuenta_registro_depositante' => $cr_nombre_dep, 
+                    'nombre_cuenta_registro' => $cr_nombre, 
+                    'producto' => $row -> producto, 
+                    'kilos' => $row -> kilos, 
+                    'observaciones' => $row -> observaciones, 
+                    'created' => $row -> created, 
+                    'estado' => $row -> estado, 
+                    'emitido_por' => $this->ci->auth_frr->get_username_by_id($row -> emitido_por), 
+                    'firmado' => $row -> firmado
+                );
+
+            }
+
+            return $data;
+        } else {
+            return NULL;
+        }
+    }
+
+    function control_stock_warrants() {
+        $query = "SELECT * FROM ewarrant WHERE vencimiento < DATE_SUB(NOW(), INTERVAL 30 DAY)";
+
+        $ewarrants_por_vencer = $this->ci->db->query($query);
+        
+        if( count( $ewarrants_por_vencer->result_array() ) > 0 ) {
+
+            foreach ($ewarrants_por_vencer->result_array() as $key => $value) {
+                $user_id = $value['emitido_por'];
+                $emp_id = $value['empresa_id'];
+
+                if( !$this->ci->session->userdata('chequeo_stock') ) {
+                    $this->_send_email("", "framini@gmail.com");
+                }
+                
+            }
+
+            $newdata = array(
+                   'chequeo_stock' => TRUE
+            );
+            $this->ci->session->set_userdata($newdata);
+        }
+    }
+
+    function _send_email($type, $email) {
+        $this ->ci -> load -> library('email');
+
+        $this ->ci -> email -> initialize(array('protocol' => 'smtp', 'smtp_host' => 'smtp.sendgrid.net', 'mailtype' => 'html', 'smtp_user' => 'framini', 'smtp_pass' => 'montfran', 'bcc_batch_mode' => true, 'bcc_batch_size' => 3, 'smtp_port' => 587, 'crlf' => "\r\n", 'newline' => "\r\n"));
+        $this ->ci -> email -> from($this-> ci -> config -> item('webmaster_email', 'auth_frr'), $this -> ci -> config -> item('webmaster_email', 'auth_frr'));
+        $this ->ci -> email -> reply_to($this -> ci -> config -> item('webmaster_email', 'auth_frr'), $this -> ci -> config -> item('webmaster_email', 'auth_frr'));
+        $this ->ci -> email -> to($email);
+        //$this ->ci -> email -> subject(sprintf($this -> lang -> line('auth_subject_' . $type), $this -> config -> item('website_name', 'auth_frr')));
+        $this ->ci -> email -> subject("El warrant esta por vencer");
+        $this ->ci -> email -> message("Tiene warrants que estan por vencer");
+        $this ->ci -> email -> send();
     }
     
     /**

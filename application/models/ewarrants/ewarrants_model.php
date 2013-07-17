@@ -18,6 +18,7 @@ class Ewarrants_model extends CI_Model
         
         function emitir($data) {
             $data['created'] = date('Y-m-d H:i:s');
+            $data['vencimiento'] = date('Y-m-d H:i:s', strtotime('+30 days'));
             if ($this->db->insert('ewarrant', $data)) {
                 return true;
             } else {
@@ -37,6 +38,18 @@ class Ewarrants_model extends CI_Model
             $query = $this->db->select()
                                ->from('ewarrant')
                                ->where('estado', 1)
+                               ->get();
+        
+            if($query->num_rows() > 0)
+            {
+                return $query;
+            } else
+                return NULL;
+        }
+
+        function get_warrants() {
+            $query = $this->db->select()
+                               ->from('ewarrant')
                                ->get();
         
             if($query->num_rows() > 0)

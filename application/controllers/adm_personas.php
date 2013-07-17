@@ -327,17 +327,24 @@ class Adm_Personas extends MY_Controller {
 			$this -> form_validation -> set_error_delimiters('<p><i class="icon-exclamation-sign"></i> ', '</p>');
 
 			$this -> form_validation -> set_rules('nombre', 'Nombre', 'trim|required|xss_clean');
-			$this -> form_validation -> set_rules('saldo', 'Saldo', 'trim|required|xss_clean');
-			$this -> form_validation -> set_rules('owner', 'Propietario', 'trim|required|xss_clean');
+			$this -> form_validation -> set_rules('saldo', 'Saldo', 'trim|xss_clean');
+			$this -> form_validation -> set_rules('empresa', 'Propietario', 'trim|required|xss_clean');
 
 			$data['errors'] = array();
 
 			//Chequeamos que los datos enviados por formulario sean correctos
 			if ($this -> form_validation -> run()) {
+				if( $this -> input -> post('owner') ) {
+					$owner = $this -> form_validation -> set_value('owner');
+				} else {
+					$owner = $this -> form_validation -> set_value('empresa');
+				}
+
 				$data = array(
 					'nombre' => $this -> form_validation -> set_value('nombre'),
 					'saldo'	=> $this -> form_validation -> set_value('saldo'),
-					'owner'	=> $this -> form_validation -> set_value('owner')
+					'owner'	=> $owner,
+					'saldo_a_pagar' => $this -> input -> post('saldo_a_pagar') ? $this -> form_validation -> set_value('saldo_a_pagar') : 0
 				);
 				if (!is_null($data = $this -> empresas_frr -> create_cuenta_corriente($data))) {
 					//Nos fijamos si la petición se hizo via AJAX
@@ -361,7 +368,7 @@ class Adm_Personas extends MY_Controller {
 					$resultados['error'] = true;
 					//Chequeamos que alguno de los campos requeridos este vacio
 					//Si esta vacio mostramos un mensaje general
-					if (!$this -> input -> post('nombre') || !$this -> input -> post('owner') || !$this -> input -> post('saldo')) {
+					if (!$this -> input -> post('nombre') || !$this -> input -> post('empresa') ) {
 						$resultados['message'] = "Todos los campos son requeridos";
 					}
 					//Devolvemos los resultados en JSON
@@ -404,7 +411,8 @@ class Adm_Personas extends MY_Controller {
 			//Chequeamos que los datos enviados por formulario sean correctos
 			if ($this -> form_validation -> run()) {
 				$data = array(
-					"saldo" => $this -> form_validation -> set_value('saldo')
+					"saldo" => $this -> form_validation -> set_value('saldo'),
+					"saldo_a_pagar" => $this -> input -> post('saldo_a_pagar')
 				);
 				if (!is_null($data = $this -> empresas_frr -> modificar_cuenta_corriente( $this->uri->segment(4), $data ))) {
 					//Nos fijamos si la petición se hizo via AJAX

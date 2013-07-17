@@ -53,6 +53,81 @@ class Empresas_frr {
 		
 		return NULL;
 	}
+
+	function get_saldos_by_user_id($u_id = NULL) {
+        if($u_id) {
+            
+            $saldos = $this->ci->empresas->get_saldos_by_user_id($u_id);
+    
+            if($saldos) {
+    
+                $data[] = array(
+                        'saldo_positivo'                     => $saldos->saldo,
+                        'saldo_negativo'                     => $saldos->saldo_a_pagar
+                );
+
+                return $data;
+            }
+ 
+        }   
+    }
+
+	function realizar_movimiento_cuenta_corriente($empresa_id, $owner_id, $aseguradora_id, $precio, $comision_warrantera, $comision_aseguradora) {
+		
+		$saldos_usuario = $this->get_saldos_by_user_id($owner_id);
+		$saldos_warrantera = $this->get_saldos_by_user_id($empresa_id);
+		$saldos_aseguradora = $this->get_saldos_by_user_id($aseguradora_id);
+
+		if( $saldos_usuario ) {
+			//CLIENTE
+			//precio total - % warrantera - % aseguradora
+			$saldo_final_usuario = $precio - ( $precio * $comision_warrantera ) / 100 - ( $precio * $comision_aseguradora ) / 100;
+			
+			$data['saldo_usuario'] = $saldos_usuario[0]['saldo_positivo'] + $saldo_final_usuario;
+			$data['saldo_usuario_a_pagar'] = $saldos_usuario[0]['saldo_negativo'] + $precio;
+
+			//WARRANTERA
+			$data['saldo_warrantera'] = $saldos_warrantera[0]['saldo_positivo'] + $precio - ( $precio * $comision_aseguradora ) / 100;
+			$data['saldo_warrantera_a_pagar'] = $saldos_warrantera[0]['saldo_negativo'] + $saldo_final_usuario;
+
+			//ASEGURADORA
+			$data['saldo_aseguradora'] =  $saldos_aseguradora[0]['saldo_positivo'] + ( $precio * $comision_aseguradora ) / 100;
+		
+			//Comenzamos la transaccion
+			$this->ci->db->trans_start();
+			
+			//Primero actualizamos los saldos del usuario
+			$this->ci->db->where('owner', $owner_id);
+			$this->ci->db->update('cuentas_corrientes', array(
+				'saldo' => $data['saldo_usuario'],
+				'saldo_a_pagar' => $data['saldo_usuario_a_pagar']
+			));
+
+			//Actualizamos los saldos de la warrantera
+			$this->ci->db->where('owner', $empresa_id);
+			$this->ci->db->update('cuentas_corrientes', array(
+				'saldo' => $data['saldo_warrantera'],
+				'saldo_a_pagar' => $data['saldo_warrantera_a_pagar']
+			));
+
+			//Actualizamos los saldos de las aseguradoras
+			$this->ci->db->where('owner', $aseguradora_id);
+			$this->ci->db->update('cuentas_corrientes', array(
+				'saldo' => $data['saldo_aseguradora']
+			));
+
+			//Comitiamos la transaccion
+			$this->ci->db->trans_complete();
+			
+			if($this->ci->db->trans_status() === FALSE) {
+	            return FALSE;
+	        } else {
+	        	return TRUE;
+	        }
+		}
+
+		
+	}
 	
 	/**
 	 * Crea una nueva empresa en el sistema
@@ -509,7 +584,8 @@ class Empresas_frr {
 					'cuenta_corriente_id' => $row -> cuenta_corriente_id, 
 					'owner' => $user_name ? $this->ci->auth_frr->get_username_by_id($row -> owner)  : $row -> owner, 
 					'nombre' => $row -> nombre, 
-					'saldo' => $row -> saldo
+					'saldo' => $row -> saldo,
+					'saldo_a_pagar' => $row -> saldo_a_pagar
 				);
 			}
 		} else {
@@ -533,7 +609,8 @@ class Empresas_frr {
 				$data[] = array(
 					'cuenta_corriente_id' => $producto -> cuenta_corriente_id, 
 					'nombre' => $producto -> nombre, 
-					'saldo' => $producto -> saldo, 
+					'saldo' => $producto -> saldo,
+					'saldo_a_pagar' =>  $producto -> saldo_a_pagar,
 					'owner' => $user_as_name ? $this->ci->auth_frr->get_username_by_id($producto -> owner) : $producto -> owner
 				);
 			}
