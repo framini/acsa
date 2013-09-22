@@ -111,7 +111,7 @@ class __TwigTemplate_dcffb288c726a7a57e3e3e80d9fb9a5c extends Twig_Template
         // line 45
         echo "        
     \t<script src=\"http://code.jquery.com/jquery-1.8.2.min.js\"></script>
-        <script src=\"http://localhost/argc/index.php/js/bootstrap-min-js\"></script>
+        <script src=\"http://localhost:8888/argc/index.php/js/bootstrap-min-js\"></script>
     </body>
 </html>";
     }
