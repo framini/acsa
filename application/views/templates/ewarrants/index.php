@@ -27,6 +27,7 @@
     <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
     <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">-->
     <script src="<?php echo base_url(); ?>js/jquery.min.js"></script>
+    <script src="<?php echo base_url(); ?>js/jquery.sparkline.min.js"></script>
     <script src="<?php echo base_url(); ?>js/modernizr.js"></script>
     <!--<script src="<?php echo base_url(); ?>bootstrap/js/jquery.js"></script>-->
   </head>
@@ -54,6 +55,14 @@
                   echo '<li ';
                   if($this->uri->segment(2) == "ewarrants") echo "class='active'";
                   echo '><a href="' . site_url() . '/adm/ewarrants">eWarrants</a></li>';
+                }
+              ?>
+
+              <?php 
+                if(isset($admin)) {
+                  echo '<li ';
+                  if($this->uri->segment(2) == "tablero") echo "class='active'";
+                  echo '><a href="' . site_url() . '/adm/tablero">Tablero de Control</a></li>';
                 }
               ?>
               

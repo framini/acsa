@@ -86,7 +86,7 @@ class __TwigTemplate_dcffb288c726a7a57e3e3e80d9fb9a5c extends Twig_Template
                                 <p class='center'><a href=\"";
                 // line 32
                 echo twig_escape_filter($this->env, Twig::url_sitio("main/item", $this->getAttribute((isset($context["entrada"]) ? $context["entrada"] : null), "entry_id")), "html", null, true);
-                echo "\" class=\"btn btn-mini btn-info\">ver más</a></p>
+                echo "\" class=\"btn btn-mini btn-info\">ver mÃ¡s</a></p>
 \t                          </div>
 \t                        </div>
 \t                      </li>

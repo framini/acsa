@@ -39,6 +39,16 @@ $config['anular'] = array('texto_anchor' => 'Anular', 'icono' => 'icon-remove-si
 $config['ver_pendientes'] = array('texto_anchor' => 'Ver Pendientes', 'icono' => 'icon-remove-sign', 'boton_superior' => true, 'clase_boton' => 'btn btn-large btn-danger enviar absoluto-r0-b0 margin-bot-none pull-right');
 $config['gestionar_polizas'] = array('texto_anchor' => 'Gestionar Polizas', 'icono' => 'icon-remove-sign', 'boton_superior' => true, 'clase_boton' => 'btn btn-large btn-danger enviar absoluto-r0-b0 margin-bot-none pull-right');
 
+
+# Menu Tablero
+####################################################################################
+$config['indicadores'] = array('texto_anchor' => 'Indicadores', 'icono' => 'icon-plus-sign', 'boton_superior' => false);
+$config['tablero_control'] = array('texto_anchor' => 'Tablero', 'icono' => 'icon-briefcase', 'titulo_gestion' => 'Tablero de Control');
+$config['gestionar_indicadores'] = array('texto_anchor' => 'Gestionar Indicadores', 'icono' => 'icon-briefcase', 'titulo_gestion' => 'Gestion Indicadores');
+$config['alta_indicador'] = array('texto_anchor' => 'Alta Indicador', 'icono' => 'icon-plus icon-white', 'clase_boton' => 'btn btn-large btn-success pull-right', 'boton_superior' => true, 'titulo' => false);
+
+
+
 # Menu gestion Seguridad
 # Notas:
 # texto_anchor: Es el texto a mostrar en pantalla para el boton
