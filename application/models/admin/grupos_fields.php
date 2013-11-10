@@ -19,6 +19,9 @@ class Grupos_fields extends CI_Model
 	 * Método para crear un nuevo grupo de fields
 	 */
 	function create_grupo_fields($data) {
+		//Audit field
+		$data['user'] = $this->auth_frr->is_logged_in();
+
 		$this->db->insert('grupos_fields', $data);
 		if($this->db->affected_rows() > 0) {
 			return true;
@@ -61,6 +64,9 @@ class Grupos_fields extends CI_Model
 				}
 			}
 		}
+
+		//Audit field
+		$data['user'] = $this->auth_frr->is_logged_in();
 
 		//Actualizamos los datos del grupo
 		$this->db->where('grupos_fields_id', $grupo_field_id);

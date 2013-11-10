@@ -12,7 +12,8 @@ class Tablero_model extends CI_Model {
 	}
 
 	function alta_indicador($data) {
-
+		//Audit field
+		$data['user'] = $this->auth_frr->is_logged_in();
 		if ($this -> db -> insert('indicador', $data)) {
 			$id_indicador = $this -> db -> insert_id();
 			return array('idIndicador' => $id_indicador);

@@ -144,6 +144,8 @@ class  Roles_model extends CI_Model
      */
     function add_role($data)
     {
+        //Audit field
+        $data['user'] = $this->auth_frr->is_logged_in();
         if ($this->db->insert('roles', $data)) 
         {
                 return true;
@@ -159,6 +161,8 @@ class  Roles_model extends CI_Model
      */
     function modificar_role($role_id, $data)
     {
+        //Audit field
+        $data['user'] = $this->auth_frr->is_logged_in();
         $this->db->where('role_id', $role_id);
         if($this->db->update('roles', $data))
                 return true;

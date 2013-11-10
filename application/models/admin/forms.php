@@ -63,6 +63,8 @@ class Forms extends CI_Model
 				}
 			}
 		}
+		//Audit field
+		$data['user'] = $this->auth_frr->is_logged_in();
 
 		$this->db->insert('forms', $data);
 		if($this->db->affected_rows() > 0) {
@@ -271,6 +273,8 @@ class Forms extends CI_Model
 				}
 			}
 		}
+		//Audit field
+		$data['user'] = $this->auth_frr->is_logged_in();
 		
 		$this->db->where('forms_id', $form_id);
 		$this->db->update('forms', $data);

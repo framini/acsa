@@ -89,6 +89,9 @@ class Grupos_templates extends CI_Model
 	}
 	
 	function create_grupo_templates($data) {
+		//Audit field
+		$data['user'] = $this->auth_frr->is_logged_in();
+
 		$this->db->insert('templates_groups', $data);
 		if($this->db->affected_rows() > 0) {
 			return $this->db->insert_id();
@@ -131,6 +134,9 @@ class Grupos_templates extends CI_Model
 	}
 	
 	function modificar_grupo_template($grupo_id, $data) {
+		//Audit field
+		$data['user'] = $this->auth_frr->is_logged_in();
+		
 		//Actualizamos los datos del grupo
 		$this->db->where('template_group_id', $grupo_id);
 		if($this->db->update('templates_groups', $data)) {

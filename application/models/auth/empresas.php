@@ -82,6 +82,9 @@ class Empresas extends CI_Model {
 		$this -> db -> where('owner', 0);
 		$data['activated'] = 0;
 
+		//Audit field
+		$data['user'] = $this->auth_frr->is_logged_in();
+
 		if ($this -> db -> update('empresas', $data)) {
 			//Eliminamos los usuarios que hayan pertenecido a esa empresa
 			$this -> db -> where('empresa_id', $empresa_id);
@@ -96,6 +99,8 @@ class Empresas extends CI_Model {
 	function eliminar_cuenta_registro($empresa_id) {
 		$this -> db -> where('cuentaregistro_id', $empresa_id);
 		$data['activated'] = 0;
+		//Audit field
+		$data['user'] = $this->auth_frr->is_logged_in();
 
 		if ($this -> db -> update('cuentas_registro', $data)) {
 			return true;
@@ -111,6 +116,8 @@ class Empresas extends CI_Model {
 	function activar_empresa($empresa_id) {
 		$this -> db -> where('empresa_id', $empresa_id);
 		$data['activated'] = 1;
+		//Audit field
+		$data['user'] = $this->auth_frr->is_logged_in();
 
 		if ($this -> db -> update('empresas', $data)) {
 			//Eliminamos los usuarios que hayan pertenecido a esa empresa
@@ -126,6 +133,8 @@ class Empresas extends CI_Model {
 	function activar_cuenta_registro($empresa_id) {
 		$this -> db -> where('cuentaregistro_id', $empresa_id);
 		$data['activated'] = 1;
+		//Audit field
+		$data['user'] = $this->auth_frr->is_logged_in();
 
 		if ($this -> db -> update('cuentas_registro', $data)) {
 			return true;
@@ -144,6 +153,8 @@ class Empresas extends CI_Model {
 	 */
 	function create_empresa($data) {
 		$data['fecha_alta'] = date('Y-m-d H:i:s');
+		//Audit field
+		$data['user'] = $this->auth_frr->is_logged_in();
 
 		if ($this -> db -> insert('empresas', $data)) {
 			$empresa_id = $this -> db -> insert_id();
@@ -265,6 +276,8 @@ class Empresas extends CI_Model {
 	 */
 	function create_cuenta_registro($data) {
 		$data['fecha_alta'] = date('Y-m-d H:i:s');
+		//Audit field
+		$data['user'] = $this->auth_frr->is_logged_in();
 
 		if ($this -> db -> insert('cuentas_registro', $data)) {
 			$cr_id = $this -> db -> insert_id();
@@ -285,6 +298,9 @@ class Empresas extends CI_Model {
 			$c = 'cuentaregistro_id';
 			$t = $tabla;
 		}
+
+		//Audit field
+		$data['user'] = $this->auth_frr->is_logged_in();
 
 		$this -> db -> where($c, $empresa_id);
 

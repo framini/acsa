@@ -79,7 +79,8 @@ class Productos_model extends CI_Model {
 	}
 
 	function create_producto($data) {
-
+		//Audit field
+		$data['user'] = $this->auth_frr->is_logged_in();
 		if ($this -> db -> insert('productos', $data)) {
 			$producto_id = $this -> db -> insert_id();
 			return array('producto_id' => $producto_id);
@@ -101,6 +102,8 @@ class Productos_model extends CI_Model {
 	 * Modifica los datos de una empresa
 	 */
 	function modificar_producto($producto_id, $data) {
+		//Audit field
+		$data['user'] = $this->auth_frr->is_logged_in();
 		$this -> db -> where('producto_id', $producto_id);
 		if ($this -> db -> update('productos', $data))
 			return true;

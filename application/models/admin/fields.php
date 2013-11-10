@@ -17,6 +17,8 @@ class fields extends CI_Model
 	 * Método para crear un nuevo grupo de fields
 	 */
 	function create_fields($data, $actualizar = FALSE) {
+		//Audit field
+		$data['user'] = $this->auth_frr->is_logged_in();
 		$this->db->insert('fields', $data);
 		$query = $this->db->query('SELECT LAST_INSERT_ID()');
   		$row = $query->row_array();
@@ -228,6 +230,8 @@ class fields extends CI_Model
 		unset($data['grupos_fields_id']);
 		
 		$this->db->where('fields_id', $field_id);
+		//Audit field
+		$data['user'] = $this->auth_frr->is_logged_in();
 		if($this->db->update('fields', $data)) {
 			return true;
 		} else {

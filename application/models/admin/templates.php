@@ -20,6 +20,8 @@ class Templates extends CI_Model
 	function create_template($data, $g_id) {
 		$data['template_group_id'] = $g_id;
 		$data['edit_date'] = date('Y-m-d H:i:s');
+		//Audit field
+		$data['user'] = $this->auth_frr->is_logged_in();
 		
 		$this->db->insert('templates', $data);
 		if($this->db->affected_rows() > 0) {
@@ -30,6 +32,8 @@ class Templates extends CI_Model
 	}
 	
 	function modificar_template($template_id, $data) {
+		//Audit field
+		$data['user'] = $this->auth_frr->is_logged_in();
 		$this->db->where('template_id', $template_id);
 		if($this->db->update('templates', $data)) {
 			return true;
