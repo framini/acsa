@@ -19,10 +19,10 @@
 			'selector': 'td.id'
 		});
 		var qsa = $('input#anio_search').quicksearch('table tbody tr', {
-			'selector': 'td.anio'
+			'selector': 'td.valor'
 		});
 		var qsm = $('input#mes_search').quicksearch('table tbody tr', {
-			'selector': 'td.mes'
+			'selector': 'td.campo'
 		});
 		$('input#id_search').on('actualizarTabla', function(event) {
 			qs.cache();
@@ -48,9 +48,9 @@
 	                		<div class="span12 filtros">
 	                			<input type="text" name="search" value="" id="id_search" class="input-medium search-query span3 " placeholder="Filtrar por ID" data-index="1"/>
 
-	                			<input type="text" name="search" value="" id="mes_search" class="input-medium search-query span2 " placeholder="Filtrar por Mes" data-index="1"/>
+	                			<input type="text" name="search" value="" id="mes_search" class="input-medium search-query span2 " placeholder="Filtrar por Campo" data-index="1"/>
 
-	                			<input type="text" name="search" value="" id="anio_search" class="input-medium search-query span2 " placeholder="Filtrar por Año" data-index="1"/>
+	                			<input type="text" name="search" value="" id="anio_search" class="input-medium search-query span2 " placeholder="Filtrar por Valor" data-index="1"/>
 	                		</div>
                 	</div>
                 	<div class="row">
@@ -95,8 +95,8 @@
                                                                                     echo '<td class="id">';
                                                                                     echo  $ew['id'];
                                                                                     echo '</td>';
-                                                                                    echo '<td>' . $ew['campo'] .'</td>';
-                                                                                    echo '<td>' . $ew['valor'] .'</td>';
+                                                                                    echo '<td class="campo">' . $ew['campo'] .'</td>';
+                                                                                    echo '<td class="valor">' . $ew['valor'] .'</td>';
                                                                                     echo "</tr>";
                                                                                 }
                                                                         ?>

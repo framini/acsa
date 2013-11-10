@@ -73,7 +73,7 @@ class Tablero_frr {
         if( !is_null($id) ) {
 
             $query = $this->ci->db->query("SELECT 
-                                            real_drilldown.idReal_Drilldown, real_drilldown.Campo, real_drilldown.valor,
+                                            real_drilldown.idReal_Drilldown, real_drilldown.Campo, real_drilldown.valor
                                             FROM real_drilldown
                                             WHERE real_drilldown.idIndicador = '$id'
                                             ");
@@ -84,8 +84,7 @@ class Tablero_frr {
                     $data[] = array(
                         'id' => $row -> idReal_Drilldown, 
                         'campo' => $row -> Campo, 
-                        'valor' => $row -> valor,
-                        'indicador' => $row->Indicador
+                        'valor' => $row -> valor
                     );
 
                 }
