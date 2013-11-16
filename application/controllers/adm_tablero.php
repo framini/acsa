@@ -97,33 +97,28 @@ class Adm_Tablero extends MY_Controller {
 		$this -> breadcrumb -> append_crumb('Tablero de Control', site_url() . "adm/tablero/");
 		$this -> breadcrumb -> append_crumb('Gestionar Indicadores', site_url() . "/tablero/gestionar_indicadores");
 
-		//Cargamos el archivo que contiene la info con la que se contruye el menu
-		$this -> config -> load('menu_permisos', TRUE);
+		if ($this -> auth_frr -> es_admin()) {
+			$this->load->library('grocery_CRUD');
+			$this->grocery_crud->set_theme('datatables');
+	        $this->grocery_crud->set_table('indicador');
 
-		//Obtenemos los permisos del usuario logueado asociados a la controladora productos y grupo gestionar_roles
-		$data['permisos'] = $this -> roles_frr -> permisos_role_controladora_grupo($this -> uri -> segment(2), $this -> uri -> segment(3));
+	        $this->grocery_crud->unset_texteditor('Descripcion','full_text');
+	        $this->grocery_crud->unset_texteditor('CalculoNumerador','full_text');
+	        $this->grocery_crud->unset_texteditor('CalculoDenominador','full_text');
+	        $this->grocery_crud->unset_texteditor('DrillDown','full_text');
 
-		//Procesamos los permisos obtenidos
-		if (count($data['permisos']) > 0) {
-			foreach ($data['permisos'] as $key => $row) {
-				$data['data_menu'][$row['permiso']] = $this -> config -> item($row['permiso'], 'menu_permisos');
-			}
+	        $this->grocery_crud->set_rules('idIndicador', 'ID Indicador','trim|required|xss_clean|callback_idIndicador_check');
+
+	        $this->grocery_crud->unique_fields('idIndicador');
+	        $this->form_validation->set_message('is_unique', 'Este campo ya se encuentra en uso');
+
+	        $output = $this->grocery_crud->render();
+
+	        $data['crud'] = $this->load->view('crud_base.php',$output, true);
+	 
+	        $this -> template -> set_content('tablero/crud', $data);
+			$this -> template -> build();
 		}
-
-		//Obtenemos todas las empresas cargadas en el sistema
-		$this -> load -> library('tablero_frr');
-		$data['indicadores'] = $this -> tablero_frr -> get_indicadores();
-
-		if ($message = $this -> session -> flashdata('message')) {
-			$data['message'] = $message;
-		}
-
-		if ($errormsg = $this -> session -> flashdata('errormsg')) {
-			$data['errormsg'] = $errormsg;
-		}
-
-		$this -> template -> set_content('tablero/gestionar_indicadores', $data);
-		$this -> template -> build();
 	}
 
 	function alta_indicador() {
@@ -270,6 +265,70 @@ class Adm_Tablero extends MY_Controller {
 		$data['data'] = str_replace("\"", "", json_encode($this->tablero_frr->get_reporte()));
 		$this -> template -> set_content('tablero/reporte', $data);
 		$this -> template -> build();
+	}
+
+	function gestionar_objetivos() {
+		$this -> breadcrumb -> append_crumb('Home', site_url('adm/home'));
+		$this -> breadcrumb -> append_crumb('Tablero de Control', site_url() . "adm/tablero/");
+		$this -> breadcrumb -> append_crumb('Gestionar Objetivos', site_url() . "/tablero/gestionar_objetivos");
+
+		if ($this -> auth_frr -> es_admin()) {
+			$this->load->library('grocery_CRUD');
+			$this->grocery_crud->set_theme('datatables');
+	        $this->grocery_crud->set_table('objetivo');
+	        $output = $this->grocery_crud->render();
+
+	        $data['crud'] = $this->load->view('crud_base.php',$output, true);
+	 
+	        $this -> template -> set_content('tablero/crud', $data);
+			$this -> template -> build();
+		}
+	}
+
+	function indicador() {
+		if ($this -> auth_frr -> es_admin()) {
+			$this->load->library('grocery_CRUD');
+			$this->grocery_crud->set_theme('datatables');
+	        $this->grocery_crud->set_table('indicador');
+
+	        $this->grocery_crud->unset_texteditor('Descripcion','full_text');
+	        $this->grocery_crud->unset_texteditor('CalculoNumerador','full_text');
+	        $this->grocery_crud->unset_texteditor('CalculoDenominador','full_text');
+	        $this->grocery_crud->unset_texteditor('DrillDown','full_text');
+
+	        $this->grocery_crud->set_rules('idIndicador', 'ID Indicador','trim|required|xss_clean|callback_idIndicador_check');
+
+	        $this->grocery_crud->unique_fields('idIndicador');
+	        $this->form_validation->set_message('is_unique', 'Este campo ya se encuentra en uso');
+
+	        $output = $this->grocery_crud->render();
+
+	        $data['crud'] = $this->load->view('crud_base.php',$output, true);
+	 
+	        $this -> template -> set_content('tablero/crud', $data);
+			$this -> template -> build();
+		}
+	}
+
+	public function idIndicador_check($str)
+	{
+	  $id = $this->uri->segment(5);
+	  if(!empty($id) && is_numeric($id))
+	  {
+	   $username_old = $this->db->where("id",$id)->get('users')->row()->username;
+	   $this->db->where("username !=",$username_old);
+	  }
+	  
+	  $num_row = $this->db->where('username',$str)->get('users')->num_rows();
+	  if ($num_row >= 1)
+	  {
+	   $this->form_validation->set_message('username_check', 'The username already exists');
+	   return FALSE;
+	  }
+	  else
+	  {
+	   return TRUE;
+	  }
 	}
 
 	/**

@@ -4,7 +4,15 @@
 		$objInit = $.extend( {}, objInit, { 
 			"aoColumnDefs": [ 
 								{ "bSortable": false, "aTargets": [ 0 ] } 
-							] 
+							],
+            "fnPreDrawCallback": function( oSettings ) {
+                    if($('.inlinesparkline').find('canvas').length == 0) {
+                       $('.inlinesparkline').sparkline('html', {
+                            type: 'tristate',
+                            tooltipValueLookups: { map: { '-1': 'No cumplida', '0': 'Cumplida', '1': 'Superada' } }
+                        } ); 
+                    }  
+                }
 			} );
 
 	    var $tabla = $('#tabla').dataTable($objInit);
@@ -114,12 +122,7 @@
                                                                 </tbody>
 
                                                                 <script>
-                                                                $(function() {
-                                                                	$('.inlinesparkline').sparkline('html', {
-                                                                		type: 'tristate',
-                                                                		tooltipValueLookups: { map: { '-1': 'No cumplida', '0': 'Cumplida', '1': 'Superada' } }
-                                                                	} );
-                                                                });
+                                                                
                                                                 </script>
 
                                                         </table>

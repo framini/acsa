@@ -18,4 +18,5 @@ $lang['integer'] = 'El campo %s debe contener un n';
 $lang['matches'] = 'El campo %s no coincide con el campo %s.';
 $lang['is_natural'] = 'El campo %s debe contener s';
 $lang['is_natural_no_zero'] = 'El campo %s debe contener un n';
+$lang['is_unique'] = 'El campo %s tiene que ser unico y valor ingresado ya se encuentra en uso';
 ?>
