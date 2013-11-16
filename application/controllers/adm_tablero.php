@@ -276,6 +276,8 @@ class Adm_Tablero extends MY_Controller {
 			$this->load->library('grocery_CRUD');
 			$this->grocery_crud->set_theme('datatables');
 	        $this->grocery_crud->set_table('objetivo');
+	        $this->grocery_crud->field_type('user', 'hidden', $this->auth_frr->get_username());
+
 	        $output = $this->grocery_crud->render();
 
 	        $data['crud'] = $this->load->view('crud_base.php',$output, true);
@@ -290,6 +292,8 @@ class Adm_Tablero extends MY_Controller {
 			$this->load->library('grocery_CRUD');
 			$this->grocery_crud->set_theme('datatables');
 	        $this->grocery_crud->set_table('indicador');
+
+	        $this->grocery_crud->field_type('user', 'hidden', $this->auth_frr->get_username());
 
 	        $this->grocery_crud->unset_texteditor('Descripcion','full_text');
 	        $this->grocery_crud->unset_texteditor('CalculoNumerador','full_text');
