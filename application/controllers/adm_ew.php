@@ -211,6 +211,7 @@ class Adm_Ew extends CI_Controller {
 	function logout()
 	{
 		$this->auth_frr->logout();
+		$this->session->sess_create();
         $this->_show_message($this->lang->line('auth_message_logged_out'));
 	}
 	
