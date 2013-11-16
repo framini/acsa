@@ -203,10 +203,12 @@
     <script type="text/javascript" src="<?php echo base_url(); ?>js/jquery.colorbox.js"></script>
     <br/>
     <script src="<?php echo base_url(); ?>bootstrap/js/custom.js"></script>
+    
+    <?php if($this->uri->segment(3) != "reporte") { ?>
     <!--daterangepicker-->
     <script type="text/javascript" src="<?php echo base_url(); ?>bootstrap/third-party/jQuery-UI-Date-Range-Picker/js/date.js"></script>
     <script type="text/javascript" src="<?php echo base_url(); ?>bootstrap/third-party/jQuery-UI-Date-Range-Picker/js/daterangepicker.jQuery.js"></script>
-
+    <?php } ?>
     <!--wijmo-->
     <script src="<?php echo base_url(); ?>bootstrap/third-party/wijmo/jquery.mousewheel.min.js" type="text/javascript"></script>
     <script src="<?php echo base_url(); ?>bootstrap/third-party/wijmo/jquery.bgiframe-2.1.3-pre.js" type="text/javascript"></script>

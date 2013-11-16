@@ -263,8 +263,10 @@ class Ewarrants_frr {
                 $user_id = $value['emitido_por'];
                 $emp_id = $value['empresa_id'];
 
+                $user_email = $this->ci->auth_frr->get_useremail_by_id($value['emitido_por']);
+
                 if( !$this->ci->session->userdata('chequeo_stock') ) {
-                    $this->_send_email("", "framini@gmail.com");
+                    $this->_send_email("", $user_email);
                 }
                 
             }

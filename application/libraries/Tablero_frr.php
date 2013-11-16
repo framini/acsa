@@ -39,6 +39,105 @@ class Tablero_frr {
         return NULL;
     }
 
+    /**
+     * Modifica un producto del sistema
+     */
+    function modificar_indicador($current_id, $id, $descripcion, $tipo, $numerador, $relative, $denominador, $RelacionObjetivo, $Drilldown) {
+
+        $this->ci->load->model('tablero/tablero_model');
+
+        $data = array(
+            'idIndicador' => $id, 
+            'Descripcion' => $descripcion, 
+            'Tipo' => $tipo, 
+            'CalculoNumerador' => $numerador,
+            'Relative' => $relative,
+            'CalculoDenominador' => $denominador,
+            'RelacionObjetivo' => $RelacionObjetivo,
+            'Drilldown' => $Drilldown,
+            'Activo' => 1,
+            'user' => $this->ci->auth_frr->get_username()
+        );
+
+        if( $current_id == $id ) {
+            if ($this -> ci -> tablero_model -> modificar_indicador($id, $data)) {
+                return true;
+            } else {
+                return NULL;
+            }
+        } else {
+            if($this->is_id_indicador_available($id)) {
+
+                if ($this -> ci -> tablero_model -> modificar_indicador($id, $data)) {
+                    return true;
+                } else {
+                    return NULL;
+                }
+
+            } else {
+                return NULL;
+            }
+        }
+        
+    }
+
+    function is_id_indicador_available($id)  {
+        $this->ci->load->model('tablero/tablero_model');
+        if( !$this -> ci -> tablero_model -> check_indicador($id) ) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    function get_indicador_by_id($id = NULL) {
+        if (!is_null($id)) {
+            //Obtenemos la empresa en base al id enviado como parametro
+            $indicador = $this -> ci -> tablero_model -> get_indicador_by_id($id);
+
+            if (!is_null($indicador)) {
+                $data[] = array(
+                    'idIndicador' => $indicador->idIndicador, 
+                    'Descripcion' => $indicador->Descripcion, 
+                    'Tipo' => $indicador->Tipo, 
+                    'CalculoNumerador' => $indicador->CalculoNumerador,
+                    'Relative' => $indicador->Relative,
+                    'CalculoDenominador' => $indicador->CalculoDenominador,
+                    'RelacionObjetivo' => $indicador->RelacionObjetivo,
+                    'Drilldown' => $indicador->DrillDown,
+                    'Activo' => $indicador->Activo,
+                    'user' => $indicador->user
+                );
+            } else {
+                $data = NULL;
+            }
+
+            return $data;
+        }
+
+    }
+
+    function get_reporte($id = NULL) {
+
+        $reporte = $this -> ci -> tablero_model -> get_reporte($id);
+        $count = 0;
+        if($reporte->num_rows() > 0) {
+            foreach ($reporte->result() as $row)
+            {
+               $data[] = array(
+                    $row->meses
+                );
+
+               $count++;
+            }
+        } else {
+            return NULL;
+        }
+
+        return $data;
+
+    }
+
     function get_indicadores() {
         $this->ci->load->model('tablero/tablero_model');
 

@@ -228,6 +228,17 @@ class Auth_frr
 	{
 		return $this->ci->session->userdata('status') === ($activado ? STATUS_ACTIVATED : STATUS_NOT_ACTIVATED);
 	}
+
+  function get_useremail_by_id($user_id) {
+       //$user = $this->ci->users->get_user_by_id($user_id, TRUE) ;
+     
+     if(!is_null($user = $this->ci->users->get_user_by_id($user_id, TRUE))) {
+        return $user->email;
+     } else {
+      return null;
+     }
+       
+   }
 	
 	/**
 	 * Chequea que el usuario logueado todavia exista en la base de datos

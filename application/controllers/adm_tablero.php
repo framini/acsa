@@ -6,6 +6,9 @@ class Adm_Tablero extends MY_Controller {
 
 	public function __construct() {
 		parent::__construct();
+
+		$this -> load -> library('tablero_frr');
+		$this->load->model('tablero/tablero_model');
 	}
 	
 	function index() {
@@ -34,9 +37,6 @@ class Adm_Tablero extends MY_Controller {
 	}
 
 	function tablero_control() {
-
-		$this->load->library('Tablero_frr');
-
 		if ($this -> auth_frr -> es_admin()) {
 			//print_r($this->uri->segment(2)); die();
 			if($this->uri->segment(4) && $this->input->get('id')) {
@@ -78,10 +78,14 @@ class Adm_Tablero extends MY_Controller {
 
 	function check_idindicador() {
 		if ($this -> auth_frr -> es_admin()) {
-			$this->load->model('tablero/tablero_model');
 
 			if( $this->tablero_model->check_indicador($this->input->post('id'))) {
-				echo "false";
+				if($this->input->post('current') == $this->input->post('id')) {
+					echo "true";
+				} else {
+					echo "false";
+				}
+				
 			} else {
 				echo "true";
 			}
@@ -127,7 +131,6 @@ class Adm_Tablero extends MY_Controller {
 		//Solamente los admins de argentina clearing pueden crear empresas, asi que lo primero que chequeamos
 		//es que el usuario sea admin
 		if ($this -> auth_frr -> es_admin()) {
-			$this -> load -> library('tablero_frr');
 
 			$this -> form_validation -> set_error_delimiters('<p><i class="icon-exclamation-sign"></i> ', '</p>');
 
@@ -166,7 +169,7 @@ class Adm_Tablero extends MY_Controller {
 						//El producto se creo correctamente
 						$message = "El indicador ha sido dado de alta correctamente!";
 						$this -> session -> set_flashdata('message', $message);
-						redirect('adm/productos/gestionar_productos');
+						redirect('adm/tablero/gestionar_indicadores');
 					}
 
 				}
@@ -189,6 +192,173 @@ class Adm_Tablero extends MY_Controller {
 			$this -> template -> set_content('tablero/alta_indicador', $data);
 			$this -> template -> build();
 
+		}
+	}
+
+	function reporte() {
+		// print_r(str_replace("\"", "", json_encode($this->tablero_frr->get_reporte()))); die();
+		// $data['data'] = json_encode(array(
+		// 	array(
+		// 		array(
+		// 			"x" => 0,
+		// 			"y" => 1
+		// 		),
+		// 		array(
+		// 			"x" => 0,
+		// 			"y" => 1
+		// 		),
+		// 		array(
+		// 			"x" => 0,
+		// 			"y" => 1
+		// 		),
+		// 		array(
+		// 			"x" => 0,
+		// 			"y" => 1
+		// 		),
+		// 		array(
+		// 			"x" => 0,
+		// 			"y" => 1
+		// 		),
+		// 		array(
+		// 			"x" => 0,
+		// 			"y" => 1
+		// 		),
+		// 		array(
+		// 			"x" => 0,
+		// 			"y" => 1
+		// 		),
+		// 		array(
+		// 			"x" => 0,
+		// 			"y" => 1
+		// 		)
+		// 	),
+		// 	array(
+		// 		array(
+		// 			"x" => 0,
+		// 			"y" => 1
+		// 		),
+		// 		array(
+		// 			"x" => 0,
+		// 			"y" => 1
+		// 		),
+		// 		array(
+		// 			"x" => 0,
+		// 			"y" => 1
+		// 		),
+		// 		array(
+		// 			"x" => 0,
+		// 			"y" => 1
+		// 		),
+		// 		array(
+		// 			"x" => 0,
+		// 			"y" => 1
+		// 		),
+		// 		array(
+		// 			"x" => 0,
+		// 			"y" => 1
+		// 		),
+		// 		array(
+		// 			"x" => 0,
+		// 			"y" => 1
+		// 		),
+		// 		array(
+		// 			"x" => 0,
+		// 			"y" => 1
+		// 		)
+		// 	)
+		// ));
+		$data['data'] = str_replace("\"", "", json_encode($this->tablero_frr->get_reporte()));
+		$this -> template -> set_content('tablero/reporte', $data);
+		$this -> template -> build();
+	}
+
+	/**
+	 * Modifica un indicador registrado en el sistema
+	 * NOTA: Solo disponible para admins
+	 */
+	function modificar_indicador() {
+		//Solamente los admins se argentina clearing pueden crear empresas, asi que lo primero que chequeamos
+		//es que el usuario sea admin
+		if ($this -> auth_frr -> es_admin()) {
+
+			$this -> form_validation -> set_error_delimiters('<p><i class="icon-exclamation-sign"></i> ', '</p>');
+
+			$this -> form_validation -> set_rules('id', 'ID del Indicador', 'trim|required|xss_clean');
+			$this -> form_validation -> set_rules('currid', 'Current ID', 'trim|xss_clean');
+			$this -> form_validation -> set_rules('descripcion', 'Precio', 'trim|xss_clean');
+			$this -> form_validation -> set_rules('tipo', 'Calidad', 'trim|xss_clean');
+			$this -> form_validation -> set_rules('calculo_nominador', 'Calculo Nominador', 'trim|xss_clean');
+			$this -> form_validation -> set_rules('relative', 'Relative', 'trim|xss_clean');
+			$this -> form_validation -> set_rules('calculo_denominador', 'Calculo Denominador', 'trim|xss_clean');
+			$this -> form_validation -> set_rules('relacion_objetivo', 'Relacion Objetivo', 'trim|xss_clean');
+			$this -> form_validation -> set_rules('drilldown', 'Drilldown', 'trim|xss_clean');
+
+			$data['errors'] = array();
+
+			//Chequeamos que los datos enviados por formulario sean correctos
+			if ($this -> form_validation -> run()) {
+
+				if (!is_null($data = $this -> tablero_frr -> modificar_indicador(
+						$this -> form_validation -> set_value('currid'),
+						$this -> form_validation -> set_value('id'), 
+						$this -> form_validation -> set_value('descripcion'), 
+						$this -> form_validation -> set_value('tipo'), 
+						$this -> form_validation -> set_value('calculo_nominador'),
+						$this -> form_validation -> set_value('relative'),
+						$this -> form_validation -> set_value('calculo_denominador'),
+						$this -> form_validation -> set_value('relacion_objetivo'),
+						$this -> form_validation -> set_value('drilldown')
+					))) {
+
+					//Nos fijamos si la petición se hizo via AJAX
+					if ($this -> input -> is_ajax_request()) {
+						$resultados['message'] = "Se modifico el indicador correctamente!";
+						//Devolvemos los resultados en JSON
+						echo json_encode($resultados);
+						//Ya no tenemos nada que hacer en esta funcion
+						return;
+					} else {
+						//La empresa se creo correctamente
+						$message = "Se modifico el indicador correctamente!";
+						$this -> session -> set_flashdata('message', $message);
+						redirect('adm/tablero/gestionar_indicadores');
+					}
+
+				} else {
+					// //Chequeamos si la peticion se hizo via ajax
+					// if ($this -> input -> is_ajax_request()) {
+					// 	$resultados['message'] = $this -> productos_frr -> get_error_message();
+					// 	$resultados['error'] = true;
+					// 	//Devolvemos los resultados en JSON
+					// 	echo json_encode($resultados);
+					// 	//Ya no tenemos nada que hacer en esta funcion
+					// 	return;
+					// } else {
+					// 	$data['errors'] = $this -> productos_frr -> get_error_message();
+					// }
+				}
+			}
+
+			//Solamente hacemos algo si está presente el id de la empresa en la URI
+			if ($this->input->get('id')) {
+				//Solamente cargamos los datos cuando no exista una request POST
+				//Para no pisar los datos enviados por el usuarios
+				if (!$this -> input -> post()) {
+					//Obtenemos la empresa
+					$data['row_indicador'] = $this -> tablero_frr -> get_indicador_by_id($this->input->get('id'));
+					$data['currid'] = $this->input->get('id');
+				}
+
+				//Asignamos un texto al boton submit del formulario
+				$data['tb'] = "Modificar Indicador";
+				//Asignamos un titulo para el encabezado del formulario
+				$data['tf'] = "Modificar Indicador";
+				
+				$this -> template -> set_content('tablero/alta_indicador', $data);
+				$this -> template -> build();
+			} else {
+				redirect('adm/ew');
+			}
 		}
 	}
 
