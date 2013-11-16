@@ -59,6 +59,18 @@ class Ewarrants_model extends CI_Model
                 return NULL;
         }
 
+        function get_warrants_trazabilidad() {
+            $query = $this->db->select()
+                               ->from('ewarrant_audit')
+                               ->get();
+        
+            if($query->num_rows() > 0)
+            {
+                return $query;
+            } else
+                return NULL;
+        }
+
         function get_polizas_by_empresa($emp_id) {
             $query = $this->db->select()
                                ->from('polizas')

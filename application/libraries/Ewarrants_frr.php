@@ -252,6 +252,40 @@ class Ewarrants_frr {
         }
     }
 
+    function get_warrants_trazabilidad() {
+        $ew = $this -> ci -> ewarrants_model -> get_warrants_trazabilidad();
+        if ($ew != NULL) {
+            foreach ($ew->result() as $row) {
+                $crd = $this -> get_cuenta_registro_by_id($row -> cuentaregistro_depositante_id);
+
+                $cr_nombre_dep = $crd -> nombre;
+                $cr = $this -> get_cuenta_registro_by_id($row -> cuentaregistro_id);
+                $cr_nombre = $cr -> nombre;
+                
+                $data[] = array(
+                    'id' => $row -> id, 
+                    'codigo' => $row -> codigo, 
+                    'cuentaregistro_depositante_id' => $row -> cuentaregistro_depositante_id, 
+                    'cuentaregistro_id' => $row -> cuentaregistro_id, 
+                    'nombre_cuenta_registro_depositante' => $cr_nombre_dep, 
+                    'nombre_cuenta_registro' => $cr_nombre, 
+                    'producto' => $row -> producto, 
+                    'kilos' => $row -> kilos, 
+                    'observaciones' => $row -> observaciones, 
+                    'created' => $row -> created, 
+                    'estado' => $row -> estado, 
+                    'emitido_por' => $this->ci->auth_frr->get_username_by_id($row -> emitido_por), 
+                    'firmado' => $row -> firmado
+                );
+
+            }
+
+            return $data;
+        } else {
+            return NULL;
+        }
+    }
+
     function control_stock_warrants() {
         $query = "SELECT * FROM ewarrant WHERE vencimiento < DATE_SUB(NOW(), INTERVAL 30 DAY)";
 

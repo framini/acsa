@@ -73,6 +73,27 @@ class adm_Ewarrants extends MY_Controller {
 			$this -> template -> build();
 		}
 	}
+
+	function trazabilidad() {
+		$empresa_id = $this -> auth_frr -> get_empresa_id();
+
+		if ($this -> auth_frr -> es_admin())
+			$data['ewarrants'] = $this -> ewarrants_frr -> get_warrants_trazabilidad();
+		else
+			$data['ewarrants'] = $this -> ewarrants_frr -> get_warrants_empresa($empresa_id);
+
+		if ($data['ewarrants'] != null) {
+
+			if ($message = $this -> session -> flashdata('message')) {
+				$data['message'] = $message;
+			}
+			$this -> template -> set_content('ewarrants/listar_ewarrants', $data);
+			$this -> template -> build();
+		} else {
+			$this -> template -> set_content('ewarrants/sin_permiso', array('msg' => 'Tu empresa no tiene eWarrants emitidos'));
+			$this -> template -> build();
+		}
+	}
 	
 	
 	function ver_pendientes($ewid = null) {
