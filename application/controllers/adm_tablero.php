@@ -93,8 +93,8 @@ class Adm_Tablero extends MY_Controller {
 	}
 
 	function gestionar_indicadores() {
-		$this -> breadcrumb -> append_crumb('Home', site_url('adm/home'));
-		$this -> breadcrumb -> append_crumb('Tablero de Control', site_url() . "adm/tablero/");
+		$this -> breadcrumb -> append_crumb('Home', site_url('/adm/home'));
+		$this -> breadcrumb -> append_crumb('Tablero de Control', site_url() . "/adm/tablero/");
 		$this -> breadcrumb -> append_crumb('Gestionar Indicadores', site_url() . "/tablero/gestionar_indicadores");
 
 		if ($this -> auth_frr -> es_admin()) {
@@ -268,8 +268,8 @@ class Adm_Tablero extends MY_Controller {
 	}
 
 	function gestionar_objetivos() {
-		$this -> breadcrumb -> append_crumb('Home', site_url('adm/home'));
-		$this -> breadcrumb -> append_crumb('Tablero de Control', site_url() . "adm/tablero/");
+		$this -> breadcrumb -> append_crumb('Home', site_url('/adm/home'));
+		$this -> breadcrumb -> append_crumb('Tablero de Control', site_url() . "/adm/tablero/");
 		$this -> breadcrumb -> append_crumb('Gestionar Objetivos', site_url() . "/tablero/gestionar_objetivos");
 
 		if ($this -> auth_frr -> es_admin()) {

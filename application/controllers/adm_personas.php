@@ -282,38 +282,38 @@ class Adm_Personas extends MY_Controller {
 	/**
 	 *  Muestra la pantalla con todos los productos del sistema
 	 */
-	function gestionar_cuentas_corrientes() {
-		$this -> breadcrumb -> append_crumb('Home', site_url('adm/home'));
-		$this -> breadcrumb -> append_crumb('Productos', site_url() . "adm/productos/");
-		$this -> breadcrumb -> append_crumb('Gestionar Cuentas Corrientes', site_url() . "/productos/gestionar_cuentas_corrientes");
+	// function gestionar_cuentas_corrientes() {
+	// 	$this -> breadcrumb -> append_crumb('Home', site_url('adm/home'));
+	// 	$this -> breadcrumb -> append_crumb('Productos', site_url() . "adm/productos/");
+	// 	$this -> breadcrumb -> append_crumb('Gestionar Cuentas Corrientes', site_url() . "/productos/gestionar_cuentas_corrientes");
 
-		//Cargamos el archivo que contiene la info con la que se contruye el menu
-		$this -> config -> load('menu_permisos', TRUE);
+	// 	//Cargamos el archivo que contiene la info con la que se contruye el menu
+	// 	$this -> config -> load('menu_permisos', TRUE);
 
-		//Obtenemos los permisos del usuario logueado asociados a la controladora productos y grupo gestionar_roles
-		$data['permisos'] = $this -> roles_frr -> permisos_role_controladora_grupo($this -> uri -> segment(2), $this -> uri -> segment(3));
+	// 	//Obtenemos los permisos del usuario logueado asociados a la controladora productos y grupo gestionar_roles
+	// 	$data['permisos'] = $this -> roles_frr -> permisos_role_controladora_grupo($this -> uri -> segment(2), $this -> uri -> segment(3));
 
-		//Procesamos los permisos obtenidos
-		if (count($data['permisos']) > 0) {
-			foreach ($data['permisos'] as $key => $row) {
-				$data['data_menu'][$row['permiso']] = $this -> config -> item($row['permiso'], 'menu_permisos');
-			}
-		}
+	// 	//Procesamos los permisos obtenidos
+	// 	if (count($data['permisos']) > 0) {
+	// 		foreach ($data['permisos'] as $key => $row) {
+	// 			$data['data_menu'][$row['permiso']] = $this -> config -> item($row['permiso'], 'menu_permisos');
+	// 		}
+	// 	}
 
-		//Obtenemos todas las empresas cargadas en el sistema
-		$data['productos'] = $this -> empresas_frr -> get_cuentas_corrientes(true);
+	// 	//Obtenemos todas las empresas cargadas en el sistema
+	// 	$data['productos'] = $this -> empresas_frr -> get_cuentas_corrientes(true);
 
-		if ($message = $this -> session -> flashdata('message')) {
-			$data['message'] = $message;
-		}
+	// 	if ($message = $this -> session -> flashdata('message')) {
+	// 		$data['message'] = $message;
+	// 	}
 
-		if ($errormsg = $this -> session -> flashdata('errormsg')) {
-			$data['errormsg'] = $errormsg;
-		}
+	// 	if ($errormsg = $this -> session -> flashdata('errormsg')) {
+	// 		$data['errormsg'] = $errormsg;
+	// 	}
 
-		$this -> template -> set_content('personas/gestionar_cuentas_corrientes', $data);
-		$this -> template -> build();
-	}
+	// 	$this -> template -> set_content('personas/gestionar_cuentas_corrientes', $data);
+	// 	$this -> template -> build();
+	// }
 
 	/**
 	 * Da de alta una cuenta corriente en el sistema
@@ -719,6 +719,44 @@ class Adm_Personas extends MY_Controller {
 			$this -> template -> build();
 		} else {
 			redirect('adm/personas/error/3/1');
+		}
+	}
+
+	function gestionar_cuentas_corrientes() {
+		$this -> breadcrumb -> append_crumb('Home', site_url('adm/home'));
+		$this -> breadcrumb -> append_crumb('Personas', site_url() . "/adm/personas/");
+		$this -> breadcrumb -> append_crumb('Gestionar Cuentas Corrientes', site_url() . "/tablero/gestionar_cuentas_corrientes");
+
+		if ($this -> auth_frr -> es_admin()) {
+			$this->load->library('grocery_CRUD');
+			$this->grocery_crud->set_theme('datatables');
+	        $this->grocery_crud->set_table('cuentas_corrientes');
+
+	        $output = $this->grocery_crud->render();
+
+	        $data['crud'] = $this->load->view('crud_base.php',$output, true);
+	 
+	        $this -> template -> set_content('tablero/crud', $data);
+			$this -> template -> build();
+		}
+	}
+
+	function gestionar_comisiones_productos() {
+		$this -> breadcrumb -> append_crumb('Home', site_url('adm/home'));
+		$this -> breadcrumb -> append_crumb('Personas', site_url() . "/adm/personas/");
+		$this -> breadcrumb -> append_crumb('Gestionar Comisiones de Productos', site_url() . "/tablero/gestionar_comisiones_productos");
+
+		if ($this -> auth_frr -> es_admin()) {
+			$this->load->library('grocery_CRUD');
+			$this->grocery_crud->set_theme('datatables');
+	        $this->grocery_crud->set_table('productos_comisiones_empresas');
+
+	        $output = $this->grocery_crud->render();
+
+	        $data['crud'] = $this->load->view('crud_base.php',$output, true);
+	 
+	        $this -> template -> set_content('tablero/crud', $data);
+			$this -> template -> build();
 		}
 	}
 

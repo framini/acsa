@@ -37,7 +37,8 @@ $config['listar'] = array('texto_anchor' => 'Listar', 'icono' => 'icon-info-sign
 $config['firma']  = array('texto_anchor' => 'Firmar', 'icono' => 'icon-ok-sign', 'boton_superior' => true, 'clase_boton' => 'btn btn-large btn-success enviar absoluto-r0-b0 margin-bot-none pull-right');
 $config['anular'] = array('texto_anchor' => 'Anular', 'icono' => 'icon-remove-sign', 'boton_superior' => true, 'clase_boton' => 'btn btn-large btn-danger enviar absoluto-r0-b0 margin-bot-none pull-right');
 $config['ver_pendientes'] = array('texto_anchor' => 'Ver Pendientes', 'icono' => 'icon-remove-sign', 'boton_superior' => true, 'clase_boton' => 'btn btn-large btn-danger enviar absoluto-r0-b0 margin-bot-none pull-right');
-$config['gestionar_polizas'] = array('texto_anchor' => 'Gestionar Polizas', 'icono' => 'icon-remove-sign', 'boton_superior' => true, 'clase_boton' => 'btn btn-large btn-danger enviar absoluto-r0-b0 margin-bot-none pull-right');
+$config['gestionar_polizas'] = array('texto_anchor' => 'Gestionar Polizas', 'icono' => 'icon-info-sign', 'boton_superior' => true, 'clase_boton' => 'btn btn-large btn-danger enviar absoluto-r0-b0 margin-bot-none pull-right');
+$config['trazabilidad'] = array('texto_anchor' => 'Trazabilidad', 'icono' => 'icon-info-sign', 'boton_superior' => false, 'clase_boton' => 'btn btn-large btn-danger enviar absoluto-r0-b0 margin-bot-none pull-right');
 
 
 # Menu Tablero
@@ -61,6 +62,8 @@ $config['gestionar_usuarios'] = array('texto_anchor' => 'Gestionar Usuarios', 'i
 $config['gestionar_productos'] = array('texto_anchor' => 'Gestionar Productos', 'icono' => 'icon-barcode', 'titulo_gestion' => 'Productos');
 $config['gestionar_cuentas_registro'] = array('texto_anchor' => 'Gestionar Cuentas Registro', 'icono' => 'icon-briefcase', 'titulo_gestion' => 'Cuentas Registro');
 $config['gestionar_cuentas_corrientes'] = array('texto_anchor' => 'Gestionar Cuentas Corrientes', 'icono' => 'icon-barcode', 'titulo_gestion' => 'Cuentas Corrientes');
+$config['gestionar_comisiones_productos'] = array('texto_anchor' => 'Gestionar Comisiones por Productos', 'icono' => 'icon-barcode', 'titulo_gestion' => 'Comisiones por productos');
+
 
 # Menu gestion Personas
 # Notas:

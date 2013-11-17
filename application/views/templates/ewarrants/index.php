@@ -43,7 +43,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </a>
-          <a class="brand" href="<?php echo site_url('adm/home'); ?>">eWarrants</a>
+          <a class="brand" href="<?php echo site_url('adm/home'); ?>" style="padding: 5px 0 0 0"><img src="<?php echo base_url(); ?>images/logo.png" style="width: 32px;"/></a>
           <div class="nav-collapse">
             <ul class="nav">
               <?php if( (isset($gestiones_disponibles_seguridad) && is_array($gestiones_disponibles_seguridad) && ( count($gestiones_disponibles_seguridad) > 0 ) ) || isset($admin) ) { ?>
