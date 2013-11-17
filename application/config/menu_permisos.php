@@ -48,6 +48,7 @@ $config['tablero_control'] = array('texto_anchor' => 'Tablero', 'icono' => 'icon
 $config['gestionar_indicadores'] = array('texto_anchor' => 'Gestionar Indicadores', 'icono' => 'icon-briefcase', 'titulo_gestion' => 'Gestion Indicadores');
 $config['alta_indicador'] = array('texto_anchor' => 'Alta Indicador', 'icono' => 'icon-plus icon-white', 'clase_boton' => 'btn btn-large btn-success pull-right', 'boton_superior' => true, 'titulo' => false);
 $config['gestionar_objetivos'] = array('texto_anchor' => 'Gestionar Objetivos', 'icono' => 'icon-briefcase', 'titulo_gestion' => 'Gestion Objetivos');
+$config['reporte'] = array('texto_anchor' => 'Reporte', 'icono' => 'icon-briefcase', 'titulo_gestion' => 'Reporte');
 
 
 

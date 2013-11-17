@@ -194,29 +194,61 @@ class Tablero_frr {
             }
 
         } else {
-            $query = $this->ci->db->query("Select 
-                                             indicador.idIndicador,
-                                             indicador.Descripcion,
-                                             indicador.Tipo,
-                                             `real`.Mes,
-                                             `real`.Anio,
-                                             objetivo.valor as Objetivo,
-                                             real.valor,
-                                             CASE  
-                                              when `real`.valor > objetivo.valor THEN 1
-                                              when `real`.valor = objetivo.valor THEN 0
-                                              when `real`.valor < objetivo.valor THEN -1
-                                             END AS Indicador,
-                                            ( select GROUP_CONCAT(CASE  
-                                              when r2.valor > objetivo.valor THEN 1
-                                              when r2.valor = objetivo.valor THEN 0
-                                              when r2.valor < objetivo.valor THEN -1
+            // $query = $this->ci->db->query("Select 
+            //                                  indicador.idIndicador,
+            //                                  indicador.Descripcion,
+            //                                  indicador.Tipo,
+            //                                  `real`.Mes,
+            //                                  `real`.Anio,
+            //                                  objetivo.valor as Objetivo,
+            //                                  real.valor,
+            //                                  CASE  
+            //                                   when `real`.valor > objetivo.valor THEN 1
+            //                                   when `real`.valor = objetivo.valor THEN 0
+            //                                   when `real`.valor < objetivo.valor THEN -1
+            //                                  END AS Indicador,
+            //                                 ( select GROUP_CONCAT(CASE  
+            //                                   when r2.valor > objetivo.valor THEN 1
+            //                                   when r2.valor = objetivo.valor THEN 0
+            //                                   when r2.valor < objetivo.valor THEN -1
 
-                                             END) from `real` as r2 where r2.idindicador = `real`.idindicador LIMIT 10) AS Historico
-                                            from indicador
-                                             inner join `real` ON real.idIndicador = indicador.idIndicador
-                                             inner join objetivo ON objetivo.idIndicador = real.idIndicador and objetivo.anio and objetivo.mes");
+            //                                  END) from `real` as r2 where r2.idindicador = `real`.idindicador LIMIT 10) AS Historico
+            //                                 from indicador
+            //                                  inner join `real` ON real.idIndicador = indicador.idIndicador
+            //                                  inner join objetivo ON objetivo.idIndicador = real.idIndicador and objetivo.anio and objetivo.mes");
             
+            $query = $this->ci->db->query("Select 
+indicador.idIndicador,
+indicador.Descripcion,
+indicador.Tipo,
+`real`.Mes,
+`real`.Anio,
+objetivo.valor as Objetivo,
+real.valor,
+CASE  
+when `real`.valor > objetivo.valor THEN 1
+when `real`.valor = objetivo.valor THEN 0
+when `real`.valor < objetivo.valor THEN -1
+END AS Indicador,
+
+
+(
+select GROUP_CONCAT(
+CASE  
+when r2.valor > objetivo.valor THEN 1
+when r2.valor = objetivo.valor THEN 0
+when r2.valor < objetivo.valor THEN -1
+END
+) 
+from `real` as r2 
+where r2.idindicador = `real`.idindicador 
+and r2.date_computed > date_add(`real`.date_computed, INTERVAL -300 DAY) and r2.date_computed <= `real`.date_computed  
+ORDER BY r2.date_computed  ) 
+AS Historico
+from indicador
+inner join `real` ON real.idIndicador = indicador.idIndicador
+inner join objetivo ON objetivo.idIndicador = real.idIndicador and objetivo.anio = real.anio  and objetivo.mes = real.mes
+order by date_computed");
 
             if ($query != NULL) {
                 foreach ($query->result() as $row) {
