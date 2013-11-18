@@ -166,8 +166,9 @@ class Tablero_frr {
         return $data;
     }
 
-    function get_resultados_tablero($id = NULL, $anio = NULL, $mes = NULL) {
+    function get_resultados_tablero($id = NULL, $mes = NULL, $anio = NULL) {
         //Si especificamos un ID es porque estamos buscando resultados de real_drilldown
+       
         if( !is_null($id) ) {
 
             $query = $this->ci->db->query("SELECT 
