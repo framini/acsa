@@ -171,6 +171,8 @@ class Tablero_frr {
        
         if( !is_null($id) ) {
 
+            $data = array();
+
             $query = $this->ci->db->query("SELECT 
                                             real_drilldown.idReal_Drilldown, real_drilldown.Campo, real_drilldown.valor
                                             FROM real_drilldown
