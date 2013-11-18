@@ -42,7 +42,7 @@ class Adm_Tablero extends MY_Controller {
 			if($this->uri->segment(4) && $this->input->get('id')) {
 				//print_r($this->input->get('id')); die();
 				//Buscamos el detalle de algun indicador en particular
-				$data['ewarrants'] = $this -> tablero_frr -> get_resultados_tablero( $this->input->get('id'));
+				$data['ewarrants'] = $this -> tablero_frr -> get_resultados_tablero( $this->input->get('id'), $this->uri->segment('4'), $this->uri->segment('5'));
 
 				if ($data['ewarrants'] != null) {
 					if ($message = $this -> session -> flashdata('message')) {

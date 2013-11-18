@@ -167,7 +167,6 @@ class Tablero_frr {
     }
 
     function get_resultados_tablero($id = NULL, $anio = NULL, $mes = NULL) {
-
         //Si especificamos un ID es porque estamos buscando resultados de real_drilldown
         if( !is_null($id) ) {
 
@@ -175,6 +174,8 @@ class Tablero_frr {
                                             real_drilldown.idReal_Drilldown, real_drilldown.Campo, real_drilldown.valor
                                             FROM real_drilldown
                                             WHERE real_drilldown.idIndicador = '$id'
+                                            AND real_drilldown.Mes = '$mes'
+                                            AND real_drilldown.Anio = '$anio'
                                             ");
             
 
