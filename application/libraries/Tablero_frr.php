@@ -230,25 +230,26 @@ when `real`.valor > objetivo.valor THEN 1
 when `real`.valor = objetivo.valor THEN 0
 when `real`.valor < objetivo.valor THEN -1
 END AS Indicador,
-
-
 (
 select GROUP_CONCAT(
 CASE  
-when r2.valor > objetivo.valor THEN 1
-when r2.valor = objetivo.valor THEN 0
-when r2.valor < objetivo.valor THEN -1
+when r2.valor > o2.valor THEN 1
+when r2.valor = o2.valor THEN 0
+when r2.valor < o2.valor THEN -1
 END
 ) 
 from `real` as r2 
+INNER join objetivo as o2 on r2.idindicador = o2.idindicador and r2.mes = o2.mes and r2.anio = o2.anio
 where r2.idindicador = `real`.idindicador 
 and r2.date_computed > date_add(`real`.date_computed, INTERVAL -300 DAY) and r2.date_computed <= `real`.date_computed  
-ORDER BY r2.date_computed  ) 
-AS Historico
+ORDER BY r2.date_computed) 
+AS Historico, 
+
+date_computed
 from indicador
 inner join `real` ON real.idIndicador = indicador.idIndicador
 inner join objetivo ON objetivo.idIndicador = real.idIndicador and objetivo.anio = real.anio  and objetivo.mes = real.mes
-order by date_computed");
+order by date_computed desc");
 
             if ($query != NULL) {
                 foreach ($query->result() as $row) {

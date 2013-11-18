@@ -94,7 +94,7 @@
                                                                                 <th>Año</th>
                                                                                 <th>Valor</th>
                                                                                 <th>Objetivo</th>
-                                                                                <th>Indicador</th>
+                                                                                <th>Historico</th>
                                                                         </tr>
                                                                 </thead>
 

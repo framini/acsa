@@ -121,6 +121,40 @@ class Adm_Tablero extends MY_Controller {
 		}
 	}
 
+	function bitacora() {
+		$this -> breadcrumb -> append_crumb('Home', site_url('/adm/home'));
+		$this -> breadcrumb -> append_crumb('Tablero de Control', site_url() . "/adm/tablero/");
+		$this -> breadcrumb -> append_crumb('Bitacora', site_url() . "/tablero/bitacora");
+
+		if ($this -> auth_frr -> es_admin()) {
+			$this->load->library('grocery_CRUD');
+			$this->grocery_crud->set_theme('datatables');
+	        $this->grocery_crud->set_table('audit');
+
+	        $this->grocery_crud->unset_delete();
+	        $this->grocery_crud->unset_edit();
+	        $this->grocery_crud->unset_add();
+
+	        $output = $this->grocery_crud->render();
+
+	        $data['crud'] = $this->load->view('crud_base.php',$output, true);
+	 
+	        $this -> template -> set_content('tablero/bitacora', $data);
+			$this -> template -> build();
+		}
+	}
+
+	function pasaje_historico() {
+		if ($this -> auth_frr -> es_admin()) {
+			$fecha = $this -> input -> post('fecha');
+
+			$this->db->query("call spPasajeHistoricoBitacora($fecha)");
+
+			echo json_encode(array("msg" => "Se ha realizado el pasaje a historico exitosamente!"));
+			die();
+		}
+	}
+
 	function alta_indicador() {
 
 		//Solamente los admins de argentina clearing pueden crear empresas, asi que lo primero que chequeamos

@@ -27,7 +27,7 @@ class adm_Ewarrants extends MY_Controller {
 
 		$this -> load -> model('ewarrants/ewarrants_model');
 
-		$this->ewarrants_frr->control_stock_warrants();
+		//$this->ewarrants_frr->control_stock_warrants();
 	}
 
 	function index() {

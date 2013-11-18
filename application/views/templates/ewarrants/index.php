@@ -204,7 +204,7 @@
     <br/>
     <script src="<?php echo base_url(); ?>bootstrap/js/custom.js"></script>
     
-    <?php if($this->uri->segment(3) != "reporte") { ?>
+    <?php if($this->uri->segment(3) != "reporte" && $this->uri->segment(3) != "bitacora") { ?>
     <!--daterangepicker-->
     <script type="text/javascript" src="<?php echo base_url(); ?>bootstrap/third-party/jQuery-UI-Date-Range-Picker/js/date.js"></script>
     <script type="text/javascript" src="<?php echo base_url(); ?>bootstrap/third-party/jQuery-UI-Date-Range-Picker/js/daterangepicker.jQuery.js"></script>
