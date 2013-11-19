@@ -178,6 +178,13 @@ function loadDataTable(this_datatables) {
 			});
 			add_edit_button_listener();
 		},
+		"fnPreDrawCallback": function( oSettings ) {
+            if($('.inlinesparkline').find('canvas').length == 0) {
+               $('.inlinesparkline').sparkline('html', {
+                    type: 'line'
+                } ); 
+            }  
+        },
 		"sDom": 'T<"clear"><"H"lfr>t<"F"ip>',
 	    "oTableTools": {
 	    	"aButtons": aButtons,

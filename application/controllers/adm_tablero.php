@@ -225,74 +225,27 @@ class Adm_Tablero extends MY_Controller {
 	}
 
 	function reporte() {
+		$this -> breadcrumb -> append_crumb('Home', site_url('/adm/home'));
+		$this -> breadcrumb -> append_crumb('Tablero de Control', site_url() . "/adm/tablero/");
+		$this -> breadcrumb -> append_crumb('Reporte', site_url() . "/tablero/reporte");
 
-		$query = $this->db->query("SELECT idIndicador FROM indicador");
+		if ($this -> auth_frr -> es_admin()) {
+			$this->load->library('grocery_CRUD');
+			$this->grocery_crud->set_theme('datatables');
+	        $this->grocery_crud->set_table('vw_ReportTable');
+	        $this->grocery_crud->set_primary_key('idIndicador');
 
-		if ($query->num_rows() > 0)
-		{
-		   foreach ($query->result() as $row)
-		   {
-		      $d[] = array(
-		      	'id' => $row->idIndicador
-		      );
-		   }
+	        $this->grocery_crud->unset_delete();
+	        $this->grocery_crud->unset_edit();
+	        $this->grocery_crud->unset_add();
+
+	        $output = $this->grocery_crud->render();
+
+	        $data['crud'] = $this->load->view('crud_base.php',$output, true);
+	 
+	        $this -> template -> set_content('tablero/reporte_tabla', $data);
+			$this -> template -> build();
 		}
-
-		$data['indicadores'] = $d;
-
-		if($this->input->post()) {
-
-			//$query = ;
-			//print_r("ENTRO");
-			//var_dump($this->tablero_frr->get_reporte_filtrado($this->input->post('id'), $this->input->post('fecha_inicio'), $this->input->post('fecha_fin'))); die();
-			//$datos = $this->tablero_frr->get_reporte_filtrado($this->input->post('id'), $this->input->post('fecha_inicio'), $this->input->post('fecha_fin'));
-			$id = $this->input->post('id');
-			$fecha_inicio = $this->input->post('fecha_inicio');
-			$fecha_fin = $this->input->post('fecha_fin');
-
-			/*$datetime1 = new DateTime($this->input->post('fecha_inicio'));
-			$datetime2 = new DateTime($this->input->post('fecha_fin'));
-			$interval = $datetime1->diff($datetime2);
-			$data['anios_inicio'] = $datetime1->format('y');
-			$data['anios_fin'] = $data['anios_inicio'] + 7;
-			$oneYearOn = date('Y-m-d',strtotime(date("Y-m-d", $this->input->post('fecha_inicio')) . " + 2555 day"));
-			$data['meses'] = 12;
-
-			print_r($data['anios']); die();*/
-
-			$reporte = $this->db->query("
-				SELECT
-					`vw_reporte`.`idindicador`,
-					`vw_reporte`.`mes`,
-					`vw_reporte`.`meses`
-
-					FROM `acsa_v2`.`vw_reporte`
-					where `vw_reporte`.`date_computed` >= $fecha_inicio and `vw_reporte`.`date_computed` <= $fecha_fin AND
-					('$id' = `vw_reporte`.`idindicador` OR '$id' = 'todos')
-			");
-
-			if($reporte->num_rows() > 0) {
-	            foreach ($reporte->result() as $row)
-	            {
-	               $da[] = array(
-	                    $row->meses
-	                );
-	            }
-	        }
-
-	        if(!isset($da)) {
-	        	$da = array();
-	        }
-
-			$data['data'] = str_replace("\"", "", json_encode($da));
-			$this -> template -> set_content('tablero/reporte', $data);
-
-		} else {
-			$data['data'] = str_replace("\"", "", json_encode($this->tablero_frr->get_reporte()));
-			$this -> template -> set_content('tablero/reporte', $data);
-		}
-		
-		$this -> template -> build();
 	}
 
 	function gestionar_objetivos() {
