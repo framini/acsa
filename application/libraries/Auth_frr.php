@@ -359,7 +359,7 @@ class Auth_frr
                                     'email'            => $row->email,
                                     'user_id'        => $row->user_id,
                                     'es_admin'    => $row->es_admin,
-                                    'empresa'      => $empresa->nombre
+                                    'empresa'      => (!is_null($empresa)) ? $empresa->nombre : ""
                            );
                 }
 
