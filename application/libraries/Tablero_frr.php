@@ -138,6 +138,27 @@ class Tablero_frr {
 
     }
 
+    function get_reporte_filtrado($id, $fecha_inicio, $fecha_fin) {
+        //print_r("call spReporte('$id', '$fecha_inicio', '$fecha_fin')"); die();
+        $reporte = $this->ci->db->query("call spReporte('$id', '$fecha_inicio', '$fecha_fin')");
+
+        $count = 0;
+        if($reporte->num_rows() > 0) {
+            foreach ($reporte->result() as $row)
+            {
+               $data[] = array(
+                    $row->meses
+                );
+
+               $count++;
+            }
+        } else {
+            return NULL;
+        }
+
+        return $data;
+    }
+
     function get_indicadores() {
         $this->ci->load->model('tablero/tablero_model');
 

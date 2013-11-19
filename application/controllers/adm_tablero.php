@@ -225,79 +225,73 @@ class Adm_Tablero extends MY_Controller {
 	}
 
 	function reporte() {
-		// print_r(str_replace("\"", "", json_encode($this->tablero_frr->get_reporte()))); die();
-		// $data['data'] = json_encode(array(
-		// 	array(
-		// 		array(
-		// 			"x" => 0,
-		// 			"y" => 1
-		// 		),
-		// 		array(
-		// 			"x" => 0,
-		// 			"y" => 1
-		// 		),
-		// 		array(
-		// 			"x" => 0,
-		// 			"y" => 1
-		// 		),
-		// 		array(
-		// 			"x" => 0,
-		// 			"y" => 1
-		// 		),
-		// 		array(
-		// 			"x" => 0,
-		// 			"y" => 1
-		// 		),
-		// 		array(
-		// 			"x" => 0,
-		// 			"y" => 1
-		// 		),
-		// 		array(
-		// 			"x" => 0,
-		// 			"y" => 1
-		// 		),
-		// 		array(
-		// 			"x" => 0,
-		// 			"y" => 1
-		// 		)
-		// 	),
-		// 	array(
-		// 		array(
-		// 			"x" => 0,
-		// 			"y" => 1
-		// 		),
-		// 		array(
-		// 			"x" => 0,
-		// 			"y" => 1
-		// 		),
-		// 		array(
-		// 			"x" => 0,
-		// 			"y" => 1
-		// 		),
-		// 		array(
-		// 			"x" => 0,
-		// 			"y" => 1
-		// 		),
-		// 		array(
-		// 			"x" => 0,
-		// 			"y" => 1
-		// 		),
-		// 		array(
-		// 			"x" => 0,
-		// 			"y" => 1
-		// 		),
-		// 		array(
-		// 			"x" => 0,
-		// 			"y" => 1
-		// 		),
-		// 		array(
-		// 			"x" => 0,
-		// 			"y" => 1
-		// 		)
-		// 	)
-		// ));
-		$data['data'] = str_replace("\"", "", json_encode($this->tablero_frr->get_reporte()));
-		$this -> template -> set_content('tablero/reporte', $data);
+
+		$query = $this->db->query("SELECT idIndicador FROM indicador");
+
+		if ($query->num_rows() > 0)
+		{
+		   foreach ($query->result() as $row)
+		   {
+		      $d[] = array(
+		      	'id' => $row->idIndicador
+		      );
+		   }
+		}
+
+		$data['indicadores'] = $d;
+
+		if($this->input->post()) {
+
+			//$query = ;
+			//print_r("ENTRO");
+			//var_dump($this->tablero_frr->get_reporte_filtrado($this->input->post('id'), $this->input->post('fecha_inicio'), $this->input->post('fecha_fin'))); die();
+			//$datos = $this->tablero_frr->get_reporte_filtrado($this->input->post('id'), $this->input->post('fecha_inicio'), $this->input->post('fecha_fin'));
+			$id = $this->input->post('id');
+			$fecha_inicio = $this->input->post('fecha_inicio');
+			$fecha_fin = $this->input->post('fecha_fin');
+
+			/*$datetime1 = new DateTime($this->input->post('fecha_inicio'));
+			$datetime2 = new DateTime($this->input->post('fecha_fin'));
+			$interval = $datetime1->diff($datetime2);
+			$data['anios_inicio'] = $datetime1->format('y');
+			$data['anios_fin'] = $data['anios_inicio'] + 7;
+			$oneYearOn = date('Y-m-d',strtotime(date("Y-m-d", $this->input->post('fecha_inicio')) . " + 2555 day"));
+			$data['meses'] = 12;
+
+			print_r($data['anios']); die();*/
+
+			$reporte = $this->db->query("
+				SELECT
+					`vw_reporte`.`idindicador`,
+					`vw_reporte`.`mes`,
+					`vw_reporte`.`meses`
+
+					FROM `acsa_v2`.`vw_reporte`
+					where `vw_reporte`.`date_computed` >= $fecha_inicio and `vw_reporte`.`date_computed` <= $fecha_fin AND
+					('$id' = `vw_reporte`.`idindicador` OR '$id' = 'todos')
+			");
+
+			if($reporte->num_rows() > 0) {
+	            foreach ($reporte->result() as $row)
+	            {
+	               $da[] = array(
+	                    $row->meses
+	                );
+	            }
+	        }
+
+	        if(!isset($da)) {
+	        	$da = array();
+	        }
+
+			$data['data'] = str_replace("\"", "", json_encode($da));
+			$this -> template -> set_content('tablero/reporte', $data);
+
+		} else {
+			$data['data'] = str_replace("\"", "", json_encode($this->tablero_frr->get_reporte()));
+			$this -> template -> set_content('tablero/reporte', $data);
+		}
+		
 		$this -> template -> build();
 	}
 
