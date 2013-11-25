@@ -1,3 +1,10 @@
+<style>
+tbody tr td:nth-child(3) {
+	max-width: 200px;
+	word-wrap: break-word;
+}
+</style>
+
 <div class="message success alert alert-success" style="display: none;"><p></p></div>
 
 <input type="text" id="datepicker" size="30" />

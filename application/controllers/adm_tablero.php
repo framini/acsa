@@ -184,9 +184,12 @@ class Adm_Tablero extends MY_Controller {
 			$this->grocery_crud->set_theme('datatables');
 	        $this->grocery_crud->set_table('audit');
 
+	        $this->grocery_crud->columns('idAudit','TableName', 'TableSchema', 'OldValue', 'NewValue', 'User', 'Action', 'Date');
+
 	        $this->grocery_crud->unset_delete();
 	        $this->grocery_crud->unset_edit();
 	        $this->grocery_crud->unset_add();
+	        $this->grocery_crud->unset_read();
 
 	        $output = $this->grocery_crud->render();
 
