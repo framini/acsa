@@ -53,7 +53,7 @@
                                     <h2>Tablero de Control</h2>
                                     <!--<input type="submit" class="btn btn-primary btn-large firmar" value="Firmar!" />-->
                             </div>
-	                		<div class="span12 filtros">
+	                		<div class="span12 filtros" style="display:none;">
 	                			<input type="text" name="search" value="" id="id_search" class="input-medium search-query span3 " placeholder="Filtrar por ID" data-index="1"/>
 
 	                			<input type="text" name="search" value="" id="mes_search" class="input-medium search-query span2 " placeholder="Filtrar por Mes" data-index="1"/>

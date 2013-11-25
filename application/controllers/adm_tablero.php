@@ -231,21 +231,57 @@ class Adm_Tablero extends MY_Controller {
 
 		if ($this -> auth_frr -> es_admin()) {
 			$this->load->library('grocery_CRUD');
-			$this->grocery_crud->set_theme('datatables');
-	        $this->grocery_crud->set_table('vw_ReportTable');
-	        $this->grocery_crud->set_primary_key('idIndicador');
 
-	        $this->grocery_crud->unset_delete();
-	        $this->grocery_crud->unset_edit();
-	        $this->grocery_crud->unset_add();
+			$crud = new grocery_CRUD();
 
-	        $output = $this->grocery_crud->render();
+			$crud->set_theme('datatables');
+	        $crud->set_table('vw_ReportTable');
+	        $crud->set_primary_key('idIndicador');
+	        $crud->required_fields('idIndicador');
+	        $crud->columns('idIndicador','Descripcion','Tipo', 'Mes', 'Anio', 'Objetivo', 'valor', 'Historico', 'date_computed');
+
+	        $crud->unset_delete();
+	        $crud->unset_edit();
+	        $crud->unset_add();
+
+   			$crud->add_action('Ver Historico', '', '','ui-icon-image',array($this,'generate_url'));
+
+	        $output = $crud->render();
 
 	        $data['crud'] = $this->load->view('crud_base.php',$output, true);
 	 
 	        $this -> template -> set_content('tablero/reporte_tabla', $data);
 			$this -> template -> build();
 		}
+	}
+
+	function generate_url($primary_key , $row)
+		{
+		    return site_url('adm/tablero/ver_historico'). "/" . $primary_key .'?Anio='.$row->Anio;
+		}
+
+	function ver_historico($primary_key) {
+
+		$anio = $this->input->get('Anio');
+
+		$query = $this->db->query("
+			Select concat(month(date_computed),'-',year(date_computed)) as fecha, valor from `real`
+			where (date_computed between 
+			cast(concat(cast($anio as unsigned) -1,'-12-01') as date) and cast(concat($anio,'-12-31') as date))
+			and '$primary_key' = idindicador
+			order by date_computed
+		");
+
+		foreach ($query->result() as $key => $value) {
+			$data[] = $value;
+		}
+
+		//print_r($data); die();
+
+		$dat['data'] = $data;
+
+		$this -> template -> set_content('tablero/ver_historico', $dat);
+		$this -> template -> build();
 	}
 
 	function gestionar_objetivos() {

@@ -18,6 +18,8 @@ class Ewarrants_model extends CI_Model
         
         function emitir($data) {
             $data['created'] = date('Y-m-d H:i:s');
+            //Audit field
+            $data['user'] = $this->auth_frr->is_logged_in();
             $data['vencimiento'] = date('Y-m-d H:i:s', strtotime('+30 days'));
             if ($this->db->insert('ewarrant', $data)) {
                 return true;
@@ -27,6 +29,8 @@ class Ewarrants_model extends CI_Model
         }
         
         function modificar($ewid, $data) {
+            //Audit field
+           $data['user'] = $this->auth_frr->is_logged_in();
             $this->db->where('id', $ewid);
             if($this->db->update('ewarrant', $data))
                    return true;
