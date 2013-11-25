@@ -182,11 +182,15 @@ function loadDataTable(this_datatables) {
 			console.log('ENTRO????');
             if($('.inlinesparkline').find('canvas').length == 0) {
                $('tr td:nth-child(8) .inlinesparkline').sparkline('html', {
-                    type: 'line'
+                    type: 'line',
+                    width: '200px'
                 } );
 
                $('tr td:nth-child(9) .inlinesparkline').sparkline('html', {
                     type: 'tristate',
+                    height: '35px',
+				    barWidth: 10,
+				    barSpacing: 2,
                     tooltipValueLookups: { map: { '-1': 'No cumplida', '0': 'Cumplida', '1': 'Superada' } }
                 } );
             }  
