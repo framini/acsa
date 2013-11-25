@@ -60,3 +60,27 @@ margin-left: -15%;
 .amarillo {
   background: url('http://localhost:8888/argc/images/stock_nochg_gray.png') no-repeat top left;
 }
+
+.dataTables_length {
+  padding: 7px 0 0;
+}
+
+.dataTables_length label {
+  margin-bottom: 0px;
+}
+
+.dataTables_length select {
+  margin-bottom: 0!important;
+}
+
+.dataTables_filter {
+  padding: 3px 0 0;
+}
+
+.dataTables_filter label {
+  margin-bottom: 0;
+}
+
+.dataTables_filter input {
+  margin-bottom: 0;
+}

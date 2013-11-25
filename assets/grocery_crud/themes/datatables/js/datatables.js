@@ -183,7 +183,7 @@ function loadDataTable(this_datatables) {
             if($('.inlinesparkline').find('canvas').length == 0) {
                $('tr td:nth-child(8) .inlinesparkline').sparkline('html', {
                     type: 'line',
-                    width: '200px'
+                    width: '250px'
                 } );
 
                $('tr td:nth-child(9) .inlinesparkline').sparkline('html', {

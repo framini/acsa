@@ -294,7 +294,7 @@ class Adm_Tablero extends MY_Controller {
 	        $crud->set_table('vw_reportTable');
 	        $crud->set_primary_key('idIndicador');
 	        $crud->required_fields('idIndicador');
-	        $crud->columns('idIndicador','Descripcion','Tipo', 'Mes', 'Anio', 'Objetivo', 'valor', 'Historico', 'date_computed');
+	        $crud->columns('idIndicador','Descripcion','Tipo', 'Mes', 'Anio', 'Objetivo', 'valor', 'Historico');
 
 	        $crud->unset_delete();
 	        $crud->unset_edit();
