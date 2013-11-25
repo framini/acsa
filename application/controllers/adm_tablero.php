@@ -59,7 +59,7 @@ class Adm_Tablero extends MY_Controller {
 			} else {
 				//Mostramos el level 0
 				$data['ewarrants'] = $this -> tablero_frr -> get_resultados_tablero();
-
+				
 				if ($data['ewarrants'] != null) {
 					if ($message = $this -> session -> flashdata('message')) {
 						$data['message'] = $message;
@@ -230,12 +230,14 @@ class Adm_Tablero extends MY_Controller {
 		$this -> breadcrumb -> append_crumb('Reporte', site_url() . "/tablero/reporte");
 
 		if ($this -> auth_frr -> es_admin()) {
+// 			print_r($this->db->list_tables());
+// die();
 			$this->load->library('grocery_CRUD');
 
 			$crud = new grocery_CRUD();
 
 			$crud->set_theme('datatables');
-	        $crud->set_table('vw_ReportTable');
+	        $crud->set_table('vw_reportTable');
 	        $crud->set_primary_key('idIndicador');
 	        $crud->required_fields('idIndicador');
 	        $crud->columns('idIndicador','Descripcion','Tipo', 'Mes', 'Anio', 'Objetivo', 'valor', 'Historico', 'date_computed');

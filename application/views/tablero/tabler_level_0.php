@@ -94,6 +94,7 @@
                                                                                 <th>Año</th>
                                                                                 <th>Valor</th>
                                                                                 <th>Objetivo</th>
+                                                                                <th>Diferencial</th>
                                                                                 <th>Historico</th>
                                                                         </tr>
                                                                 </thead>
@@ -115,6 +116,7 @@
                                                                                     echo '<td class="anio">' . $ew['anio'] .'</td>';
                                                                                     echo '<td>' . $ew['valor'] .'</td>';
                                                                                     echo '<td>' . $ew['objetivo'] .'</td>';
+                                                                                    echo '<td>' . $ew['diferencial'] .'</td>';
                                                                                     echo '<td><span class="inlinesparkline">' . $ew['historico'] .'</span></td>';
                                                                                     echo "</tr>";
                                                                                 }

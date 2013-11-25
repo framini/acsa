@@ -250,6 +250,7 @@ indicador.Tipo,
 `real`.Anio,
 objetivo.valor as Objetivo,
 real.valor,
+real.valor - objetivo.valor AS diferencial,
 CASE  
 when `real`.valor > objetivo.valor THEN 1
 when `real`.valor = objetivo.valor THEN 0
@@ -287,7 +288,8 @@ order by date_computed desc");
                         'objetivo' => $row -> Objetivo, 
                         'valor' => $row -> valor,
                         'indicador' => $row -> Indicador,
-                        'historico' => $row-> Historico
+                        'historico' => $row-> Historico,
+                        'diferencial' => $row-> diferencial
                     );
 
                 }
