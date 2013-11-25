@@ -179,10 +179,16 @@ function loadDataTable(this_datatables) {
 			add_edit_button_listener();
 		},
 		"fnPreDrawCallback": function( oSettings ) {
+			console.log('ENTRO????');
             if($('.inlinesparkline').find('canvas').length == 0) {
-               $('.inlinesparkline').sparkline('html', {
+               $('tr td:nth-child(8) .inlinesparkline').sparkline('html', {
                     type: 'line'
-                } ); 
+                } );
+
+               $('tr td:nth-child(9) .inlinesparkline').sparkline('html', {
+                    type: 'tristate',
+                    tooltipValueLookups: { map: { '-1': 'No cumplida', '0': 'Cumplida', '1': 'Superada' } }
+                } );
             }  
         },
 		"sDom": 'T<"clear"><"H"lfr>t<"F"ip>',

@@ -37,12 +37,83 @@ class Adm_Tablero extends MY_Controller {
 	}
 
 	function tablero_control() {
+		// if ($this -> auth_frr -> es_admin()) {
+		// 	//print_r($this->uri->segment(2)); die();
+		// 	if($this->uri->segment(4) && $this->input->get('id')) {
+		// 		//print_r($this->input->get('id')); die();
+		// 		//Buscamos el detalle de algun indicador en particular
+		// 		$data['ewarrants'] = $this -> tablero_frr -> get_resultados_tablero( $this->input->get('id'), $this->uri->segment('4'), $this->uri->segment('5'));
+
+		// 		if ($data['ewarrants'] != null) {
+		// 			if ($message = $this -> session -> flashdata('message')) {
+		// 				$data['message'] = $message;
+		// 			}
+		// 			$this -> template -> set_content('tablero/tabler_level_1', $data);
+		// 			$this -> template -> build();
+		// 		} else {
+		// 			$this -> template -> set_content('ewarrants/sin_permiso', array('msg' => 'Actualmente no hay indicadores dados de alta con ese ID'));
+		// 			$this -> template -> build();
+		// 		}
+
+
+		// 	} else {
+		// 		//Mostramos el level 0
+		// 		$data['ewarrants'] = $this -> tablero_frr -> get_resultados_tablero();
+
+		// 		if ($data['ewarrants'] != null) {
+		// 			if ($message = $this -> session -> flashdata('message')) {
+		// 				$data['message'] = $message;
+		// 			}
+		// 			$this -> template -> set_content('tablero/tabler_level_0', $data);
+		// 			$this -> template -> build();
+		// 		} else {
+		// 			$this -> template -> set_content('ewarrants/sin_permiso', array('msg' => 'Actualmente no hay indicadores dados de alta'));
+		// 			$this -> template -> build();
+		// 		}
+		// 	}
+			
+		// }
+
+		$this -> breadcrumb -> append_crumb('Home', site_url('/adm/home'));
+		$this -> breadcrumb -> append_crumb('Tablero de Control', site_url() . "/adm/tablero/");
+		$this -> breadcrumb -> append_crumb('Tablero', site_url() . "/tablero/tablero_control");
+
+		if ($this -> auth_frr -> es_admin()) {
+			$this->load->library('grocery_CRUD');
+
+			$crud = new grocery_CRUD();
+
+			$crud->set_theme('datatables');
+	        $crud->set_table('vw_tablero_level_0');
+	        $crud->set_primary_key('idIndicador');
+	        $crud->required_fields('idIndicador');
+
+	        $crud->columns('idIndicador','Tipo', 'Mes', 'Anio', 'Objetivo', 'valor', 'diferencial', 'Indicador', 'Historico');
+
+	        $crud->unset_delete();
+	        $crud->unset_edit();
+	        $crud->unset_add();
+	        $crud->unset_read();
+
+   			$crud->add_action('Ver Composicion', '', '','ui-icon-image',array($this,'generate_url_tablero'));
+
+	        $output = $crud->render();
+
+	        $data['crud'] = $this->load->view('crud_base.php',$output, true);
+	 
+	        $this -> template -> set_content('tablero/table_cero', $data);
+			$this -> template -> build();
+		}
+
+	}
+
+	function ver_composicion() {
 		if ($this -> auth_frr -> es_admin()) {
 			//print_r($this->uri->segment(2)); die();
-			if($this->uri->segment(4) && $this->input->get('id')) {
+			if($this->uri->segment(4) && $this->input->get('Mes') && $this->input->get('Anio')) {
 				//print_r($this->input->get('id')); die();
 				//Buscamos el detalle de algun indicador en particular
-				$data['ewarrants'] = $this -> tablero_frr -> get_resultados_tablero( $this->input->get('id'), $this->uri->segment('4'), $this->uri->segment('5'));
+				$data['ewarrants'] = $this -> tablero_frr -> get_resultados_tablero( $this->uri->segment(4), $this->input->get('Mes'), $this->input->get('Anio'));
 
 				if ($data['ewarrants'] != null) {
 					if ($message = $this -> session -> flashdata('message')) {
@@ -54,26 +125,8 @@ class Adm_Tablero extends MY_Controller {
 					$this -> template -> set_content('ewarrants/sin_permiso', array('msg' => 'Actualmente no hay indicadores dados de alta con ese ID'));
 					$this -> template -> build();
 				}
-
-
-			} else {
-				//Mostramos el level 0
-				$data['ewarrants'] = $this -> tablero_frr -> get_resultados_tablero();
-				
-				if ($data['ewarrants'] != null) {
-					if ($message = $this -> session -> flashdata('message')) {
-						$data['message'] = $message;
-					}
-					$this -> template -> set_content('tablero/tabler_level_0', $data);
-					$this -> template -> build();
-				} else {
-					$this -> template -> set_content('ewarrants/sin_permiso', array('msg' => 'Actualmente no hay indicadores dados de alta'));
-					$this -> template -> build();
-				}
 			}
-			
 		}
-
 	}
 
 	function check_idindicador() {
@@ -230,8 +283,6 @@ class Adm_Tablero extends MY_Controller {
 		$this -> breadcrumb -> append_crumb('Reporte', site_url() . "/tablero/reporte");
 
 		if ($this -> auth_frr -> es_admin()) {
-// 			print_r($this->db->list_tables());
-// die();
 			$this->load->library('grocery_CRUD');
 
 			$crud = new grocery_CRUD();
@@ -245,6 +296,7 @@ class Adm_Tablero extends MY_Controller {
 	        $crud->unset_delete();
 	        $crud->unset_edit();
 	        $crud->unset_add();
+	        $crud->unset_read();
 
    			$crud->add_action('Ver Historico', '', '','ui-icon-image',array($this,'generate_url'));
 
@@ -258,9 +310,14 @@ class Adm_Tablero extends MY_Controller {
 	}
 
 	function generate_url($primary_key , $row)
-		{
-		    return site_url('adm/tablero/ver_historico'). "/" . $primary_key .'?Anio='.$row->Anio;
-		}
+	{
+	    return site_url('adm/tablero/ver_historico'). "/" . $primary_key .'?Anio='.$row->Anio;
+	}
+
+	function generate_url_tablero($primary_key , $row)
+	{
+	    return site_url('adm/tablero/ver_composicion'). "/" . $primary_key .'?Mes='.$row->Mes. "&" .'Anio='.$row->Anio;
+	}
 
 	function ver_historico($primary_key) {
 

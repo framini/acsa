@@ -39,3 +39,24 @@ body {
 .breadcrumb .active a {
   color: #333333;
 }
+
+.rojo, .amarillo, .verde {
+  display: inline-block;
+  width: 26px;
+  height: 28px;
+  position: relative;
+left: 50%;
+margin-left: -15%;
+}
+
+.rojo {
+  background: url('http://localhost:8888/argc/images/stock_down_red.png') no-repeat top left;
+}
+
+.verde {
+  background: url('http://localhost:8888/argc/images/stock_up_green.png') no-repeat top left;
+}
+
+.amarillo {
+  background: url('http://localhost:8888/argc/images/stock_nochg_gray.png') no-repeat top left;
+}
