@@ -10,6 +10,9 @@ tbody tr td:nth-child(3) {
 <input type="text" id="datepicker" size="30" />
 <a class="DTTT_button ui-button ui-state-default DTTT_button_print" style="margin: 3px;margin-right: 20px!important;" id="pasaje_historico" title="Pasaje a Historico"><span>Pasaje a Historico</span></a>
 
+<a href="<?php echo site_url("adm/tablero/ver_pasaje_historico"); ?>" class="DTTT_button ui-button ui-state-default DTTT_button_print right" style="margin: 3px;margin-right: 7px!important; float:right;" id="ver_historico" title="Ver Historico"><span>Ver Historico</span></a>
+
+
 <?php echo $crud; ?>
 
 <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
@@ -32,6 +35,7 @@ tbody tr td:nth-child(3) {
 		
 		$('#pasaje_historico').on('click', function() {
 			if($("#datepicker").val()) {
+				$("#datepicker").css('border', 'none');
 				$.ajax({
 					url: "<?php echo base_url(); ?>" + "index.php/adm/tablero/pasaje_historico",
 					type : "POST",
@@ -41,6 +45,8 @@ tbody tr td:nth-child(3) {
 						window.location = "<?php echo base_url(); ?>" + "index.php/adm/tablero/bitacora"
 					}
 				});
+			} else {
+				$("#datepicker").css('border', '1px solid red');
 			}
 		}); 
 	})

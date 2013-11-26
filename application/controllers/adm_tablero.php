@@ -107,6 +107,50 @@ class Adm_Tablero extends MY_Controller {
 
 	}
 
+	function ver_pasaje_historico() {
+		$this -> breadcrumb -> append_crumb('Home', site_url('/adm/home'));
+		$this -> breadcrumb -> append_crumb('Tablero de Control', site_url() . "/adm/tablero/");
+		$this -> breadcrumb -> append_crumb('Bitacora', site_url() . "/adm/tablero/bitacora");
+		$this -> breadcrumb -> append_crumb('Ver pasaje historico', site_url() . "/tablero/ver_pasaje_historico");
+
+		if ($this -> auth_frr -> es_admin()) {
+			if ($this->input->post()) {
+				$this->load->library('grocery_CRUD');
+
+				$crud = new grocery_CRUD();
+
+				$crud->set_model('My_Custom_model');
+
+				$crud->set_theme('datatables');
+		        $crud->set_table('audit_historico');
+
+				$anio = $this->input->post('anio');
+				$mes = $this->input->post('mes');
+
+				$data['anio'] = $anio;
+				$data['mes'] = $mes;
+
+				$crud->basic_model->set_query_str("SELECT * FROM audit_historico WHERE YEAR(date) = '" . $anio . "' AND MONTH(date) = '" . $mes . "'");
+
+		        $crud->unset_delete();
+		        $crud->unset_edit();
+		        $crud->unset_add();
+		        $crud->unset_read();
+
+		        $output = $crud->render();
+
+		        $data['crud'] = $this->load->view('crud_base.php',$output, true);
+		 
+		        $this -> template -> set_content('tablero/ver_pasaje_historico', $data);
+				
+			} else {
+				$this -> template -> set_content('tablero/form_historico');
+			}
+			
+			$this -> template -> build();
+		}
+	}
+
 	function ver_composicion() {
 		if ($this -> auth_frr -> es_admin()) {
 			//print_r($this->uri->segment(2)); die();
